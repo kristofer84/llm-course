@@ -96,7 +96,8 @@ def main():
 
     sv, _ = load(SRC)
     locales = sorted(d for d in os.listdir(CATALOG)
-                     if os.path.isdir(os.path.join(CATALOG, d)) and d not in (SRC, "source"))
+                     if os.path.isdir(os.path.join(CATALOG, d))
+                     and d not in (SRC, "source", "edit") and not d.startswith("."))
     ident = identity_values()
     used = referenced_keys()
     failures, warnings = [], []

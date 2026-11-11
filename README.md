@@ -25,6 +25,39 @@ innehåller inga nycklar:
 - `tools/check_i18n.py` – statisk kontroll av kompletthet, inline-markup, platshållare och siffror.
   Ingen webbläsare behövs.
 
+### Redigera texten
+
+Källfilerna innehåller markering, inte text. För att läsa och ändra kursens text finns ett
+mellanlager: en Markdown-fil per grupp, i den ordning kursen visar den, med nyckeln över varje
+block och svenska och engelska sida vid sida.
+
+    python3 tools/content.py dump          # -> src/i18n/edit/<grupp>.md (genererat, ej i git)
+    $EDITOR src/i18n/edit/p3.md            # ändra raderna som börjar med SV| (och EN|)
+    python3 tools/content.py apply         # tillbaka in i katalogerna
+    (cd src && python3 build.py)           # bygg om
+    python3 tools/check_i18n.py            # kontrollera
+
+Ett block ser ut så här — nyckeln överst, sedan en rad per textrad:
+
+    @@ p3.rmsnorm.6
+    ## RMSNorm  [p]
+
+    SV| Division med RMS bevarar riktningen och bestämmer storleken. ...
+    EN| Division by the RMS preserves the direction and sets the size. ...
+
+Inbäddad markup (`<b>`, `<span class="mk">`) och `{{platshållare}}` måste stå kvar; det kontrolleras
+av `check_i18n.py`. Formelblock behåller sina radbrytningar som flera `SV|`-rader.
+
+`apply` skriver också ner vilken svensk text varje engelsk rad översattes från, i
+`src/i18n/.translation-state.json`. Sedan syns det som annars tystnar:
+
+    python3 tools/content.py status        # nycklar där engelskan är på efterkälken
+    python3 tools/content.py status --strict   # samma, men exit-kod 1
+
+Vill du lägga till en rad som inte finns: skriv `@@ <grupp>.<slug>.<n> - new` med en ledig nyckel,
+fyll i `SV|` och `EN|`, kör `apply` — och lägg in `<p data-i18n="..."></p>` på rätt plats i
+`src/<grupp>.html` (annars varnar `check_i18n.py` om en oanvänd nyckel).
+
 Lägga till ett språk, t.ex. tyska: skapa `src/i18n/de/` med samma sorts filer (en per grupp), fyll i
 översättningarna och bygg. Språkväxlaren får knappen automatiskt. Saknade nycklar faller tillbaka på
 svenska, och `tests/i18n.py` failar om det engelska läget visar svensk text.
@@ -63,6 +96,7 @@ Repo: https://github.com/kristofer84/llm-course — sida: https://kristofer84.gi
 Arbetsflöde för översättning:
 
     (cd src && python3 build.py)      # bygg först: extraktionen läser den byggda sidan
+    python3 tools/content.py status   # engelska på efterkälken?
     python3 tools/check_i18n.py       # täckning + markup + platshållare + siffror per grupp
     python3 tools/check_i18n.py --group m3
 
