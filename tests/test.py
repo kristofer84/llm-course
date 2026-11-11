@@ -18,7 +18,7 @@ async def main():
             await pg.evaluate(f'location.hash="#s{i+1}"')
             await pg.wait_for_timeout(50)
             await pg.screenshot(path=shot(f's{i+1:03d}.png'))
-        for bid in ['bpe-next','res-next','kv-next','kv-next','pg-new','pg-step','pg-fin','cb-cont','sd-next','fl-next','tr-next','tr-decode','smp-draw','st-abl','att-soft','mm-step','mm-step','mm-step','mm-step','ah-next','ah-next','ah-next','ah-next','ah-next','nl-lin','wa-moe','mv-rand']:
+        for bid in ['bpe-next','res-next','kv-next','kv-next','pg-new','pg-step','pg-fin','cb-cont','sd-next','fl-next','tr-next','tr-decode','smp-draw','ab-abl','att-soft','mm-step','mm-step','mm-step','mm-step','ah-next','ah-next','ah-next','ah-next','ah-next','nl-lin','wa-moe','mv-rand']:
             await pg.evaluate(f'document.getElementById("{bid}").click()')
         print(await pg.evaluate('document.getElementById("mm-tbl").innerText'))
         print(await pg.evaluate('document.getElementById("mm-seq").innerText.replace(/\\n/g," ")'))
