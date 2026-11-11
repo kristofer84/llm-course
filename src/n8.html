@@ -1,67 +1,111 @@
 <section class="slide" data-title="Starta servern och läs loggen"><div class="si">
-  <h2>Starta servern och läs loggen</h2>
+  <h2 data-i18n="n8.starta-servern-och-las.1"></h2>
   <div class="cols even">
     <div>
 <pre class="log">vllm serve meta-llama/Llama-3.1-8B-Instruct \
   --max-model-len 8192 \
   --gpu-memory-utilization 0.90</pre>
-      <p>Bland startloggarna finns tre rader som sammanfattar modul 6:</p>
+      <p class="note" data-i18n="n8.starta-servern-och-las.n9"></p>
+      <p data-i18n="n8.starta-servern-och-las.2"></p>
 <pre class="log">Available KV cache memory: <mark>47.50 GiB</mark>
 GPU KV cache size: <mark>389,120 tokens</mark>
 Maximum concurrency for 8,192 tokens
   per request: <mark>47.50x</mark></pre>
-      <p class="note">Siffrorna är ett räkneexempel för en GPU med 80 GB. Dina värden beror på GPU, modell, version och flaggor.</p>
+      <p class="note" data-i18n="n8.starta-servern-och-las.3"></p>
     </div>
     <div>
       <ul>
-        <li><b>Available KV cache memory</b>: det som blev över efter vikter, aktiveringar och overhead. Hela den ytan görs om till block.</li>
-        <li><b>GPU KV cache size</b>: samma yta i tokens. Här 47,5 GiB ÷ 128 KiB per token.</li>
-        <li><b>Maximum concurrency</b>: poolen delat med max-model-len. Så många sekvenser ryms om alla är maximalt långa. Är de kortare ryms fler.</li>
+        <li data-i18n="n8.starta-servern-och-las.4"></li>
+        <li data-i18n="n8.starta-servern-och-las.5"></li>
+        <li data-i18n="n8.starta-servern-och-las.6"></li>
       </ul>
-      <p>Skicka sedan en request. API:t följer OpenAI-formatet:</p>
+      <p data-i18n="n8.starta-servern-och-las.7"></p>
 <pre class="log">curl localhost:8000/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{"model": "meta-llama/Llama-3.1-8B-Instruct",
        "messages": [{"role": "user",
                      "content": "Vad är en KV-cache?"}],
        "max_tokens": 200, "stream": true}'</pre>
-      <p>Om loggen säger att max-model-len inte får plats i KV-cachen: sänk max-model-len, höj gpu-memory-utilization eller kvantisera.</p>
+      <p data-i18n="n8.starta-servern-och-las.8"></p>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-title="Mät med /metrics"><div class="si">
-  <h2>Mät med /metrics</h2>
-  <p class="lead">Servern exponerar Prometheus-mått på <span class="mk">/metrics</span>. De viktigaste motsvarar direkt begreppen i kursen.</p>
+  <h2 data-i18n="n8.mat-med-metrics.1"></h2>
+  <p class="lead" data-i18n="n8.mat-med-metrics.2"></p>
   <div class="scroll-x"><table class="t">
-    <tr><th>Mått</th><th>Vad det visar</th><th>Begrepp</th></tr>
-    <tr><td class="n">vllm:time_to_first_token_seconds</td><td>Tid till första token</td><td>TTFT = kö + prefill</td></tr>
-    <tr><td class="n">vllm:inter_token_latency_seconds</td><td>Tid mellan tokens</td><td>ITL ≈ ett decode-steg</td></tr>
-    <tr><td class="n">vllm:request_queue_time_seconds</td><td>Tid i waiting-kön</td><td>Schedulern hade inte plats</td></tr>
-    <tr><td class="n">vllm:request_prefill_time_seconds</td><td>Tid i prefill</td><td>Promptlängd, chunked prefill</td></tr>
-    <tr><td class="n">vllm:request_decode_time_seconds</td><td>Tid i decode</td><td>Antal output-tokens × ITL</td></tr>
-    <tr><td class="n">vllm:num_requests_running</td><td>Requests i batchen just nu</td><td>Batchstorlek</td></tr>
-    <tr><td class="n">vllm:num_requests_waiting</td><td>Requests i kö</td><td>Överlast</td></tr>
-    <tr><td class="n">vllm:kv_cache_usage_perc</td><td>Andel av KV-poolen som används (1 = full)</td><td>PagedAttention-block</td></tr>
-    <tr><td class="n">vllm:prefix_cache_queries / _hits</td><td>Efterfrågade respektive träffade tokens</td><td>Prefix caching</td></tr>
-    <tr><td class="n">vllm:num_preemptions</td><td>Antal utkastade requests</td><td>KV-poolen tog slut</td></tr>
-    <tr><td class="n">vllm:iteration_tokens_total</td><td>Tokens per motorsteg</td><td>Token-budget</td></tr>
+    <tr><th data-i18n="n8.mat-med-metrics.3"></th><th data-i18n="n8.mat-med-metrics.4"></th><th data-i18n="n8.mat-med-metrics.5"></th></tr>
+    <tr><td class="n" data-i18n="n8.mat-med-metrics.6"></td><td data-i18n="n8.mat-med-metrics.7"></td><td data-i18n="n8.mat-med-metrics.8"></td></tr>
+    <tr><td class="n" data-i18n="n8.mat-med-metrics.9"></td><td data-i18n="n8.mat-med-metrics.10"></td><td data-i18n="n8.mat-med-metrics.11"></td></tr>
+    <tr><td class="n" data-i18n="n8.mat-med-metrics.12"></td><td data-i18n="n8.mat-med-metrics.13"></td><td data-i18n="n8.mat-med-metrics.14"></td></tr>
+    <tr><td class="n" data-i18n="n8.mat-med-metrics.15"></td><td data-i18n="n8.mat-med-metrics.16"></td><td data-i18n="n8.mat-med-metrics.17"></td></tr>
+    <tr><td class="n" data-i18n="n8.mat-med-metrics.18"></td><td data-i18n="n8.mat-med-metrics.19"></td><td data-i18n="n8.mat-med-metrics.20"></td></tr>
+    <tr><td class="n" data-i18n="n8.mat-med-metrics.21"></td><td data-i18n="n8.mat-med-metrics.22"></td><td data-i18n="n8.mat-med-metrics.23"></td></tr>
+    <tr><td class="n" data-i18n="n8.mat-med-metrics.24"></td><td data-i18n="n8.mat-med-metrics.25"></td><td data-i18n="n8.mat-med-metrics.26"></td></tr>
+    <tr><td class="n" data-i18n="n8.mat-med-metrics.27"></td><td data-i18n="n8.mat-med-metrics.28"></td><td data-i18n="n8.mat-med-metrics.29"></td></tr>
+    <tr><td class="n" data-i18n="n8.mat-med-metrics.30"></td><td data-i18n="n8.mat-med-metrics.31"></td><td data-i18n="n8.mat-med-metrics.32"></td></tr>
+    <tr><td class="n" data-i18n="n8.mat-med-metrics.33"></td><td data-i18n="n8.mat-med-metrics.34"></td><td data-i18n="n8.mat-med-metrics.35"></td></tr>
+    <tr><td class="n" data-i18n="n8.mat-med-metrics.36"></td><td data-i18n="n8.mat-med-metrics.37"></td><td data-i18n="n8.mat-med-metrics.38"></td></tr>
   </table></div>
-  <p class="note">Måttens namn har ändrats mellan versioner. Kontrollera mot dokumentationen för den version du kör.</p>
+  <p class="note" data-i18n="n8.mat-med-metrics.39"></p>
 </div></section>
 
 <section class="slide" data-title="Felsökning: symptom och rattar"><div class="si">
-  <h2>Felsökning: symptom och rattar</h2>
+  <h2 data-i18n="n8.felsokning-symptom-och.1"></h2>
   <div class="scroll-x"><table class="t">
-    <tr><th>Symptom</th><th>Trolig orsak</th><th>Prova</th></tr>
-    <tr><td>Servern startar inte: max-model-len får inte plats</td><td>KV-poolen rymmer inte en enda sekvens av max längd</td><td>Sänk <span class="mk">--max-model-len</span>, kvantisera, fp8 KV-cache eller fler GPU:er</td></tr>
-    <tr><td>Hög TTFT, kön växer</td><td>Fler requests än batchen eller KV-poolen rymmer</td><td>Fler repliker, kortare kontext, höj <span class="mk">--max-num-seqs</span> om KV-minne finns</td></tr>
-    <tr><td>Hög TTFT trots tom kö</td><td>Långa prompter prefillas om varje gång</td><td>Lägg det gemensamma först i prompten så att prefix-cachen träffar</td></tr>
-    <tr><td>Låg träffgrad i prefix-cachen</td><td>Något varierar tidigt i prompten, till exempel tid eller användarnamn</td><td>Flytta det som varierar till slutet</td></tr>
-    <tr><td>ITL ökar när fler ansluter</td><td>Större batch och mer KV att läsa per steg</td><td>Sänk <span class="mk">--max-num-seqs</span> eller skala ut</td></tr>
-    <tr><td>ITL hackar när långa prompter kommer in</td><td>Prefill tar för stor del av steget</td><td>Sänk <span class="mk">--max-num-batched-tokens</span></td></tr>
-    <tr><td>Preemptions</td><td>KV-poolen blir full under körning</td><td>Sänk <span class="mk">--max-num-seqs</span>, fp8 KV-cache, mer minne</td></tr>
-    <tr><td>Låg genomströmning, GPU:n ser ledig ut</td><td>För få sekvenser per steg: decode är memory-bound</td><td>Mer samtidig last per GPU, speculative decoding</td></tr>
-    <tr><td>Svaren tar slut mitt i en mening</td><td>max_tokens eller max-model-len nådd, ofta på grund av långt resonemang</td><td>Höj max_tokens, kontrollera finish_reason</td></tr>
+    <tr><th data-i18n="n8.felsokning-symptom-och.2"></th><th data-i18n="n8.felsokning-symptom-och.3"></th><th data-i18n="n8.felsokning-symptom-och.4"></th></tr>
+    <tr><td data-i18n="n8.felsokning-symptom-och.5"></td><td data-i18n="n8.felsokning-symptom-och.6"></td><td data-i18n="n8.felsokning-symptom-och.7"></td></tr>
+    <tr><td data-i18n="n8.felsokning-symptom-och.8"></td><td data-i18n="n8.felsokning-symptom-och.9"></td><td data-i18n="n8.felsokning-symptom-och.10"></td></tr>
+    <tr><td data-i18n="n8.felsokning-symptom-och.11"></td><td data-i18n="n8.felsokning-symptom-och.12"></td><td data-i18n="n8.felsokning-symptom-och.13"></td></tr>
+    <tr><td data-i18n="n8.felsokning-symptom-och.14"></td><td data-i18n="n8.felsokning-symptom-och.15"></td><td data-i18n="n8.felsokning-symptom-och.16"></td></tr>
+    <tr><td data-i18n="n8.felsokning-symptom-och.17"></td><td data-i18n="n8.felsokning-symptom-och.18"></td><td data-i18n="n8.felsokning-symptom-och.19"></td></tr>
+    <tr><td data-i18n="n8.felsokning-symptom-och.20"></td><td data-i18n="n8.felsokning-symptom-och.21"></td><td data-i18n="n8.felsokning-symptom-och.22"></td></tr>
+    <tr><td data-i18n="n8.felsokning-symptom-och.23"></td><td data-i18n="n8.felsokning-symptom-och.24"></td><td data-i18n="n8.felsokning-symptom-och.25"></td></tr>
+    <tr><td data-i18n="n8.felsokning-symptom-och.26"></td><td data-i18n="n8.felsokning-symptom-och.27"></td><td data-i18n="n8.felsokning-symptom-och.28"></td></tr>
+    <tr><td data-i18n="n8.felsokning-symptom-och.29"></td><td data-i18n="n8.felsokning-symptom-och.30"></td><td data-i18n="n8.felsokning-symptom-och.31"></td></tr>
   </table></div>
+</div></section>
+<section class="slide" data-title="Disaggregerad prefill och decode"><div class="si">
+  <h2 data-i18n="n8.disaggregerad-prefill-och-decode.1"></h2>
+  <div class="cols">
+    <div>
+      <p data-i18n="n8.disaggregerad-prefill-och-decode.2"></p>
+      <p data-i18n="n8.disaggregerad-prefill-och-decode.3"></p>
+      <div class="eq" data-i18n="n8.disaggregerad-prefill-och-decode.4"></div>
+      <p class="note" data-i18n="n8.disaggregerad-prefill-och-decode.5"></p>
+    </div>
+    <div>
+      <p data-i18n="n8.disaggregerad-prefill-och-decode.6"></p>
+      <div class="scroll-x"><table class="t">
+        <tr><th data-i18n="n8.disaggregerad-prefill-och-decode.7"></th><th data-i18n="n8.disaggregerad-prefill-och-decode.8"></th><th data-i18n="n8.disaggregerad-prefill-och-decode.9"></th></tr>
+        <tr><td data-i18n="n8.disaggregerad-prefill-och-decode.10"></td><td data-i18n="n8.disaggregerad-prefill-och-decode.11"></td><td data-i18n="n8.disaggregerad-prefill-och-decode.12"></td></tr>
+        <tr><td data-i18n="n8.disaggregerad-prefill-och-decode.13"></td><td data-i18n="n8.disaggregerad-prefill-och-decode.14"></td><td data-i18n="n8.disaggregerad-prefill-och-decode.15"></td></tr>
+        <tr><td data-i18n="n8.disaggregerad-prefill-och-decode.16"></td><td data-i18n="n8.disaggregerad-prefill-och-decode.17"></td><td data-i18n="n8.disaggregerad-prefill-och-decode.18"></td></tr>
+      </table></div>
+      <p class="note" data-i18n="n8.disaggregerad-prefill-och-decode.19"></p>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="Multi-LoRA: många modeller på en GPU"><div class="si">
+  <h2 data-i18n="n8.multi-lora-manga-modeller-pa.1"></h2>
+  <div class="cols">
+    <div>
+      <p data-i18n="n8.multi-lora-manga-modeller-pa.2"></p>
+      <div class="eq" data-i18n="n8.multi-lora-manga-modeller-pa.3"></div>
+      <p data-i18n="n8.multi-lora-manga-modeller-pa.4"></p>
+      <p class="note" data-i18n="n8.multi-lora-manga-modeller-pa.5"></p>
+    </div>
+    <div>
+      <p data-i18n="n8.multi-lora-manga-modeller-pa.6"></p>
+<pre class="log">vllm serve meta-llama/Llama-3.1-8B-Instruct \
+  --enable-lora \
+  --max-loras 16 \
+  --lora-modules kod=./adapter-kod \
+                 skriv=./adapter-skriv</pre>
+      <p data-i18n="n8.multi-lora-manga-modeller-pa.7"></p>
+      <p class="note" data-i18n="n8.multi-lora-manga-modeller-pa.8"></p>
+    </div>
+  </div>
 </div></section>

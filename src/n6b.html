@@ -1,36 +1,36 @@
 <section class="slide" data-title="Vad är ett grafikkort?"><div class="si">
-  <h2>Vad är ett grafikkort, och varför spelar minnet roll?</h2>
-  <p class="plain">Språkmodeller körs på grafikkort (GPU:er). Ett grafikkort har tusentals små räknare som arbetar samtidigt, och ett eget snabbt minne. För att förstå resten av modulen räcker det med en bild: ett kök med väldigt många kockar, men en ganska smal dörr till skafferiet.</p>
+  <h2 data-i18n="n6b.vad-ar-ett-grafikkort.1"></h2>
+  <p class="plain" data-i18n="n6b.vad-ar-ett-grafikkort.2"></p>
   <div class="cols even">
     <div>
       <ul>
-        <li><b>Kockarna</b> är räknekraften. Ett modernt datacenterkort som H100 klarar ungefär tusen biljoner multiplikationer per sekund.</li>
-        <li><b>Skafferiet</b> är grafikkortets minne (VRAM), till exempel 80 GB. Där ligger modellens vikter och KV-cachen.</li>
-        <li><b>Dörren</b> är minnesbandbredden, ungefär 3,35 TB per sekund. Varje ingrediens kockarna använder måste bäras in genom den.</li>
+        <li data-i18n="n6b.vad-ar-ett-grafikkort.3"></li>
+        <li data-i18n="n6b.vad-ar-ett-grafikkort.4"></li>
+        <li data-i18n="n6b.vad-ar-ett-grafikkort.5"></li>
       </ul>
-      <p>När modellen skriver ett ord måste <b>alla 16 GB vikter bäras in genom dörren</b>, men kockarna gör bara lite arbete med dem. De står mest och väntar. Det kallas att vara <i>memory-bound</i>, och det förklarar nästan allt i resten av kursen: varför man skriver för många användare samtidigt, varför KV-cachen är så viktig och varför man gärna kvantiserar.</p>
+      <p data-i18n="n6b.vad-ar-ett-grafikkort.6"></p>
     </div>
     <div class="panel">
-      <div class="ctl"><button class="btn on" id="gp-1">En användare</button><button class="btn" id="gp-64">64 användare</button></div>
-      <svg class="viz" id="gp-svg" viewBox="0 0 520 300" role="img" aria-label="Kök med kockar, en dörr och ett skafferi som liknelse för grafikkortet"></svg>
+      <div class="ctl"><button class="btn on" id="gp-1" data-i18n="n6b.vad-ar-ett-grafikkort.7"></button><button class="btn" id="gp-64" data-i18n="n6b.vad-ar-ett-grafikkort.8"></button></div>
+      <svg class="viz" id="gp-svg" viewBox="0 0 520 300" role="img" aria-label="" data-i18n-aria-label="n6b.vad-ar-ett-grafikkort.arialabel"></svg>
       <div class="out" id="gp-out" aria-live="polite"></div>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-title="KV-cache i klartext"><div class="si">
-  <h2>KV-cache i klartext</h2>
-  <p class="plain">Tänk dig att du skriver en uppsats och före varje nytt ord måste läsa om hela texten från början. Det blir långsammare för varje ord. KV-cachen är modellens anteckningar: den sparar det som behövs från varje tidigare ord, så att bara det nya ordet behöver bearbetas.</p>
+  <h2 data-i18n="n6b.kv-cache-i-klartext.1"></h2>
+  <p class="plain" data-i18n="n6b.kv-cache-i-klartext.2"></p>
   <div class="cols even">
     <div class="ige">
-      <div class="in"><span class="lb">Vad sparas</span>För varje tidigare ord sparas dess <b>key</b> (etiketten) och <b>value</b> (innehållet) från attention, i varje våning. Därav namnet: K och V.</div>
-      <div class="do"><span class="lb">Hur det används</span>När ett nytt ord ska skrivas räknas bara dess egen key, value och query fram. Queryn jämförs med alla sparade keys, och de sparade values blandas.</div>
-      <div class="out"><span class="lb">Resultat</span>Samma svar som utan cache, men arbetet per ord är konstant i stället för att växa med textens längd.</div>
-      <div class="why"><span class="lb">Priset</span>Anteckningarna tar minne: i Llama-3-8B cirka 128 KB per ord. En konversation på 8 000 ord tar alltså ungefär 1 GB av grafikkortets minne, så länge den pågår.</div>
+      <div class="in" data-i18n="n6b.kv-cache-i-klartext.3"></div>
+      <div class="do" data-i18n="n6b.kv-cache-i-klartext.4"></div>
+      <div class="out" data-i18n="n6b.kv-cache-i-klartext.5"></div>
+      <div class="why" data-i18n="n6b.kv-cache-i-klartext.6"></div>
     </div>
     <div class="panel">
       <div class="ctl"><label>Ord i texten <input type="range" id="kc-n" min="5" max="60" value="20"><span class="mk" id="kc-nv"></span></label></div>
-      <svg class="viz" id="kc-svg" viewBox="0 0 520 250" role="img" aria-label="Arbete per ord med och utan cache"></svg>
+      <svg class="viz" id="kc-svg" viewBox="0 0 520 250" role="img" aria-label="" data-i18n-aria-label="n6b.kv-cache-i-klartext.arialabel"></svg>
       <div class="out" id="kc-out" aria-live="polite"></div>
     </div>
   </div>

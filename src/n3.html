@@ -1,7 +1,7 @@
 <section class="slide" data-title="Attention räknat för hand"><div class="si">
-  <h2>Attention räknat för hand</h2>
-  <p class="lead">Ett head, tre tokens och två dimensioner i stället för 128. Vi räknar vad ”den” hämtar från ”Katten”, ”satt” och sig själv. Varje tal nedan är uträknat, inget är påhittat.</p>
-  <div class="ctl"><button class="btn" id="ah-prev">Föregående</button><button class="btn" id="ah-next">Nästa steg</button><span class="mk" id="ah-n"></span></div>
+  <h2 data-i18n="n3.attention-raknat-for-hand.1"></h2>
+  <p class="lead" data-i18n="n3.attention-raknat-for-hand.2"></p>
+  <div class="ctl"><button class="btn" id="ah-prev" data-i18n="n3.attention-raknat-for-hand.3"></button><button class="btn" id="ah-next" data-i18n="n3.attention-raknat-for-hand.4"></button><span class="mk" id="ah-n"></span></div>
   <div class="cols even">
     <div class="panel"><div class="scroll-x" id="ah-tbl"></div></div>
     <div id="ah-text" aria-live="polite"></div>
@@ -9,38 +9,14 @@
 </div></section>
 
 <section class="slide" data-title="Forward pass som kod"><div class="si">
-  <h2>Hela forward pass som kod</h2>
+  <h2 data-i18n="n3.forward-pass-som-kod.1"></h2>
   <div class="cols wide">
     <div>
-      <p>Allt i modulen på en skärm, som PyTorch-lik pseudokod för en sekvens. Jämför rad för rad med tensorspårningen.</p>
-      <p><b>Samma funktion gör både prefill och decode.</b> Enda skillnaden är T: vid prefill är T promptens längd och cachen tom, vid decode är T = 1 och cachen innehåller allt tidigare.</p>
-      <p><span class="mk">repeat_kv</span> visar GQA som idé: varje KV head används av 4 query heads. Riktiga kernels kopierar inget, de indexerar bara.</p>
-      <p>Koden i vLLM (<span class="mk">models/llama.py</span>) har samma struktur: <span class="mk">qkv_proj</span>, <span class="mk">o_proj</span>, <span class="mk">gate_up_proj</span>, <span class="mk">down_proj</span>. Attention och cache-hanteringen ligger i en separat backend.</p>
+      <p data-i18n="n3.forward-pass-som-kod.2"></p>
+      <p data-i18n="n3.forward-pass-som-kod.3"></p>
+      <p data-i18n="n3.forward-pass-som-kod.4"></p>
+      <p data-i18n="n3.forward-pass-som-kod.5"></p>
     </div>
-<pre class="code">def forward(ids, pos, cache):                     <span class="c"># ids [T]</span>
-    x = E[ids]                                    <span class="sa"># [T, 4096]</span>
-    for l in range(32):
-        h = rmsnorm(x, g1[l])                     <span class="sa"># [T, 4096]</span>
-        q, k, v = split(h @ W_qkv[l])             <span class="sa"># [T,4096] [T,1024] [T,1024]</span>
-        q = q.view(T, 32, 128).transpose(0, 1)    <span class="sa"># [32, T, 128]</span>
-        k = k.view(T,  8, 128).transpose(0, 1)    <span class="sa"># [ 8, T, 128]</span>
-        v = v.view(T,  8, 128).transpose(0, 1)    <span class="sa"># [ 8, T, 128]</span>
-        q, k = rope(q, pos), rope(k, pos)
-
-        K, V = cache[l].append(k, v)              <span class="sk"># [8, ctx, 128]   ctx = gamla + T</span>
-        K, V = repeat_kv(K, 4), repeat_kv(V, 4)   <span class="sk"># [32, ctx, 128]</span>
-
-        S = q @ K.transpose(-1, -2) / sqrt(128)   <span class="sa"># [32, T, ctx]</span>
-        S = S + causal_mask                       <span class="c"># −inf där key ligger efter query</span>
-        P = softmax(S, dim=-1)                    <span class="sa"># [32, T, ctx]</span>
-        o = (P @ V).transpose(0, 1).reshape(T, 4096)
-        x = x + o @ W_o[l]                        <span class="sa"># [T, 4096]</span>
-
-        h = rmsnorm(x, g2[l])
-        gate, up = split(h @ W_gate_up[l])        <span class="sa"># [T, 14336] × 2</span>
-        x = x + (silu(gate) * up) @ W_down[l]     <span class="sa"># [T, 4096]</span>
-
-    h = rmsnorm(x[-1], g_final)                   <span class="sa"># [4096]   bara sista positionen</span>
-    return h @ W_U                                <span class="sa"># [128256] logits</span></pre>
+<pre class="code" data-i18n="n3.forward-pass-som-kod.6"></pre>
   </div>
 </div></section>

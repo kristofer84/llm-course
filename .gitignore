@@ -5,3 +5,4 @@ _site/
 src/i18n/source/
 src/i18n/source.json
 .pi/
+src/i18n/edit/

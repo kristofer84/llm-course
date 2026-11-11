@@ -1,56 +1,56 @@
 <section class="slide" data-title="Vad ligger i GPU-minnet?"><div class="si">
-  <h2>Vad ligger i GPU-minnet?</h2>
+  <h2 data-i18n="n6.vad-ligger-i-gpu-minnet.1"></h2>
   <div class="cols">
     <div>
-      <p>När en inference-server har startat är GPU-minnet uppdelat i fyra delar med helt olika livslängd:</p>
+      <p data-i18n="n6.vad-ligger-i-gpu-minnet.2"></p>
       <table class="t">
-        <tr><th>Del</th><th>Lever</th><th>Storlek bestäms av</th></tr>
-        <tr><td><span class="sh w">Vikter</span></td><td>hela serverns livstid</td><td>parametrar × precision</td></tr>
-        <tr><td><span class="sh kv">KV-pool</span></td><td>en plats: så länge en sekvens lever</td><td>allt som blir över</td></tr>
-        <tr><td><span class="sh a">Aktiveringar</span></td><td>ett steg</td><td>tokens per steg</td></tr>
-        <tr><td>Overhead</td><td>hela tiden</td><td>CUDA, grafer</td></tr>
+        <tr><th data-i18n="n6.vad-ligger-i-gpu-minnet.3"></th><th data-i18n="n6.vad-ligger-i-gpu-minnet.4"></th><th data-i18n="n6.vad-ligger-i-gpu-minnet.5"></th></tr>
+        <tr><td data-i18n="n6.vad-ligger-i-gpu-minnet.6"></td><td data-i18n="n6.vad-ligger-i-gpu-minnet.7"></td><td data-i18n="n6.vad-ligger-i-gpu-minnet.8"></td></tr>
+        <tr><td data-i18n="n6.vad-ligger-i-gpu-minnet.9"></td><td data-i18n="n6.vad-ligger-i-gpu-minnet.10"></td><td data-i18n="n6.vad-ligger-i-gpu-minnet.11"></td></tr>
+        <tr><td data-i18n="n6.vad-ligger-i-gpu-minnet.12"></td><td data-i18n="n6.vad-ligger-i-gpu-minnet.13"></td><td data-i18n="n6.vad-ligger-i-gpu-minnet.14"></td></tr>
+        <tr><td data-i18n="n6.vad-ligger-i-gpu-minnet.15"></td><td data-i18n="n6.vad-ligger-i-gpu-minnet.16"></td><td data-i18n="n6.vad-ligger-i-gpu-minnet.17"></td></tr>
       </table>
-      <p>vLLM allokerar hela KV-poolen direkt vid start. <span class="mk">nvidia-smi</span> visar därför runt 90 % upptaget minne även när servern står helt stilla. Det är avsiktligt.</p>
-      <p>En större token-budget per steg kräver mer utrymme för aktiveringar, och då blir KV-poolen mindre. Allt som inte är vikter är en avvägning mellan de två.</p>
+      <p data-i18n="n6.vad-ligger-i-gpu-minnet.18"></p>
+      <p data-i18n="n6.vad-ligger-i-gpu-minnet.19"></p>
     </div>
     <div class="panel">
-      <svg class="viz" viewBox="0 0 560 300" role="img" aria-label="80 GB GPU-minne uppdelat i vikter, aktiveringar, overhead, KV-pool och oanvänt">
-        <text x="20" y="24" class="b">H100, 80 GB, Llama-3-8B i bf16</text>
-        <rect x="20" y="40" width="104" height="70" class="bw"/><text x="72" y="72" text-anchor="middle" class="s">vikter</text><text x="72" y="90" text-anchor="middle" class="m">16 GB</text>
+      <svg class="viz" viewBox="0 0 560 300" role="img" aria-label="" data-i18n-aria-label="n6.vad-ligger-i-gpu-minnet.arialabel">
+        <text x="20" y="24" class="b" data-i18n="n6.vad-ligger-i-gpu-minnet.20"></text>
+        <rect x="20" y="40" width="104" height="70" class="bw"/><text x="72" y="72" text-anchor="middle" class="s" data-i18n="n6.vad-ligger-i-gpu-minnet.21"></text><text x="72" y="90" text-anchor="middle" class="m" data-i18n="n6.vad-ligger-i-gpu-minnet.22"></text>
         <rect x="124" y="40" width="20" height="70" class="ba"/>
         <rect x="144" y="40" width="13" height="70" class="bg"/>
-        <rect x="157" y="40" width="331" height="70" class="bkv"/><text x="322" y="72" text-anchor="middle" class="s">KV-pool: block om 16 tokens</text><text x="322" y="90" text-anchor="middle" class="m">≈ 51 GB ≈ 390 000 tokens</text>
+        <rect x="157" y="40" width="331" height="70" class="bkv"/><text x="322" y="72" text-anchor="middle" class="s" data-i18n="n6.vad-ligger-i-gpu-minnet.23"></text><text x="322" y="90" text-anchor="middle" class="m" data-i18n="n6.vad-ligger-i-gpu-minnet.24"></text>
         <rect x="488" y="40" width="52" height="70" fill="url(#hatch)"/><text x="514" y="80" text-anchor="middle" class="s">10 %</text>
-        <line x1="134" y1="112" x2="110" y2="150" class="lnf"/><text x="20" y="166" class="s">aktiveringar, ca 3 GB</text>
-        <line x1="150" y1="112" x2="210" y2="150" class="lnf"/><text x="190" y="166" class="s">overhead, ca 2 GB</text>
-        <line x1="488" y1="34" x2="488" y2="116" class="ln" stroke-dasharray="4 3"/><text x="486" y="132" text-anchor="end" class="s">gpu_memory_utilization = 0.9</text>
-        <text x="20" y="214" class="s">Vid start loggar vLLM poolens storlek:</text>
-        <text x="20" y="238" class="m">Available KV cache memory: … GiB</text>
-        <text x="20" y="258" class="m">GPU KV cache size: … tokens</text>
-        <text x="20" y="286" class="s">Siffrorna för aktiveringar och overhead är ungefärliga och varierar.</text>
+        <line x1="134" y1="112" x2="110" y2="150" class="lnf"/><text x="20" y="166" class="s" data-i18n="n6.vad-ligger-i-gpu-minnet.25"></text>
+        <line x1="150" y1="112" x2="210" y2="150" class="lnf"/><text x="190" y="166" class="s" data-i18n="n6.vad-ligger-i-gpu-minnet.26"></text>
+        <line x1="488" y1="34" x2="488" y2="116" class="ln" stroke-dasharray="4 3"/><text x="486" y="132" text-anchor="end" class="s" data-i18n="n6.vad-ligger-i-gpu-minnet.27"></text>
+        <text x="20" y="214" class="s" data-i18n="n6.vad-ligger-i-gpu-minnet.28"></text>
+        <text x="20" y="238" class="m" data-i18n="n6.vad-ligger-i-gpu-minnet.29"></text>
+        <text x="20" y="258" class="m" data-i18n="n6.vad-ligger-i-gpu-minnet.30"></text>
+        <text x="20" y="286" class="s" data-i18n="n6.vad-ligger-i-gpu-minnet.31"></text>
       </svg>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-title="KV-cachen på riktigt: en minimodell"><div class="si">
-  <h2>KV-cachen på riktigt: en minimodell</h2>
+  <h2 data-i18n="n6.kv-cachen-pa-riktigt-en.1"></h2>
   <div class="cols">
     <div>
-      <p>Här körs en riktig transformer i din webbläsare: 2 lager, 2 heads, d = 16, med attention, causal mask, RMSNorm och MLP. Vikterna är slumpade, så texten blir nonsens. Mekaniken är däremot äkta.</p>
-      <p>Varje steg räknas på två sätt:</p>
+      <p data-i18n="n6.kv-cachen-pa-riktigt-en.2"></p>
+      <p data-i18n="n6.kv-cachen-pa-riktigt-en.3"></p>
       <ul>
-        <li><b>Utan cache</b>: hela sekvensen körs om från början.</li>
-        <li><b>Med cache</b>: bara den nya token körs, K och V för resten läses.</li>
+        <li data-i18n="n6.kv-cachen-pa-riktigt-en.4"></li>
+        <li data-i18n="n6.kv-cachen-pa-riktigt-en.5"></li>
       </ul>
-      <p>Jämför kolumnen längst till höger: skillnaden i logits är noll eller ren flyttalsavrundning. KV-cachen är ingen approximation.</p>
-      <p>Rutnätet visar den faktiska K-cachen i lager 0, head 0. En rad per position, och gamla rader ändras aldrig.</p>
+      <p data-i18n="n6.kv-cachen-pa-riktigt-en.6"></p>
+      <p data-i18n="n6.kv-cachen-pa-riktigt-en.7"></p>
     </div>
     <div class="panel">
-      <div class="ctl"><button class="btn" id="mm-step">Generera en token</button><button class="btn" id="mm-reset">Börja om</button></div>
+      <div class="ctl"><button class="btn" id="mm-step" data-i18n="n6.kv-cachen-pa-riktigt-en.8"></button><button class="btn" id="mm-reset" data-i18n="n6.kv-cachen-pa-riktigt-en.9"></button></div>
       <div class="chips" id="mm-seq"></div>
       <div class="scroll-x"><table class="numtbl" id="mm-tbl"></table></div>
-      <p style="font-size:13px;color:var(--ink2);margin:10px 0 4px">K-cache, lager 0, head 0: [positioner, 8]</p>
+      <p style="font-size:13px;color:var(--ink2);margin:10px 0 4px" data-i18n="n6.kv-cachen-pa-riktigt-en.10"></p>
       <div class="heat" id="mm-heat" style="grid-template-columns:70px repeat(8,1fr);max-width:420px"></div>
       <div class="out" id="mm-out" aria-live="polite"></div>
     </div>
@@ -58,23 +58,23 @@
 </div></section>
 
 <section class="slide" data-title="Kapacitetsplanering"><div class="si">
-  <h2>Kapacitetsplanering: räcker en GPU?</h2>
+  <h2 data-i18n="n6.kapacitetsplanering.1"></h2>
   <div class="cols">
     <div>
-      <p>Nu kan du svara på den praktiska frågan: hur många användare klarar en GPU, och hur snabbt går det för var och en?</p>
+      <p data-i18n="n6.kapacitetsplanering.2"></p>
       <ol>
-        <li><b>Får vikterna plats?</b> Parametrar × byte per parameter.</li>
-        <li><b>Hur stor blir KV-poolen?</b> 90 % av minnet minus vikter minus ca 5 GB.</li>
-        <li><b>Hur många sekvenser ryms?</b> Poolen delat med KV per sekvens.</li>
-        <li><b>Hur långt blir ett decode-steg?</b> Bytes att läsa (vikter + all aktiv KV) delat med minnesbandbredden.</li>
+        <li data-i18n="n6.kapacitetsplanering.3"></li>
+        <li data-i18n="n6.kapacitetsplanering.4"></li>
+        <li data-i18n="n6.kapacitetsplanering.5"></li>
+        <li data-i18n="n6.kapacitetsplanering.6"></li>
       </ol>
-      <p>Steg 3 ger gränsen för samtidighet. Steg 4 ger ITL för alla i batchen.</p>
-      <p class="note">Modellen är idealiserad (H100-liknande bandbredd, inga köer, alla sekvenser lika långa). Använd den för storleksordningar och för att se vilken resurs som tar slut först.</p>
+      <p data-i18n="n6.kapacitetsplanering.7"></p>
+      <p class="note" data-i18n="n6.kapacitetsplanering.8"></p>
     </div>
     <div class="panel">
       <div class="ctl">
-        <label>Modell <select id="cp-model"><option value="8">8B (Llama-3-8B)</option><option value="70">70B (Llama-3-70B)</option></select></label>
-        <label>Vikter <select id="cp-prec"><option value="2">bf16</option><option value="1">fp8</option><option value="0.56">int4</option></select></label>
+        <label>Modell <select id="cp-model"><option value="8" data-i18n="n6.kapacitetsplanering.9"></option><option value="70" data-i18n="n6.kapacitetsplanering.10"></option></select></label>
+        <label>Vikter <select id="cp-prec"><option value="2" data-i18n="n6.kapacitetsplanering.11"></option><option value="1" data-i18n="n6.kapacitetsplanering.12"></option><option value="0.56" data-i18n="n6.kapacitetsplanering.13"></option></select></label>
         <label>GPU:er (TP) <select id="cp-gpus"><option>1</option><option>2</option><option>4</option></select></label>
       </div>
       <div class="ctl">

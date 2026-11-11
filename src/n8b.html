@@ -1,27 +1,27 @@
 <section class="slide" data-title="vLLM i klartext"><div class="si">
-  <h2>vLLM i klartext</h2>
-  <p class="plain">Modellen själv kan bara räkna ut nästa ord för en text. vLLM är programmet runt modellen som tar emot frågor från många användare, delar upp grafikkortets minne mellan dem och ser till att kortet alltid har så mycket nyttigt arbete som möjligt. Tänk på en restaurang med ett enda, mycket snabbt kök.</p>
+  <h2 data-i18n="n8b.vllm-i-klartext.1"></h2>
+  <p class="plain" data-i18n="n8b.vllm-i-klartext.2"></p>
   <div class="cols even">
     <div class="scroll-x"><table class="t">
-      <tr><th>I restaurangen</th><th>I vLLM</th><th>Mer om det</th></tr>
-      <tr><td>Gästerna och deras beställningar</td><td>Användare och deras frågor (requests)</td><td>livscykel</td></tr>
-      <tr><td>Hovmästaren som bestämmer vem som får bord</td><td>Schedulern</td><td>livscykel, batching</td></tr>
-      <tr><td>Borden, uppdelade i små platser</td><td>KV-minnet, uppdelat i block om 16 tokens</td><td>PagedAttention</td></tr>
-      <tr><td>Kocken som lagar en tugga åt alla bord i taget</td><td>Grafikkortet som kör ett steg för hela batchen</td><td>model runner</td></tr>
-      <tr><td>Ett nytt bord dukas så fort någon går</td><td>Continuous batching</td><td>continuous batching</td></tr>
-      <tr><td>Sällskap med samma förrätt delar på den</td><td>Prefix caching</td><td>prefix caching</td></tr>
-      <tr><td>En jättebeställning lagas i omgångar</td><td>Chunked prefill</td><td>chunked prefill</td></tr>
-      <tr><td>Fler kök som delar på jobbet</td><td>Parallellism över flera grafikkort</td><td>tensor parallelism</td></tr>
+      <tr><th data-i18n="n8b.vllm-i-klartext.3"></th><th data-i18n="n8b.vllm-i-klartext.4"></th><th data-i18n="n8b.vllm-i-klartext.5"></th></tr>
+      <tr><td data-i18n="n8b.vllm-i-klartext.6"></td><td data-i18n="n8b.vllm-i-klartext.7"></td><td data-i18n="n8b.vllm-i-klartext.8"></td></tr>
+      <tr><td data-i18n="n8b.vllm-i-klartext.9"></td><td data-i18n="n8b.vllm-i-klartext.10"></td><td data-i18n="n8b.vllm-i-klartext.11"></td></tr>
+      <tr><td data-i18n="n8b.vllm-i-klartext.12"></td><td data-i18n="n8b.vllm-i-klartext.13"></td><td data-i18n="n8b.vllm-i-klartext.14"></td></tr>
+      <tr><td data-i18n="n8b.vllm-i-klartext.15"></td><td data-i18n="n8b.vllm-i-klartext.16"></td><td data-i18n="n8b.vllm-i-klartext.17"></td></tr>
+      <tr><td data-i18n="n8b.vllm-i-klartext.18"></td><td data-i18n="n8b.vllm-i-klartext.19"></td><td data-i18n="n8b.vllm-i-klartext.20"></td></tr>
+      <tr><td data-i18n="n8b.vllm-i-klartext.21"></td><td data-i18n="n8b.vllm-i-klartext.22"></td><td data-i18n="n8b.vllm-i-klartext.23"></td></tr>
+      <tr><td data-i18n="n8b.vllm-i-klartext.24"></td><td data-i18n="n8b.vllm-i-klartext.25"></td><td data-i18n="n8b.vllm-i-klartext.26"></td></tr>
+      <tr><td data-i18n="n8b.vllm-i-klartext.27"></td><td data-i18n="n8b.vllm-i-klartext.28"></td><td data-i18n="n8b.vllm-i-klartext.29"></td></tr>
     </table></div>
     <div>
-      <h3 style="margin-top:0">Tre saker vLLM gör bättre än en enkel lösning</h3>
+      <h3 style="margin-top:0" data-i18n="n8b.vllm-i-klartext.30"></h3>
       <ol>
-        <li><b>Inget minne står reserverat i onödan.</b> Varje konversation får nya minnesblock först när den behöver dem.</li>
-        <li><b>Kortet står aldrig och väntar på att en grupp ska bli klar.</b> Varje steg fylls med de frågor som finns just då.</li>
-        <li><b>Samma arbete görs inte två gånger.</b> Gemensamma början av frågor räknas en gång och delas.</li>
+        <li data-i18n="n8b.vllm-i-klartext.31"></li>
+        <li data-i18n="n8b.vllm-i-klartext.32"></li>
+        <li data-i18n="n8b.vllm-i-klartext.33"></li>
       </ol>
-      <p>Allt det här finns för att grafikkortet, som vi såg, mest väntar på minnet. Ju fler användare som delar på varje viktläsning, desto mer svar per sekund.</p>
-      <p class="note">Liknelsen haltar på en punkt: kocken lagar inte en hel rätt åt gången utan exakt en tugga per bord och varv. Det motsvarar en token per konversation och steg.</p>
+      <p data-i18n="n8b.vllm-i-klartext.34"></p>
+      <p class="note" data-i18n="n8b.vllm-i-klartext.35"></p>
     </div>
   </div>
 </div></section>

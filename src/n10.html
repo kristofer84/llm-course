@@ -1,62 +1,62 @@
 <section class="slide" data-title="Vanliga missförstånd"><div class="si">
-  <h2>Vanliga missförstånd</h2>
-  <p class="lead">Åtta påståenden som låter rimliga. Fundera på vad som är fel innan du öppnar.</p>
+  <h2 data-i18n="n10.vanliga-missforstand.1"></h2>
+  <p class="lead" data-i18n="n10.vanliga-missforstand.2"></p>
   <div class="tworow">
-    <details class="q"><summary>”En fråga aktiverar bara en del av vikterna.”</summary><p>I en tät modell används alla vikter för varje token. Det som varierar är aktiveringarna. Bara i MoE väljs delar av vikterna, och då per token och lager, inte per fråga.</p></details>
-    <details class="q"><summary>”Modellen minns vår konversation.”</summary><p>Vikterna ändras aldrig av att du chattar. Hela konversationen skickas in på nytt varje gång. KV-cache och prefix caching gör bara att det inte behöver räknas om.</p></details>
-    <details class="q"><summary>”KV-cachen är en approximation som byter kvalitet mot fart.”</summary><p>Den är exakt. Causal mask garanterar att gamla positioners K och V inte påverkas av nya tokens.</p></details>
-    <details class="q"><summary>”Temperature 0 ger alltid samma svar.”</summary><p>Greedy tar bort slumpen i samplingen, men flyttalsordningen kan skilja mellan batchar och vända en jämn argmax.</p></details>
-    <details class="q"><summary>”Experterna i en MoE-modell är ämnesexperter.”</summary><p>Uppdelningen lärs in och blir mest syntaktisk. Ingen expert är ”biologi”. Varje lager har dessutom sina egna experter.</p></details>
-    <details class="q"><summary>”En resonerande modell har en annan arkitektur.”</summary><p>Samma transformer. Den är tränad att skriva ut ett resonemang först, vilket kostar fler decode-steg.</p></details>
-    <details class="q"><summary>”En större batch gör varje steg proportionellt långsammare.”</summary><p>Decode är memory-bound. Vikterna läses en gång per steg oavsett batch, så genomströmningen ökar nästan linjärt en bra bit.</p></details>
-    <details class="q"><summary>”nvidia-smi visar 90 % minne, servern är nästan full.”</summary><p>vLLM allokerar hela KV-poolen vid start. Titta på vllm:kv_cache_usage_perc för att se hur mycket som faktiskt används.</p></details>
+    <details class="q"><summary data-i18n="n10.vanliga-missforstand.3"></summary><p data-i18n="n10.vanliga-missforstand.4"></p></details>
+    <details class="q"><summary data-i18n="n10.vanliga-missforstand.5"></summary><p data-i18n="n10.vanliga-missforstand.6"></p></details>
+    <details class="q"><summary data-i18n="n10.vanliga-missforstand.7"></summary><p data-i18n="n10.vanliga-missforstand.8"></p></details>
+    <details class="q"><summary data-i18n="n10.vanliga-missforstand.9"></summary><p data-i18n="n10.vanliga-missforstand.10"></p></details>
+    <details class="q"><summary data-i18n="n10.vanliga-missforstand.11"></summary><p data-i18n="n10.vanliga-missforstand.12"></p></details>
+    <details class="q"><summary data-i18n="n10.vanliga-missforstand.13"></summary><p data-i18n="n10.vanliga-missforstand.14"></p></details>
+    <details class="q"><summary data-i18n="n10.vanliga-missforstand.15"></summary><p data-i18n="n10.vanliga-missforstand.16"></p></details>
+    <details class="q"><summary data-i18n="n10.vanliga-missforstand.17"></summary><p data-i18n="n10.vanliga-missforstand.18"></p></details>
   </div>
 </div></section>
 
 <section class="slide" data-title="Fusklapp"><div class="si">
-  <h2>Fusklapp: formler, shapes och siffror</h2>
+  <h2 data-i18n="n10.fusklapp.1"></h2>
   <div class="cols even">
     <div class="scroll-x"><table class="t">
-      <tr><th>Steg</th><th>Formel</th><th>Shape (Llama-3-8B)</th></tr>
-      <tr><td>Embedding</td><td class="n">x = E[ids]</td><td class="n">[T, 4096]</td></tr>
-      <tr><td>RMSNorm</td><td class="n">x / rms(x) ⊙ g</td><td class="n">[T, 4096]</td></tr>
-      <tr><td>Q</td><td class="n">h @ Wq</td><td class="n">[32, T, 128]</td></tr>
-      <tr><td>K, V</td><td class="n">h @ Wk, h @ Wv</td><td class="n">[8, T, 128]</td></tr>
-      <tr><td>Scores</td><td class="n">Q Kᵀ / √128 + mask</td><td class="n">[32, T, ctx]</td></tr>
-      <tr><td>Attention ut</td><td class="n">softmax(S) V @ Wo</td><td class="n">[T, 4096]</td></tr>
-      <tr><td>MLP</td><td class="n">(SiLU(h@Wg) ⊙ h@Wu) @ Wd</td><td class="n">[T, 14336] → [T, 4096]</td></tr>
-      <tr><td>Residual</td><td class="n">x = x + bidrag</td><td class="n">[T, 4096]</td></tr>
-      <tr><td>Logits</td><td class="n">RMSNorm(x[-1]) @ W_U</td><td class="n">[128256]</td></tr>
-      <tr><td>Sampling</td><td class="n">softmax(z / temp), top-k, top-p</td><td class="n">ett id</td></tr>
-      <tr><td>KV per token</td><td class="n">2 · L · n_kv · d_h · byte</td><td class="n">128 KiB</td></tr>
-      <tr><td>Slot</td><td class="n">table[pos // 16] · 16 + pos % 16</td><td class="n">heltal</td></tr>
-      <tr><td>Ablation</td><td class="n">x − (x · r̂) r̂</td><td class="n">[4096]</td></tr>
+      <tr><th data-i18n="n10.fusklapp.2"></th><th data-i18n="n10.fusklapp.3"></th><th data-i18n="n10.fusklapp.4"></th></tr>
+      <tr><td data-i18n="n10.fusklapp.5"></td><td class="n" data-i18n="n10.fusklapp.6"></td><td class="n" data-i18n="n10.fusklapp.7"></td></tr>
+      <tr><td data-i18n="n10.fusklapp.8"></td><td class="n" data-i18n="n10.fusklapp.9"></td><td class="n" data-i18n="n10.fusklapp.10"></td></tr>
+      <tr><td data-i18n="n10.fusklapp.11"></td><td class="n" data-i18n="n10.fusklapp.12"></td><td class="n" data-i18n="n10.fusklapp.13"></td></tr>
+      <tr><td data-i18n="n10.fusklapp.14"></td><td class="n" data-i18n="n10.fusklapp.15"></td><td class="n" data-i18n="n10.fusklapp.16"></td></tr>
+      <tr><td data-i18n="n10.fusklapp.17"></td><td class="n" data-i18n="n10.fusklapp.18"></td><td class="n" data-i18n="n10.fusklapp.19"></td></tr>
+      <tr><td data-i18n="n10.fusklapp.20"></td><td class="n" data-i18n="n10.fusklapp.21"></td><td class="n" data-i18n="n10.fusklapp.22"></td></tr>
+      <tr><td data-i18n="n10.fusklapp.23"></td><td class="n" data-i18n="n10.fusklapp.24"></td><td class="n" data-i18n="n10.fusklapp.25"></td></tr>
+      <tr><td data-i18n="n10.fusklapp.26"></td><td class="n" data-i18n="n10.fusklapp.27"></td><td class="n" data-i18n="n10.fusklapp.28"></td></tr>
+      <tr><td data-i18n="n10.fusklapp.29"></td><td class="n" data-i18n="n10.fusklapp.30"></td><td class="n">[128256]</td></tr>
+      <tr><td data-i18n="n10.fusklapp.31"></td><td class="n" data-i18n="n10.fusklapp.32"></td><td class="n" data-i18n="n10.fusklapp.33"></td></tr>
+      <tr><td data-i18n="n10.fusklapp.34"></td><td class="n" data-i18n="n10.fusklapp.35"></td><td class="n" data-i18n="n10.fusklapp.36"></td></tr>
+      <tr><td data-i18n="n10.fusklapp.37"></td><td class="n" data-i18n="n10.fusklapp.38"></td><td class="n" data-i18n="n10.fusklapp.39"></td></tr>
+      <tr><td data-i18n="n10.fusklapp.40"></td><td class="n" data-i18n="n10.fusklapp.41"></td><td class="n">[4096]</td></tr>
     </table></div>
     <div>
       <table class="t">
-        <tr><th>Siffror att minnas (Llama-3-8B, bf16)</th><th></th></tr>
-        <tr><td>Parametrar</td><td class="n">8,03 B</td></tr>
-        <tr><td>Vikter i minnet</td><td class="n">≈ 16 GB</td></tr>
-        <tr><td>Andel i MLP</td><td class="n">≈ 70 %</td></tr>
-        <tr><td>KV-cache per token</td><td class="n">128 KiB</td></tr>
-        <tr><td>KV-cache för 8 000 tokens</td><td class="n">≈ 1 GB</td></tr>
-        <tr><td>Beräkning per token</td><td class="n">≈ 16 GFLOP</td></tr>
-        <tr><td>Bytes lästa per decode-steg</td><td class="n">≈ 16 GB + KV</td></tr>
-        <tr><td>KV-block i vLLM</td><td class="n">16 tokens</td></tr>
-        <tr><td>All-reduce per lager vid TP</td><td class="n">2</td></tr>
+        <tr><th data-i18n="n10.fusklapp.42"></th><th></th></tr>
+        <tr><td data-i18n="n10.fusklapp.43"></td><td class="n" data-i18n="n10.fusklapp.44"></td></tr>
+        <tr><td data-i18n="n10.fusklapp.45"></td><td class="n" data-i18n="n10.fusklapp.46"></td></tr>
+        <tr><td data-i18n="n10.fusklapp.47"></td><td class="n">≈ 70 %</td></tr>
+        <tr><td data-i18n="n10.fusklapp.48"></td><td class="n" data-i18n="n10.fusklapp.49"></td></tr>
+        <tr><td data-i18n="n10.fusklapp.50"></td><td class="n" data-i18n="n10.fusklapp.51"></td></tr>
+        <tr><td data-i18n="n10.fusklapp.52"></td><td class="n" data-i18n="n10.fusklapp.53"></td></tr>
+        <tr><td data-i18n="n10.fusklapp.54"></td><td class="n" data-i18n="n10.fusklapp.55"></td></tr>
+        <tr><td data-i18n="n10.fusklapp.56"></td><td class="n" data-i18n="n10.fusklapp.57"></td></tr>
+        <tr><td data-i18n="n10.fusklapp.58"></td><td class="n">2</td></tr>
       </table>
-      <h3>Tre tumregler</h3>
+      <h3 data-i18n="n10.fusklapp.59"></h3>
       <ul>
-        <li>Prefill är compute-bound, decode är memory-bound.</li>
-        <li>Vikterna avgör om modellen får plats. KV-cachen avgör hur många användare som får plats.</li>
-        <li>Allt som delas av många (vikter, prefix) ska läsas eller räknas en gång. Det är vad en inference-motor gör.</li>
+        <li data-i18n="n10.fusklapp.60"></li>
+        <li data-i18n="n10.fusklapp.61"></li>
+        <li data-i18n="n10.fusklapp.62"></li>
       </ul>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-title="Slutprov"><div class="si">
-  <h2>Slutprov</h2>
-  <p class="lead">Tolv frågor över hela kursen. Förklaringen visas direkt efter varje svar.</p>
+  <h2 data-i18n="n10.slutprov.1"></h2>
+  <p class="lead" data-i18n="n10.slutprov.2"></p>
   <div class="quiz" data-quiz="final"></div>
 </div></section>

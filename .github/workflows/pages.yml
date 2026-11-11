@@ -40,11 +40,11 @@ jobs:
       - name: Click through every slide and visualisation
         run: python3 tests/test.py
 
-      - name: Extract translation source strings
-        run: python3 tools/extract_i18n.py
-
       - name: Check translation coverage, markup and code blocks
         run: python3 tools/check_i18n.py
+
+      - name: Translation state (English behind Swedish?)
+        run: python3 tools/content.py status
 
       - name: Both languages render (no Swedish left in English mode)
         run: python3 tests/i18n.py
