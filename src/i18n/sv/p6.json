@@ -91,7 +91,7 @@
  "p6.attention-sinks-och-lokal.2": "Full attention tittar på alla tidigare positioner. Det gör prefill kvadratisk i T och låter KV-cachen växa linjärt med kontexten — 128 KiB per token i Llama-3-8B.",
  "p6.attention-sinks-och-lokal.3": "Många nyare modeller blandar i stället: de flesta lager har ett fönster, några få är globala. Kvaliteten blir nästan densamma till en bråkdel av cachen.",
  "p6.attention-sinks-och-lokal.4": "Llama-3-8B, alla lager globala    128 KiB/token\n28 lager i fönster 4 096          112 KiB × min(T, 4 096)\n4 globala lager                    16 KiB/token",
- "p6.attention-sinks-och-lokal.5": "Räkna på det: vid 32 000 tokens kostar Llama-3 cirka 4 GiB per sekvens, medan en modell med 4 globala lager och fönster 4 096 klarar sig på ungefär 1,9 GiB — och prefill slipper räkna 32 000² positioner i 28 av lagren.",
+ "p6.attention-sinks-och-lokal.5": "Räkna på det: vid 32 000 tokens kostar Llama-3 cirka 4 GiB per sekvens, medan en modell med 4 globala lager och fönster 4 096 klarar sig på ungefär 0,9 GiB — och prefill slipper räkna 32 000² positioner i 28 av lagren.",
  "p6.attention-sinks-och-lokal.6": "Tre varianter man möter i praktiken:",
  "p6.attention-sinks-och-lokal.7": "Lokalt fönster: varje token ser bara de senaste w tokens (Mistral, 4 096).",
  "p6.attention-sinks-och-lokal.8": "Blandat lokal/global: de flesta lager lokala, några få globala (Gemma 2 och 3, gpt-oss).",

@@ -99,7 +99,7 @@
  "n8.disaggregerad-prefill-och-decode.19": "Mellanlagret kostar också: en request väntar på att hela KV-cachen är framme innan decode börjar. Är kontexten lång och länken långsam försvinner vinsten.",
  "n8.multi-lora-manga-modeller-pa.1": "Multi-LoRA: många modeller på en GPU",
  "n8.multi-lora-manga-modeller-pa.2": "En LoRA-adapter är två små matriser per vikt: B [d, r] och A [r, d] med rang r, typiskt 8–64. Basmodellen ligger orörd och delas av alla adaptrar.",
- "n8.multi-lora-manga-modeller-pa.3": "y = x W + (α/r) · x A B\nBasmodell 8B i bf16     16 GB (delas)\nAdapter r = 16         ~90 MB\n32 adaptrar            ~2,9 GB",
+ "n8.multi-lora-manga-modeller-pa.3": "y = x W + (α/r) · x A B\nBasmodell 8B i bf16     16 GB (delas)\nAdapter r = 16         ~84 MB\n32 adaptrar            ~2,7 GB",
  "n8.multi-lora-manga-modeller-pa.4": "vLLM kör många adaptrar mot samma basmodell samtidigt. Requests med olika adaptrar hamnar i samma batch, och kernels applicerar rätt adapter per request — en GPU kan alltså betjäna många kunder som var och en har sin egen finjusterade variant.",
  "n8.multi-lora-manga-modeller-pa.5": "Priset är litet extra arbete per token när många adaptrar blandas i samma batch, och att kvaliteten aldrig blir bättre än basmodellens. Adaptern ändrar beteende och stil, inte kunskaper.",
  "n8.multi-lora-manga-modeller-pa.6": "Så startar man det:",

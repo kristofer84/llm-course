@@ -91,7 +91,7 @@
  "p6.attention-sinks-och-lokal.2": "Full attention looks at every earlier position. That makes prefill quadratic in T and lets the KV cache grow linearly with the context — 128 KiB per token in Llama-3-8B.",
  "p6.attention-sinks-och-lokal.3": "Many newer models mix instead: most layers have a window, a few are global. Quality ends up nearly the same for a fraction of the cache.",
  "p6.attention-sinks-och-lokal.4": "Llama-3-8B, all layers global     128 KiB/token\n28 layers in a 4,096 window       112 KiB × min(T, 4,096)\n4 global layers                    16 KiB/token",
- "p6.attention-sinks-och-lokal.5": "Do the arithmetic: at 32,000 tokens Llama-3 costs about 4 GiB per sequence, while a model with 4 global layers and a 4,096 window gets by on roughly 1.9 GiB — and prefill skips the 32,000² positions in 28 of the layers.",
+ "p6.attention-sinks-och-lokal.5": "Do the arithmetic: at 32,000 tokens Llama-3 costs about 4 GiB per sequence, while a model with 4 global layers and a 4,096 window gets by on roughly 0.9 GiB — and prefill skips the 32,000² positions in 28 of the layers.",
  "p6.attention-sinks-och-lokal.6": "Three variants you meet in practice:",
  "p6.attention-sinks-och-lokal.7": "Local window: every token only sees the last w tokens (Mistral, 4,096).",
  "p6.attention-sinks-och-lokal.8": "Mixed local/global: most layers local, a few global (Gemma 2 and 3, gpt-oss).",
