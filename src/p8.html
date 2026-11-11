@@ -1,0 +1,89 @@
+<!-- ============ MODUL 8 ============ -->
+<section class="slide" data-mod="8" data-title="Riktningar i residual stream"><div class="si">
+  <h2>Riktningar i residual stream</h2>
+  <div class="cols">
+    <div>
+      <p>En vanlig och väl underbyggd hypotes är att modellen representerar begrepp som <b>riktningar</b> i residual stream: ”det här är kod”, ”det här är ett nekande”, ”nu upprepar jag mig”.</p>
+      <p>Man hittar en sådan riktning genom att köra två grupper av exempel, med och utan egenskapen, och ta skillnaden mellan medelvärdena av aktiveringarna i ett lager:</p>
+      <div class="eq">r = mean(x | med) − mean(x | utan)     [4096]
+r̂ = r / ‖r‖
+mått: x · r̂                             skalär per token</div>
+      <p>En <b>linear probe</b> är samma idé tränad som en klassificerare: om en linjär gräns skiljer grupperna åt finns informationen linjärt i strömmen.</p>
+    </div>
+    <div class="panel"><svg class="viz" id="dir-svg" viewBox="0 0 520 340" role="img" aria-label="Två grupper av punkter separerade längs riktningen r"></svg>
+    <p class="note">2D-projektion av ett 4096-dimensionellt rum. Punkterna är påhittade.</p></div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="8" data-title="Steering och ablation"><div class="si">
+  <h2>Steering och ablation</h2>
+  <div class="cols">
+    <div>
+      <p>När riktningen är hittad kan man ingripa i strömmen under körning, med en hook i valda lager:</p>
+      <div class="eq">steering:  x ← x + α · r̂
+ablation:  x ← x − (x · r̂) r̂</div>
+      <p><b>Steering</b> knuffar modellen mot eller bort från begreppet.</p>
+      <p><b>Ablation</b> tar bort komponenten längs r̂ helt. Allt annat i vektorn lämnas orört, men just den signalen kan inte läsas av senare lager.</p>
+      <p>Dra i reglagen och se vad som händer med x och dess projektion på r̂.</p>
+    </div>
+    <div class="panel">
+      <div class="ctl">
+        <label>x:s vinkel <input type="range" id="st-ang" min="0" max="180" value="35"></label>
+        <label>α <input type="range" id="st-a" min="-2" max="2" step="0.1" value="0.6"><span class="mk" id="st-av">0.0</span></label>
+        <button class="btn" id="st-abl">Ablation av</button>
+      </div>
+      <svg class="viz" id="st-svg" viewBox="0 0 520 320" role="img" aria-label="Vektor x, riktning r och resultatet efter steering eller ablation"></svg>
+      <div class="out" id="st-out"></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="8" data-title="Från hook till vikter: Astra"><div class="si">
+  <h2>Från hook till vikter: tillbaka till Astra</h2>
+  <div class="cols even">
+    <div>
+      <p>Ablation via hook kräver extra kod vid inference. Men samma effekt kan bakas in i vikterna. Alla matriser som <i>skriver</i> till strömmen, alltså o_proj och down i varje lager (och embedding), kan projiceras så att de aldrig kan skriva längs r̂:</p>
+      <div class="eq">P     = I − r̂ r̂ᵀ           [4096, 4096]
+W_o   ← W_o · P               [4096, 4096]
+W_down ← W_down · P           [14336, 4096]</div>
+      <p>Med vår konvention [d_in, d_out] multipliceras projektionen in från höger, på utdatasidan. Shapes ändras inte, så den modifierade modellen kan köras i vLLM som vilken modell som helst.</p>
+    </div>
+    <div>
+      <p>Astra-experimentet följde troligen det här mönstret: jämför aktiveringar på svar som loopar och svar som inte gör det, hitta en riktning som växer innan upprepningen börjar, och undertryck den i de lager där den är starkast.</p>
+      <p>Artikeln namnger inte den exakta tekniken. Det här är den etablerade metoden som passar beskrivningen, känd från arbete om att ta bort en modells ”refusal direction”.</p>
+      <p>Nu kan du läsa en sådan beskrivning och se precis vilka tensorer som rörs: en vektor <span class="sh a">r̂ [4096]</span>, några <span class="sh w">[·, 4096]</span>-matriser per lager, och inget annat.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="8" data-title="Vidare härifrån"><div class="si">
+  <h2>Vidare härifrån</h2>
+  <div class="cols even">
+    <div>
+      <h3 style="margin-top:0">Läs koden</h3>
+      <ul>
+        <li><span class="mk">vllm/model_executor/models/llama.py</span>: hela modellen med fused qkv och gate_up. Jämför med koden i modul 3.</li>
+        <li><span class="mk">vllm/v1/engine/core.py</span>: EngineCore och dess step(). <span class="mk">async_llm.py</span> i samma katalog är frontend-sidan.</li>
+        <li>Schedulern och KV cache manager under <span class="mk">vllm/v1/core/</span>.</li>
+        <li>Attention-backends under <span class="mk">vllm/v1/attention/</span>: där syns block tables och slot mapping.</li>
+      </ul>
+      <p class="note">Sökvägarna gäller vLLM:s V1-motor och kan flytta mellan versioner.</p>
+      <h3>Experimentera</h3>
+      <ul>
+        <li>Starta en liten modell, till exempel Qwen2.5-0.5B-Instruct, och läs startloggen: KV-cachens storlek i tokens och max samtidighet.</li>
+        <li>Mät TTFT och ITL med olika <span class="mk">--max-num-seqs</span> och se kurvan från modul 6.</li>
+        <li>Skicka samma långa systemprompt två gånger och jämför TTFT med och utan prefix caching.</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="margin-top:0">Bygg själv</h3>
+      <ul>
+        <li>Skriv en forward pass för en liten Llama i ren PyTorch och kontrollera varje shape mot spårningen i modul 3.</li>
+        <li>Lägg till en KV-cache och jämför hastigheten med och utan.</li>
+        <li>Plocka ut residual stream med en hook, beräkna en skillnadsriktning mellan två promptgrupper och testa ablation.</li>
+      </ul>
+      <h3>Sammanfattning i en mening</h3>
+      <p>Tokens blir vektorer, vektorerna förfinas av 32 lager som adderar till en gemensam ström, sista vektorn blir en fördelning över nästa token, och en inference-motor handlar nästan helt om att hålla KV-cachen i minnet och läsa vikterna så få gånger som möjligt.</p>
+    </div>
+  </div>
+</div></section>

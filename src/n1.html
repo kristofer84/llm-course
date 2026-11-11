@@ -1,0 +1,117 @@
+<section class="slide" data-title="Vektorer och skalärprodukt"><div class="si">
+  <h2>Vektorer och skalärprodukt</h2>
+  <div class="cols">
+    <div>
+      <p>En <b>vektor</b> är en lista med tal. I modellen är varje token en vektor med 4096 tal, och en sådan vektor kan ses som en pil i ett rum med 4096 dimensioner.</p>
+      <p><b>Skalärprodukten</b> multiplicerar två vektorer tal för tal och summerar:</p>
+      <div class="eq">a · b = a₁b₁ + a₂b₂ + … + a_d·b_d
+      = |a| · |b| · cos θ</div>
+      <p>Resultatet är ett enda tal som mäter hur mycket vektorerna pekar åt samma håll, skalat med deras längder.</p>
+      <p>Nästan allt i modellen är skalärprodukter:</p>
+      <ul>
+        <li>attention-scores: query · key</li>
+        <li>logits: slutvektorn · en tokens rad i LM head</li>
+        <li>varje utvärde i en matrismultiplikation</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="ctl">
+        <label>a:s vinkel <input type="range" id="dp-a" min="0" max="360" value="25"></label>
+        <label>b:s vinkel <input type="range" id="dp-b" min="0" max="360" value="80"></label>
+        <label>b:s längd <input type="range" id="dp-l" min="0.3" max="1.6" step="0.1" value="1"></label>
+      </div>
+      <svg class="viz" id="dp-svg" viewBox="0 0 520 320" role="img" aria-label="Två vektorer och projektionen av b på a"></svg>
+      <div class="out" id="dp-out" aria-live="polite"></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="Matris gånger vektor"><div class="si">
+  <h2>Matris gånger vektor</h2>
+  <div class="cols">
+    <div>
+      <p>En viktmatris <span class="sh w">W [d_in, d_out]</span> gör om en vektor med d_in tal till en med d_out tal. Varje utvärde är skalärprodukten mellan indatavektorn och en <b>kolumn</b> i W:</p>
+      <div class="eq">y = x @ W
+y[j] = x · W[:, j]
+[d_in] @ [d_in, d_out] → [d_out]</div>
+      <p>Varje kolumn fungerar som en detektor: utvärdet blir stort när x liknar kolumnens mönster.</p>
+      <p>Med flera rader, <span class="sh a">X [T, d_in]</span>, händer samma sak för varje rad oberoende av de andra:</p>
+      <div class="eq">[T, d_in] @ [d_in, d_out] → [T, d_out]</div>
+      <p>Det är därför 7 tokens kan bearbetas på en gång: 7 rader mot samma W.</p>
+    </div>
+    <div class="panel">
+      <div class="ctl"><button class="btn" id="mv-rand">Ny indatavektor</button></div>
+      <svg class="viz" id="mv-svg" viewBox="0 0 520 330" role="img" aria-label="Vektor gånger matris, klicka på ett utvärde för att se vilken kolumn som används"></svg>
+      <div class="out" id="mv-out" aria-live="polite">Klicka på en ruta i y.</div>
+      <div class="legend"><span><i style="background:var(--w)"></i>positiv vikt</span><span><i style="background:var(--neg)"></i>negativ vikt</span><span><i style="background:var(--a)"></i>aktivering</span></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="Varför icke-linjäritet?"><div class="si">
+  <h2>Varför icke-linjäritet?</h2>
+  <div class="cols">
+    <div>
+      <p>Två matriser efter varandra är bara en matris till:</p>
+      <div class="eq">(x @ W₁) @ W₂ = x @ (W₁ W₂)</div>
+      <p>Hundra lager utan något emellan vore alltså inte mäktigare än ett enda. Modellen skulle bara kunna rita räta linjer.</p>
+      <p>En <b>aktiveringsfunktion</b> mellan matriserna bryter det. ReLU är den enklaste:</p>
+      <div class="eq">ReLU(z) = max(0, z)</div>
+      <p>Negativa värden blir 0, positiva släpps igenom. Varje neuron blir en detektor som antingen är av eller ger utslag. Summan av många sådana knäckar kan forma vilken kurva som helst.</p>
+      <p>Llama använder SiLU, en mjukare variant, men idén är densamma. Softmax i attention är modellens andra icke-linjäritet.</p>
+    </div>
+    <div class="panel">
+      <div class="ctl">
+        <label>Neuroner <input type="range" id="nl-n" min="1" max="12" value="3"><span class="mk" id="nl-nv">3</span></label>
+        <button class="btn on" id="nl-relu">Med ReLU</button><button class="btn" id="nl-lin">Utan</button>
+      </div>
+      <svg class="viz" id="nl-svg" viewBox="0 0 520 280" role="img" aria-label="En kurva approximeras av en summa ReLU-neuroner"></svg>
+      <div class="out" id="nl-out" aria-live="polite"></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="Softmax"><div class="si">
+  <h2>Softmax: från tal till sannolikheter</h2>
+  <div class="cols">
+    <div>
+      <p>Modellen producerar godtyckliga tal (logits). Softmax gör om dem till positiva tal som summerar till 1:</p>
+      <div class="eq">pᵢ = exp(zᵢ) / Σⱼ exp(zⱼ)</div>
+      <ul>
+        <li>Exponentialen gör alla värden positiva och förstorar skillnader: en logit som är 2 högre får ungefär 7 gånger så hög sannolikhet.</li>
+        <li>Bara <b>skillnaderna</b> mellan logits spelar roll. Lägg till 100 på alla och inget ändras.</li>
+        <li>Skala alla logits med en faktor, så blir fördelningen skarpare eller plattare. Det är precis vad temperature gör.</li>
+      </ul>
+      <p>Softmax används på två ställen: i attention (vilka positioner ska jag lyssna på?) och i slutet (vilken token kommer härnäst?).</p>
+    </div>
+    <div class="panel">
+      <div class="ctl" id="sm-ctl"></div>
+      <div class="ctl"><label>Lägg till på alla <input type="range" id="sm-c" min="-5" max="5" step="0.5" value="0"><span class="mk" id="sm-cv">0</span></label>
+      <label>Skala alla <input type="range" id="sm-s" min="0.2" max="3" step="0.1" value="1"><span class="mk" id="sm-sv">1.0</span></label></div>
+      <svg class="viz" id="sm-svg" viewBox="0 0 520 220" role="img" aria-label="Logits och motsvarande sannolikheter"></svg>
+      <div class="out" id="sm-out" aria-live="polite"></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="Vikter och aktiveringar"><div class="si">
+  <h2>Vikter och aktiveringar</h2>
+  <div class="cols">
+    <div>
+      <p>Den viktigaste distinktionen i hela kursen:</p>
+      <ul>
+        <li><b>Vikter</b> är modellens inlärda tal. De ligger fast i GPU-minnet och är desamma för alla frågor. De är programmet.</li>
+        <li><b>Aktiveringar</b> är mellanvärdena som räknas fram när en token passerar. De är tillståndet medan programmet körs.</li>
+      </ul>
+      <p>I en tät modell multipliceras <b>alla</b> vikter för varje token. Det går alltså inte att se ”vilka vikter som aktiverades” av en fråga. Det som skiljer en fråga från en annan är aktiveringarna, och det är dem man studerar när man vill förstå vad modellen gör.</p>
+      <p>I en MoE-modell väljer en router några experter per token. Där kan man faktiskt se vilka viktblock som användes.</p>
+      <p>Byt token och modelltyp till höger.</p>
+    </div>
+    <div class="panel">
+      <div class="ctl"><button class="btn on" id="wa-dense">Tät</button><button class="btn" id="wa-moe">MoE</button><span style="width:10px"></span>
+        <button class="btn on" data-wat="0">katt</button><button class="btn" data-wat="1">skatt</button><button class="btn" data-wat="2">7×8</button></div>
+      <svg class="viz" id="wa-svg" viewBox="0 0 560 330" role="img" aria-label="Vikter som står still och aktiveringar som ändras per token"></svg>
+      <div class="out" id="wa-out" aria-live="polite"></div>
+    </div>
+  </div>
+</div></section>

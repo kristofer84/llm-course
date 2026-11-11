@@ -1,0 +1,23 @@
+<section class="slide" data-title="Vad är en språkmodell?"><div class="si">
+  <h2>Vad är en språkmodell?</h2>
+  <p class="plain">En språkmodell gör en enda sak: den gissar vilket ord som kommer härnäst. Det är samma idé som ordförslagen i mobilen, bara enormt mycket större. Allt annat, att svara på frågor, skriva kod och resonera, byggs av att göra den gissningen om och om igen.</p>
+  <div class="cols even">
+    <div>
+      <h3 style="margin-top:0">Det viktigaste att veta från början</h3>
+      <ul>
+        <li><b>Den är gjord av tal.</b> En modell som Llama-3-8B består av ungefär 8 miljarder tal, kallade <i>vikter</i> eller <i>parametrar</i>. Tillsammans tar de 16 GB.</li>
+        <li><b>Talen är inlärda.</b> Modellen har läst enorma mängder text och justerat sina tal tills den blev bra på att gissa nästa ord. Ingen har skrivit in regler för hand.</li>
+        <li><b>Den slår inte upp svar.</b> Det finns ingen databas med fakta inuti, bara tal som räknas ihop. Kunskapen ligger utspridd i talen.</li>
+        <li><b>Den skriver ett ord i taget.</b> Varje nytt ord läggs till texten, och modellen körs igen för att gissa nästa.</li>
+      </ul>
+      <p>Prova till höger: välj själv nästa ord, eller låt ”modellen” välja det mest sannolika.</p>
+    </div>
+    <div class="panel">
+      <div class="chips" id="lm-text"></div>
+      <p style="margin:12px 0 6px;font-size:14px;color:var(--ink2)">Modellens gissningar för nästa ord:</p>
+      <div id="lm-opts"></div>
+      <div class="ctl" style="margin-top:12px"><button class="btn" id="lm-auto">Låt modellen välja</button><button class="btn" id="lm-reset">Börja om</button></div>
+      <p class="note">Sannolikheterna är påhittade för att visa idén. Resten av kursen förklarar hur en riktig modell räknar fram dem.</p>
+    </div>
+  </div>
+</div></section>

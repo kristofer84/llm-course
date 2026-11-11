@@ -1,0 +1,309 @@
+<!-- ============ MODUL 2 ============ -->
+<section class="slide" data-mod="2" data-title="Hela modellen i en bild"><div class="si">
+  <h2>Nu i en bild: hela modellen</h2>
+  <div class="cols wide">
+    <div>
+      <p>Bitarna från de senaste slidesen, ihop:</p>
+      <ol>
+        <li><b>Embedding</b> gör ids till vektorer: <span class="sh a">x [T, 4096]</span>.</li>
+        <li><b>Residual stream</b> är den lodräta orange linjen: x, som följer med hela vägen.</li>
+        <li><b>Ett block</b> (den streckade rutan) läser strömmen två gånger, via en normaliserad kopia, och adderar två bidrag. Först attention, sedan MLP.</li>
+        <li>Blocket <b>upprepas 32 gånger</b> med nya vikter. Shapen ändras aldrig.</li>
+        <li><b>Final RMSNorm</b> normaliserar strömmen en enda gång, och <b>LM head</b> gör den till ett tal per token i vokabulären.</li>
+      </ol>
+      <p>Resten av modulen öppnar den streckade rutan och går igenom varje del.</p>
+    </div>
+    <svg class="viz" viewBox="0 0 780 545" role="img" aria-label="Modellens uppbyggnad: embedding, 32 block med attention och MLP som adderar till residual stream, final norm och LM head">
+      <rect x="140" y="12" width="120" height="34" rx="6" class="bt"/><text x="200" y="34" text-anchor="middle" class="m">ids [T]</text>
+      <line x1="200" y1="46" x2="200" y2="70" class="ln" marker-end="url(#ah)"/>
+      <rect x="140" y="72" width="120" height="34" rx="6" class="bw"/><text x="200" y="94" text-anchor="middle">Embedding</text>
+      <line x1="200" y1="106" x2="200" y2="392" style="stroke:var(--a)" stroke-width="6" opacity=".45"/>
+      <rect x="100" y="136" width="560" height="236" rx="10" fill="none" style="stroke:var(--ink2)" stroke-dasharray="5 5"/>
+      <text x="650" y="158" text-anchor="end" class="s">× 32 lager</text>
+      <path d="M203 168 H288" class="ln" marker-end="url(#ah)"/>
+      <rect x="290" y="151" width="110" height="34" rx="6" class="box"/><text x="345" y="173" text-anchor="middle">RMSNorm</text>
+      <line x1="400" y1="168" x2="428" y2="168" class="ln" marker-end="url(#ah)"/>
+      <rect x="430" y="151" width="160" height="34" rx="6" class="bw"/><text x="510" y="173" text-anchor="middle">Attention</text>
+      <path d="M510 185 V236 H214" class="ln" marker-end="url(#ah)"/>
+      <circle cx="200" cy="236" r="12" class="box"/><text x="200" y="241" text-anchor="middle" class="b">+</text>
+      <path d="M203 272 H288" class="ln" marker-end="url(#ah)"/>
+      <rect x="290" y="255" width="110" height="34" rx="6" class="box"/><text x="345" y="277" text-anchor="middle">RMSNorm</text>
+      <line x1="400" y1="272" x2="428" y2="272" class="ln" marker-end="url(#ah)"/>
+      <rect x="430" y="255" width="160" height="34" rx="6" class="bw"/><text x="510" y="277" text-anchor="middle">MLP</text>
+      <path d="M510 289 V340 H214" class="ln" marker-end="url(#ah)"/>
+      <circle cx="200" cy="340" r="12" class="box"/><text x="200" y="345" text-anchor="middle" class="b">+</text>
+      <text x="212" y="210" class="m ta">x [T, 4096]</text>
+      <text x="510" y="208" class="s" text-anchor="middle">tokens utbyter information</text>
+      <text x="510" y="312" class="s" text-anchor="middle">varje token för sig</text>
+      <rect x="140" y="394" width="120" height="34" rx="6" class="box"/><text x="200" y="416" text-anchor="middle">Final RMSNorm</text>
+      <line x1="200" y1="428" x2="200" y2="452" class="ln" marker-end="url(#ah)"/>
+      <rect x="140" y="454" width="120" height="34" rx="6" class="bw"/><text x="200" y="476" text-anchor="middle">LM head</text>
+      <line x1="200" y1="488" x2="200" y2="510" class="ln" marker-end="url(#ah)"/>
+      <text x="200" y="530" text-anchor="middle" class="m ta">logits [T, 128256]</text>
+      <text x="290" y="416" class="m tw">[4096]</text>
+      <text x="290" y="476" class="m tw">[4096, 128256]</text>
+    </svg>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="2" data-title="Residual stream"><div class="si">
+  <h2>Residual stream: en gemensam arbetsyta</h2>
+  <div class="cols">
+    <div>
+      <p>Varje token har en vektor med 4096 tal som följer med genom hela modellen. Den kallas <b>residual stream</b>, och vi skriver den <span class="sh a">x</span>.</p>
+      <p>Tänk på den som ett anteckningsblock per token. Varje block i modellen <b>läser</b> blocket, räknar fram en kort anteckning och <b>lägger till</b> den. Ingen suddar ut det som redan står där.</p>
+      <div class="eq">x = embedding
+x = x + bidrag från block 1
+x = x + bidrag från block 2
+…</div>
+      <p>Namnet kommer från <i>residual connection</i>: varje block räknar bara fram en korrigering, en rest, som läggs ovanpå. Själva vägen rakt igenom, där x passerar oförändrad, finns alltid kvar.</p>
+      <p>Det ger tre fördelar: information från tidiga block finns kvar till slutet, träning av djupa modeller blir stabil, och strömmen blir den naturliga platsen att mäta och påverka modellen, som Astra gjorde.</p>
+    </div>
+    <div class="panel">
+      <div class="ctl"><button class="btn" id="res-next">Lägg till nästa bidrag</button><button class="btn" id="res-reset">Börja om</button></div>
+      <svg class="viz" id="res-svg" viewBox="0 0 560 260" role="img" aria-label="Åtta dimensioner av residual stream som ändras när bidrag adderas"></svg>
+      <div class="out" id="res-out"></div>
+      <p class="note">8 dimensioner i stället för 4096. Konturen visar det senaste bidraget.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="2" data-title="RMSNorm"><div class="si">
+  <h2>RMSNorm</h2>
+  <div class="cols">
+    <div>
+      <p>Normaliseringen skalar varje tokens vektor så att dess RMS blir 1, och multiplicerar sedan med en inlärd vikt per dimension:</p>
+      <div class="eq">rms = sqrt(mean(x²) + ε)        per token
+y   = x / rms ⊙ g
+
+x [T, 4096] → y [T, 4096]
+g [4096]   (inlärd, en per dimension)</div>
+      <p>Utan normalisering skulle storleken på strömmen växa lager för lager, eftersom allt adderas. Attention och MLP vill ha indata i en stabil skala.</p>
+      <p>RMSNorm är en förenklad LayerNorm: ingen medelvärdessubtraktion och ingen bias. Billigare, och fungerar lika bra.</p>
+    </div>
+    <div class="panel">
+      <svg class="viz" id="rms-svg" viewBox="0 0 560 300" role="img" aria-label="En vektor före och efter RMSNorm"></svg>
+      <p class="note">Riktningen bevaras, storleken normaliseras. Det är därför riktningar i strömmen är meningsfulla.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="2" data-title="Attention 1: Q, K och V"><div class="si">
+  <h2>Attention 1: Q, K och V</h2>
+  <p class="plain">Varje token gör tre olika versioner av sin vektor: en fråga, en etikett och ett innehåll. Det sker med tre inlärda matriser.</p>
+  <div class="cols wide">
+    <div>
+      <p>Den normaliserade strömmen projiceras till tre nya tensorer:</p>
+      <ul>
+        <li><b>Query</b>: vad den här positionen letar efter</li>
+        <li><b>Key</b>: vad den här positionen erbjuder</li>
+        <li><b>Value</b>: vad den skickar vidare om den väljs</li>
+      </ul>
+      <p>K och V är smalare än Q eftersom Llama-3-8B använder GQA: 8 KV heads mot 32 query heads.</p>
+      <p>vLLM slår ihop de tre matriserna till en enda <span class="mk">qkv_proj</span> och delar resultatet efteråt. En stor matmul är snabbare än tre små.</p>
+    </div>
+    <div class="panel">
+      <svg class="viz" viewBox="0 0 760 300" role="img" aria-label="h gånger W_qkv ger qkv som delas i Q, K och V">
+        <text x="90" y="140" class="m ta" text-anchor="middle">h [T, 4096]</text>
+        <rect x="10" y="150" width="160" height="40" class="ba"/>
+        <text x="185" y="176" text-anchor="middle" class="b">@</text>
+        <text x="320" y="50" class="m tw" text-anchor="middle">W_qkv [4096, 6144]</text>
+        <rect x="200" y="60" width="160" height="160" class="bw"/>
+        <rect x="360" y="60" width="40" height="160" class="bw" style="fill-opacity:.6"/>
+        <rect x="400" y="60" width="40" height="160" class="bw" style="fill-opacity:.35"/>
+        <text x="280" y="145" text-anchor="middle" class="m tw">Wq</text><text x="380" y="145" text-anchor="middle" class="m tw">Wk</text><text x="420" y="145" text-anchor="middle" class="m tw">Wv</text>
+        <text x="455" y="176" text-anchor="middle" class="b">=</text>
+        <text x="590" y="140" class="m ta" text-anchor="middle">qkv [T, 6144]</text>
+        <rect x="470" y="150" width="160" height="40" class="ba"/>
+        <rect x="630" y="150" width="40" height="40" class="ba" style="fill-opacity:.7"/>
+        <rect x="670" y="150" width="40" height="40" class="ba" style="fill-opacity:.45"/>
+        <line x1="550" y1="192" x2="550" y2="236" class="ln" marker-end="url(#ah)"/>
+        <line x1="650" y1="192" x2="650" y2="236" class="ln" marker-end="url(#ah)"/>
+        <line x1="690" y1="192" x2="712" y2="236" class="ln" marker-end="url(#ah)"/>
+        <text x="550" y="256" class="m ta" text-anchor="middle">Q [T, 4096]</text>
+        <text x="640" y="276" class="m ta" text-anchor="middle">K [T, 1024]</text>
+        <text x="716" y="256" class="m ta" text-anchor="middle">V [T, 1024]</text>
+        <text x="10" y="290" class="s">Rektanglarna är skalenliga: bredd = kolumner, höjd = rader (T = 5).</text>
+      </svg>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="2" data-title="Attention 2: dela upp i heads"><div class="si">
+  <h2>Attention 2: dela upp i heads</h2>
+  <p class="plain">I stället för en stor fråga ställer varje token 32 mindre frågor samtidigt, så att den kan leta efter flera olika saker på en gång.</p>
+  <p class="lead">Q är 32 oberoende queries om 128 dimensioner bredvid varandra. En reshape gör det explicit, utan att någon data flyttas.</p>
+  <div class="panel">
+    <svg class="viz" id="heads-svg" viewBox="0 0 760 250" role="img" aria-label="Q delas i 32 heads om 128, K och V i 8 heads om 128"></svg>
+  </div>
+  <div class="eq">Q: [T, 4096] → view [T, 32, 128] → transpose → [32, T, 128]
+K: [T, 1024] → view [T,  8, 128] → transpose → [ 8, T, 128]
+V: [T, 1024] → view [T,  8, 128] → transpose → [ 8, T, 128]</div>
+  <p>Varje head kör sin egen attention parallellt och kan lära sig leta efter olika saker: föregående token, syftningar, matchande parenteser.</p>
+</div></section>
+
+<section class="slide" data-mod="2" data-title="Attention 3: RoPE"><div class="si">
+  <h2>Attention 3: RoPE ger position</h2>
+  <p class="plain">Attention vet inte i sig vilket ord som kom först. RoPE vrider frågor och etiketter efter position, så att avståndet mellan orden märks.</p>
+  <div class="cols">
+    <div>
+      <p>Attention i sig vet inget om ordning. Llama roterar Q och K beroende på position innan de jämförs (Rotary Position Embedding).</p>
+      <p>Varje head-vektor om 128 dimensioner ses som 64 par. Par <span class="mk">i</span> roteras med vinkeln <span class="mk">pos · θᵢ</span>:</p>
+      <div class="eq">θᵢ = base^(−2i / d_h)
+base = 500 000 i Llama 3
+q'(m) = R(m·θ) q
+k'(n) = R(n·θ) k
+q'(m) · k'(n) beror bara på (m − n)</div>
+      <p>Tidiga par roterar snabbt och fångar närhet. Sena par roterar långsamt och skiljer på långa avstånd.</p>
+      <p>Shapes ändras inte. RoPE appliceras på Q och K, aldrig V, och K lagras roterad i KV-cachen.</p>
+    </div>
+    <div class="panel">
+      <div class="ctl">
+        <label>q-position m <input type="range" id="rope-m" min="0" max="24" value="6"></label>
+        <label>k-position n <input type="range" id="rope-n" min="0" max="24" value="2"></label>
+      </div>
+      <svg class="viz" id="rope-svg" viewBox="0 0 560 270" role="img" aria-label="Två roterande vektorpar vid olika frekvens"></svg>
+      <div class="out" id="rope-out"></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="2" data-title="Attention 4: scores och causal mask"><div class="si">
+  <h2>Attention 4: scores och causal mask</h2>
+  <p class="plain">Här jämförs varje fråga med alla tidigare etiketter. Resultatet är en tabell som säger hur mycket varje ord ska lyssna på varje annat.</p>
+  <div class="cols">
+    <div>
+      <p>Varje query jämförs med varje key via skalärprodukt. Det ger en matris per head:</p>
+      <div class="eq">S = Q Kᵀ / √d_h
+[32, T, 128] @ [32, 128, T] → [32, T, T]
+S[i, j] = −∞  om j &gt; i     (causal mask)
+P = softmax(S, rad för rad)</div>
+      <p>Med GQA delar 4 query heads på samma K: head 0–3 använder KV-head 0, head 4–7 KV-head 1, och så vidare.</p>
+      <p>Masken gör att position i bara ser position 0..i. Det är det som gör modellen autoregressiv, och det är därför K och V för gamla positioner aldrig ändras.</p>
+      <p>S är T × T. Vid 32 000 tokens blir det en miljard tal per head och lager. FlashAttention räknar därför i block och skriver aldrig ut hela matrisen i minnet.</p>
+    </div>
+    <div class="panel">
+      <div class="ctl"><button class="btn on" id="att-raw">Scores S</button><button class="btn" id="att-soft">Efter softmax P</button></div>
+      <svg class="viz" id="att-svg" viewBox="0 0 560 420" role="img" aria-label="Attention-matris med causal mask"></svg>
+      <div class="out" id="att-out">Klicka på en rad.</div>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="2" data-title="Attention 5: hämta values"><div class="si">
+  <h2>Attention 5: hämta values och skriv tillbaka</h2>
+  <p class="plain">Varje token tar en blandning av de innehåll den valt att lyssna på, och lägger blandningen till sin egen vektor.</p>
+  <div class="cols">
+    <div>
+      <p>Vikterna i P används för att blanda ihop values:</p>
+      <div class="eq">O = P V
+[32, T, T] @ [32, T, 128] → [32, T, 128]
+→ transpose/reshape → [T, 4096]
+out = O @ Wo     Wo [4096, 4096]
+x = x + out</div>
+      <p>Varje tokens utdata är en viktad summa av tidigare tokens values. Wo blandar ihop resultaten från alla heads och skriver till strömmen.</p>
+      <p>Klicka på ord till höger. Vikterna är handplockade för att visa idén, inte tagna ur en riktig modell.</p>
+    </div>
+    <div class="panel">
+      <svg class="viz" id="pv-svg" viewBox="0 0 680 310" role="img" aria-label="Klickbar mening som visar attention-vikter mot tidigare tokens"></svg>
+      <div class="out" id="pv-out"></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="2" data-title="GQA: delade KV heads"><div class="si">
+  <h2>GQA: färre KV heads</h2>
+  <div class="cols even">
+    <div>
+      <p>I klassisk Multi-Head Attention har varje query head egna K och V. Grouped-Query Attention låter en grupp query heads dela på ett KV-par.</p>
+      <p>Kvaliteten påverkas lite, men KV-cachen krymper med faktorn n_h / n_kv. För Llama-3-8B är det 4 gånger mindre cache, vilket ger plats för 4 gånger fler samtidiga sekvenser.</p>
+      <table class="t">
+        <tr><th>Variant</th><th>n_kv</th><th>KV per token och lager</th></tr>
+        <tr><td>MHA</td><td class="n">32</td><td class="n">2·32·128 = 8192 tal</td></tr>
+        <tr><td>GQA (Llama 3)</td><td class="n">8</td><td class="n">2·8·128 = 2048 tal</td></tr>
+        <tr><td>MQA</td><td class="n">1</td><td class="n">2·1·128 = 256 tal</td></tr>
+      </table>
+    </div>
+    <div class="panel"><svg class="viz" id="gqa-svg" viewBox="0 0 560 300" role="img" aria-label="32 query heads i 8 grupper som delar KV heads"></svg></div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="2" data-title="MLP med SwiGLU"><div class="si">
+  <h2>MLP med SwiGLU</h2>
+  <p class="plain">Nu bearbetas varje token för sig: vektorn blåses upp, de mönster som passar släpps fram, och resultatet trycks ihop igen.</p>
+  <div class="cols even">
+    <div>
+      <div class="eq">h    = RMSNorm(x)            [T, 4096]
+gate = h @ W_gate           [T, 14336]
+up   = h @ W_up             [T, 14336]
+a    = SiLU(gate) ⊙ up      [T, 14336]
+out  = a @ W_down           [T, 4096]
+x    = x + out</div>
+      <p>MLP:n jobbar på varje token oberoende. Den expanderar till 3,5 gånger bredden, låter en gate avgöra vilka av de 14 336 neuronerna som släpps fram och komprimerar tillbaka.</p>
+      <p>SiLU(z) = z · σ(z) är en mjuk ReLU. Gaten multipliceras elementvis med up, så varje neuron är ”en detektor gånger ett värde”.</p>
+      <p>vLLM slår ihop W_gate och W_up till en <span class="mk">gate_up_proj [4096, 28672]</span>.</p>
+    </div>
+    <div class="panel">
+      <svg class="viz" viewBox="0 0 680 250" role="img" aria-label="SwiGLU-flöde">
+        <rect x="10" y="100" width="90" height="44" rx="6" class="ba"/><text x="55" y="127" text-anchor="middle" class="m">h</text>
+        <path d="M100 112 H140 V50 H170" class="ln" marker-end="url(#ah)"/>
+        <path d="M100 132 H140 V190 H170" class="ln" marker-end="url(#ah)"/>
+        <rect x="172" y="30" width="110" height="40" rx="6" class="bw"/><text x="227" y="55" text-anchor="middle" class="m">W_gate</text>
+        <rect x="172" y="170" width="110" height="40" rx="6" class="bw"/><text x="227" y="195" text-anchor="middle" class="m">W_up</text>
+        <line x1="282" y1="50" x2="318" y2="50" class="ln" marker-end="url(#ah)"/>
+        <rect x="320" y="30" width="80" height="40" rx="6" class="box"/><text x="360" y="55" text-anchor="middle" class="m">SiLU</text>
+        <path d="M400 50 H440 V108" class="ln" marker-end="url(#ah)"/>
+        <path d="M282 190 H440 V136" class="ln" marker-end="url(#ah)"/>
+        <circle cx="440" cy="122" r="13" class="box"/><text x="440" y="127" text-anchor="middle" class="b">⊙</text>
+        <line x1="453" y1="122" x2="498" y2="122" class="ln" marker-end="url(#ah)"/>
+        <rect x="500" y="102" width="100" height="40" rx="6" class="bw"/><text x="550" y="127" text-anchor="middle" class="m">W_down</text>
+        <line x1="600" y1="122" x2="640" y2="122" class="ln" marker-end="url(#ah)"/>
+        <text x="655" y="127" class="m">out</text>
+        <text x="55" y="162" class="m ta" text-anchor="middle">[T, 4096]</text>
+        <text x="360" y="92" class="m ta" text-anchor="middle">[T, 14336]</text>
+        <text x="360" y="230" class="m ta" text-anchor="middle">[T, 14336]</text>
+        <text x="550" y="162" class="m ta" text-anchor="middle">[T, 4096]</text>
+      </svg>
+      <svg class="viz" id="silu-svg" viewBox="0 0 680 190" role="img" aria-label="SiLU jämfört med ReLU"></svg>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="2" data-title="Var parametrarna finns"><div class="si">
+  <h2>Var parametrarna finns</h2>
+  <div class="cols">
+    <div>
+      <table class="t">
+        <tr><th>Del</th><th>Shape</th><th>Parametrar</th></tr>
+        <tr><td>Embedding</td><td class="n">[128256, 4096]</td><td class="n">525 M</td></tr>
+        <tr><td>Wq, Wo (per lager)</td><td class="n">2 × [4096, 4096]</td><td class="n">33,6 M</td></tr>
+        <tr><td>Wk, Wv (per lager)</td><td class="n">2 × [4096, 1024]</td><td class="n">8,4 M</td></tr>
+        <tr><td>Gate, up, down (per lager)</td><td class="n">3 × 4096·14336</td><td class="n">176,2 M</td></tr>
+        <tr><td>Norm-vikter (per lager)</td><td class="n">2 × [4096]</td><td class="n">8 K</td></tr>
+        <tr><td>LM head</td><td class="n">[4096, 128256]</td><td class="n">525 M</td></tr>
+        <tr><td><b>Totalt</b></td><td></td><td class="n"><b>≈ 8,03 B</b></td></tr>
+      </table>
+      <p>Mer än två tredjedelar av modellen är MLP. Attention-vikterna är få, men attention-<i>beräkningen</i> växer med kontextlängden.</p>
+    </div>
+    <div class="panel"><svg class="viz" id="param-svg" viewBox="0 0 560 230" role="img" aria-label="Stapeldiagram över parametrarnas fördelning"></svg>
+    <p class="note">Minnet för vikterna i bf16 (2 byte per parameter): 8,03 B × 2 ≈ 16 GB. Det är talet som avgör vilken GPU du behöver, innan KV-cachen ens räknats med.</p></div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="2" data-title="Spåra tensorerna genom modellen"><div class="si">
+  <h2>Spåra tensorerna genom modellen</h2>
+  <p class="lead">Klicka dig igenom ett forward pass. Byt mellan prefill (hela prompten på en gång) och decode (en ny token med KV-cache).</p>
+  <div class="ctl"><button class="btn on" id="tr-prefill">Prefill, T = 7</button><button class="btn" id="tr-decode">Decode, 1 token, kontext 12</button><span style="flex:1"></span><button class="btn" id="tr-prev">Föregående</button><button class="btn" id="tr-next">Nästa steg</button></div>
+  <div class="cols">
+    <ol class="steplist" id="tr-list"></ol>
+    <div class="panel" id="tr-detail" aria-live="polite"></div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="2" data-title="Testa dig själv: transformerblocket"><div class="si">
+  <h2>Testa dig själv: transformerblocket</h2>
+  <details class="q"><summary>Vilken shape har attention-scores i ett lager vid prefill av 1000 tokens i Llama-3-8B?</summary><p>[32, 1000, 1000] per sekvens: en T × T-matris per query head.</p></details>
+  <details class="q"><summary>Varför ändras aldrig K och V för en gammal position när nya tokens tillkommer?</summary><p>Causal mask: position i ser bara 0..i. Allt som påverkar K och V för position i, inklusive alla tidigare lager, beror bara på tokens 0..i. Därför kan de sparas, vilket är hela idén med KV-cachen.</p></details>
+  <details class="q"><summary>Var finns flest parametrar, attention eller MLP?</summary><p>MLP: 176 M per lager mot 42 M för attention i Llama-3-8B.</p></details>
+  <details class="q"><summary>Vad är skillnaden mellan n_h och n_kv, och vad påverkar den?</summary><p>n_h är antalet query heads (32), n_kv antalet KV heads (8). Kvoten 4 bestämmer hur många query heads som delar på samma K och V, och hur mycket mindre KV-cachen blir jämfört med MHA.</p></details>
+</div></section>

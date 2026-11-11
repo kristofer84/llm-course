@@ -1,0 +1,26 @@
+<section class="slide" data-title="Vad ett lager innehåller"><div class="si">
+  <h2>Vad ett lager innehåller: nio delar</h2>
+  <p class="plain">Ett lager i Llama består av bara nio saker: sju stora tabeller med tal (viktmatriser) och två små listor. Allt annat som händer i lagret är fasta räkneregler utan inlärda tal. Klicka på en del för att se den i bilden.</p>
+  <div class="cols even">
+    <div id="ln-list"></div>
+    <div class="panel">
+      <svg class="viz" id="ln-svg" viewBox="0 0 560 400" role="img" aria-label="Lagrets nio vikter ritade i skala"></svg>
+      <div class="out" id="ln-out" aria-live="polite"></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="Så blir det 8 miljarder"><div class="si">
+  <h2>Så blir det 8 miljarder parametrar</h2>
+  <p class="plain">”8 miljarder parametrar” är helt enkelt antalet tal i alla tabeller tillsammans. Det mesta sitter i de nio delarna gånger 32 lager. Resten är ordförrådet i början (embedding) och i slutet (LM head).</p>
+  <div class="cols even">
+    <div>
+      <div class="ctl"><button class="btn" id="bn-prev">Föregående</button><button class="btn" id="bn-next">Nästa steg</button><span class="mk" id="bn-n"></span></div>
+      <div id="bn-text" aria-live="polite"></div>
+      <table class="t" id="bn-tbl" style="margin-top:12px"></table>
+    </div>
+    <div class="panel">
+      <svg class="viz" id="bn-svg" viewBox="0 0 560 330" role="img" aria-label="Parametrarna summeras steg för steg"></svg>
+    </div>
+  </div>
+</div></section>

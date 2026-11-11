@@ -1,0 +1,166 @@
+<!-- ============ MODUL 6 ============ -->
+<section class="slide" data-mod="6" data-title="Tät modell eller MoE"><div class="si">
+  <h2>Tät modell eller Mixture of Experts</h2>
+  <div class="cols even">
+    <div>
+      <p>I en MoE-modell ersätts MLP:n i varje lager av många mindre MLP:er (experter) och en router. Attention är fortfarande tät.</p>
+      <p>Varje token skickas till top-k experter. Modellen har alltså mycket kunskap (många parametrar) men låg kostnad per token (få aktiva).</p>
+      <table class="t">
+        <tr><th>Modell</th><th>Totalt</th><th>Aktivt</th><th>Experter</th></tr>
+        <tr><td>Mixtral 8x7B</td><td class="n">46,7 B</td><td class="n">12,9 B</td><td class="n">2 av 8</td></tr>
+        <tr><td>Qwen3-30B-A3B</td><td class="n">30,5 B</td><td class="n">3,3 B</td><td class="n">8 av 128</td></tr>
+        <tr><td>DeepSeek-V3</td><td class="n">671 B</td><td class="n">37 B</td><td class="n">8 av 256 + 1 delad</td></tr>
+      </table>
+      <p><b>Minnet</b> bestäms av totalen: alla experter måste ligga i GPU-minnet. <b>Beräkningen</b> per token bestäms av de aktiva.</p>
+    </div>
+    <div class="panel">
+      <svg class="viz" viewBox="0 0 560 330" role="img" aria-label="Tät MLP jämfört med router och åtta experter där två är aktiva">
+        <text x="90" y="24" text-anchor="middle" class="b">Tät</text>
+        <text x="370" y="24" text-anchor="middle" class="b">MoE</text>
+        <rect x="40" y="60" width="100" height="30" rx="6" class="ba"/><text x="90" y="80" text-anchor="middle" class="m">h</text>
+        <line x1="90" y1="90" x2="90" y2="128" class="ln" marker-end="url(#ah)"/>
+        <rect x="30" y="130" width="120" height="110" rx="8" class="bw"/><text x="90" y="182" text-anchor="middle">MLP</text><text x="90" y="200" text-anchor="middle" class="s">alla vikter</text>
+        <line x1="90" y1="240" x2="90" y2="278" class="ln" marker-end="url(#ah)"/>
+        <text x="90" y="296" text-anchor="middle" class="m ta">out</text>
+        <line x1="200" y1="40" x2="200" y2="310" class="lnf"/>
+        <rect x="320" y="44" width="100" height="30" rx="6" class="ba"/><text x="370" y="64" text-anchor="middle" class="m">h</text>
+        <line x1="370" y1="74" x2="370" y2="94" class="ln" marker-end="url(#ah)"/>
+        <rect x="300" y="96" width="140" height="30" rx="6" class="bt"/><text x="370" y="116" text-anchor="middle">Router</text>
+        <g id="moe-experts"></g>
+        <text x="370" y="316" text-anchor="middle" class="m ta">out = Σ gᵢ · Expertᵢ(h)</text>
+      </svg>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="6" data-title="Routern"><div class="si">
+  <h2>Routern</h2>
+  <div class="cols">
+    <div>
+      <div class="eq">r = h @ W_router        W_router [4096, E]
+                        r [T, E]
+top-k index per token
+g = softmax(r[top-k])   [T, k]
+out = Σ g · Expert(h)   [T, 4096]</div>
+      <p>Routern är bara en liten linjär matris, tränad tillsammans med resten. Ingen säger åt den vad experterna ska kunna.</p>
+      <p>I praktiken blir specialiseringen mest syntaktisk, som indentering, interpunktion och vissa funktionsord, snarare än ämnen som ”biologi”. En load balancing-loss under träningen ser till att experterna används ungefär lika mycket över en batch.</p>
+      <p>Varje lager har egna experter och egen router. En token tar en egen väg genom alla lager.</p>
+    </div>
+    <div class="panel">
+      <p style="margin:0 0 6px;font-size:14px;color:var(--ink2)">Klicka på en token (routervärdena är påhittade):</p>
+      <div class="chips" id="rt-chips"></div>
+      <svg class="viz" id="rt-svg" viewBox="0 0 560 240" role="img" aria-label="Routersannolikheter över 8 experter"></svg>
+      <div class="out" id="rt-out"></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="6" data-title="MoE i inferens"><div class="si">
+  <h2>MoE i inferens</h2>
+  <div class="cols even">
+    <div>
+      <p><b>Små batchar:</b> varje token läser bara sina experters vikter. Decode blir snabb, nästan som en modell i storleken av de aktiva parametrarna.</p>
+      <p><b>Stora batchar:</b> olika tokens väljer olika experter, och snart används alla. Då läses alla vikter igen, och fördelen ligger i beräkningen, inte minnet.</p>
+      <p><b>Expert parallelism:</b> experterna fördelas över GPU:er. Varje token skickas till rätt GPU (all-to-all dispatch) och resultaten skickas tillbaka (combine). Det är mycket kommunikation, så snabba länkar mellan GPU:erna är viktiga.</p>
+      <p><b>Obalans:</b> om många tokens väljer samma expert blir en GPU flaskhals medan de andra väntar.</p>
+    </div>
+    <div class="panel">
+      <svg class="viz" viewBox="0 0 560 300" role="img" aria-label="Tokens skickas till experter på fyra GPU:er och tillbaka">
+        <g id="ep-g"></g>
+      </svg>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="6" data-title="Attention-varianter"><div class="si">
+  <h2>Attention-varianter och cachens storlek</h2>
+  <div class="cols">
+    <div>
+      <ul>
+        <li><b>MHA</b>: ett KV head per query head. Störst cache.</li>
+        <li><b>GQA</b>: grupper av query heads delar KV (Llama 3, Mistral, Qwen).</li>
+        <li><b>MQA</b>: ett enda KV head för alla.</li>
+        <li><b>MLA</b> (DeepSeek-V2/V3): K och V komprimeras till en latent vektor som cachas, och packas upp vid behov.</li>
+        <li><b>Sliding window</b>: vissa lager ser bara de senaste W tokens, så deras cache slutar växa. Gemma 2 och 3 varvar lokala lager med globala.</li>
+      </ul>
+      <p class="note">Jämförelsen till höger använder 32 lager och d = 4096 för alla, för att isolera effekten av själva attention-varianten.</p>
+    </div>
+    <div class="panel"><svg class="viz" id="attv-svg" viewBox="0 0 560 250" role="img" aria-label="KV-cache per token för MHA, GQA, MQA och MLA"></svg></div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="6" data-title="Lång kontext"><div class="si">
+  <h2>Lång kontext</h2>
+  <div class="cols">
+    <div>
+      <p>Två saker växer med kontexten:</p>
+      <ul>
+        <li><b>KV-cachen</b> växer linjärt. 128 000 tokens i Llama-3-8B är 16 GB, lika mycket som vikterna.</li>
+        <li><b>Attention-beräkningen</b> per token växer linjärt, och för hela prefill kvadratiskt.</li>
+      </ul>
+      <p>Grafen visar hur stor andel av beräkningen per genererad token som går till attention mot kontexten. Vid korta prompts är det försumbart. Vid 128K dominerar det.</p>
+      <p>För att modellen ska fungera på längre kontext än den tränats på skalas RoPE-frekvenserna om (position interpolation, YaRN). Llama 3.1 gick från 8K till 128K på det sättet, kombinerat med fortsatt träning.</p>
+    </div>
+    <div class="panel"><svg class="viz" id="lc-svg" viewBox="0 0 560 280" role="img" aria-label="Andel av beräkningen per token som går till attention, som funktion av kontextlängd"></svg></div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="6" data-title="Resonerande modeller"><div class="si">
+  <h2>Resonerande modeller</h2>
+  <div class="cols">
+    <div>
+      <p>Arkitekturen är densamma. Skillnaden är att modellen tränats med RL att skriva ut ett långt resonemang innan svaret, ofta inom taggar som <span class="mk">&lt;think&gt;…&lt;/think&gt;</span>.</p>
+      <p>För inference betyder det:</p>
+      <ul>
+        <li>Nästan all tid går till decode, som är den dyraste fasen per token.</li>
+        <li>KV-cachen växer med resonemanget, så färre sekvenser ryms samtidigt.</li>
+        <li><span class="mk">max_tokens</span> måste räcka för både tänkande och svar.</li>
+        <li>vLLM kan dela upp utdata i resonemang och svar med <span class="mk">--reasoning-parser</span>.</li>
+      </ul>
+      <p>Det är också här loopar gör ont: en modell som upprepar sig bränner decode-steg tills taket nås. Det var precis det Astra angrep.</p>
+    </div>
+    <div class="panel"><svg class="viz" id="rs-svg" viewBox="0 0 560 220" role="img" aria-label="Tokenfördelning för vanlig och resonerande modell"></svg></div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="6" data-title="Multimodala modeller"><div class="si">
+  <h2>Multimodala modeller</h2>
+  <div class="cols even">
+    <div>
+      <p>En bild delas i rutor (patches), körs genom en vision encoder (oftast en ViT) och projiceras till samma bredd d som språkmodellens residual stream. Resultatet stoppas in i sekvensen där en platshållartoken stod.</p>
+      <p>Därefter är bildtokens vanliga positioner i strömmen: de får K och V i cachen och kan attendas till som vilket ord som helst.</p>
+      <p>Exempel: LLaVA-1.5 delar en bild på 336 × 336 pixlar i rutor om 14 × 14, vilket ger 576 bildtokens. Bilder är alltså dyra i både prefill och KV-minne.</p>
+      <p>vLLM kör encodern separat och cachar dess utdata så att samma bild inte kodas två gånger.</p>
+    </div>
+    <div class="panel">
+      <svg class="viz" viewBox="0 0 560 300" role="img" aria-label="Bild, patches, vision encoder, projektor, bildtokens i sekvensen">
+        <g id="mm-g"></g>
+      </svg>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="6" data-title="Andra arkitekturer"><div class="si">
+  <h2>Andra arkitekturer</h2>
+  <svg class="viz" viewBox="0 0 1000 250" role="img" aria-label="Fyra attention-mönster: causal, bidirektionell, encoder-decoder och SSM">
+    <g id="arch-g"></g>
+  </svg>
+  <div class="cols even">
+    <div>
+      <p><b>Decoder-only</b> (GPT, Llama): causal mask, genererar text. Den här kursens fokus.</p>
+      <p><b>Encoder-only</b> (BERT): varje token ser alla andra. Ger bra vektorer för klassificering och embeddings men genererar inte.</p>
+    </div>
+    <div>
+      <p><b>Encoder-decoder</b> (T5, Whisper): en encoder läser indata, en decoder genererar och läser encodern via cross-attention.</p>
+      <p><b>SSM och hybrider</b> (Mamba, Jamba): ett tillstånd av fast storlek ersätter den växande KV-cachen. Linjär tid i sekvenslängden. Hybrider blandar in några attention-lager för att inte tappa precision.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="6" data-title="Testa dig själv: modellvarianter"><div class="si">
+  <h2>Testa dig själv: modellvarianter</h2>
+  <details class="q"><summary>Mixtral 8x7B har 46,7 B parametrar. Hur mycket GPU-minne behöver vikterna i bf16, och hur mycket räknar varje token?</summary><p>Ungefär 93 GB för vikterna, eftersom alla experter måste finnas i minnet. Beräkningen per token motsvarar en tät modell på cirka 13 B.</p></details>
+  <details class="q"><summary>Varför ger MoE mindre fördel vid stora batchar än vid små?</summary><p>Vid små batchar läses bara de valda experternas vikter. Vid stora batchar väljer tokens tillsammans nästan alla experter, så alla vikter läses ändå.</p></details>
+  <details class="q"><summary>Vilken attention-variant ger minst KV-cache: GQA med 8 KV heads eller MLA?</summary><p>MLA: 576 tal per token och lager, mot 2 · 8 · 128 = 2048 för GQA-8 med d_h 128.</p></details>
+  <details class="q"><summary>Vad kostar en bild i en LLaVA-1.5-liknande modell, räknat i tokens?</summary><p>576 positioner i sekvensen, med lika mycket KV-cache som 576 texttokens.</p></details>
+</div></section>

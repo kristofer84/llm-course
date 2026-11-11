@@ -1,0 +1,273 @@
+<!-- ============ MODUL 7 ============ -->
+<section class="slide" data-mod="7" data-title="vLLM: arkitekturen"><div class="si">
+  <h2>vLLM: arkitekturen</h2>
+  <p class="lead">vLLM delar upp arbetet i en frontend som pratar HTTP och text, och en motor som bara ser token-ids och GPU-minne.</p>
+  <svg class="viz" viewBox="0 0 1000 330" role="img" aria-label="Klient, API-server, processor, EngineCore med scheduler och KV cache manager, workers per GPU, detokenizer och strömning tillbaka">
+    <rect x="10" y="40" width="100" height="50" rx="8" class="box"/><text x="60" y="70" text-anchor="middle">Klient</text>
+    <line x1="110" y1="65" x2="138" y2="65" class="ln" marker-end="url(#ah)"/>
+    <rect x="140" y="20" width="330" height="290" rx="12" fill="none" style="stroke:var(--tok)" stroke-dasharray="5 4"/>
+    <text x="150" y="40" class="s">Frontend-process (AsyncLLM)</text>
+    <rect x="160" y="50" width="140" height="50" rx="8" class="bt"/><text x="230" y="72" text-anchor="middle">API-server</text><text x="230" y="89" text-anchor="middle" class="s">OpenAI-format</text>
+    <line x1="300" y1="75" x2="318" y2="75" class="ln" marker-end="url(#ah)"/>
+    <rect x="320" y="50" width="140" height="50" rx="8" class="bt"/><text x="390" y="72" text-anchor="middle">InputProcessor</text><text x="390" y="89" text-anchor="middle" class="s">template, tokenizer</text>
+    <rect x="320" y="230" width="140" height="50" rx="8" class="bt"/><text x="390" y="252" text-anchor="middle">OutputProcessor</text><text x="390" y="269" text-anchor="middle" class="s">detokenisering, stopp</text>
+    <line x1="320" y1="255" x2="232" y2="255" class="ln" marker-end="url(#ah)"/>
+    <rect x="160" y="230" width="70" height="50" rx="8" class="bt"/><text x="195" y="260" text-anchor="middle" class="s">SSE</text>
+    <path d="M160 255 H60 V92" class="ln" marker-end="url(#ah)"/>
+    <rect x="510" y="20" width="250" height="290" rx="12" fill="none" style="stroke:var(--kv)" stroke-dasharray="5 4"/>
+    <text x="520" y="40" class="s">EngineCore-process</text>
+    <path d="M460 75 H528" class="ln" marker-end="url(#ah)"/>
+    <text x="494" y="68" class="s" text-anchor="middle">ids</text><text x="494" y="92" class="s" text-anchor="middle">ZMQ</text>
+    <rect x="530" y="50" width="210" height="60" rx="8" class="bkv"/><text x="635" y="76" text-anchor="middle">Scheduler</text><text x="635" y="94" text-anchor="middle" class="s">vilka requests, hur många tokens</text>
+    <rect x="530" y="130" width="210" height="60" rx="8" class="bkv"/><text x="635" y="156" text-anchor="middle">KV cache manager</text><text x="635" y="174" text-anchor="middle" class="s">block, prefix-hashar</text>
+    <line x1="635" y1="110" x2="635" y2="128" class="ln" marker-end="url(#ah)"/>
+    <rect x="530" y="220" width="210" height="60" rx="8" class="box"/><text x="635" y="246" text-anchor="middle">Executor</text><text x="635" y="264" text-anchor="middle" class="s">skickar steget till workers</text>
+    <line x1="635" y1="190" x2="635" y2="218" class="ln" marker-end="url(#ah)"/>
+    <path d="M530 255 H462" class="ln" marker-end="url(#ah)"/>
+    <text x="496" y="248" class="s" text-anchor="middle">ids</text>
+    <line x1="740" y1="250" x2="788" y2="250" class="ln" marker-end="url(#ah)"/>
+    <rect x="790" y="40" width="200" height="270" rx="12" fill="none" style="stroke:var(--w)" stroke-dasharray="5 4"/>
+    <text x="800" y="60" class="s">En worker per GPU</text>
+    <rect x="810" y="75" width="160" height="56" rx="8" class="bw"/><text x="890" y="99" text-anchor="middle">Model runner</text><text x="890" y="117" text-anchor="middle" class="s">bygger input-tensorer</text>
+    <rect x="810" y="146" width="160" height="56" rx="8" class="bw"/><text x="890" y="170" text-anchor="middle">Modellen</text><text x="890" y="188" text-anchor="middle" class="s">vikter + KV-block</text>
+    <rect x="810" y="217" width="160" height="56" rx="8" class="bw"/><text x="890" y="241" text-anchor="middle">Sampler</text><text x="890" y="259" text-anchor="middle" class="s">logits → ids</text>
+  </svg>
+  <p>Motorn arbetar i <b>steg</b>: varje steg väljer schedulern en batch, workers kör ett forward pass, och varje aktiv request får (oftast) en ny token. I koden heter de tre delarna <span class="mk">schedule()</span>, <span class="mk">execute_model()</span> och <span class="mk">update_from_output()</span>. Sedan börjar nästa steg. Allt annat i den här modulen handlar om hur stegen fylls.</p>
+</div></section>
+
+<section class="slide" data-mod="7" data-title="En requests livscykel"><div class="si">
+  <h2>En requests livscykel</h2>
+  <div class="cols even">
+    <div>
+      <ul>
+        <li><b>Waiting</b>: tokeniserad, väntar på plats. Schedulern kollar först prefix-cachen och därefter om det finns lediga KV-block.</li>
+        <li><b>Running</b>: får tokens i varje steg. Först prefill, kanske uppdelad i chunks, sedan en token per steg.</li>
+        <li><b>Preempted</b>: om KV-blocken tar slut kastas en request ut och dess block frigörs. Den läggs tillbaka i kön och räknas om senare.</li>
+        <li><b>Finished</b>: stopptoken, stoppsträng, max_tokens eller avbruten. Blocken frigörs men ligger kvar i prefix-cachen tills de behövs till annat.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <svg class="viz" viewBox="0 0 520 300" role="img" aria-label="Tillståndsdiagram: waiting, running, preempted, finished">
+        <rect x="30" y="40" width="140" height="50" rx="25" class="bt"/><text x="100" y="70" text-anchor="middle">Waiting</text>
+        <rect x="320" y="40" width="160" height="50" rx="25" class="bw"/><text x="400" y="70" text-anchor="middle">Running</text>
+        <rect x="320" y="220" width="160" height="50" rx="25" class="box"/><text x="400" y="250" text-anchor="middle">Finished</text>
+        <rect x="30" y="220" width="140" height="50" rx="25" class="bn"/><text x="100" y="250" text-anchor="middle">Preempted</text>
+        <line x1="170" y1="58" x2="318" y2="58" class="ln" marker-end="url(#ah)"/><text x="244" y="48" text-anchor="middle" class="s">block tilldelade</text>
+        <line x1="400" y1="90" x2="400" y2="218" class="ln" marker-end="url(#ah)"/><text x="410" y="160" class="s">stopp</text>
+        <path d="M330 84 L172 228" class="ln" marker-end="url(#ah)"/><text x="225" y="150" class="s" text-anchor="end">minnet slut</text>
+        <line x1="100" y1="220" x2="100" y2="92" class="ln" marker-end="url(#ah)"/><text x="92" y="160" class="s" text-anchor="end">tillbaka i kön</text>
+        <path d="M370 40 C370 8 430 8 430 36" class="ln" marker-end="url(#ah)"/><text x="400" y="14" class="s" text-anchor="middle">en token per steg</text>
+      </svg>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="7" data-title="Problemet: fragmenterat minne"><div class="si">
+  <h2>Problemet: fragmenterat minne</h2>
+  <div class="cols">
+    <div>
+      <p>Före vLLM reserverade servrar ofta ett sammanhängande minnesområde per request, stort nog för max längd. Men ingen vet i förväg hur långt svaret blir.</p>
+      <p>Resultatet var att det mesta av KV-minnet var reserverat men tomt. Färre requests fick plats, batcharna blev små och GPU:n gick på tomgång.</p>
+      <p>PagedAttention-pappret (2023) mätte att befintliga system bara använde 20–40 % av KV-minnet till faktiska tokens.</p>
+    </div>
+    <div class="panel"><svg class="viz" id="frag-svg" viewBox="0 0 560 250" role="img" aria-label="Förallokerat minne med mycket spill jämfört med paged allokering"></svg></div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="7" data-title="PagedAttention"><div class="si">
+  <h2>PagedAttention: KV-cache i block</h2>
+  <div class="cols">
+    <div>
+      <p>vLLM delar KV-minnet i block om ett fast antal tokens (16 som standard). Varje sekvens har en <b>block table</b> som översätter logiska block till fysiska, precis som virtuellt minne i ett operativsystem.</p>
+      <ul>
+        <li>Ett nytt block tilldelas först när det förra är fullt. Spillet blir högst ett halvfullt block per sekvens.</li>
+        <li>Blocken behöver inte ligga intill varandra. Attention-kerneln slår upp dem via block table.</li>
+        <li>Block kan delas mellan sekvenser: grunden för prefix caching.</li>
+      </ul>
+      <div class="eq">kv_cache[lager] ≈
+  [2, num_blocks, 16, n_kv, d_h]
+slot = block_table[pos // 16] · 16
+       + pos % 16</div>
+    </div>
+    <div class="panel">
+      <div class="ctl"><button class="btn" id="pg-new">Ny request</button><button class="btn" id="pg-step">Decode-steg</button><button class="btn" id="pg-fin">Avsluta äldsta</button><button class="btn" id="pg-reset">Börja om</button></div>
+      <svg class="viz" id="pg-svg" viewBox="0 0 560 330" role="img" aria-label="Fysiska KV-block och block tables per sekvens"></svg>
+      <div class="out" id="pg-out" aria-live="polite"></div>
+      <p class="note">Blockstorlek 4 här för att det ska synas. vLLM använder 16.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="7" data-title="Prefix caching"><div class="si">
+  <h2>Prefix caching</h2>
+  <div class="cols">
+    <div>
+      <p>Varje fullt block får en hash av sitt innehåll <i>och</i> föregående blocks hash. Två requests med samma början får därför samma hashkedja.</p>
+      <div class="eq">h₁ = hash(None, tokens[0:16])
+h₂ = hash(h₁,   tokens[16:32])
+h₃ = hash(h₂,   tokens[32:48])</div>
+      <p>När en ny request kommer slår schedulern upp hasharna i tur och ordning. Träffade block återanvänds med en referensräknare, och bara resten behöver prefill.</p>
+      <p>Systemprompter, few-shot-exempel och långa konversationer, där varje ny tur börjar med hela historiken, blir därmed nästan gratis att prefilla igen.</p>
+      <p class="note">Bara fulla block cachas. Avslutade requests block stannar kvar i cachen och evictas (LRU) först när minnet behövs.</p>
+    </div>
+    <div class="panel"><svg class="viz" id="pc-svg" viewBox="0 0 560 290" role="img" aria-label="Två requests delar tre block med samma systemprompt"></svg></div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="7" data-title="Continuous batching"><div class="si">
+  <h2>Continuous batching</h2>
+  <div class="cols">
+    <div>
+      <p><b>Statisk batching</b>: en batch körs tills den längsta sekvensen är klar. Platser för sekvenser som blivit klara står tomma.</p>
+      <p><b>Continuous batching</b>: schedulern bestämmer batchen på nytt i varje steg. En plats som blir ledig fylls direkt av nästa request i kön.</p>
+      <p>Eftersom decode är memory-bound kostar ett steg nästan lika mycket oavsett hur många platser som används. Varje tom plats är därför bortkastad kapacitet.</p>
+      <p class="note">Förenklat: 4 platser, prefill räknas som ett steg, siffran i rutan är requestens nummer.</p>
+    </div>
+    <div class="panel">
+      <div class="ctl"><button class="btn on" id="cb-static">Statisk</button><button class="btn" id="cb-cont">Continuous</button></div>
+      <svg class="viz" id="cb-svg" viewBox="0 0 560 220" role="img" aria-label="Gantt-schema för batchplatser över tid"></svg>
+      <div class="out" id="cb-out"></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="7" data-title="Chunked prefill och token-budget"><div class="si">
+  <h2>Chunked prefill och token-budget</h2>
+  <div class="cols">
+    <div>
+      <p>Varje steg har en budget: <span class="mk">max_num_batched_tokens</span>. Schedulern fyller den i ordning:</p>
+      <ol>
+        <li>En token till varje request i decode.</li>
+        <li>Återstående budget till prefill, uppdelad i chunks om prompten är för lång.</li>
+      </ol>
+      <p>En lång prompt på 5 000 tokens tar därför tre steg i stället för att blockera allt i ett. Decode-requests får sin token i varje steg, och ITL hålls jämn.</p>
+      <p>Prefill och decode i samma steg använder också GPU:n bättre: prefill-tokens ger räknearbete åt ett steg som annars mest läser minne.</p>
+    </div>
+    <div class="panel"><svg class="viz" id="ch-svg" viewBox="0 0 560 260" role="img" aria-label="Fyra steg med decode-tokens och prefill-chunks inom token-budgeten"></svg></div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="7" data-title="Ett steg i model runner"><div class="si">
+  <h2>Ett steg i model runner</h2>
+  <p class="lead">vLLM paddar inte batchen till [B, T]. Alla tokens från alla requests plattas ut till en enda lång rad, och metadata talar om var varje request börjar.</p>
+  <div class="scroll-x"><table class="t" id="flat-tbl"></table></div>
+  <div class="cols even" style="margin-top:14px">
+    <div>
+      <div class="eq">hidden  [7, 4096]      genom alla 32 lager
+logits  [3, 128256]    bara logits_indices
+nya ids [3]</div>
+      <p>Matmuls mot vikterna ser bara en tensor <span class="sh a">[N_tokens, 4096]</span>. Det spelar ingen roll vilken request en rad kommer från. Bara attention behöver veta, och läser det ur query_start_loc, seq_lens och block tables.</p>
+    </div>
+    <div>
+      <p><b>CUDA graphs</b>: ett decode-steg består av hundratals små kernel-anrop. vLLM spelar in dem som grafer för ett antal fasta batchstorlekar och spelar upp dem, vilket tar bort det mesta av CPU-overheaden. <span class="mk">--enforce-eager</span> stänger av det.</p>
+      <p><b>torch.compile</b> slår ihop små operationer (som RMSNorm och residual-additionen) till färre kernels.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="7" data-title="Samplern och structured output"><div class="si">
+  <h2>Samplern och structured output</h2>
+  <svg class="viz" viewBox="0 0 1000 150" role="img" aria-label="Sampler-pipeline: logits, penalties, grammatikmask, temperature, top-k och top-p, sampling">
+    <g id="smpl-g"></g>
+  </svg>
+  <div class="cols even">
+    <div>
+      <p>Alla requests i batchen samplas samtidigt. Varje requests parametrar (temperature, top_p, seed) ligger som tensorer med shape <span class="mk">[num_reqs]</span>, så samma kernels hanterar olika inställningar per rad.</p>
+      <p><b>Penalties</b> sänker logits för tokens som redan förekommit (repetition, presence, frequency).</p>
+    </div>
+    <div>
+      <p><b>Structured output</b> (JSON schema, regex, grammatik): en tillståndsmaskin vet vilka tokens som är giltiga härnäst. Alla andra får logit −∞ innan sampling. Modellen kan då inte producera ogiltig JSON, oavsett vad den ”vill”.</p>
+      <p>Masken är en bitmask över hela vokabulären, <span class="mk">[num_reqs, 128256]</span>, och räknas fram på CPU parallellt med forward pass.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="7" data-title="Tensor parallelism"><div class="si">
+  <h2>Tensor parallelism</h2>
+  <div class="cols">
+    <div>
+      <p>När modellen inte får plats på en GPU, eller ska gå snabbare, delas varje viktmatris mellan GPU:erna.</p>
+      <ul>
+        <li><b>Column parallel</b> (qkv, gate_up): varje GPU får en del av utdatakolumnerna. Attention delas per head: med TP = 2 får varje GPU 16 query heads och 4 KV heads.</li>
+        <li><b>Row parallel</b> (o_proj, down): varje GPU har en del av indata och räknar en delsumma. En <b>all-reduce</b> summerar delsummorna.</li>
+      </ul>
+      <p>Två all-reduce per lager, alltså 64 per forward pass i Llama-3-8B. Det kräver snabba länkar som NVLink, och TP används därför främst inom en server.</p>
+      <p>Varje GPU håller bara sina heads KV-cache. TP = 2 ger alltså dubbelt så mycket totalt KV-minne.</p>
+    </div>
+    <div class="panel"><svg class="viz" id="tp-svg" viewBox="0 0 560 340" role="img" aria-label="Ett lager fördelat över två GPU:er med två all-reduce"></svg></div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="7" data-title="Pipeline, data och expert parallelism"><div class="si">
+  <h2>Pipeline, data och expert parallelism</h2>
+  <svg class="viz" viewBox="0 0 1000 230" role="img" aria-label="Tre sätt att dela arbete: pipeline per lager, data parallel med kopior, expert parallel med experter per GPU">
+    <g id="par-g"></g>
+  </svg>
+  <div class="cols even">
+    <div>
+      <p><b>Pipeline parallel</b>: lager 0–15 på en GPU, 16–31 på nästa. Lite kommunikation (bara strömmen mellan stegen), passar mellan servrar. Kräver flera batchar i flykten för att alla steg ska ha arbete.</p>
+      <p><b>Data parallel</b>: hela modellen kopieras, varje kopia tar egna requests. Bäst för genomströmning när modellen får plats.</p>
+    </div>
+    <div>
+      <p><b>Expert parallel</b>: för MoE. Experterna fördelas, tokens skickas dit de ska med all-to-all.</p>
+      <p>Tumregel: TP inom en server, PP mellan servrar, DP för fler användare, EP för stora MoE-modeller. Stora installationer kombinerar dem.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="7" data-title="Speculative decoding"><div class="si">
+  <h2>Speculative decoding</h2>
+  <div class="cols">
+    <div>
+      <p>Decode är memory-bound: att verifiera 5 tokens i ett forward pass kostar nästan lika lite som att generera 1. Speculative decoding utnyttjar det.</p>
+      <ol>
+        <li>Ett billigt förslag ger k tokens: en liten draft-modell, n-gram från prompten, EAGLE-huvuden eller modellens egna MTP-lager.</li>
+        <li>Stora modellen kör alla k positioner i ett pass, som en mini-prefill.</li>
+        <li>Förslag accepteras från vänster tills första avvikelsen. Där används stora modellens egen token.</li>
+      </ol>
+      <p>Med sampling används rejection sampling: acceptera med sannolikhet min(1, p/q). Utfallet har då exakt samma fördelning som stora modellen ensam.</p>
+    </div>
+    <div class="panel">
+      <div class="ctl"><button class="btn" id="sd-next">Nästa steg</button><button class="btn" id="sd-reset">Börja om</button></div>
+      <div id="sd-view" aria-live="polite"></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="7" data-title="Flaggorna och vad de styr"><div class="si">
+  <h2>Flaggorna och vad de styr</h2>
+  <div class="scroll-x"><table class="t">
+    <tr><th>Flagga</th><th>Koppling till kursen</th></tr>
+    <tr><td class="n">--gpu-memory-utilization 0.9</td><td>Andel av GPU-minnet vLLM tar. Efter vikter och aktiveringar blir resten KV-block.</td></tr>
+    <tr><td class="n">--max-model-len</td><td>Max kontext per sekvens. Minst en sekvens av den längden måste få plats i KV-minnet, annars startar inte servern.</td></tr>
+    <tr><td class="n">--max-num-seqs</td><td>Max antal requests i ett steg: batchstorleken i decode.</td></tr>
+    <tr><td class="n">--max-num-batched-tokens</td><td>Token-budget per steg. Styr balansen mellan TTFT och ITL via chunked prefill. Högre värde reserverar mer minne för aktiveringar och ger mindre KV-pool.</td></tr>
+    <tr><td class="n">--tensor-parallel-size</td><td>Antal GPU:er som delar varje lager. Bör dela antalet KV heads jämnt, annars måste KV dupliceras.</td></tr>
+    <tr><td class="n">--pipeline-parallel-size</td><td>Antal steg som lagren delas i.</td></tr>
+    <tr><td class="n">--kv-cache-dtype fp8</td><td>Halverar KV-cachen.</td></tr>
+    <tr><td class="n">--quantization</td><td>awq, gptq, fp8 med flera. Läses ofta automatiskt från modellens config.</td></tr>
+    <tr><td class="n">--enable-prefix-caching</td><td>Prefix caching. På som standard i nyare versioner.</td></tr>
+    <tr><td class="n">--block-size 16</td><td>Tokens per KV-block.</td></tr>
+    <tr><td class="n">--speculative-config</td><td>Draft-modell, n-gram, EAGLE eller MTP, och antal förslag k.</td></tr>
+    <tr><td class="n">--enforce-eager</td><td>Stänger av CUDA graphs. För felsökning, kostar prestanda.</td></tr>
+  </table></div>
+  <p>Vid start loggar vLLM hur många tokens KV-cachen rymmer och hur många requests av max längd som kan köras samtidigt. Det är kalkylatorn från modul 6, räknad på riktigt.</p>
+</div></section>
+
+<section class="slide" data-mod="7" data-title="Hela flödet"><div class="si">
+  <h2>Hela flödet, från HTTP till token</h2>
+  <div class="ctl"><button class="btn" id="fl-prev">Föregående</button><button class="btn" id="fl-next">Nästa steg</button><span class="mk" id="fl-n"></span></div>
+  <div class="cols wide">
+    <div class="panel" id="fl-detail" aria-live="polite"></div>
+    <svg class="viz" id="fl-svg" viewBox="0 0 660 400" role="img" aria-label="Översikt av hela flödet med markering av aktuellt steg"></svg>
+  </div>
+</div></section>
+
+<section class="slide" data-mod="7" data-title="Testa dig själv: vLLM"><div class="si">
+  <h2>Testa dig själv: vLLM</h2>
+  <details class="q"><summary>En request har 70 tokens i kontexten. Hur många KV-block använder den med blockstorlek 16, och hur många platser står tomma?</summary><p>5 block (80 platser), varav 10 tomma i det sista blocket.</p></details>
+  <details class="q"><summary>Två användare skickar samma systemprompt på 1 000 tokens. Hur mycket av den andra requestens systemprompt behöver prefillas?</summary><p>Bara de sista 8 tokens: 62 fulla block (992 tokens) återanvänds via prefix-cachen, och det ofullständiga sista blocket räknas om.</p></details>
+  <details class="q"><summary>Varför plattar vLLM ut batchen i stället för att padda till [B, T]?</summary><p>Prompter och decode-steg har helt olika längd. Padding skulle räkna på tomma positioner. Matmuls bryr sig inte om var en rad kommer ifrån, och attention-kerneln får gränserna via query_start_loc.</p></details>
+  <details class="q"><summary>Varför fungerar TP = 16 dåligt för Llama-3-8B?</summary><p>Modellen har bara 8 KV heads, så de kan inte delas på 16 GPU:er utan att dupliceras. Dessutom blir varje GPU:s matriser så små att all-reduce-kommunikationen dominerar.</p></details>
+  <details class="q"><summary>Vad händer när KV-blocken tar slut mitt i en generering?</summary><p>Schedulern preemptar en request, oftast den senast tillkomna. Dess block frigörs och den läggs tillbaka i kön för att räknas om senare.</p></details>
+</div></section>
