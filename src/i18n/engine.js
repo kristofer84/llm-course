@@ -44,12 +44,19 @@
     resources: resources
   });
 
+  // A string that is already a translated value is not a missing key: some call
+  // sites pass L.t(...) output through L.t() a second time, and that must not
+  // pollute the missing list (it is what we watch when adding a language).
+  var VALUES = {};
+  Object.keys(resources[lng] ? resources[lng].translation : {}).forEach(function (k) {
+    VALUES[resources[lng].translation[k]] = 1;
+  });
   var missing = [];
   function t(key, vars) {
     if (key == null) return key;
     key = String(key);
     var s = i18next.t(key);
-    if (s === key && lng !== SRC) { if (missing.indexOf(key) < 0) missing.push(key); }
+    if (s === key && lng !== SRC && !VALUES[key]) { if (missing.indexOf(key) < 0) missing.push(key); }
     if (vars) for (var k in vars) {
       var v = vars[k];
       if (typeof v === "string" && v.charAt(0) === "#") v = t(v.slice(1));   // value is itself a key
