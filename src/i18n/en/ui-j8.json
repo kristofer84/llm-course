@@ -1,8 +1,8 @@
 {
  "Gör en query för varje ord: vad ordet letar efter hos de andra.": "Makes a query for each word: what the word is looking for in the others.",
- "Gör en key för varje ord: ordets etikett, som andras queries jämförs med.": "Makes a key for each word: the word's label, which other queries are compared against.",
+ "Gör en key för varje ord: ordets etikett, som andras queries jämförs med.": "Makes a key for each word: the word’s label, which other queries are compared against.",
  "Gör en value för varje ord: det innehåll som skickas vidare om ordet väljs.": "Makes a value for each word: the content passed on if the word is selected.",
- "Slår ihop resultaten från attentionens 32 heads till en vektor som kan läggas till anteckningsblocket.": "Merges the results from attention's 32 heads into one vector that can be added to the notepad.",
+ "Slår ihop resultaten från attentionens 32 heads till en vektor som kan läggas till anteckningsblocket.": "Merges the results from attention’s 32 heads into one vector that can be added to the notepad.",
  "Expanderar till 14 336 neuroner och avgör vilka som ska släppas igenom. Fungerar som en dimmer.": "Expands to 14,336 neurons and decides which ones to let through. Works like a dimmer.",
  "Expanderar också till 14 336, men bär innehållet som gaten släpper fram.": "Also expands to 14,336, but carries the content the gate lets through.",
  "Trycker tillbaka från 14 336 till 4096 tal, så att resultatet passar anteckningsblocket.": "Squeezes back from 14,336 to 4096 numbers, so the result fits the notepad.",

@@ -49,7 +49,7 @@
  "Dela med √d_h": "Divide by √d_h",
  "Poängen delas med √2 ≈ 1,41 (i Llama √128 ≈ 11,3). Utan det skulle skalärprodukter i många dimensioner bli så stora att softmax lägger all vikt på en enda token.": "The scores are divided by √2 ≈ 1.41 (in Llama √128 ≈ 11.3). Without that, dot products in many dimensions would get so large that softmax puts all the weight on a single token.",
  "Softmax": "Softmax",
- "exp av varje poäng, delat med summan. Nu är poängen vikter som summerar till 1: ”den” ska hämta {{p}} % från ”Katten”.": "exp of each score, divided by the sum. Now the scores are weights that add up to 1: “den” will fetch {{p}} % from “Katten”.",
+ "exp av varje poäng, delat med summan. Nu är poängen vikter som summerar till 1: ”den” ska hämta {{p}} % från ”Katten”.": "exp of each score, divided by the sum. Now the scores are weights that add up to 1: “den” will fetch {{p}}% from “Katten”.",
  "Vikta values": "Weight the values",
  "Varje value multipliceras med sin vikt.": "Each value is multiplied by its weight.",
  "Summera": "Add up",

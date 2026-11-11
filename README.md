@@ -8,6 +8,7 @@ Interaktiv kurs i en enda självständig HTML-fil (`llm-kurs.html`), byggd från
 ## Språk (i18n)
 Kursen är tvåspråkig i samma fil: svenska (källspråk) och engelska, med språkväxlare i toppfältet.
 Valet sparas i `localStorage`, `?lang=sv` / `?lang=en` overrider, och `<html lang>` uppdateras.
+Första besöket följer webbläsarens språk: svenska för svenska läsare, annars engelska.
 
 Motorn är [i18next](https://www.i18next.com/), vendorad i `src/vendor/i18next.min.js` och inlinad i bygget
 (sidan är fortfarande en enda offline-fil). Den svenska strängen är själv nyckeln, så källfilerna
@@ -15,6 +16,8 @@ innehåller inga nycklar:
 
 - `src/i18n/engine.js` – init, `L.t()`, `L.num()`, DOM-applicering och språkväxlaren.
 - `src/i18n/en/*.json` – engelska kataloger: `{"svensk sträng": "english string"}`.
+  `data.json` är medvetna identitetsmappningar: svenska exempeltokens som `katt`, `satt`,
+  `mattan` är data som diagrammen ritas av och ska stå kvar även i engelskt läge.
 - `src/i18n/GLOSSARY.md` – terminologi och regler för översättning.
 - `tools/extract_i18n.py`, `tools/check_i18n.py` – arbetslistor ur den byggda sidan, och kontroll av
   kompletthet, inline-markup och kodrader.

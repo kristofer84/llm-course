@@ -8,7 +8,7 @@ async def main():
         errs=[]
         pg.on('pageerror',lambda e:errs.append(str(e)))
         await pg.route('**/fonts.googleapis.com/**',lambda r:r.abort())
-        await pg.goto(URL)
+        await pg.goto(URL,wait_until="domcontentloaded")
         await pg.wait_for_timeout(400)
         titles=await pg.evaluate('[...document.querySelectorAll(".slide")].map(s=>s.dataset.title)')
         want=['Vad är en språkmodell?','Kursens karta','Vad är ett grafikkort?','KV-cache i klartext','vLLM i klartext','Embedding: från id till vektor','PagedAttention','Tensor parallelism']

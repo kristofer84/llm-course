@@ -9,7 +9,7 @@ async def main():
         pg.on('pageerror',lambda e:errs.append(str(e)))
         pg.on('console',lambda m:errs.append('console:'+m.text) if m.type=='error' and 'ERR_FAILED' not in m.text else None)
         await pg.route('**/fonts.googleapis.com/**',lambda r:r.abort())
-        await pg.goto(URL)
+        await pg.goto(URL,wait_until="domcontentloaded")
         await pg.wait_for_timeout(400)
         n=await pg.evaluate('document.querySelectorAll(".slide").length')
         titles=await pg.evaluate('[...document.querySelectorAll(".slide")].map(s=>s.dataset.title)')

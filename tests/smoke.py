@@ -43,7 +43,7 @@ async def main():
         browser = await p.chromium.launch()
         page = await browser.new_page(viewport={"width": 1440, "height": 900})
         errors = await prepare(page, [])
-        await page.goto(URL)
+        await page.goto(URL,wait_until="domcontentloaded")
         await page.wait_for_timeout(400)
 
         titles = await page.evaluate(
@@ -95,12 +95,19 @@ async def main():
         merrors = await prepare(mobile, [])
         wide = []
         for i in range(n):
-            await mobile.goto(f"{URL}#s{i + 1}")
+            await mobile.goto(f"{URL}#s{i + 1}",wait_until="domcontentloaded")
             await mobile.wait_for_timeout(30)
             w = await mobile.evaluate("document.documentElement.scrollWidth")
             if w > 391:
                 wide.append(f"s{i + 1}({titles[i]})={w}")
         check(not wide, f"no horizontal overflow at 390px {wide[:5]}")
+        bar = await mobile.evaluate(
+            """() => { const t = document.querySelector('.topbar');
+                 return { over: t.scrollWidth - t.clientWidth,
+                          lang: [...document.querySelectorAll('#langsw .lg')].length }; }"""
+        )
+        check(bar["over"] <= 0, f"top bar fits at 390px (overflow {bar['over']}px)")
+        check(bar["lang"] >= 2, f"language switch present on mobile ({bar['lang']} buttons)")
         check(not merrors, f"no JS errors on mobile ({merrors[:3]})")
 
         await browser.close()

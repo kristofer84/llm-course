@@ -8,7 +8,7 @@ async def main():
         errs=[]
         pg.on('pageerror',lambda e:errs.append(str(e)))
         await pg.route('**/fonts.googleapis.com/**',lambda r:r.abort())
-        await pg.goto(URL)
+        await pg.goto(URL,wait_until="domcontentloaded")
         await pg.wait_for_timeout(400)
         titles=await pg.evaluate('[...document.querySelectorAll(".slide")].map(s=>s.dataset.title)')
         want=['Blocket som ett löpande band','Attention i klartext','Attention-formeln bit för bit','MLP i klartext','Attention 1: Q, K och V','MLP med SwiGLU']
@@ -24,7 +24,7 @@ async def main():
         m=await b.new_page(viewport={'width':390,'height':844})
         await m.route('**/fonts.googleapis.com/**',lambda r:r.abort())
         for t in want[:4]:
-            i=titles.index(t);await m.goto(f'{URL}#s{i+1}');await m.wait_for_timeout(150)
+            i=titles.index(t);await m.goto(f'{URL}#s{i+1}',wait_until="domcontentloaded");await m.wait_for_timeout(150)
             print(t,await m.evaluate('document.documentElement.scrollWidth'))
         await b.close()
 asyncio.run(main())

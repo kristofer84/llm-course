@@ -8,7 +8,7 @@
  "sitta, dåtid": "sitta, past tense",
  "det är katten som satt": "it is the cat that sat",
  "katten satt på något": "the cat sat on something",
- "här ska en plats komma": "a place should come here",
+ "här ska en plats komma": "a place goes here",
  "troligt: mattan, golvet, soffan": "likely: the rug, the floor, the sofa",
  "sista raden → nästa token: <b>” mattan”</b>": "the last row → next token: <b>“ mattan”</b>",
  "Efter alla block har vektorn för ”på” fått med sig sammanhanget från de andra orden. Den sista raden räcker nu för att gissa fortsättningen.": "After all the blocks, the vector for “på” has picked up the context from the other words. The last row is now enough to guess the continuation.",

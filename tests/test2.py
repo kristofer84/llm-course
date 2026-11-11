@@ -6,7 +6,7 @@ async def main():
         b=await p.chromium.launch()
         pg=await b.new_page(viewport={'width':390,'height':844},color_scheme='dark')
         await pg.route('**/fonts.googleapis.com/**',lambda r:r.abort())
-        await pg.goto(URL + '#s32')
+        await pg.goto(URL + '#s32',wait_until="domcontentloaded")
         await pg.wait_for_timeout(300)
         await pg.screenshot(path=shot('m32.png'))
         await pg.evaluate('location.hash="#s15"');await pg.wait_for_timeout(100)
