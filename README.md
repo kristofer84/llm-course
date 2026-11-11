@@ -5,6 +5,24 @@ Interaktiv kurs i en enda självständig HTML-fil (`llm-kurs.html`), byggd från
 ## Bygga
     cd src && python3 build.py      # skriver ../llm-kurs.html
 
+## Språk (i18n)
+Kursen är tvåspråkig i samma fil: svenska (källspråk) och engelska, med språkväxlare i toppfältet.
+Valet sparas i `localStorage`, `?lang=sv` / `?lang=en` overrider, och `<html lang>` uppdateras.
+
+Motorn är [i18next](https://www.i18next.com/), vendorad i `src/vendor/i18next.min.js` och inlinad i bygget
+(sidan är fortfarande en enda offline-fil). Den svenska strängen är själv nyckeln, så källfilerna
+innehåller inga nycklar:
+
+- `src/i18n/engine.js` – init, `L.t()`, `L.num()`, DOM-applicering och språkväxlaren.
+- `src/i18n/en/*.json` – engelska kataloger: `{"svensk sträng": "english string"}`.
+- `src/i18n/GLOSSARY.md` – terminologi och regler för översättning.
+- `tools/extract_i18n.py`, `tools/check_i18n.py` – arbetslistor ur den byggda sidan, och kontroll av
+  kompletthet, inline-markup och kodrader.
+
+Lägga till ett språk, t.ex. tyska: skapa `src/i18n/de/` med samma sorts filer (en per grupp), fyll i
+översättningarna och bygg. Språkväxlaren får knappen automatiskt. Saknade nycklar faller tillbaka på
+svenska, och `tests/i18n.py` failar om det engelska läget visar svensk text.
+
 ## Publicera
 Sidan byggs och publiceras av GitHub Actions (`.github/workflows/pages.yml`):
 `test`-jobbet bygger filen och kör Playwright-testerna, `build` kopierar `llm-kurs.html` till
@@ -34,6 +52,14 @@ Repo: https://github.com/kristofer84/llm-course — sida: https://kristofer84.gi
     python3 -m playwright install chromium
     python3 tests/smoke.py            # CI-gate: slides, overflow, JS-fel, quiz, interaktiva element
     python3 tests/test.py             # klickar igenom alla slides, skriver skärmbilder till shots/
+    python3 tests/i18n.py             # tvåspråkighet: katalogtäckning, växlare, ingen svenska i EN-läget
+
+Arbetsflöde för översättning:
+
+    (cd src && python3 build.py)      # bygg först: extraktionen läser den byggda sidan
+    python3 tools/extract_i18n.py     # skriver src/i18n/source/ (genererat, ej versionshanterat)
+    python3 tools/check_i18n.py       # täckning + markup + kodrader per grupp
+    python3 tools/check_i18n.py --group m3
 
 `tests/test2.py`–`test7.py` är manuella granskningsskript (skärmbilder per vy). Alla skript
 läser `llm-kurs.html` relativt repo-roten; `COURSE_HTML` och `COURSE_SHOTS` overrider sökvägarna,

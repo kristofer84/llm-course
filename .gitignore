@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 shots/
 _site/
+src/i18n/source/
+src/i18n/source.json
+.pi/

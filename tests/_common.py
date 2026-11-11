@@ -15,7 +15,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 HTML = Path(os.environ.get("COURSE_HTML") or ROOT / "llm-kurs.html").resolve()
 SHOTS = Path(os.environ.get("COURSE_SHOTS") or ROOT / "shots").resolve()
-URL = HTML.as_uri()
+URL = HTML.as_uri() + "?lang=sv"          # tests assert Swedish content
+URL_EN = HTML.as_uri() + "?lang=en"
 
 # Errors that come from the deliberately blocked Google Fonts request.
 IGNORED = ("ERR_FAILED", "Failed to load resource", "net::ERR_ABORTED")

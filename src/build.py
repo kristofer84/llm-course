@@ -101,8 +101,26 @@ for i,lst in enumerate(ORDER):
 unused=set(secs)-used
 print('unused:',unused)
 course=dict(mods=[m['name'] for m in MODS],desc=[m.get('desc','') for m in MODS],time=[m['time'] for m in MODS])
-parts=[open('p1.html').read(),'\n'.join(out),open('p9.html').read(),'<script>window.COURSE=%s;</script>\n'%json.dumps(course,ensure_ascii=False)]
+# --- i18n: src/i18n/<locale>/<group>.json, flat {"swedish source": "translation"} ---
+import glob,os
+catalog={}
+for lf in sorted(glob.glob('i18n/*/*.json')):
+    loc=os.path.basename(os.path.dirname(lf))
+    if loc in ('sv','source') or os.path.basename(lf).startswith('_'):continue
+    d=json.load(open(lf,encoding='utf-8'))
+    if not isinstance(d,dict):
+        print('i18n: skipping non-catalog file',lf);continue
+    cat=catalog.setdefault(loc,{})
+    for k,v in d.items():
+        if not k.strip() or not isinstance(v,str):continue
+        if k in cat and cat[k]!=v:print('i18n: conflicting translation for',repr(k[:40]))
+        cat[k]=v
+LANG=['sv']+sorted(catalog)
+parts=[open('p1.html').read(),'\n'.join(out),open('p9.html').read(),'<script>window.COURSE=%s;</script>\n'%json.dumps(course,ensure_ascii=False),
+       '<script>window.I18N_DATA=%s;</script>'%json.dumps(catalog,ensure_ascii=False),
+       '<script>\n'+open('vendor/i18next.min.js',encoding='utf-8').read()+'\n</script>',
+       open('i18n/engine.js',encoding='utf-8').read()]
 for j in ['j0.js','jd.js','j1b.js','j2b.js','j3.js','j4.js','j5.js','j6.js','j7.js','j8.js','jz.js']:parts.append(open(j).read())
 full='\n'.join(parts)
 open('../llm-kurs.html','w').write(full)
-print('slides',len(out),'bytes',len(full.encode()))
+print('slides',len(out),'bytes',len(full.encode()),'languages',LANG,'catalogued',{k:len(v) for k,v in catalog.items()})

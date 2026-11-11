@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Inuti en LLM – från prompt till token</title>
+<meta name="description" content="Interaktiv kurs om hur en språkmodell fungerar inifrån: tokens, transformerblocket, attention, KV-cache, vLLM och tolkning. Från noll till expert.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -40,6 +41,11 @@ button{font:inherit;color:inherit}
 .topbar .sp{flex:1}
 .ib{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:14px}
 .ib:hover{border-color:var(--ink2)}
+.langsw{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
+.langsw .lg{border:0;background:none;padding:6px 9px;font-size:13px;line-height:1.2;cursor:pointer;color:var(--ink2)}
+.langsw .lg+.lg{border-left:1px solid var(--line)}
+.langsw .lg:hover{color:var(--ink)}
+.langsw .lg[aria-pressed="true"]{background:var(--soft);color:var(--ink);font-weight:600}
 /* deck */
 #deck{position:relative;overflow:hidden}
 .slide{position:absolute;inset:0;overflow-y:auto;display:none;-webkit-overflow-scrolling:touch}
@@ -214,6 +220,7 @@ pre.log mark{background:color-mix(in srgb,var(--a) 28%,transparent);color:inheri
   <span class="mod" id="modname"></span>
   <span class="lvb l1" id="lvl"></span>
   <span class="sp"></span>
+  <div class="langsw" id="langsw" role="group" aria-label="Språk / Language"></div>
   <button class="ib" id="themebtn" aria-label="Byt ljust/mörkt tema">Tema</button>
   <button class="ib" id="glossbtn" aria-expanded="false" aria-controls="gloss">Ordlista</button>
   <button class="ib" id="tocbtn" aria-expanded="false" aria-controls="toc">Innehåll</button>
