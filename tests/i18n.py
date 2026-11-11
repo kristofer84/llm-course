@@ -74,6 +74,16 @@ def coverage(sv, en):
           + (f" — missing {len(missing)}: {missing[:3]}" if missing else ""))
 
 
+GLOSSARY_SORTED = r"""
+() => {
+  const terms = [...document.querySelectorAll('#gloss dt')].map(e => e.textContent.trim()).filter(Boolean);
+  const sorted = [...terms].sort((a, b) => a.localeCompare(b, document.documentElement.lang, { sensitivity: 'base' }));
+  const wrong = terms.map((v, i) => [i, v, sorted[i]]).filter(([, v, s]) => v !== s);
+  return { n: terms.length, wrong: wrong.slice(0, 3) };
+}
+"""
+
+
 COLLECT = r"""
 (sel) => {
   const out = [];
@@ -175,6 +185,21 @@ async def main():
         check(not leftovers, f"no Swedish left in English mode ({len(leftovers)} string(s))")
         for key, text in leftovers[:40]:
             print("   ", key, "|", repr(text[:90]))
+
+        # The glossary is sorted with the active language's collation, so the
+        # English term list must be alphabetical as well (Swedish puts Å Ä Ö last).
+        for lang in ("sv", "en"):
+            page = await browser.new_page(viewport={"width": 1440, "height": 900})
+            await prepare(page, [])
+            await page.goto(HTML.as_uri() + f"?lang={lang}", wait_until="domcontentloaded")
+            await page.wait_for_timeout(300)
+            await page.evaluate("document.getElementById('glossbtn').click()")
+            await page.wait_for_timeout(250)
+            res = await page.evaluate(GLOSSARY_SORTED)
+            check(res["n"] > 50 and not res["wrong"],
+                  f"glossary is alphabetical in {lang} ({res['n']} terms)"
+                  + (f" — out of order: {res['wrong']}" if res["wrong"] else ""))
+            await page.close()
 
         # Switch UI + document metadata, on a fresh page.
         page = await browser.new_page(viewport={"width": 1440, "height": 900})
