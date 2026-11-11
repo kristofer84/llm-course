@@ -20,7 +20,7 @@ MIN_BYTES = 100_000
 INTERACTIVE = [
     "bpe-next", "res-next", "kv-next", "pg-new", "pg-step", "pg-fin",
     "cb-cont", "sd-next", "fl-next", "tr-next", "tr-decode", "smp-draw",
-    "st-abl", "att-soft", "mm-step", "ah-next", "nl-lin", "wa-moe", "mv-rand",
+    "ab-abl", "att-soft", "mm-step", "ah-next", "nl-lin", "wa-moe", "mv-rand",
     "mm-tbl", "mm-seq", "ah-tbl", "cp-tbl",
 ]
 
