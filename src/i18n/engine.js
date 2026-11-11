@@ -50,7 +50,11 @@
     key = String(key);
     var s = i18next.t(key);
     if (s === key && lng !== SRC) { if (missing.indexOf(key) < 0) missing.push(key); }
-    if (vars) for (var k in vars) s = s.split("{{" + k + "}}").join(vars[k]);
+    if (vars) for (var k in vars) {
+      var v = vars[k];
+      if (typeof v === "string" && v.charAt(0) === "#") v = t(v.slice(1));   // value is itself a key
+      s = s.split("{{" + k + "}}").join(v);
+    }
     return s;
   }
   function num(n, d) {

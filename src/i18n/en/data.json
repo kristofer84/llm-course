@@ -28,5 +28,8 @@
  " fönstret": " fönstret",
  " över": " över",
  " dörren": " dörren",
- " länge": " länge"
+ " länge": " länge",
+ "Katten satt på": "Katten satt på",
+ "Prompt: <span class=\"mk\">Katten satt på mattan eftersom den var</span>": "Prompt: <span class=\"mk\">Katten satt på mattan eftersom den var</span>",
+ "<span class=\"chip t\">K</span><span class=\"chip t\">atten</span><span class=\"chip t\"> satt</span><span class=\"chip t\"> på</span><span class=\"chip t\"> matt</span><span class=\"chip t\">an</span>": "<span class=\"chip t\">K</span><span class=\"chip t\">atten</span><span class=\"chip t\"> satt</span><span class=\"chip t\"> på</span><span class=\"chip t\"> matt</span><span class=\"chip t\">an</span>"
 }

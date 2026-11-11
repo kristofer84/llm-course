@@ -7,6 +7,7 @@ import unicodedata
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "tools"))
 import i18n_dom as D  # noqa: E402
+from leads import level  # noqa: E402
 
 OLD = ['p2.html', 'p3.html', 'p4.html', 'p5.html', 'p6.html', 'p7.html', 'p8.html']
 NEW = ['n0.html', 'n0b.html', 'n6b.html', 'n8b.html', 'n1.html', 'n3.html', 'n3b.html', 'n3c.html',
@@ -170,11 +171,26 @@ def summary(i, m):
             '<p class="note" data-i18n="build.summary.note"></p></div></section>'
             % (i, fmt('title.summary.%d' % i), i,
                json.dumps({'m': i}),
-               json.dumps({'name': s('mod.%d.name' % i)}), keys))
+               json.dumps({'name': '#mod.%d.name' % i}), keys))
 
 
 out = []
 used = set()
+title_keys = {}
+
+
+def title_key(title):
+    """Stable, unique key per slide title (slug() truncates long titles)."""
+    if title not in title_keys:
+        base = slug(title)
+        key, n = base, 1
+        while key in title_keys.values():
+            n += 1
+            key = "%s-%d" % (base, n)
+        title_keys[title] = key
+    return title_keys[title]
+
+
 for i, lst in enumerate(ORDER):
     m = MODS[i]
     for t in lst:
@@ -187,14 +203,14 @@ for i, lst in enumerate(ORDER):
                        '<div class="si"><h2 data-i18n="build.quiz.title" data-i18n-vars=\'%s\'></h2>'
                        '<div class="quiz" data-quiz="%s"></div></div></section>'
                        % (i, fmt('title.quiz.%d' % i), i,
-                          json.dumps({'name': s('mod.%d.quizname' % i)}), t[6:]))
+                          json.dumps({'name': '#mod.%d.quizname' % i}), t[6:]))
         else:
             sec = secs[t]
             used.add(t)
-            lvl = 1 if slug(t) in LEADS or 'data-level' in sec else 0
+            lvl = level(t, False)
             sec = re.sub(r'<section class="slide"[^>]*>',
                          '<section class="slide" data-level="%d" data-mod="%d" data-title="%s" data-i18n-title="title.%s">'
-                         % (lvl, i, t, slug(t)), sec, 1)
+                         % (lvl, i, t, title_key(t)), sec, 1)
             if slug(t) in LEADS and 'class="plain"' not in sec and 'class="lead"' not in sec:
                 sec = sec.replace('</h2>', '</h2>\n  <p class="plain" data-i18n="lead.%s"></p>' % slug(t), 1)
             if t in QUIZMAP:
@@ -232,7 +248,10 @@ def fill(page, sv):
         if raw:
             vs = json.loads(raw)
             for k, v in vs.items():
-                val = val.replace('{{%s}}' % k, str(v))
+                v = str(v)
+                if v.startswith('#') and v[1:] in sv:
+                    v = sv[v[1:]]
+                val = val.replace('{{%s}}' % k, v)
         edits.append((el.inner_start, el.inner_end, val))
     for el in [n for n in _walk(root) if any(a.startswith('data-i18n-') and a != 'data-i18n-vars' for a in n.attrs)]:
         for a in [a for a in el.attrs if a.startswith('data-i18n-') and a != 'data-i18n-vars']:

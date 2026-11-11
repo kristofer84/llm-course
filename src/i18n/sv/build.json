@@ -356,5 +356,6 @@
  "title.quiz.11": "Testa dig själv: repetition",
  "title.multi-lora-manga-modeller-pa": "Multi-LoRA: många modeller på en GPU",
  "title.attention-sinks-och-lokal": "Attention sinks och lokal attention",
- "title.disaggregerad-prefill-och": "Disaggregerad prefill och decode"
+ "title.disaggregerad-prefill-och": "Disaggregerad prefill och decode",
+ "title.testa-dig-sjalv-2": "Testa dig själv: modellvarianter"
 }

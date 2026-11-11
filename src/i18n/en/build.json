@@ -356,5 +356,6 @@
  "title.quiz.11": "Test yourself: review",
  "title.multi-lora-manga-modeller-pa": "Multi-LoRA: many models on one GPU",
  "title.attention-sinks-och-lokal": "Attention sinks and local attention",
- "title.disaggregerad-prefill-och": "Disaggregated prefill and decode"
+ "title.disaggregerad-prefill-och": "Disaggregated prefill and decode",
+ "title.testa-dig-sjalv-2": "Test yourself: model variants"
 }
