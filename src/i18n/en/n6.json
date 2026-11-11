@@ -53,5 +53,10 @@
  "n6.kapacitetsplanering.11": "bf16",
  "n6.kapacitetsplanering.12": "fp8",
  "n6.kapacitetsplanering.13": "int4",
- "n6.vad-ligger-i-gpu-minnet.arialabel": "80 GB of GPU memory split into weights, activations, overhead, KV pool and unused"
+ "n6.vad-ligger-i-gpu-minnet.arialabel": "80 GB of GPU memory split into weights, activations, overhead, KV pool and unused",
+ "n6.kapacitetsplanering.32": "Model",
+ "n6.kapacitetsplanering.33": "Weights",
+ "n6.kapacitetsplanering.34": "GPUs (TP)",
+ "n6.kapacitetsplanering.35": "Concurrent users",
+ "n6.kapacitetsplanering.36": "Tokens per conversation"
 }

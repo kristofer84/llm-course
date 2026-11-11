@@ -51,5 +51,7 @@
  "n3b.lager-for-lager.9": "Prompt: <span class=\"mk\">Katten satt på mattan eftersom den var</span>",
  "n3b.ett-lager-inifran.arialabel": "The parts of a layer in order, with weights and calculation rules",
  "n3b.attention-och-mlp-olika-jobb.arialabel": "The residual stream as a table: attention reads other rows, the MLP only its own row",
- "n3b.lager-for-lager.arialabel": "32 layers with a marker for where the stream is read"
+ "n3b.lager-for-lager.arialabel": "32 layers with a marker for where the stream is read",
+ "n3b.32-lager-i-en-modellfil.12": "Layer",
+ "n3b.lager-for-lager.13": "Read the stream after layer"
 }

@@ -15,9 +15,9 @@
     </div>
     <div class="panel">
       <div class="ctl">
-        <label>a:s vinkel <input type="range" id="dp-a" min="0" max="360" value="25"></label>
-        <label>b:s vinkel <input type="range" id="dp-b" min="0" max="360" value="80"></label>
-        <label>b:s längd <input type="range" id="dp-l" min="0.3" max="1.6" step="0.1" value="1"></label>
+        <label><span data-i18n="n1.vektorer-och-skalarprodukt.12">a:s vinkel </span><input type="range" id="dp-a" min="0" max="360" value="25"></label>
+        <label><span data-i18n="n1.vektorer-och-skalarprodukt.13">b:s vinkel </span><input type="range" id="dp-b" min="0" max="360" value="80"></label>
+        <label><span data-i18n="n1.vektorer-och-skalarprodukt.14">b:s längd </span><input type="range" id="dp-l" min="0.3" max="1.6" step="0.1" value="1"></label>
       </div>
       <svg class="viz" id="dp-svg" viewBox="0 0 520 320" role="img" aria-label="" data-i18n-aria-label="n1.vektorer-och-skalarprodukt.arialabel"></svg>
       <div class="out" id="dp-out" aria-live="polite"></div>
@@ -59,7 +59,7 @@
     </div>
     <div class="panel">
       <div class="ctl">
-        <label>Neuroner <input type="range" id="nl-n" min="1" max="12" value="3"><span class="mk" id="nl-nv">3</span></label>
+        <label><span data-i18n="n1.varfor-icke-linjaritet.15">Neuroner </span><input type="range" id="nl-n" min="1" max="12" value="3"><span class="mk" id="nl-nv">3</span></label>
         <button class="btn on" id="nl-relu" data-i18n="n1.varfor-icke-linjaritet.9"></button><button class="btn" id="nl-lin" data-i18n="n1.varfor-icke-linjaritet.10"></button>
       </div>
       <svg class="viz" id="nl-svg" viewBox="0 0 520 280" role="img" aria-label="" data-i18n-aria-label="n1.varfor-icke-linjaritet.arialabel"></svg>
@@ -83,8 +83,8 @@
     </div>
     <div class="panel">
       <div class="ctl" id="sm-ctl"></div>
-      <div class="ctl"><label>Lägg till på alla <input type="range" id="sm-c" min="-5" max="5" step="0.5" value="0"><span class="mk" id="sm-cv">0</span></label>
-      <label>Skala alla <input type="range" id="sm-s" min="0.2" max="3" step="0.1" value="1"><span class="mk" id="sm-sv">1.0</span></label></div>
+      <div class="ctl"><label><span data-i18n="n1.softmax.16">Lägg till på alla </span><input type="range" id="sm-c" min="-5" max="5" step="0.5" value="0"><span class="mk" id="sm-cv">0</span></label>
+      <label><span data-i18n="n1.softmax.17">Skala alla </span><input type="range" id="sm-s" min="0.2" max="3" step="0.1" value="1"><span class="mk" id="sm-sv">1.0</span></label></div>
       <svg class="viz" id="sm-svg" viewBox="0 0 520 220" role="img" aria-label="" data-i18n-aria-label="n1.softmax.arialabel"></svg>
       <div class="out" id="sm-out" aria-live="polite"></div>
     </div>

@@ -74,5 +74,12 @@
  "p5.varfor-batching-raddar.arialabel": "Total genomströmning som funktion av batchstorlek",
  "p5.latensmatt.arialabel": "Tidslinje för en request: kö, prefill, första token, sedan tokens med jämna mellanrum",
  "p5.kvantisering.arialabel": "Viktminne för 8B och 70B vid olika precision",
- "p5.kvantisering.arialabel-2": "16 int4-nivåer och avrundning av vikter"
+ "p5.kvantisering.arialabel-2": "16 int4-nivåer och avrundning av vikter",
+ "p5.hur-stor-blir-kv-cachen.14": "Modell",
+ "p5.hur-stor-blir-kv-cachen.15": "GPU",
+ "p5.hur-stor-blir-kv-cachen.16": "KV dtype",
+ "p5.hur-stor-blir-kv-cachen.17": "Kontext",
+ "p5.hur-stor-blir-kv-cachen.18": "Sekvenser",
+ "p5.varfor-batching-raddar.19": "Batch",
+ "p5.kontext             .20": "Kontext"
 }

@@ -70,5 +70,8 @@
  "p4.den-autoregressiva-loopen.arialabel": "Loop: forward pass, logits, sampler, stoppkontroll, lägg till token",
  "p4.traning-next-token-loss.arialabel": "Inputs och targets förskjutna ett steg",
  "p4.gradienter-och-minne.arialabel": "Minne per parameter vid träning och inference",
- "p4.fran-basmodell-till.arialabel": "Tre träningsfaser: pretraining, SFT, preferens- och RL-träning"
+ "p4.fran-basmodell-till.arialabel": "Tre träningsfaser: pretraining, SFT, preferens- och RL-träning",
+ "p4.sampling-temperature-top-k.16": "temperature",
+ "p4.sampling-temperature-top-k.17": "top-p",
+ "p4.sampling-temperature-top-k.18": "top-k"
 }

@@ -50,5 +50,11 @@
  "n1.matris-ganger-vektor.arialabel": "Vector times matrix, click an output value to see which column is used",
  "n1.varfor-icke-linjaritet.arialabel": "A curve approximated by a sum of ReLU neurons",
  "n1.softmax.arialabel": "Logits and the corresponding probabilities",
- "n1.vikter-och-aktiveringar.arialabel": "Weights that stay still and activations that change per token"
+ "n1.vikter-och-aktiveringar.arialabel": "Weights that stay still and activations that change per token",
+ "n1.vektorer-och-skalarprodukt.12": "angle of a",
+ "n1.vektorer-och-skalarprodukt.13": "angle of b",
+ "n1.vektorer-och-skalarprodukt.14": "length of b",
+ "n1.varfor-icke-linjaritet.15": "Neurons",
+ "n1.softmax.16": "Add to all",
+ "n1.softmax.17": "Scale all"
 }

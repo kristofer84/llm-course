@@ -50,5 +50,11 @@
  "n1.matris-ganger-vektor.arialabel": "Vektor gånger matris, klicka på ett utvärde för att se vilken kolumn som används",
  "n1.varfor-icke-linjaritet.arialabel": "En kurva approximeras av en summa ReLU-neuroner",
  "n1.softmax.arialabel": "Logits och motsvarande sannolikheter",
- "n1.vikter-och-aktiveringar.arialabel": "Vikter som står still och aktiveringar som ändras per token"
+ "n1.vikter-och-aktiveringar.arialabel": "Vikter som står still och aktiveringar som ändras per token",
+ "n1.vektorer-och-skalarprodukt.12": "a:s vinkel",
+ "n1.vektorer-och-skalarprodukt.13": "b:s vinkel",
+ "n1.vektorer-och-skalarprodukt.14": "b:s längd",
+ "n1.varfor-icke-linjaritet.15": "Neuroner",
+ "n1.softmax.16": "Lägg till på alla",
+ "n1.softmax.17": "Skala alla"
 }

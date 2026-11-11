@@ -53,5 +53,10 @@
  "n6.kapacitetsplanering.11": "bf16",
  "n6.kapacitetsplanering.12": "fp8",
  "n6.kapacitetsplanering.13": "int4",
- "n6.vad-ligger-i-gpu-minnet.arialabel": "80 GB GPU-minne uppdelat i vikter, aktiveringar, overhead, KV-pool och oanvänt"
+ "n6.vad-ligger-i-gpu-minnet.arialabel": "80 GB GPU-minne uppdelat i vikter, aktiveringar, overhead, KV-pool och oanvänt",
+ "n6.kapacitetsplanering.32": "Modell",
+ "n6.kapacitetsplanering.33": "Vikter",
+ "n6.kapacitetsplanering.34": "GPU:er (TP)",
+ "n6.kapacitetsplanering.35": "Samtidiga användare",
+ "n6.kapacitetsplanering.36": "Tokens per konversation"
 }

@@ -14,5 +14,6 @@
  "n6b.kv-cache-i-klartext.5": "<span class=\"lb\">Result</span>The same answer as without a cache, but the work per word is constant instead of growing with the length of the text.",
  "n6b.kv-cache-i-klartext.6": "<span class=\"lb\">The price</span>The notes take memory: in Llama-3-8B about 128 KB per word. So a conversation of 8,000 words takes roughly 1 GB of GPU memory for as long as it runs.",
  "n6b.vad-ar-ett-grafikkort.arialabel": "Kitchen with cooks, a door and a pantry as a metaphor for the GPU",
- "n6b.kv-cache-i-klartext.arialabel": "Work per word with and without a cache"
+ "n6b.kv-cache-i-klartext.arialabel": "Work per word with and without a cache",
+ "n6b.kv-cache-i-klartext.9": "Words in the text"
 }

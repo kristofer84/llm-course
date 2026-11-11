@@ -155,5 +155,7 @@
  "p3.gqa-delade-kv-heads.arialabel": "32 query heads in 8 groups that share KV heads",
  "p3.mlp-med-swiglu.arialabel": "SwiGLU flow",
  "p3.mlp-med-swiglu.arialabel-2": "SiLU compared with ReLU",
- "p3.var-parametrarna-finns.arialabel": "Bar chart of how the parameters are distributed"
+ "p3.var-parametrarna-finns.arialabel": "Bar chart of how the parameters are distributed",
+ "p3.attention-3-rope.22": "q position m",
+ "p3.attention-3-rope.23": "k position n"
 }

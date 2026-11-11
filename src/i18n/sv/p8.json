@@ -37,5 +37,6 @@
  "p8.vidare-harifran.16": "Sammanfattning i en mening",
  "p8.vidare-harifran.17": "Tokens blir vektorer, vektorerna förfinas av 32 lager som adderar till en gemensam ström, sista vektorn blir en fördelning över nästa token, och en inference-motor handlar nästan helt om att hålla KV-cachen i minnet och läsa vikterna så få gånger som möjligt.",
  "p8.riktningar-i-residual-stream.arialabel": "Två grupper av punkter separerade längs riktningen r",
- "p8.steering-och-ablation.arialabel": "Vektor x, riktning r och resultatet efter steering eller ablation"
+ "p8.steering-och-ablation.arialabel": "Vektor x, riktning r och resultatet efter steering eller ablation",
+ "p8.steering-och-ablation.18": "x:s vinkel"
 }

@@ -74,5 +74,12 @@
  "p5.varfor-batching-raddar.arialabel": "Total throughput as a function of batch size",
  "p5.latensmatt.arialabel": "Timeline for a request: queue, prefill, first token, then tokens at even intervals",
  "p5.kvantisering.arialabel": "Weight memory for 8B and 70B at different precisions",
- "p5.kvantisering.arialabel-2": "16 int4 levels and rounding of weights"
+ "p5.kvantisering.arialabel-2": "16 int4 levels and rounding of weights",
+ "p5.hur-stor-blir-kv-cachen.14": "Model",
+ "p5.hur-stor-blir-kv-cachen.15": "GPU",
+ "p5.hur-stor-blir-kv-cachen.16": "KV dtype",
+ "p5.hur-stor-blir-kv-cachen.17": "Context",
+ "p5.hur-stor-blir-kv-cachen.18": "Sequences",
+ "p5.varfor-batching-raddar.19": "Batch",
+ "p5.kontext             .20": "Context"
 }

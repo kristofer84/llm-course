@@ -74,13 +74,13 @@
     </div>
     <div class="panel">
       <div class="ctl">
-        <label>Modell <select id="kvc-preset"></select></label>
-        <label>GPU <select id="kvc-gpu"><option value="24" data-i18n="p5.hur-stor-blir-kv-cachen.6"></option><option value="48" data-i18n="p5.hur-stor-blir-kv-cachen.7"></option><option value="80" selected data-i18n="p5.hur-stor-blir-kv-cachen.8"></option><option value="141" data-i18n="p5.hur-stor-blir-kv-cachen.9"></option></select></label>
-        <label>KV dtype <select id="kvc-dt"><option value="2" data-i18n="p5.hur-stor-blir-kv-cachen.10"></option><option value="1" data-i18n="p5.hur-stor-blir-kv-cachen.11"></option></select></label>
+        <label><span data-i18n="p5.hur-stor-blir-kv-cachen.14">Modell </span><select id="kvc-preset"></select></label>
+        <label><span data-i18n="p5.hur-stor-blir-kv-cachen.15">GPU </span><select id="kvc-gpu"><option value="24" data-i18n="p5.hur-stor-blir-kv-cachen.6"></option><option value="48" data-i18n="p5.hur-stor-blir-kv-cachen.7"></option><option value="80" selected data-i18n="p5.hur-stor-blir-kv-cachen.8"></option><option value="141" data-i18n="p5.hur-stor-blir-kv-cachen.9"></option></select></label>
+        <label><span data-i18n="p5.hur-stor-blir-kv-cachen.16">KV dtype </span><select id="kvc-dt"><option value="2" data-i18n="p5.hur-stor-blir-kv-cachen.10"></option><option value="1" data-i18n="p5.hur-stor-blir-kv-cachen.11"></option></select></label>
       </div>
       <div class="ctl">
-        <label>Kontext <input type="range" id="kvc-ctx" min="9" max="17" step="1" value="13"><span class="mk" id="kvc-ctxv"></span></label>
-        <label>Sekvenser <input type="range" id="kvc-n" min="0" max="9" step="1" value="4"><span class="mk" id="kvc-nv"></span></label>
+        <label><span data-i18n="p5.hur-stor-blir-kv-cachen.17">Kontext </span><input type="range" id="kvc-ctx" min="9" max="17" step="1" value="13"><span class="mk" id="kvc-ctxv"></span></label>
+        <label><span data-i18n="p5.hur-stor-blir-kv-cachen.18">Sekvenser </span><input type="range" id="kvc-n" min="0" max="9" step="1" value="4"><span class="mk" id="kvc-nv"></span></label>
       </div>
       <svg class="viz" id="kvc-svg" viewBox="0 0 560 120" role="img" aria-label="" data-i18n-aria-label="p5.hur-stor-blir-kv-cachen.arialabel"></svg>
       <div class="out" id="kvc-out" aria-live="polite"></div>
@@ -99,8 +99,8 @@
     </div>
     <div class="panel">
       <div class="ctl">
-        <label>Batch <input type="range" id="rf-b" min="0" max="9" value="0"><span class="mk" id="rf-bv"></span></label>
-        <label>Kontext <input type="range" id="rf-c" min="9" max="15" value="11"><span class="mk" id="rf-cv"></span></label>
+        <label><span data-i18n="p5.varfor-batching-raddar.19">Batch </span><input type="range" id="rf-b" min="0" max="9" value="0"><span class="mk" id="rf-bv"></span></label>
+        <label><span data-i18n="p5.kontext             .20">Kontext</span> <input type="range" id="rf-c" min="9" max="15" value="11"><span class="mk" id="rf-cv"></span></label>
       </div>
       <svg class="viz" id="rf-svg" viewBox="0 0 560 300" role="img" aria-label="" data-i18n-aria-label="p5.varfor-batching-raddar.arialabel"></svg>
       <div class="out" id="rf-out" aria-live="polite"></div>

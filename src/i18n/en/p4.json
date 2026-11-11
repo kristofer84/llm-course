@@ -70,5 +70,8 @@
  "p4.den-autoregressiva-loopen.arialabel": "Loop: forward pass, logits, sampler, stop check, append token",
  "p4.traning-next-token-loss.arialabel": "Inputs and targets shifted one step",
  "p4.gradienter-och-minne.arialabel": "Memory per parameter during training and inference",
- "p4.fran-basmodell-till.arialabel": "Three training phases: pretraining, SFT, preference and RL training"
+ "p4.fran-basmodell-till.arialabel": "Three training phases: pretraining, SFT, preference and RL training",
+ "p4.sampling-temperature-top-k.16": "Temperature",
+ "p4.sampling-temperature-top-k.17": "Top-p",
+ "p4.sampling-temperature-top-k.18": "Top-k"
 }

@@ -54,5 +54,6 @@
  "n3c.ett-block-staplat-32-ganger.arialabel": "Stacked blocks with a parameter count",
  "n3c.shapen-andras-aldrig.arialabel": "The tensor’s shape at each step through the model",
  "n3c.normalisering-varfor-och-var.arialabel": "Where the normalization sits",
- "n3c.normalisering-varfor-och-var.arialabel-2": "The size of the stream and of what the blocks read, through 32 blocks"
+ "n3c.normalisering-varfor-och-var.arialabel-2": "The size of the stream and of what the blocks read, through 32 blocks",
+ "n3c.ett-block-staplat-32-ganger.20": "Number of blocks L"
 }

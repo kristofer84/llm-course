@@ -273,10 +273,10 @@
   const mx=(ma[0]+mb[0])/2,my=(ma[1]+mb[1])/2,dx=mb[0]-ma[0],dy=mb[1]-ma[1];const len=Math.hypot(dx,dy);const px=-dy/len*170,py=dx/len*170;
   S('line',{x1:mx-px,y1:my-py,x2:mx+px,y2:my+py,stroke:'var(--ink2)','stroke-dasharray':'5 4'},svg);
   txt(svg,mb[0]+8,mb[1]-10,'r','b tt');txt(svg,20,330,L.t('j2b.139'),'s');})();
-(function steer(){const svg=$('st-svg');const ra=20*Math.PI/180,rx=Math.cos(ra),ry=Math.sin(ra);let abl=false;const cx=200,cy=200,sc=110;
+(function steer(){const svg=$('ab-svg');const ra=20*Math.PI/180,rx=Math.cos(ra),ry=Math.sin(ra);let abl=false;const cx=200,cy=200,sc=110;
   const P=(x,y)=>[cx+x*sc,cy-y*sc];
   function arrow(x,y,c,w,dash){const [a,b]=P(x,y);S('line',{x1:cx,y1:cy,x2:a,y2:b,stroke:c,'stroke-width':w,'stroke-dasharray':dash||'','stroke-linecap':'round'},svg);S('circle',{cx:a,cy:b,r:w+1.5,fill:c},svg);return[a,b];}
-  function draw(){clear(svg);const ang=+$('st-ang').value*Math.PI/180,al=+$('st-a').value;$('st-av').textContent=al.toFixed(1);
+  function draw(){clear(svg);const ang=+$('ab-ang').value*Math.PI/180,al=+$('ab-a').value;$('ab-av').textContent=al.toFixed(1);
     const [e1,e2]=P(-rx*1.6,-ry*1.6),[f1,f2]=P(rx*2.6,ry*2.6);S('line',{x1:e1,y1:e2,x2:f1,y2:f2,stroke:'var(--line)','stroke-width':1},svg);
     const x=[Math.cos(ang)*1.2,Math.sin(ang)*1.2];let y=x.slice();const d0=x[0]*rx+x[1]*ry;
     if(abl){y=[x[0]-d0*rx,x[1]-d0*ry];}y=[y[0]+al*rx,y[1]+al*ry];const d1=y[0]*rx+y[1]*ry;
@@ -284,7 +284,7 @@
     arrow(x[0],x[1],'var(--ink2)',2,'5 4');const [xa,xb]=P(x[0],x[1]);txt(svg,xa+8,xb-6,'x','b');
     const [ya,yb]=arrow(y[0],y[1],'var(--a)',3);txt(svg,ya+8,yb+16,"x′",'b ta');
     const [pa,pb]=P(d1*rx,d1*ry);S('line',{x1:ya,y1:yb,x2:pa,y2:pb,stroke:'var(--a)','stroke-dasharray':'2 3'},svg);
-    $('st-out').innerHTML=L.t('j2b.140',{before:L.num(d0,2),after:L.num(d1,2)})+(abl?' '+L.t('j2b.68'):'');}
-  $('st-ang').addEventListener('input',draw);$('st-a').addEventListener('input',draw);
-  $('st-abl').addEventListener('click',()=>{abl=!abl;$('st-abl').classList.toggle('on',abl);$('st-abl').textContent=abl?L.t('j2b.69'):L.t('j2b.141');draw();});draw();})();
+    $('ab-out').innerHTML=L.t('j2b.140',{before:L.num(d0,2),after:L.num(d1,2)})+(abl?' '+L.t('j2b.68'):'');}
+  $('ab-ang').addEventListener('input',draw);$('ab-a').addEventListener('input',draw);
+  $('ab-abl').addEventListener('click',()=>{abl=!abl;$('ab-abl').classList.toggle('on',abl);$('ab-abl').textContent=abl?L.t('j2b.69'):L.t('j2b.141');draw();});draw();})();
 

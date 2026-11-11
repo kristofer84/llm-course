@@ -51,5 +51,7 @@
  "n3b.lager-for-lager.9": "Prompt: <span class=\"mk\">Katten satt på mattan eftersom den var</span>",
  "n3b.ett-lager-inifran.arialabel": "Ett lagers delar i ordning, med vikter och räkneregler",
  "n3b.attention-och-mlp-olika-jobb.arialabel": "Residual stream som tabell: attention läser andra rader, MLP bara den egna raden",
- "n3b.lager-for-lager.arialabel": "32 lager med markering av var strömmen läses"
+ "n3b.lager-for-lager.arialabel": "32 lager med markering av var strömmen läses",
+ "n3b.32-lager-i-en-modellfil.12": "Lager",
+ "n3b.lager-for-lager.13": "Läs strömmen efter lager"
 }

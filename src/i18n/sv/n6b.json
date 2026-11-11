@@ -14,5 +14,6 @@
  "n6b.kv-cache-i-klartext.5": "<span class=\"lb\">Resultat</span>Samma svar som utan cache, men arbetet per ord är konstant i stället för att växa med textens längd.",
  "n6b.kv-cache-i-klartext.6": "<span class=\"lb\">Priset</span>Anteckningarna tar minne: i Llama-3-8B cirka 128 KB per ord. En konversation på 8 000 ord tar alltså ungefär 1 GB av grafikkortets minne, så länge den pågår.",
  "n6b.vad-ar-ett-grafikkort.arialabel": "Kök med kockar, en dörr och ett skafferi som liknelse för grafikkortet",
- "n6b.kv-cache-i-klartext.arialabel": "Arbete per ord med och utan cache"
+ "n6b.kv-cache-i-klartext.arialabel": "Arbete per ord med och utan cache",
+ "n6b.kv-cache-i-klartext.9": "Ord i texten"
 }

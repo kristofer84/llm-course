@@ -37,5 +37,6 @@
  "p8.vidare-harifran.16": "Summary in one sentence",
  "p8.vidare-harifran.17": "Tokens become vectors, the vectors are refined by 32 layers that add to a shared stream, the last vector becomes a distribution over the next token, and an inference engine is almost entirely about keeping the KV cache in memory and reading the weights as few times as possible.",
  "p8.riktningar-i-residual-stream.arialabel": "Two groups of points separated along the direction r",
- "p8.steering-och-ablation.arialabel": "Vector x, direction r, and the result after steering or ablation"
+ "p8.steering-och-ablation.arialabel": "Vector x, direction r, and the result after steering or ablation",
+ "p8.steering-och-ablation.18": "angle of x"
 }

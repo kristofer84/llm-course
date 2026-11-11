@@ -155,6 +155,39 @@ def main():
     for e in empties[:10]:
         failures.append("empty element in the build: %s" % e)
 
+    # Duplicate ids make getElementById return the wrong element: the second
+    # visualisation renders into the first one's SVG and the slide looks empty.
+    import collections as _collections
+    ids = re.findall(r'\sid="([^"]+)"', body_only)
+    dupes = [i for i, c in _collections.Counter(ids).items() if c > 1]
+    for dup in dupes[:10]:
+        failures.append("duplicate element id: %s" % dup)
+
+    # Text that no key covers: a text node next to element children is outside
+    # the unit rule, so it never gets translated (the slider labels were this).
+    import sys as _sys
+    _sys.path.insert(0, os.path.join(ROOT, "tools"))
+    import i18n_dom as _dom
+    body = re.sub(r"<(script|style)[^>]*>.*?</\1>", "", page, flags=re.S)
+    tree = _dom.parse(body)
+    covered = {id(u) for u in _dom.units(tree, body)}
+    orphans = []
+
+    def _walk(node):
+        if id(node) in covered:
+            return          # the whole subtree is one translated unit
+        if node.children and node.tag not in _dom.SKIP:
+            own = "".join(x for x in node.text if re.search(r"[A-Za-zÅÄÖåäö]", x or "")).strip()
+            if own:
+                orphans.append((node.tag.lower(), own[:60]))
+        for child in node.children:
+            _walk(child)
+
+    for child in tree.children:
+        _walk(child)
+    for tag, text in orphans[:10]:
+        failures.append("untranslatable text in <%s>: %r" % (tag, text))
+
     # Swedish literals left inside the JavaScript, outside the catalogs
     blocks = re.findall(r"<script>(.*?)</script>", page, re.S)
     js = "\n".join(b for b in blocks

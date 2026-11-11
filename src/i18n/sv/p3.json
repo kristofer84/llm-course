@@ -155,5 +155,7 @@
  "p3.gqa-delade-kv-heads.arialabel": "32 query heads i 8 grupper som delar KV heads",
  "p3.mlp-med-swiglu.arialabel": "SwiGLU-flöde",
  "p3.mlp-med-swiglu.arialabel-2": "SiLU jämfört med ReLU",
- "p3.var-parametrarna-finns.arialabel": "Stapeldiagram över parametrarnas fördelning"
+ "p3.var-parametrarna-finns.arialabel": "Stapeldiagram över parametrarnas fördelning",
+ "p3.attention-3-rope.22": "q-position m",
+ "p3.attention-3-rope.23": "k-position n"
 }
