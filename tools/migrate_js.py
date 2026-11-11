@@ -16,6 +16,7 @@ import glob
 import json
 import os
 import re
+import subprocess
 import sys
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -256,14 +257,104 @@ def migrate_literals(src, name, old_en, identity, report):
 IDENTITY_G = set()
 
 
+PRE_MIGRATION = "40c7558"   # last commit before the string-as-key model was retired
+
+
+def pre_migration_catalog():
+    """The English catalog as it was before the migration: every string that
+    actually reached the page, which is what makes the second pass safe."""
+    cache = "/tmp/old_en_catalog.json"
+    if os.path.exists(cache):
+        return json.load(open(cache, encoding="utf-8"))
+    out = {}
+    names = subprocess.check_output(
+        ["git", "ls-tree", "-r", "--name-only", PRE_MIGRATION, "src/i18n/en/"], cwd=REPO).decode().split()
+    for f in names:
+        if f.endswith(".json"):
+            out.update(json.loads(subprocess.check_output(["git", "show", "%s:%s" % (PRE_MIGRATION, f)],
+                                                          cwd=REPO)))
+    json.dump(out, open(cache, "w", encoding="utf-8"), ensure_ascii=False)
+    return out
+
+
+def migrate_known(src, name, old_en, accept, existing):
+    """Second pass: key the literals that already had a translation before the
+    migration. `accept` is the only criterion, so nothing that merely looks like
+    text (sample tokens, class names) is touched."""
+    toks = tokenize(src)
+    group = name[:-3]
+    values = set(existing.values())
+    next_n = 1 + max([int(k.rsplit('.', 1)[1]) for k in existing
+                      if k.startswith(group + '.') and k.rsplit('.', 1)[1].isdigit()] or [0])
+    sv, en, by_value, edits = {}, {}, {}, []
+    for k, tok in enumerate(toks):
+        if tok.kind != "str":
+            continue
+        value = tok.value
+        if value in values or not accept(value):
+            continue
+        prev = toks[k - 1] if k else None
+        nxt = toks[k + 1] if k + 1 < len(toks) else None
+        if prev and prev.value in NO_KEY_BEFORE:
+            continue
+        if prev and prev.value in NO_KEY_ARGS:
+            continue
+        if nxt and nxt.value == ":" and prev and prev.value in ("{", ","):
+            continue
+        if value in by_value:
+            key = by_value[value]
+        else:
+            key = "%s.%d" % (group, next_n)
+            next_n += 1
+            by_value[value] = key
+            sv[key] = value
+            en[key] = old_en.get(value, "")
+        in_call = (prev is not None and prev.value == "(" and k >= 4
+                   and toks[k - 2].value == "t" and toks[k - 3].value == "." and toks[k - 4].value == "L")
+        edits.append((tok.start, tok.end, js_quote(key) if in_call else "L.t(%s)" % js_quote(key)))
+    body = src
+    for start, end, rep in sorted(edits, key=lambda e: e[0], reverse=True):
+        body = body[:start] + rep + body[end:]
+    return body, sv, en
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--report", action="store_true")
+    ap.add_argument("--known", action="store_true",
+                    help="second pass: key literals that had a translation before the migration")
     args = ap.parse_args()
     old_en = load_old_en()
     global IDENTITY_G
     IDENTITY_G = load_identity()
     report = {}
+    if args.known:
+        old_catalog = pre_migration_catalog()
+        identity = {k for k, v in json.load(
+            open(os.path.join(REPO, "src/i18n/en/data.json"), encoding="utf-8")).items() if k == v}
+
+        def accept(value):
+            return (value.strip() and len(value.strip()) >= 4 and value in old_catalog
+                    and old_catalog[value] and old_catalog[value] != value and value not in identity)
+
+        for name in JS_FILES:
+            group = name[:-3]
+            path = os.path.join(REPO, "src/i18n/sv/%s.json" % group)
+            existing = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else {}
+            src = open(os.path.join(REPO, "src", name), encoding="utf-8").read()
+            body, sv, en = migrate_known(src, name, old_catalog, accept, existing)
+            print("%-7s +%3d keys" % (name, len(sv)), ([k for k in sv.values()][:2]))
+            if args.report or not sv:
+                continue
+            open(os.path.join(REPO, "src", name), "w", encoding="utf-8").write(body)
+            merged = dict(existing); merged.update(sv)
+            json.dump(merged, open(path, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+            epath = os.path.join(REPO, "src/i18n/en/%s.json" % group)
+            een = json.load(open(epath, encoding="utf-8")) if os.path.exists(epath) else {}
+            een.update(en)
+            json.dump(een, open(epath, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+        return
+
     for name in JS_FILES + ["jd.js"]:
         path = os.path.join(REPO, "src", name)
         src = open(path, encoding="utf-8").read()

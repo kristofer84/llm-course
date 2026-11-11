@@ -10,5 +10,11 @@
  "j0.9": "Gör om",
  "j0.10": "Alla rätt.",
  "j0.11": "Läs förklaringarna och prova igen om du vill.",
- "j0.12": "Rätt. "
+ "j0.12": "Rätt. ",
+ "j0.13": "Grund",
+ "j0.14": "Modul {{n}}, ca {{t}} min",
+ "j0.15": "Modul {{n}}: {{name}}",
+ "j0.16": "Resultat: <b>{{ok}} / {{n}}</b>",
+ "j0.17": "({{left}} kvar)",
+ "j0.18": "Inte riktigt. "
 }

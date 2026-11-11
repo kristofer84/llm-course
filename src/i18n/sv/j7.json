@@ -5,5 +5,12 @@
  "j7.4": "<b>64 användare</b>: varje steg bär in 16 GB vikter plus deras KV-cache. Kockarna arbetar bara ungefär <b>{{util}} %</b> av tiden. Ett steg tar cirka {{t}} ms, alltså ungefär <b>{{per}} ord per sekund</b> per användare och <b>{{tot}}</b> totalt. Samma dörr, samma vikter, men nästan 50 gånger mer nytta per steg.",
  "j7.5": "<b>En användare</b>: varje steg bär in 16 GB vikter. Kockarna arbetar bara ungefär <b>{{util}} %</b> av tiden. Ett steg tar cirka {{t}} ms, alltså ungefär <b>{{per}} ord per sekund</b> per användare och <b>{{tot}}</b> totalt.",
  "j7.6": "ord som bearbetas för varje nytt ord",
- "j7.7": "För att skriva {{n}} ord: utan cache bearbetas <b>{{a}}</b> ord totalt, med cache <b>{{n}}</b>. Skillnaden växer med varje ord: vid 1 000 ord är det 500 500 mot 1 000."
+ "j7.7": "För att skriva {{n}} ord: utan cache bearbetas <b>{{a}}</b> ord totalt, med cache <b>{{n}}</b>. Skillnaden växer med varje ord: vid 1 000 ord är det 500 500 mot 1 000.",
+ "j7.8": "{{p}} %",
+ "j7.9": "Skafferi = minnet (VRAM)",
+ "j7.10": "vikter",
+ "j7.11": "KV-cache",
+ "j7.12": "ord {{n}}",
+ "j7.13": "utan cache",
+ "j7.14": "med cache"
 }

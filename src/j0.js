@@ -32,7 +32,7 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}}
 const MODS=window.COURSE.mods,MODDESC=window.COURSE.desc,MODTIME=window.COURSE.time;
 const slides=[...document.querySelectorAll('.slide')];
 const titles=slides.map(s=>s.dataset.title);
-const LV=slides.map(s=>+(s.dataset.level||1));const LVN=['','Grund',L.t('j0.1'),'Expert'].map(function(x){return x?L.t(x):x;});if(!store.maxlv)store.maxlv=3;
+const LV=slides.map(s=>+(s.dataset.level||1));const LVN=['',L.t('j0.13'),L.t('j0.1'),'Expert'].map(function(x){return x?L.t(x):x;});if(!store.maxlv)store.maxlv=3;
 function step(d){let i=cur+d;while(i>=0&&i<slides.length&&LV[i]>store.maxlv)i+=d;if(i>=0&&i<slides.length)show(i);}
 const modOf=slides.map(s=>+s.dataset.mod);
 const firstOf=MODS.map((_,m)=>modOf.indexOf(m));
@@ -60,7 +60,7 @@ function quizScore(id){const qs=QUIZ[id];if(!qs)return null;const a=(store.quiz[
 function renderMap(){const g=$('modgrid');if(!g)return;clear(g);
   const ps=$('pathsel');if(ps){clear(ps);[[1,L.t('j0.6')],[2,L.t('j0.7')],[3,L.t('j0.8')]].forEach(([v,lab])=>{const b=H('button','btn'+(store.maxlv===v?' on':''),L.t(lab),ps);b.addEventListener('click',()=>{store.maxlv=v;save();renderMap();show(cur);});});
     const c=slides.filter((s,k)=>LV[k]<=store.maxlv).length;H('span',null,L.t('{{n}} slides',{n:c}),ps).style.cssText='font-family:var(--mono);font-size:13px';}
-  for(let m=1;m<MODS.length;m++){const b=H('button','modcard',null,g);H('div','n',L.t('Modul {{n}}, ca {{t}} min',{n:m,t:MODTIME[m]}),b);H('div','h',L.t(MODS[m]),b);H('div','d',L.t(MODDESC[m]),b);
+  for(let m=1;m<MODS.length;m++){const b=H('button','modcard',null,g);H('div','n',L.t('j0.14',{n:m,t:MODTIME[m]}),b);H('div','h',L.t(MODS[m]),b);H('div','d',L.t(MODDESC[m]),b);
     const st=modStats(m);st.n=0;st.seen=0;slides.forEach((s,k)=>{if(modOf[k]===m&&LV[k]<=store.maxlv){st.n++;if(store.seen[titles[k]])st.seen++;}});const pb=H('div','pb',null,b);const sp=H('span',null,null,pb);sp.style.width=(st.seen/st.n*100)+'%';
     const qs=quizScore(m===MODS.length-1?'final':'m'+m);let meta=L.t('{{seen}} / {{n}} slides',{seen:st.seen,n:st.n});if(qs&&qs.done)meta+='   '+L.t('quiz {{ok}} / {{n}}',{ok:qs.ok,n:qs.n});H('div','meta',meta,b);
     b.addEventListener('click',()=>show(firstOf[m]));}
@@ -68,7 +68,7 @@ function renderMap(){const g=$('modgrid');if(!g)return;clear(g);
 function show(i){
   i=Math.max(0,Math.min(slides.length-1,i|0));
   slides[cur].classList.remove('active');cur=i;slides[i].classList.add('active');slides[i].scrollTop=0;
-  const m=modOf[i];$('modname').textContent=m?L.t('Modul {{n}}: {{name}}',{n:m,name:L.t(MODS[m])}):L.t(MODS[0]);const lb=$('lvl');lb.textContent=LVN[LV[i]];lb.className='lvb l'+LV[i];
+  const m=modOf[i];$('modname').textContent=m?L.t('j0.15',{n:m,name:L.t(MODS[m])}):L.t(MODS[0]);const lb=$('lvl');lb.textContent=LVN[LV[i]];lb.className='lvb l'+LV[i];
   $('cnt').textContent=(i+1)+' / '+slides.length;
   [...prog.children].forEach((d,k)=>{const f=firstOf[k];const n=modOf.filter(x=>x===k).length;let w=0;if(i>=f+n)w=100;else if(i>=f)w=(i-f+1)/n*100;d.firstChild.style.width=w+'%';});
   store.seen[titles[i]]=1;if(i>0)store.last=titles[i];save();
@@ -107,11 +107,11 @@ if(reduce){const a=document.querySelector('#herodot animateMotion');if(a)a.remov
 function initQuiz(el){const id=el.dataset.quiz;const qs=QUIZ[id];if(!qs)return;
   function draw(){clear(el);const ans=store.quiz[id]||(store.quiz[id]=[]);
     const sc=H('div','qscore',null,el);const sb=H('span',null,null,sc);const rb=H('button','btn',L.t('j0.9'),sc);rb.addEventListener('click',()=>{store.quiz[id]=[];save();draw();});
-    function score(){let ok=0,done=0;qs.forEach((q,i)=>{if(ans[i]!=null){done++;if(ans[i]===q.a)ok++;}});sb.innerHTML=L.t('Resultat: <b>{{ok}} / {{n}}</b>',{ok:ok,n:qs.length})+(done<qs.length?' '+L.t('({{left}} kvar)',{left:qs.length-done}):(ok===qs.length?' '+L.t('j0.10'):' '+L.t('j0.11')));}
+    function score(){let ok=0,done=0;qs.forEach((q,i)=>{if(ans[i]!=null){done++;if(ans[i]===q.a)ok++;}});sb.innerHTML=L.t('j0.16',{ok:ok,n:qs.length})+(done<qs.length?' '+L.t('j0.17',{left:qs.length-done}):(ok===qs.length?' '+L.t('j0.10'):' '+L.t('j0.11')));}
     qs.forEach((q,i)=>{const c=H('div','qq',null,el);H('p','qt',L.t('quiz.numbered',{n:i+1,q:L.t(q.q)}),c);const os=H('div','opts',null,c);const R=rng(977+i*131+id.length*17+id.charCodeAt(id.length-1));const ord=[0,1,2,3];for(let z=3;z>0;z--){const j=Math.floor(R()*(z+1));const t=ord[z];ord[z]=ord[j];ord[j]=t;}
       const bs=[];ord.forEach(k=>{const b=H('button','opt',L.t(q.o[k]),os);b.addEventListener('click',()=>{if(ans[i]!=null)return;ans[i]=k;save();mark();score();});bs[k]=b;});
       const ex=H('p','ex',L.t(q.e),c);
-      function mark(){if(ans[i]==null)return;c.classList.add('done');bs.forEach((b,k)=>{b.disabled=true;if(k===q.a)b.classList.add('right');else if(k===ans[i])b.classList.add('wrong');});ex.textContent=L.t(ans[i]===q.a?L.t('j0.12'):'Inte riktigt. ')+L.t(q.e);}
+      function mark(){if(ans[i]==null)return;c.classList.add('done');bs.forEach((b,k)=>{b.disabled=true;if(k===q.a)b.classList.add('right');else if(k===ans[i])b.classList.add('wrong');});ex.textContent=L.t(ans[i]===q.a?L.t('j0.12'):L.t('j0.18'))+L.t(q.e);}
       mark();});
     score();}
   draw();}

@@ -13,9 +13,9 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
   function cap(t){const p=H('p',null,t,view);p.style.cssText='font-family:var(--mono);font-size:13px;color:var(--ink2);margin:10px 0 0';}
   const st=[
    [L.t('Text'),2,L.t('j3.1'),()=>{chips([L.t('j3.2')],'');cap(L.t('j3.3'));}],
-   [L.t('Tokens'),2,L.t('j3.4'),()=>{chips(tk,'t');cap(L.t('ids [5]   fem heltal mellan 0 och 128 255'));}],
-   [L.t('Embedding'),2,L.t('j3.5'),()=>{heat(11,-1);cap(L.t('x [5, 4096]   (20 av 4096 dimensioner visas)'));}],
-   [L.t('32 block'),3,L.t('j3.6'),()=>{heat(29,4);cap(L.t('j3.7'));}],
+   [L.t('Tokens'),2,L.t('j3.4'),()=>{chips(tk,'t');cap(L.t('j3.48'));}],
+   [L.t('Embedding'),2,L.t('j3.5'),()=>{heat(11,-1);cap(L.t('j3.49'));}],
+   [L.t('j3.50'),3,L.t('j3.6'),()=>{heat(29,4);cap(L.t('j3.7'));}],
    [L.t('Logits'),4,L.t('j3.8'),()=>{cand.forEach((c,i)=>hbar(view,c,lg[i]/5.5,L.num(lg[i],1),'var(--a)'));cap(L.t('j3.9'));}],
    [L.t('Sampling'),4,L.t('j3.10'),()=>{cand.forEach((c,i)=>hbar(view,c,pr[i],L.num(pr[i]*100,0)+' %','var(--tok)',i>0));cap(L.t('j3.11'));}],
    [L.t('j3.12'),6,L.t('j3.13'),()=>{chips(tk.concat([' mattan']),'t',5);cap(L.t('j3.14'));}]];
@@ -81,8 +81,8 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
 })();
 (function wact(){
   const svg=$('wa-svg');let mode='dense',tok=0;const routes=[[[0,2],[1,3],[0,1]],[[0,3],[2,3],[1,2]],[[1,2],[0,2],[3,0]]];const names=['katt','skatt','7×8'];
-  function draw(){clear(svg);txt(svg,224,22,mode==='moe'?L.t('Vikter (fasta), uppdelade i experter'):L.t('Vikter (fasta)'),'b','middle');txt(svg,468,22,L.t('Aktiveringar'),'b','middle');
-    for(let lw=0;lw<3;lw++){const y=40+lw*94;txt(svg,10,y+38,L.t('Lager {{n}}',{n:lw+1}),'s');const wr=rng(1000+lw*97);
+  function draw(){clear(svg);txt(svg,224,22,mode==='moe'?L.t('j3.51'):L.t('j3.52'),'b','middle');txt(svg,468,22,L.t('j3.53'),'b','middle');
+    for(let lw=0;lw<3;lw++){const y=40+lw*94;txt(svg,10,y+38,L.t('j3.54',{n:lw+1}),'s');const wr=rng(1000+lw*97);
       for(let e=0;e<4;e++){const bx=82+e*72;const on=mode==='dense'||routes[tok][lw].indexOf(e)>=0;
         S('rect',{x:bx,y,width:66,height:70,rx:4,fill:'none',stroke:on?'var(--w)':'var(--line)','stroke-width':on?1.4:0.8},svg);
         for(let r=0;r<6;r++)for(let c=0;c<6;c++){const v=wr();S('rect',{x:bx+5+c*9.6,y:y+5+r*10.4,width:8,height:8.6,rx:1.5,fill:on?'var(--w)':'var(--ink2)',style:'opacity:'+(on?(0.2+v*0.7):(0.05+v*0.08)).toFixed(2)},svg);}
@@ -101,14 +101,14 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
   const steps=[
    [L.t('j3.31'),L.t('j3.32',{q:vec(q)})],
    [L.t('j3.33'),L.t('j3.34')],
-   [L.t('Dela med √d_h'),L.t('j3.35')],
+   [L.t('j3.55'),L.t('j3.35')],
    [L.t('Softmax'),L.t('j3.36',{p:L.num(p[0]*100,0)})],
-   [L.t('Vikta values'),L.t('Varje value multipliceras med sin vikt.')],
-   [L.t('Summera'),L.t('j3.37',{out:vec(out)})]];
+   [L.t('j3.56'),L.t('j3.57')],
+   [L.t('j3.58'),L.t('j3.37',{out:vec(out)})]];
   function draw(){const el=$('ah-tbl');let h='<table class="numtbl"><tr><th>'+L.t('token')+'</th><th>'+L.t('key k')+'</th><th>'+L.t('q · k')+'</th><th>'+L.t('÷ √2')+'</th><th>'+L.t('softmax P')+'</th><th>'+L.t('value v')+'</th><th>'+L.t('P · v')+'</th></tr>';
     const cls=(c)=>st===c?' class="hi"':(st<c?' class="dim"':'');const val=(c,t)=>st>=c?t:'·';
     T.forEach((t,i)=>{h+='<tr><th>'+t+'</th><td'+(st===0?' class="hi"':'')+'>'+vec(k[i])+'</td><td'+cls(1)+'>'+val(1,L.num(s[i],2))+'</td><td'+cls(2)+'>'+val(2,L.num(sd[i],2))+'</td><td'+cls(3)+'>'+val(3,L.num(p[i],2))+'</td><td'+(st===0||st===4?' class="hi"':'')+'>'+vec(v[i])+'</td><td'+cls(4)+'>'+val(4,vec(pv[i]))+'</td></tr>';});
-    h+='<tr><th>'+L.t('summa')+'</th><td></td><td></td><td></td><td'+cls(3)+'>'+val(3,L.num(1,2))+'</td><td></td><td'+cls(5)+'>'+val(5,vec(out))+'</td></tr></table>';el.innerHTML=h;
+    h+='<tr><th>'+L.t('j3.59')+'</th><td></td><td></td><td></td><td'+cls(3)+'>'+val(3,L.num(1,2))+'</td><td></td><td'+cls(5)+'>'+val(5,vec(out))+'</td></tr></table>';el.innerHTML=h;
     const tx=$('ah-text');clear(tx);H('h3',null,L.t('{{n}}. {{title}}',{n:st+1,title:steps[st][0]}),tx).style.marginTop='0';H('p',null,steps[st][1],tx);$('ah-n').textContent=(st+1)+' / '+steps.length;}
   $('ah-next').addEventListener('click',()=>{if(st<steps.length-1){st++;draw();}});$('ah-prev').addEventListener('click',()=>{if(st>0){st--;draw();}});draw();
 })();
@@ -136,9 +136,9 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
   function step(){if(seq.length>=10)return;const mx=Math.max(...pending);const e=pending.map(v=>Math.exp((v-mx)*1.5));const su=e.reduce((a,b)=>a+b,0);let r=SR()*su,id=0;for(;id<e.length;id++){r-=e[id];if(r<=0)break;}id=Math.min(id,e.length-1);
     seq.push(id);compare([id],seq.length-1,L.t('decode {{n}}',{n:seq.length-3}));draw();}
   function draw(){const sq=$('mm-seq');clear(sq);seq.forEach((id,i)=>H('span','chip '+(i<3?'t':(i===seq.length-1?'new':'ok')),V[id],sq));
-    let h='<tr><th>'+L.t('steg')+'</th><th>'+L.t('bearbetad token')+'</th><th>'+L.t('rader utan cache')+'</th><th>'+L.t('rader med cache')+'</th><th>'+L.t('max |Δ logit|')+'</th></tr>';let a=0,b=0;
+    let h='<tr><th>'+L.t('j3.60')+'</th><th>'+L.t('j3.61')+'</th><th>'+L.t('j3.62')+'</th><th>'+L.t('j3.63')+'</th><th>'+L.t('max |Δ logit|')+'</th></tr>';let a=0,b=0;
     log.forEach(r=>{a+=r[2];b+=r[3];h+='<tr><th>'+r[0]+'</th><td>'+r[1]+'</td><td>'+r[2]+'</td><td class="hi">'+r[3]+'</td><td>'+(r[4]===0?'0':r[4].toExponential(1))+'</td></tr>';});
-    h+='<tr><th>'+L.t('totalt')+'</th><td></td><td>'+a+'</td><td class="hi">'+b+'</td><td></td></tr>';$('mm-tbl').innerHTML=h;
+    h+='<tr><th>'+L.t('j3.64')+'</th><td></td><td>'+a+'</td><td class="hi">'+b+'</td><td></td></tr>';$('mm-tbl').innerHTML=h;
     const ht=$('mm-heat');clear(ht);cache[0].K.forEach((k,p)=>heatRow(ht,p+' '+V[seq[p]],k.slice(0,8).map(x=>x/2.5),'var(--kv)',p===seq.length-1&&p>2));
     $('mm-out').innerHTML=seq.length>=10?L.t('j3.39',{a:a,b:b}):L.t('j3.40');
     $('mm-step').disabled=seq.length>=10;}
@@ -151,13 +151,13 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
     const W=m.P*prec,perGpu=72e9-5e9,pool=g*perGpu-W,kvTok=2*m.L*m.kv*128*2,kvSeq=kvTok*c,maxS=Math.max(0,Math.floor(pool/kvSeq)),fits=pool>0;
     const act=Math.min(u,maxS);const bytes=W+act*kvSeq,t=Math.max(bytes/(3.35e12*g),act*2*m.P/(989e12*g));
     const row=(a,b,ok)=>'<tr><td>'+a+'</td><td class="n"'+(ok===false?' style="color:var(--neg)"':'')+'>'+b+'</td></tr>';
-    let h=row(L.t('1. Vikter'),L.t('j3.41',{gb:L.num(W/1e9,1),g:g})+(fits?'':L.t('j3.42')),fits);
-    if(fits){h+=row(L.t('2. KV-pool'),L.t('{{gb}} GB',{gb:L.num(pool/1e9,0)}))+row('   '+L.t('KV per konversation'),L.t('{{gb}} GB',{gb:L.num(kvSeq/1e9,2)}))+row(L.t('3. Ryms samtidigt'),L.t('{{n}} konversationer',{n:L.num(maxS,0)}),maxS>=u)
-      +row(L.t('4. Ett decode-steg (ITL)'),act?L.t('{{ms}} ms',{ms:L.num(t*1000,1)}):'–')+row('   '+L.t('j3.43'),act?L.t('{{n}} tokens/s',{n:Math.round(1/t)}):'–')+row('   '+L.t('Totalt'),act?L.t('{{n}} tokens/s',{n:L.num(Math.round(act/t),0)}):'–');}
+    let h=row(L.t('j3.65'),L.t('j3.41',{gb:L.num(W/1e9,1),g:g})+(fits?'':L.t('j3.42')),fits);
+    if(fits){h+=row(L.t('j3.66'),L.t('{{gb}} GB',{gb:L.num(pool/1e9,0)}))+row('   '+L.t('j3.67'),L.t('{{gb}} GB',{gb:L.num(kvSeq/1e9,2)}))+row(L.t('j3.68'),L.t('j3.69',{n:L.num(maxS,0)}),maxS>=u)
+      +row(L.t('j3.70'),act?L.t('{{ms}} ms',{ms:L.num(t*1000,1)}):'–')+row('   '+L.t('j3.43'),act?L.t('{{n}} tokens/s',{n:Math.round(1/t)}):'–')+row('   '+L.t('j3.71'),act?L.t('{{n}} tokens/s',{n:L.num(Math.round(act/t),0)}):'–');}
     $('cp-tbl').innerHTML=h;let msg;
     if(!fits)msg=L.t('j3.44');
     else if(maxS<u)msg=L.t('j3.45',{max:maxS,u:u});
-    else{const kvShare=act*kvSeq/bytes;msg=L.t('Alla {{u}} ryms.',{u:u})+' '+(kvShare>0.5?L.t('j3.46',{p:L.num(kvShare*100,0)}):L.t('j3.47',{p:L.num((1-kvShare)*100,0)}));}
+    else{const kvShare=act*kvSeq/bytes;msg=L.t('j3.72',{u:u})+' '+(kvShare>0.5?L.t('j3.46',{p:L.num(kvShare*100,0)}):L.t('j3.47',{p:L.num((1-kvShare)*100,0)}));}
     $('cp-out').innerHTML=msg;}
   ['cp-model','cp-prec','cp-gpus','cp-u','cp-c'].forEach(id=>$(id).addEventListener('input',draw));draw();
 })();
