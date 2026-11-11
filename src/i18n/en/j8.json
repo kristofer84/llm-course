@@ -38,5 +38,6 @@
  "j8.37": "MLP, 32 layers",
  "j8.38": "Norms, 32 layers",
  "j8.39": "Total",
- "j8.40": "Parameters"
+ "j8.40": "Parameters",
+ "j8.41": "Part"
 }

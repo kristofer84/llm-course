@@ -59,10 +59,10 @@ function modStats(m){let n=0,seen=0;slides.forEach((s,i)=>{if(modOf[i]===m){n++;
 function quizScore(id){const qs=QUIZ[id];if(!qs)return null;const a=(store.quiz[id]||[]);let ok=0,done=0;qs.forEach((q,i)=>{if(a[i]!=null){done++;if(a[i]===q.a)ok++;}});return{ok,done,n:qs.length};}
 function renderMap(){const g=$('modgrid');if(!g)return;clear(g);
   const ps=$('pathsel');if(ps){clear(ps);[[1,L.t('j0.6')],[2,L.t('j0.7')],[3,L.t('j0.8')]].forEach(([v,lab])=>{const b=H('button','btn'+(store.maxlv===v?' on':''),L.t(lab),ps);b.addEventListener('click',()=>{store.maxlv=v;save();renderMap();show(cur);});});
-    const c=slides.filter((s,k)=>LV[k]<=store.maxlv).length;H('span',null,L.t('{{n}} slides',{n:c}),ps).style.cssText='font-family:var(--mono);font-size:13px';}
+    const c=slides.filter((s,k)=>LV[k]<=store.maxlv).length;H('span',null,L.t('j0.19',{n:c}),ps).style.cssText='font-family:var(--mono);font-size:13px';}
   for(let m=1;m<MODS.length;m++){const b=H('button','modcard',null,g);H('div','n',L.t('j0.14',{n:m,t:MODTIME[m]}),b);H('div','h',L.t(MODS[m]),b);H('div','d',L.t(MODDESC[m]),b);
     const st=modStats(m);st.n=0;st.seen=0;slides.forEach((s,k)=>{if(modOf[k]===m&&LV[k]<=store.maxlv){st.n++;if(store.seen[titles[k]])st.seen++;}});const pb=H('div','pb',null,b);const sp=H('span',null,null,pb);sp.style.width=(st.seen/st.n*100)+'%';
-    const qs=quizScore(m===MODS.length-1?'final':'m'+m);let meta=L.t('{{seen}} / {{n}} slides',{seen:st.seen,n:st.n});if(qs&&qs.done)meta+='   '+L.t('quiz {{ok}} / {{n}}',{ok:qs.ok,n:qs.n});H('div','meta',meta,b);
+    const qs=quizScore(m===MODS.length-1?'final':'m'+m);let meta=L.t('j0.20',{seen:st.seen,n:st.n});if(qs&&qs.done)meta+='   '+L.t('quiz {{ok}} / {{n}}',{ok:qs.ok,n:qs.n});H('div','meta',meta,b);
     b.addEventListener('click',()=>show(firstOf[m]));}
   const r=$('resume');if(r){const li=store.last?titles.indexOf(store.last):-1;if(li>2){r.classList.add('on');$('resume-t').textContent=L.t(store.last);$('resume-b').onclick=()=>show(li);}else r.classList.remove('on');}}
 function show(i){

@@ -52,6 +52,6 @@
     const lg=[['var(--w)','attention'],['var(--a)','MLP'],['var(--tok)','embedding'],['var(--kv)','LM head']];lg.forEach(([c,l],k)=>{S('rect',{x:x0+k*120,y:296,width:12,height:12,fill:c},svg);txt(svg,x0+k*120+18,306,L.t(l),'s');});
     const tx=$('bn-text');clear(tx);H('h3',null,(i+1)+'. '+L.t(st[i][0]),tx).style.marginTop='0';H('p',null,L.t(st[i][1]),tx);$('bn-n').textContent=(i+1)+' / '+st.length;
     const rowsT=[[L.t('j8.36'),1.34,2,i>=1],[L.t('j8.37'),5.64,2,i>=1],[L.t('j8.38'),0.0003,4,i>=1],['Embedding',0.53,2,i>=2],['LM head',0.53,2,i>=3],['Final norm',0.000004,6,i>=4],[L.t('j8.39'),8.03,2,i>=4]];
-    $('bn-tbl').innerHTML='<tr><th>'+L.t('Del')+'</th><th>'+L.t('j8.40')+'</th></tr>'+rowsT.map(r=>'<tr style="opacity:'+(r[3]?1:0.3)+'"><td>'+L.t(r[0])+'</td><td class="n">'+nf(r[1],r[2])+' B</td></tr>').join('');}
+    $('bn-tbl').innerHTML='<tr><th>'+L.t('j8.41')+'</th><th>'+L.t('j8.40')+'</th></tr>'+rowsT.map(r=>'<tr style="opacity:'+(r[3]?1:0.3)+'"><td>'+L.t(r[0])+'</td><td class="n">'+nf(r[1],r[2])+' B</td></tr>').join('');}
   $('bn-next').addEventListener('click',()=>{if(i<st.length-1){i++;draw();}});$('bn-prev').addEventListener('click',()=>{if(i>0){i--;draw();}});draw();
 })();

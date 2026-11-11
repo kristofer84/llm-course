@@ -16,5 +16,7 @@
  "j0.15": "Module {{n}}: {{name}}",
  "j0.16": "Score: <b>{{ok}} / {{n}}</b>",
  "j0.17": "({{left}} left)",
- "j0.18": "Not quite. "
+ "j0.18": "Not quite. ",
+ "j0.19": "{{n}} slides",
+ "j0.20": "{{seen}} / {{n}} slides"
 }

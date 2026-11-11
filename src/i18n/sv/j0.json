@@ -16,5 +16,7 @@
  "j0.15": "Modul {{n}}: {{name}}",
  "j0.16": "Resultat: <b>{{ok}} / {{n}}</b>",
  "j0.17": "({{left}} kvar)",
- "j0.18": "Inte riktigt. "
+ "j0.18": "Inte riktigt. ",
+ "j0.19": "{{n}} slides",
+ "j0.20": "{{seen}} / {{n}} slides"
 }

@@ -52,7 +52,7 @@
 (function dec(){const svg=$('dec-svg');rect(svg,10,60,70,34,'ba',4);txt(svg,45,82,'q','m','middle');txt(svg,45,112,'[32, 1, 128]','s','middle');
   txt(svg,150,18,'K_cache [8, 12, 128]','m tkv');
   for(let h=0;h<8;h++)for(let c=0;c<12;c++){const r=rect(svg,150+c*28,26+h*14,26,12,'bkv',1);if(c===11)r.setAttribute('style','stroke:var(--a);stroke-width:2');}
-  line(svg,80,77,146,77,'ln',true);txt(svg,150+11*28+13,154,L.t('ny'),'s','middle');txt(svg,150,154,L.t('position 0'),'s');})();
+  line(svg,80,77,146,77,'ln',true);txt(svg,150+11*28+13,154,L.t('j2b.142'),'s','middle');txt(svg,150,154,L.t('position 0'),'s');})();
 (function kvcalc(){
   const PRE=[{n:'Llama-3-8B',L:32,kv:8,hd:128,w:16.1},{n:'Llama-3-70B',L:80,kv:8,hd:128,w:141},{n:'Mistral-7B',L:32,kv:8,hd:128,w:14.5},{n:'Qwen2.5-7B',L:28,kv:4,hd:128,w:15.2},{n:L.t('j2b.79'),L:32,kv:32,hd:128,w:16.1},{n:L.t('j2b.80'),L:61,mla:576,w:671}];
   const sel=$('kvc-preset');PRE.forEach((p,i)=>{const o=document.createElement('option');o.value=i;o.textContent=L.t(p.n);sel.appendChild(o);});
