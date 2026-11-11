@@ -6,8 +6,10 @@ Interaktiv kurs i en enda självständig HTML-fil (`llm-kurs.html`), byggd från
     cd src && python3 build.py      # skriver ../llm-kurs.html
 
 ## Publicera
-Sidan byggs och publiceras av GitHub Actions (`.github/workflows/pages.yml`) vid varje push till `main`:
-`src/build.py` körs, `llm-kurs.html` kopieras till `_site/index.html` och laddas upp som GitHub Pages-artefakt.
+Sidan byggs och publiceras av GitHub Actions (`.github/workflows/pages.yml`):
+`test`-jobbet bygger filen och kör Playwright-testerna, `build` kopierar `llm-kurs.html` till
+`_site/index.html` och `deploy` laddar upp den som GitHub Pages-artefakt. Körs vid push till
+`main` och som test vid pull requests (då utan deploy).
 
 Repo: https://github.com/kristofer84/llm-course — sida: https://kristofer84.github.io/llm-course/
 
@@ -28,4 +30,11 @@ Repo: https://github.com/kristofer84/llm-course — sida: https://kristofer84.gi
 - Svenska med engelska facktermer, svenska citattecken ” ”.
 
 ## Testa
-`tests/` innehåller Playwright-skript som renderar alla slides och klickar igenom interaktiva delar (sökvägar kan behöva justeras).
+    python3 -m pip install -r tests/requirements.txt
+    python3 -m playwright install chromium
+    python3 tests/smoke.py            # CI-gate: slides, overflow, JS-fel, quiz, interaktiva element
+    python3 tests/test.py             # klickar igenom alla slides, skriver skärmbilder till shots/
+
+`tests/test2.py`–`test7.py` är manuella granskningsskript (skärmbilder per vy). Alla skript
+läser `llm-kurs.html` relativt repo-roten; `COURSE_HTML` och `COURSE_SHOTS` overrider sökvägarna,
+så de kan köras från valfri katalog och även mot den publicerade sidan.

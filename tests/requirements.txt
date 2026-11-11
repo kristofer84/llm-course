@@ -1,0 +1,3 @@
+# Developed and run in CI with Python 3.13.
+# After installing: python -m playwright install chromium
+playwright==1.65.0
