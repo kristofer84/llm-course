@@ -5,6 +5,7 @@
 <pre class="log">vllm serve meta-llama/Llama-3.1-8B-Instruct \
   --max-model-len 8192 \
   --gpu-memory-utilization 0.90</pre>
+      <p class="note" data-i18n="n8.starta-servern-och-las.n9"></p>
       <p data-i18n="n8.starta-servern-och-las.2"></p>
 <pre class="log">Available KV cache memory: <mark>47.50 GiB</mark>
 GPU KV cache size: <mark>389,120 tokens</mark>
@@ -64,4 +65,47 @@ Maximum concurrency for 8,192 tokens
     <tr><td data-i18n="n8.felsokning-symptom-och.26"></td><td data-i18n="n8.felsokning-symptom-och.27"></td><td data-i18n="n8.felsokning-symptom-och.28"></td></tr>
     <tr><td data-i18n="n8.felsokning-symptom-och.29"></td><td data-i18n="n8.felsokning-symptom-och.30"></td><td data-i18n="n8.felsokning-symptom-och.31"></td></tr>
   </table></div>
+</div></section>
+<section class="slide" data-title="Disaggregerad prefill och decode"><div class="si">
+  <h2 data-i18n="n8.disaggregerad-prefill-och-decode.1"></h2>
+  <div class="cols">
+    <div>
+      <p data-i18n="n8.disaggregerad-prefill-och-decode.2"></p>
+      <p data-i18n="n8.disaggregerad-prefill-och-decode.3"></p>
+      <div class="eq" data-i18n="n8.disaggregerad-prefill-och-decode.4"></div>
+      <p class="note" data-i18n="n8.disaggregerad-prefill-och-decode.5"></p>
+    </div>
+    <div>
+      <p data-i18n="n8.disaggregerad-prefill-och-decode.6"></p>
+      <div class="scroll-x"><table class="t">
+        <tr><th data-i18n="n8.disaggregerad-prefill-och-decode.7"></th><th data-i18n="n8.disaggregerad-prefill-och-decode.8"></th><th data-i18n="n8.disaggregerad-prefill-och-decode.9"></th></tr>
+        <tr><td data-i18n="n8.disaggregerad-prefill-och-decode.10"></td><td data-i18n="n8.disaggregerad-prefill-och-decode.11"></td><td data-i18n="n8.disaggregerad-prefill-och-decode.12"></td></tr>
+        <tr><td data-i18n="n8.disaggregerad-prefill-och-decode.13"></td><td data-i18n="n8.disaggregerad-prefill-och-decode.14"></td><td data-i18n="n8.disaggregerad-prefill-och-decode.15"></td></tr>
+        <tr><td data-i18n="n8.disaggregerad-prefill-och-decode.16"></td><td data-i18n="n8.disaggregerad-prefill-och-decode.17"></td><td data-i18n="n8.disaggregerad-prefill-och-decode.18"></td></tr>
+      </table></div>
+      <p class="note" data-i18n="n8.disaggregerad-prefill-och-decode.19"></p>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" data-title="Multi-LoRA: många modeller på en GPU"><div class="si">
+  <h2 data-i18n="n8.multi-lora-manga-modeller-pa.1"></h2>
+  <div class="cols">
+    <div>
+      <p data-i18n="n8.multi-lora-manga-modeller-pa.2"></p>
+      <div class="eq" data-i18n="n8.multi-lora-manga-modeller-pa.3"></div>
+      <p data-i18n="n8.multi-lora-manga-modeller-pa.4"></p>
+      <p class="note" data-i18n="n8.multi-lora-manga-modeller-pa.5"></p>
+    </div>
+    <div>
+      <p data-i18n="n8.multi-lora-manga-modeller-pa.6"></p>
+<pre class="log">vllm serve meta-llama/Llama-3.1-8B-Instruct \
+  --enable-lora \
+  --max-loras 16 \
+  --lora-modules kod=./adapter-kod \
+                 skriv=./adapter-skriv</pre>
+      <p data-i18n="n8.multi-lora-manga-modeller-pa.7"></p>
+      <p class="note" data-i18n="n8.multi-lora-manga-modeller-pa.8"></p>
+    </div>
+  </div>
 </div></section>

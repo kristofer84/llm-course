@@ -39,7 +39,7 @@
  "n1.vikter-och-aktiveringar.2": "The most important distinction in the whole course:",
  "n1.vikter-och-aktiveringar.3": "<b>Weights</b> are the model’s learned numbers. They sit fixed in GPU memory and are the same for every question. They are the program.",
  "n1.vikter-och-aktiveringar.4": "<b>Activations</b> are the intermediate values computed as a token passes through. They are the state while the program runs.",
- "n1.vikter-och-aktiveringar.5": "In a dense model <b>all</b> weights are multiplied for every token. So you cannot see “which weights were activated” by a question. What separates one question from another is the activations, and those are what you study when you want to understand what the model is doing.",
+ "n1.vikter-och-aktiveringar.5": "In a dense model <b>all weight matrices</b> are used in full for every token. The exception is embedding, which is instead a lookup of one row per token, as module 2 shows. So you cannot see “which weights were activated” by a question. What separates one question from another is the activations, and those are what you study when you want to understand what the model is doing.",
  "n1.vikter-och-aktiveringar.6": "In an MoE model a router picks a few experts per token. There you can actually see which weight blocks were used.",
  "n1.vikter-och-aktiveringar.7": "Switch token and model type on the right.",
  "n1.vikter-och-aktiveringar.8": "Dense",

@@ -22,7 +22,7 @@
  "n6.vad-ligger-i-gpu-minnet.21": "weights",
  "n6.vad-ligger-i-gpu-minnet.22": "16 GB",
  "n6.vad-ligger-i-gpu-minnet.23": "KV pool: blocks of 16 tokens",
- "n6.vad-ligger-i-gpu-minnet.24": "≈ 51 GB ≈ 390,000 tokens",
+ "n6.vad-ligger-i-gpu-minnet.24": "≈ 51 GB (47.5 GiB) ≈ 390,000 tokens",
  "n6.vad-ligger-i-gpu-minnet.25": "activations, about 3 GB",
  "n6.vad-ligger-i-gpu-minnet.26": "overhead, about 2 GB",
  "n6.vad-ligger-i-gpu-minnet.27": "gpu_memory_utilization = 0.9",

@@ -39,7 +39,7 @@
  "n1.vikter-och-aktiveringar.2": "Den viktigaste distinktionen i hela kursen:",
  "n1.vikter-och-aktiveringar.3": "<b>Vikter</b> är modellens inlärda tal. De ligger fast i GPU-minnet och är desamma för alla frågor. De är programmet.",
  "n1.vikter-och-aktiveringar.4": "<b>Aktiveringar</b> är mellanvärdena som räknas fram när en token passerar. De är tillståndet medan programmet körs.",
- "n1.vikter-och-aktiveringar.5": "I en tät modell multipliceras <b>alla</b> vikter för varje token. Det går alltså inte att se ”vilka vikter som aktiverades” av en fråga. Det som skiljer en fråga från en annan är aktiveringarna, och det är dem man studerar när man vill förstå vad modellen gör.",
+ "n1.vikter-och-aktiveringar.5": "I en tät modell används <b>alla viktmatriser</b> i sin helhet för varje token. Undantaget är embedding, som i stället är ett uppslag av en rad per token, vilket modul 2 visar. Det går alltså inte att se ”vilka vikter som aktiverades” av en fråga. Det som skiljer en fråga från en annan är aktiveringarna, och det är dem man studerar när man vill förstå vad modellen gör.",
  "n1.vikter-och-aktiveringar.6": "I en MoE-modell väljer en router några experter per token. Där kan man faktiskt se vilka viktblock som användes.",
  "n1.vikter-och-aktiveringar.7": "Byt token och modelltyp till höger.",
  "n1.vikter-och-aktiveringar.8": "Tät",

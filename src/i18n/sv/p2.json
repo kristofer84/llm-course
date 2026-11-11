@@ -1,6 +1,6 @@
 {
  "p2.fran-prompt-till-token.1": "Från prompt till token",
- "p2.fran-prompt-till-token.2": "Från noll till expert. En kurs om vad en språkmodell består av, hur en fråga flödar genom den som tensorer med konkreta shapes, och hur en inference-motor som vLLM kör den snabbt för många användare samtidigt.",
+ "p2.fran-prompt-till-token.2": "Från noll till att förstå hur en inference-server fungerar. En kurs om vad en språkmodell består av, hur en fråga flödar genom den som tensorer med konkreta shapes, och hur en inference-motor som vLLM kör den snabbt för många användare samtidigt.",
  "p2.fran-prompt-till-token.3": "ny token läggs till sekvensen, nästa varv börjar",
  "p2.fran-prompt-till-token.4": "Prompt",
  "p2.fran-prompt-till-token.5": "Tokenizer",

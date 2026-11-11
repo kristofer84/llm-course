@@ -144,8 +144,17 @@ def main():
                   % (loc, checked, len([k for k in sv if wanted(k)]),
                      100.0 * checked / max(1, len([k for k in sv if wanted(k)]))))
 
-    # Swedish literals left inside the JavaScript, outside the catalogs
+    # The built page must carry the base language everywhere: an empty
+    # data-i18n element means a key without Swedish text.
     page = open(os.path.join(ROOT, "llm-kurs.html"), encoding="utf-8").read()
+    body_only = re.sub(r"<(script|style)[^>]*>.*?</\1>", "", page, flags=re.S)
+    empties = []
+    for m in re.finditer(r'<([a-zA-Z][\w-]*)([^>]*data-i18n="[^"]+"[^>]*)>\s*</\1>', body_only):
+        empties.append(m.group(2)[:80])
+    for e in empties[:10]:
+        failures.append("empty element in the build: %s" % e)
+
+    # Swedish literals left inside the JavaScript, outside the catalogs
     blocks = re.findall(r"<script>(.*?)</script>", page, re.S)
     js = "\n".join(b for b in blocks
                    if "I18N_DATA" not in b and "window.COURSE" not in b and "i18next" not in b)

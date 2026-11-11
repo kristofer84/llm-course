@@ -49,7 +49,7 @@
  "p4.gradienter-och-minne.1": "Gradienter och minne",
  "p4.gradienter-och-minne.2": "Backpropagation ger en gradient med exakt samma shape som varje viktmatris. Optimeraren (AdamW) uppdaterar vikterna i gradientens motsatta riktning och håller två egna tillstånd per parameter.",
  "p4.gradienter-och-minne.3": "Med mixed precision kostar varje parameter ungefär 16 byte under träning, mot 2 byte vid inference. Därtill kommer aktiveringar som måste sparas för backward pass.",
- "p4.gradienter-och-minne.4": "Det är därför du kan köra en 8B-modell på en GPU med 24 GB men behöver ett kluster för att träna den.",
+ "p4.gradienter-och-minne.4": "Det är därför du kan köra en 8B-modell på en GPU med 24 GB, medan full finjustering av samma modell ryms på en nod med åtta GPU:er. Med LoRA eller QLoRA räcker det med en enda GPU. Det är förträningen från grunden som kräver ett kluster, och då handlar det minst lika mycket om beräkningskraft och tid som om minne.",
  "p4.fran-basmodell-till.1": "Från basmodell till assistent",
  "p4.fran-basmodell-till.2": "Arkitekturen är densamma genom alla faser. Bara vikterna ändras, och därmed beteendet.",
  "p4.fran-basmodell-till.3": "Pretraining",

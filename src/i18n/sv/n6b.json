@@ -1,7 +1,7 @@
 {
  "n6b.vad-ar-ett-grafikkort.1": "Vad är ett grafikkort, och varför spelar minnet roll?",
  "n6b.vad-ar-ett-grafikkort.2": "Språkmodeller körs på grafikkort (GPU:er). Ett grafikkort har tusentals små räknare som arbetar samtidigt, och ett eget snabbt minne. För att förstå resten av modulen räcker det med en bild: ett kök med väldigt många kockar, men en ganska smal dörr till skafferiet.",
- "n6b.vad-ar-ett-grafikkort.3": "<b>Kockarna</b> är räknekraften. Ett modernt datacenterkort som H100 klarar ungefär tusen biljoner multiplikationer per sekund.",
+ "n6b.vad-ar-ett-grafikkort.3": "<b>Kockarna</b> är räknekraften. Ett modernt datacenterkort som H100 klarar cirka 990 TFLOPS i bf16, alltså ungefär 500 biljoner multiplikationer per sekund, eftersom varje multiplikation räknas ihop med en addition (FMA).",
  "n6b.vad-ar-ett-grafikkort.4": "<b>Skafferiet</b> är grafikkortets minne (VRAM), till exempel 80 GB. Där ligger modellens vikter och KV-cachen.",
  "n6b.vad-ar-ett-grafikkort.5": "<b>Dörren</b> är minnesbandbredden, ungefär 3,35 TB per sekund. Varje ingrediens kockarna använder måste bäras in genom den.",
  "n6b.vad-ar-ett-grafikkort.6": "När modellen skriver ett ord måste <b>alla 16 GB vikter bäras in genom dörren</b>, men kockarna gör bara lite arbete med dem. De står mest och väntar. Det kallas att vara <i>memory-bound</i>, och det förklarar nästan allt i resten av kursen: varför man skriver för många användare samtidigt, varför KV-cachen är så viktig och varför man gärna kvantiserar.",

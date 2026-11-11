@@ -1,7 +1,7 @@
 {
  "n6b.vad-ar-ett-grafikkort.1": "What is a GPU, and why does memory matter?",
  "n6b.vad-ar-ett-grafikkort.2": "Language models run on GPUs. A GPU has thousands of small calculators working at the same time, and its own fast memory. To follow the rest of the module, one image is enough: a kitchen with a great many cooks, but a rather narrow door to the pantry.",
- "n6b.vad-ar-ett-grafikkort.3": "<b>The cooks</b> are the compute. A modern datacenter card like the H100 does around a thousand trillion multiplications per second.",
+ "n6b.vad-ar-ett-grafikkort.3": "<b>The cooks</b> are the compute. A modern datacenter card like the H100 does about 990 TFLOPS in bf16, that is roughly 500 trillion multiplications per second, because each multiplication is counted together with an addition (FMA).",
  "n6b.vad-ar-ett-grafikkort.4": "<b>The pantry</b> is the GPU memory (VRAM), for example 80 GB. The model's weights and the KV cache live there.",
  "n6b.vad-ar-ett-grafikkort.5": "<b>The door</b> is the memory bandwidth, about 3.35 TB per second. Every ingredient the cooks use has to be carried in through it.",
  "n6b.vad-ar-ett-grafikkort.6": "When the model writes a word, <b>all 16 GB of weights must be carried in through the door</b>, but the cooks do only a little work with them. Mostly they stand and wait. That is what <i>memory-bound</i> means, and it explains almost everything in the rest of the course: why you write for many users at once, why the KV cache matters so much and why it pays to quantize.",

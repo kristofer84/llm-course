@@ -1,6 +1,6 @@
 {
  "p2.fran-prompt-till-token.1": "From prompt to token",
- "p2.fran-prompt-till-token.2": "From zero to expert. A course about what a language model is made of, how a prompt flows through it as tensors with concrete shapes, and how an inference engine like vLLM runs it fast for many users at once.",
+ "p2.fran-prompt-till-token.2": "From zero to understanding how an inference server works. A course about what a language model is made of, how a prompt flows through it as tensors with concrete shapes, and how an inference engine like vLLM runs it fast for many users at once.",
  "p2.fran-prompt-till-token.3": "new token appended to the sequence, next round begins",
  "p2.fran-prompt-till-token.4": "Prompt",
  "p2.fran-prompt-till-token.5": "Tokenizer",
