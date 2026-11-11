@@ -28,19 +28,13 @@ jobs:
       - name: Install Playwright
         run: |
           pip install -r tests/requirements.txt
-          # The runner's apt mirror is occasionally unreachable ("Failed to fetch
-          # xfonts-scalable ... Temporary failure resolving"); retry instead of
-          # failing the whole job on a mirror hiccup.
-          for attempt in 1 2 3; do
-            if python -m playwright install --with-deps chromium; then
-              exit 0
-            fi
-            echo "playwright install failed (attempt $attempt), retrying in 15s"
-            sudo apt-get update || true
-            sleep 15
-          done
-          echo "::warning::playwright install failed three times, trying browser-only"
-          python -m playwright install chromium
+          # The browser download is what the tests need; OS packages and fonts are
+          # already on the runner image, so treat install-deps as best effort and
+          # bound every network step. A hung apt mirror must not stall the job.
+          timeout 300 python -m playwright install chromium \
+            || { sleep 15; timeout 300 python -m playwright install chromium; }
+          timeout 180 python -m playwright install-deps chromium \
+            || echo "::warning::install-deps failed (apt mirror), continuing: the runner image already has the libraries"
 
       - name: Build course HTML
         working-directory: src
