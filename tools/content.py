@@ -265,9 +265,24 @@ def status(strict=False):
     return 0
 
 
+def mark(groups=None):
+    """Declare the current English values reviewed against the current Swedish
+    text — for bulk edits that updated both languages in one go."""
+    sv, en, state = catalogs(SRC), catalogs(BASE), load_state()
+    n = 0
+    for k, v in sv.items():
+        if groups and group_of(k) not in groups:
+            continue
+        if (en.get(k) or "").strip():
+            state[k] = sha(v)
+            n += 1
+    save_state(state)
+    print("marked %d key(s) as translated" % n)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("command", choices=("dump", "apply", "status", "check"))
+    ap.add_argument("command", choices=("dump", "apply", "status", "check", "mark"))
     ap.add_argument("--group", action="append", help="limit to this group (repeatable)")
     ap.add_argument("--strict", action="store_true", help="status: non-zero exit if English is behind")
     ap.add_argument("--quiet", action="store_true")
@@ -278,6 +293,9 @@ def main():
         return 0
     if args.command == "apply":
         apply(groups, args.quiet)
+        return 0
+    if args.command == "mark":
+        mark(groups)
         return 0
     return status(args.strict or args.command == "check")
 

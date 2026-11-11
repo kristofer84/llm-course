@@ -170,7 +170,7 @@ svg .hl{stroke:var(--tok);stroke-width:2.2;fill:none}
 pre.code{font-family:var(--mono);font-size:13px;line-height:1.55;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow-x:auto;margin:10px 0;tab-size:4}
 pre.code .c{color:var(--ink2)} pre.code .sa{color:var(--a)} pre.code .sw{color:var(--w)} pre.code .sk{color:var(--kv)}
 pre.log,pre.code{scrollbar-gutter:stable}
-/* .eq undantas: guttern kostar 15 px contentbredd och fällde en svensk formel (479/464). Formelblocken är få rader och scrollar sällan. */
+/* scrollbars: styled through ::-webkit-scrollbar on purpose. A non-auto scrollbar-width would disable that styling in Chromium, so the standard properties are deliberately absent. */
 .eq::-webkit-scrollbar,pre.log::-webkit-scrollbar,pre.code::-webkit-scrollbar{height:9px}
 .eq::-webkit-scrollbar-thumb,pre.log::-webkit-scrollbar-thumb,pre.code::-webkit-scrollbar-thumb{background:var(--line);border-radius:5px}
 .eq::-webkit-scrollbar-thumb:hover,pre.log::-webkit-scrollbar-thumb:hover{background:var(--ink2)}

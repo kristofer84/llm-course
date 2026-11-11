@@ -22,6 +22,7 @@ python3 tools/content.py dump         # src/i18n/edit/<group>.md - text in readi
 # edit the SV| / EN| lines in those files (person or agent)
 python3 tools/content.py apply        # back into the catalogs
 python3 tools/content.py status       # keys where Swedish moved but English did not
+python3 tools/content.py mark         # accept the current state after a bulk edit
 (cd src && python3 build.py) && python3 tools/check_i18n.py
 ```
 
