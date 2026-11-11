@@ -18,9 +18,12 @@ innehåller inga nycklar:
 - `src/i18n/en/*.json` – engelska kataloger: `{"svensk sträng": "english string"}`.
   `data.json` är medvetna identitetsmappningar: svenska exempeltokens som `katt`, `satt`,
   `mattan` är data som diagrammen ritas av och ska stå kvar även i engelskt läge.
+  Nycklarna är explicita (`p3.rmsnorm.2`, `j6.12`, `mod.3.name`), källfilerna innehåller
+  markering men ingen text: `<p data-i18n="p3.rmsnorm.2"></p>. Bygget fyller i svenskan
+  statiskt, så den färdiga filen går att läsa även utan JavaScript.
 - `src/i18n/GLOSSARY.md` – terminologi och regler för översättning.
-- `tools/extract_i18n.py`, `tools/check_i18n.py` – arbetslistor ur den byggda sidan, och kontroll av
-  kompletthet, inline-markup och kodrader.
+- `tools/check_i18n.py` – statisk kontroll av kompletthet, inline-markup, platshållare och siffror.
+  Ingen webbläsare behövs.
 
 Lägga till ett språk, t.ex. tyska: skapa `src/i18n/de/` med samma sorts filer (en per grupp), fyll i
 översättningarna och bygg. Språkväxlaren får knappen automatiskt. Saknade nycklar faller tillbaka på
@@ -60,8 +63,7 @@ Repo: https://github.com/kristofer84/llm-course — sida: https://kristofer84.gi
 Arbetsflöde för översättning:
 
     (cd src && python3 build.py)      # bygg först: extraktionen läser den byggda sidan
-    python3 tools/extract_i18n.py     # skriver src/i18n/source/ (genererat, ej versionshanterat)
-    python3 tools/check_i18n.py       # täckning + markup + kodrader per grupp
+    python3 tools/check_i18n.py       # täckning + markup + platshållare + siffror per grupp
     python3 tools/check_i18n.py --group m3
 
 `tests/test2.py`–`test7.py` är manuella granskningsskript (skärmbilder per vy). Alla skript

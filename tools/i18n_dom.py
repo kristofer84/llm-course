@@ -31,7 +31,7 @@ def norm(html_text):
 
 
 class Node:
-    __slots__ = ("tag", "attrs", "start", "inner_start", "inner_end", "end", "children", "parent", "text")
+    __slots__ = ("tag", "attrs", "start", "inner_start", "inner_end", "end", "children", "parent", "text", "content")
 
     def __init__(self, tag, attrs, start, parent):
         self.tag = tag.upper()
@@ -43,11 +43,12 @@ class Node:
         self.children = []
         self.parent = parent
         self.text = []
+        self.content = []   # mixed content in document order: str or Node
 
     def text_content(self):
-        out = list(self.text)
-        for c in self.children:
-            out.append(c.text_content())
+        out = []
+        for item in self.content:
+            out.append(item if isinstance(item, str) else item.text_content())
         return "".join(out)
 
     def inner_html(self, src):
@@ -83,6 +84,7 @@ class _Walker(HTMLParser):
         node = Node(tag, dict(attrs), start, self.stack[-1])
         node.inner_start = start + len(raw)
         self.stack[-1].children.append(node)
+        self.stack[-1].content.append(node)
         if tag.upper() not in VOID:
             self.stack.append(node)
 
@@ -93,6 +95,7 @@ class _Walker(HTMLParser):
         node.inner_start = node.inner_end = start + len(raw)
         node.end = start + len(raw)
         self.stack[-1].children.append(node)
+        self.stack[-1].content.append(node)
 
     def handle_endtag(self, tag):
         start = self.at()
@@ -102,15 +105,19 @@ class _Walker(HTMLParser):
             node.end = start + len(tag) + 3  # </tag>
         elif tag.upper() in INLINE:
             self.stack[-1].text.append(self.src[start:start + len(tag) + 3])
+            self.stack[-1].content.append(self.src[start:start + len(tag) + 3])
 
     def handle_data(self, data):
         self.stack[-1].text.append(data)
+        self.stack[-1].content.append(data)
 
     def handle_entityref(self, name):
         self.stack[-1].text.append("&%s;" % name)
+        self.stack[-1].content.append("&%s;" % name)
 
     def handle_charref(self, name):
         self.stack[-1].text.append("&#%s;" % name)
+        self.stack[-1].content.append("&#%s;" % name)
 
     def handle_comment(self, data):
         pass

@@ -1,0 +1,14 @@
+{
+ "n0b.vad-ar-en-sprakmodell.1": "What is a language model?",
+ "n0b.vad-ar-en-sprakmodell.2": "A language model does one thing only: it guesses which word comes next. Same idea as the word suggestions on your phone, just vastly bigger. Everything else, answering questions, writing code and reasoning, is built by making that guess over and over.",
+ "n0b.vad-ar-en-sprakmodell.3": "The essentials, up front",
+ "n0b.vad-ar-en-sprakmodell.4": "<b>It is made of numbers.</b> A model like Llama-3-8B consists of roughly 8 billion numbers, called <i>weights</i> or <i>parameters</i>. Together they take up 16 GB.",
+ "n0b.vad-ar-en-sprakmodell.5": "<b>The numbers are learned.</b> The model has read enormous amounts of text and adjusted its numbers until it got good at guessing the next word. No one typed in the rules by hand.",
+ "n0b.vad-ar-en-sprakmodell.6": "<b>It does not look up answers.</b> There is no database of facts inside, only numbers that get added up. The knowledge is spread out across the numbers.",
+ "n0b.vad-ar-en-sprakmodell.7": "<b>It writes one word at a time.</b> Each new word is appended to the text, and the model runs again to guess the next.",
+ "n0b.vad-ar-en-sprakmodell.8": "Try it on the right: pick the next word yourself, or let the “model” choose the most likely one.",
+ "n0b.vad-ar-en-sprakmodell.9": "The model’s guesses for the next word:",
+ "n0b.vad-ar-en-sprakmodell.10": "Let the model choose",
+ "n0b.vad-ar-en-sprakmodell.11": "Start over",
+ "n0b.vad-ar-en-sprakmodell.12": "The probabilities are made up to show the idea. The rest of the course explains how a real model computes them."
+}

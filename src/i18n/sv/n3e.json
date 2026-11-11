@@ -1,0 +1,10 @@
+{
+ "n3e.vad-ett-lager-innehaller.1": "Vad ett lager innehåller: nio delar",
+ "n3e.vad-ett-lager-innehaller.2": "Ett lager i Llama består av bara nio saker: sju stora tabeller med tal (viktmatriser) och två små listor. Allt annat som händer i lagret är fasta räkneregler utan inlärda tal. Klicka på en del för att se den i bilden.",
+ "n3e.sa-blir-det-8-miljarder.1": "Så blir det 8 miljarder parametrar",
+ "n3e.sa-blir-det-8-miljarder.2": "”8 miljarder parametrar” är helt enkelt antalet tal i alla tabeller tillsammans. Det mesta sitter i de nio delarna gånger 32 lager. Resten är ordförrådet i början (embedding) och i slutet (LM head).",
+ "n3e.sa-blir-det-8-miljarder.3": "Föregående",
+ "n3e.sa-blir-det-8-miljarder.4": "Nästa steg",
+ "n3e.vad-ett-lager-innehaller.arialabel": "Lagrets nio vikter ritade i skala",
+ "n3e.sa-blir-det-8-miljarder.arialabel": "Parametrarna summeras steg för steg"
+}

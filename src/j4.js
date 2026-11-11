@@ -2,23 +2,23 @@
 (function layerAnat(){
   const svg=$('ly-svg'),info=$('ly-info');let nm='ours',sel='Wq';
   const N={
-   g1:['w',120,30,480,36,'RMSNorm g₁','input_layernorm','input_layernorm','[4096]',4096,'Normaliserar en kopia av strömmen så att RMS blir 1, och skalar sedan varje dimension med en inlärd vikt. Strömmen själv ändras inte.'],
-   Wq:['w',120,90,220,36,'Wq','self_attn.q_proj','qkv_proj (del av)','[4096, 4096]',16777216,'Gör en query per token: vad den här positionen letar efter. 32 heads × 128.'],
-   Wk:['w',350,90,120,36,'Wk','self_attn.k_proj','qkv_proj (del av)','[4096, 1024]',4194304,'Gör en key per token: vad positionen erbjuder. 8 KV heads × 128. Skrivs till KV-cachen.'],
-   Wv:['w',480,90,120,36,'Wv','self_attn.v_proj','qkv_proj (del av)','[4096, 1024]',4194304,'Gör en value per token: det som skickas vidare om positionen väljs. Skrivs till KV-cachen.'],
-   rope:['op',120,148,480,30,'RoPE: rotera Q och K efter position',null,null,null,0,'Ingen vikt. En fast formel som vrider Q och K beroende på position, så att attention kan känna av avstånd.'],
-   att:['op',120,194,480,30,'Q · Kᵀ / √128 + causal mask → softmax',null,null,null,0,'Ingen vikt. Jämför varje query med alla tidigare keys och gör poängen till vikter som summerar till 1.'],
-   pv:['op',120,240,480,30,'P · V: viktad summa av values',null,null,null,0,'Ingen vikt. Här, och bara här, flyttas information mellan tokens.'],
-   Wo:['w',120,286,480,36,'Wo','self_attn.o_proj','o_proj','[4096, 4096]',16777216,'Blandar ihop de 32 headsens resultat till ett bidrag med strömmens bredd, 4096.'],
-   add1:['add',60,342,0,0,'x = x + attention-bidrag',null,null,null,0,'Ingen vikt. Attention-bidraget adderas till strömmen. Inget skrivs över.'],
-   g2:['w',120,366,480,36,'RMSNorm g₂','post_attention_layernorm','post_attention_layernorm','[4096]',4096,'Samma sak som g₁, men före MLP:n och med egna vikter.'],
-   Wg:['w',120,426,235,36,'W_gate','mlp.gate_proj','gate_up_proj (del av)','[4096, 14336]',58720256,'14 336 detektorer. Varje kolumn är ett mönster som jämförs med tokenens vektor.'],
-   Wu:['w',365,426,235,36,'W_up','mlp.up_proj','gate_up_proj (del av)','[4096, 14336]',58720256,'Ett värde per detektor, som skalas av gaten.'],
-   silu:['op',120,484,480,30,'SiLU(gate) ⊙ up',null,null,null,0,'Ingen vikt. Gaten släpper fram de detektorer som slog till och multipliceras elementvis med up.'],
-   Wd:['w',120,530,480,36,'W_down','mlp.down_proj','down_proj','[14336, 4096]',58720256,'Komprimerar tillbaka till 4096 och skriver MLP:ns bidrag. Varje rad är vad en detektor skriver till strömmen.'],
-   add2:['add',60,586,0,0,'x = x + MLP-bidrag',null,null,null,0,'Ingen vikt. MLP-bidraget adderas. Strömmen går vidare till nästa lager.']};
+   g1:['w',120,30,480,36,'RMSNorm g₁','input_layernorm','input_layernorm','[4096]',4096,L.t('j4.1')],
+   Wq:['w',120,90,220,36,'Wq','self_attn.q_proj','qkv_proj (del av)','[4096, 4096]',16777216,L.t('j4.2')],
+   Wk:['w',350,90,120,36,'Wk','self_attn.k_proj','qkv_proj (del av)','[4096, 1024]',4194304,L.t('j4.3')],
+   Wv:['w',480,90,120,36,'Wv','self_attn.v_proj','qkv_proj (del av)','[4096, 1024]',4194304,L.t('j4.4')],
+   rope:['op',120,148,480,30,'RoPE: rotera Q och K efter position',null,null,null,0,L.t('j4.5')],
+   att:['op',120,194,480,30,'Q · Kᵀ / √128 + causal mask → softmax',null,null,null,0,L.t('j4.6')],
+   pv:['op',120,240,480,30,'P · V: viktad summa av values',null,null,null,0,L.t('j4.7')],
+   Wo:['w',120,286,480,36,'Wo','self_attn.o_proj','o_proj','[4096, 4096]',16777216,L.t('j4.8')],
+   add1:['add',60,342,0,0,'x = x + attention-bidrag',null,null,null,0,L.t('j4.9')],
+   g2:['w',120,366,480,36,'RMSNorm g₂','post_attention_layernorm','post_attention_layernorm','[4096]',4096,L.t('j4.10')],
+   Wg:['w',120,426,235,36,'W_gate','mlp.gate_proj','gate_up_proj (del av)','[4096, 14336]',58720256,L.t('j4.11')],
+   Wu:['w',365,426,235,36,'W_up','mlp.up_proj','gate_up_proj (del av)','[4096, 14336]',58720256,L.t('j4.12')],
+   silu:['op',120,484,480,30,'SiLU(gate) ⊙ up',null,null,null,0,L.t('j4.13')],
+   Wd:['w',120,530,480,36,'W_down','mlp.down_proj','down_proj','[14336, 4096]',58720256,L.t('j4.14')],
+   add2:['add',60,586,0,0,'x = x + MLP-bidrag',null,null,null,0,L.t('j4.15')]};
   const total=Object.values(N).reduce((s,n)=>s+n[9],0);
-  $('ly-total').textContent=L.t('Summa vikter i ett lager: {{total}} parametrar. Gånger 32 lager blir det ungefär 6,98 miljarder; resten av de 8,03 miljarderna är embedding och LM head.',{total:L.num(total,0)});
+  $('ly-total').textContent=L.t('j4.16',{total:L.num(total,0)});
   function label(k){const n=N[k];if(n[0]!=='w'||nm==='ours')return n[5];const s=nm==='ckpt'?n[6].split('.').pop():n[7];return s.replace(' (del av)','');}
   function draw(){clear(svg);
     S('line',{x1:60,y1:8,x2:60,y2:604,stroke:'var(--a)','stroke-width':6,style:'opacity:.45'},svg);
@@ -58,13 +58,13 @@
   const x1=x0.map((v,i)=>v+a[i]),x2=x1.map((v,i)=>v+m[i]);
   const L1=['x',' = ','x +',' ','Attention(','RMSNorm(x)',')'],L2=['x',' = ','x +',' ','MLP(','RMSNorm(x)',')'];
   const st=[
-   {hl:[],rows:[['x in',x0,'s']],t:['Strömmen kommer in','Det här är raden för token ”den” när den kommer in i lagret, efter alla tidigare lager. Den bär allt som hittills är känt om positionen.']},
-   {hl:[[1,5]],rows:[['x',x0,'s'],['RMSNorm(x)',nrm(x0),'c']],t:['Gör en normaliserad kopia','RMSNorm delar varje tal med vektorns RMS, så kopian får RMS 1 men samma riktning. Strömmen x själv är orörd. (Inlärda vikten g₁ är satt till 1 här.)']},
-   {hl:[[1,4],[1,6]],rows:[['x',x0,'s'],['RMSNorm(x)',nrm(x0),'c'],['Attention(…)',a,'b']],t:['Attention räknar ett bidrag','Attention läser kopian för den här positionen och för alla tidigare positioner, och hämtar det som är relevant. Ut kommer ett bidrag med samma shape som x. Det är litet jämfört med x.']},
-   {hl:[[1,2]],rows:[['x före',x0,'s'],['+ bidrag',a,'b'],['x efter',x1,'s']],t:['Addera till strömmen','Bidraget läggs ovanpå. Inget raderas: varje dimension har bara justerats lite. Första raden är klar.']},
-   {hl:[[2,5]],rows:[['x',x1,'s'],['RMSNorm(x)',nrm(x1),'c']],t:['Ny kopia, nu av uppdaterade x','Andra raden börjar likadant, men x innehåller nu det attention just hämtade. Kopian normaliseras med en egen vikt, g₂.']},
-   {hl:[[2,4],[2,6]],rows:[['x',x1,'s'],['RMSNorm(x)',nrm(x1),'c'],['MLP(…)',m,'b']],t:['MLP:n räknar ett bidrag','MLP:n ser bara den här positionens kopia, inga andra tokens. Den blandar om dimensionerna och ger ett bidrag med samma shape.']},
-   {hl:[[2,2]],rows:[['x före',x1,'s'],['+ bidrag',m,'b'],['x ut',x2,'s']],t:['Lagret är klart','Bidraget adderas och x går vidare till nästa lager, där samma två rader körs igen med nya vikter. Efter 32 lager är x summan av embedding och 64 sådana bidrag.']}];
+   {hl:[],rows:[['x in',x0,'s']],t:[L.t('j4.17'),L.t('j4.18')]},
+   {hl:[[1,5]],rows:[['x',x0,'s'],['RMSNorm(x)',nrm(x0),'c']],t:[L.t('j4.19'),L.t('j4.20')]},
+   {hl:[[1,4],[1,6]],rows:[['x',x0,'s'],['RMSNorm(x)',nrm(x0),'c'],['Attention(…)',a,'b']],t:[L.t('j4.21'),L.t('j4.22')]},
+   {hl:[[1,2]],rows:[[L.t('j4.23'),x0,'s'],['+ bidrag',a,'b'],['x efter',x1,'s']],t:[L.t('j4.24'),L.t('j4.25')]},
+   {hl:[[2,5]],rows:[['x',x1,'s'],['RMSNorm(x)',nrm(x1),'c']],t:['Ny kopia, nu av uppdaterade x',L.t('j4.26')]},
+   {hl:[[2,4],[2,6]],rows:[['x',x1,'s'],['RMSNorm(x)',nrm(x1),'c'],['MLP(…)',m,'b']],t:[L.t('j4.27'),L.t('j4.28')]},
+   {hl:[[2,2]],rows:[[L.t('j4.23'),x1,'s'],['+ bidrag',m,'b'],['x ut',x2,'s']],t:[L.t('j4.29'),L.t('j4.30')]}];
   let i=0;
   function code(){const s=st[i].hl;const ln=(parts,li)=>parts.map((p,k)=>{const on=s.some(h=>h[0]===li&&h[1]===k);const e=p.replace(/</g,'&lt;');return on?'<mark style="background:color-mix(in srgb,var(--tok) 25%,transparent);color:inherit;border-radius:3px">'+e+'</mark>':e;}).join('');
     $('tl-code').innerHTML=ln(L1,1)+'\n'+ln(L2,2);}
@@ -98,17 +98,17 @@
     else{T.forEach((t,r)=>{const y=y0+r*rh;const on=r===sel;line(svg,ex,y+rh/2,ex+22,y+rh/2,on?'ln':'lnf',on);S('rect',{x:ex+26,y:y+6,width:70,height:rh-12,rx:5,class:on?'bw':'bg',style:on?'':'opacity:.45'},svg);txt(svg,ex+61,y+rh/2+4,L.t('MLP'),'s','middle');});
       txt(svg,ex+61,y0+T.length*rh+18,L.t('samma vikter'),'s','middle');}
     const n=T[sel];
-    $('am-out').innerHTML=mode==='att'?L.t('<b>Attention</b> för ”{{token}}”: hämtar en viktad blandning av raderna ovanför och sin egen (procenten). Rader under är maskade. Information flyttas mellan tokens, längs T.',{token:n}):L.t('<b>MLP</b> för ”{{token}}”: bara den egna raden läses. Dimensionerna blandas om inom raden, längs d. Varje rad går genom samma MLP-vikter oberoende av de andra.',{token:n});}
+    $('am-out').innerHTML=mode==='att'?L.t('j4.31',{token:n}):L.t('j4.32',{token:n});}
   $('am-att').addEventListener('click',()=>{mode='att';$('am-att').classList.add('on');$('am-mlp').classList.remove('on');draw();});
   $('am-mlp').addEventListener('click',()=>{mode='mlp';$('am-mlp').classList.add('on');$('am-att').classList.remove('on');draw();});draw();
 })();
 (function detectors(){
-  const F=['syftar på katt','djur','trött','plural','kodkontext','negation'];const on=[true,true,true,false,false,false];
-  const NEU=[['vilande djur',[0,1.2,1.2,0,0,0],-1.4,'sov, vilade, låg'],['husdjur',[1.5,0.5,0,0,0,0],-0.8,'morrhår, kisse, spann'],['trött människa',[0,-1.6,1.5,0,0,0],-0.4,'kaffe, jobbet, sömnbrist'],['flera subjekt',[0,0,0,2,0,0],-1,'de, dem, alla'],['kodkontext',[0,0,0,0,2.2,0],-1,'self, return, ('],['negation',[0,0,0,0,0,2],-1,'inte, aldrig, ingen']];
+  const F=[L.t('j4.33'),'djur',L.t('j4.34'),'plural','kodkontext','negation'];const on=[true,true,true,false,false,false];
+  const NEU=[['vilande djur',[0,1.2,1.2,0,0,0],-1.4,'sov, vilade, låg'],['husdjur',[1.5,0.5,0,0,0,0],-0.8,'morrhår, kisse, spann'],[L.t('j4.35'),[0,-1.6,1.5,0,0,0],-0.4,'kaffe, jobbet, sömnbrist'],['flera subjekt',[0,0,0,2,0,0],-1,'de, dem, alla'],['kodkontext',[0,0,0,0,2.2,0],-1,'self, return, ('],['negation',[0,0,0,0,0,2],-1,'inte, aldrig, ingen']];
   const silu=z=>z/(1+Math.exp(-z));
   function draw(){const fb=$('dt-feat');clear(fb);F.forEach((f,i)=>{const b=H('button','chip '+(on[i]?'new':''),(on[i]?'✓ ':'')+L.t(f),fb);b.style.cursor='pointer';b.setAttribute('aria-pressed',on[i]?'true':'false');b.addEventListener('click',()=>{on[i]=!on[i];draw();});});
     const x=on.map(v=>v?1:0);const box=$('dt-rows');clear(box);
-    const hd=H('div',null,null,box);hd.style.cssText='display:grid;grid-template-columns:120px 1fr 1fr;gap:10px;font-size:12px;color:var(--ink2);margin-bottom:4px';[L.t('neuron'),L.t('gate = h · mönster'),L.t('SiLU(gate)')].forEach(t=>H('span',null,t,hd));
+    const hd=H('div',null,null,box);hd.style.cssText='display:grid;grid-template-columns:120px 1fr 1fr;gap:10px;font-size:12px;color:var(--ink2);margin-bottom:4px';[L.t('neuron'),L.t('j4.36'),L.t('SiLU(gate)')].forEach(t=>H('span',null,t,hd));
     const fired=[];
     NEU.forEach(([n,w,b,wr])=>{const g=w.reduce((s,wi,i)=>s+wi*x[i],0)+b;const a=silu(g);if(a>0.3)fired.push([n,wr,a]);
       const r=H('div',null,null,box);r.style.cssText='display:grid;grid-template-columns:120px 1fr 1fr;gap:10px;align-items:center;margin:5px 0;font-size:14px';
@@ -117,13 +117,13 @@
         const f=H('div',null,null,t);const wd=Math.min(1,Math.abs(v)/mx)*50;f.style.cssText='position:absolute;top:0;bottom:0;border-radius:3px;background:'+(v>=0?c:'var(--neg)')+';'+(v>=0?'left:50%;width:'+wd+'%':'right:50%;width:'+wd+'%');
         const z=H('div',null,null,t);z.style.cssText='position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--ink2)';
         const s=H('span',null,nf(v,2),t);s.style.cssText='position:absolute;right:4px;top:1px;font-family:var(--mono);font-size:11px';});});
-    $('dt-out').innerHTML=fired.length?L.t('Neuroner som slår till skriver sin riktning till strömmen, vilket gör vissa fortsättningar troligare: {{list}}.',{list:fired.map(f=>L.t('<b>{{name}}</b> → {{words}}',{name:L.t(f[0]),words:f[1]})).join('; ')}):L.t('Ingen neuron slår till tydligt. MLP-bidraget blir nästan noll, och strömmen passerar i stort sett oförändrad.');}
+    $('dt-out').innerHTML=fired.length?L.t('j4.37',{list:fired.map(f=>L.t('<b>{{name}}</b> → {{words}}',{name:L.t(f[0]),words:f[1]})).join('; ')}):L.t('j4.38');}
   draw();
 })();
 (function lens(){
   const LAY=[0,8,16,24,32];
   const D=[[[' var',0.16],[' är',0.08],[',',0.06],[' inte',0.05],[' en',0.04]],[[' inte',0.12],[' så',0.10],[' en',0.08],[' väldigt',0.06],[' trött',0.04]],[[' trött',0.18],[' hungrig',0.09],[' inte',0.08],[' så',0.07],[' sömnig',0.05]],[[' trött',0.34],[' sömnig',0.14],[' hungrig',0.10],[' lat',0.06],[' så',0.04]],[[' trött',0.46],[' sömnig',0.12],[' hungrig',0.09],[' lat',0.05],[' mätt',0.03]]];
-  const C=['Strömmen är fortfarande nästan bara embedding för ”var”. Toppgissningarna ekar den egna tokenen.','Grammatiken har tagit form: efter ”den var” brukar en förstärkning eller ett adjektiv komma.','Attention har hämtat ”Katten” och ”mattan”. Tillstånd som passar en katt börjar dyka upp.','Senare lager har dragit slutsatser av sammanhanget. ”trött” leder tydligt.','Efter sista lagret: den fördelning som samplingen faktiskt drar från.'];
+  const C=[L.t('j4.39'),L.t('j4.40'),L.t('j4.41'),L.t('j4.42'),L.t('j4.43')];
   function draw(){const k=+$('ll-k').value;$('ll-kv').textContent=String(LAY[k]);const svg=$('ll-svg');clear(svg);
     for(let i=0;i<32;i++){S('rect',{x:14+i*16.5,y:14,width:14,height:22,rx:3,class:i<LAY[k]?'bw':'bg'},svg);}
     const mx=14+LAY[k]*16.5-1.5;S('line',{x1:mx,y1:6,x2:mx,y2:44,stroke:'var(--tok)','stroke-width':3},svg);txt(svg,Math.min(Math.max(mx,40),520),54,LAY[k]===0?L.t('efter embedding'):L.t('efter lager {{n}}',{n:LAY[k]}),'s','middle');

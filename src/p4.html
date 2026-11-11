@@ -1,155 +1,149 @@
 <!-- ============ MODUL 3 ============ -->
 <section class="slide" data-mod="3" data-title="LM head: från vektor till logits"><div class="si">
-  <h2>LM head: från vektor till logits</h2>
+  <h2 data-i18n="p4.lm-head-fran-vektor-till.1"></h2>
   <div class="cols even">
     <div>
-      <div class="eq">h      = RMSNorm(x)          [T, 4096]
-logits = h @ W_U             [T, 128256]</div>
-      <p>W_U (unembedding, <span class="mk">lm_head</span>) ger ett tal per token i vokabulären och per position. Logit på position t är modellens bedömning av vad som kommer på position t + 1.</p>
-      <p>Vid generering behövs bara <b>sista raden</b>. vLLM räknar därför bara logits för den sista positionen i varje sekvens. Att räkna alla T rader för en lång prompt skulle kosta T × 128 256 tal i onödan.</p>
-      <p>I vissa modeller delar LM head vikter med embedding-tabellen (tied embeddings). Llama-3-8B gör inte det.</p>
+      <div class="eq" data-i18n="p4.lm-head-fran-vektor-till.2"></div>
+      <p data-i18n="p4.lm-head-fran-vektor-till.3"></p>
+      <p data-i18n="p4.lm-head-fran-vektor-till.4"></p>
+      <p data-i18n="p4.lm-head-fran-vektor-till.5"></p>
     </div>
     <div class="panel">
-      <svg class="viz" viewBox="0 0 700 260" role="img" aria-label="Sista raden i x multipliceras med W_U och ger logits">
-        <text x="60" y="30" class="m ta" text-anchor="middle">h [7, 4096]</text>
+      <svg class="viz" viewBox="0 0 700 260" role="img" aria-label="" data-i18n-aria-label="p4.lm-head-fran-vektor-till.arialabel">
+        <text x="60" y="30" class="m ta" text-anchor="middle" data-i18n="p4.lm-head-fran-vektor-till.6"></text>
         <g id="lm-rows"></g>
         <text x="148" y="125" class="b" text-anchor="middle">@</text>
-        <text x="235" y="30" class="m tw" text-anchor="middle">W_U [4096, 128256]</text>
+        <text x="235" y="30" class="m tw" text-anchor="middle" data-i18n="p4.lm-head-fran-vektor-till.7"></text>
         <rect x="170" y="40" width="130" height="170" class="bw"/>
         <text x="320" y="125" class="b" text-anchor="middle">=</text>
-        <text x="510" y="30" class="m ta" text-anchor="middle">logits [128256]</text>
+        <text x="510" y="30" class="m ta" text-anchor="middle" data-i18n="p4.lm-head-fran-vektor-till.8"></text>
         <rect x="340" y="112" width="340" height="18" class="ba"/>
-        <text x="510" y="160" class="s" text-anchor="middle">ett tal per möjlig nästa token</text>
-        <text x="10" y="245" class="s">Bara sista raden (mörk) räknas vid generering. Skalorna är inte proportionella.</text>
+        <text x="510" y="160" class="s" text-anchor="middle" data-i18n="p4.lm-head-fran-vektor-till.9"></text>
+        <text x="10" y="245" class="s" data-i18n="p4.lm-head-fran-vektor-till.10"></text>
       </svg>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-mod="3" data-title="Sampling: temperature, top-k, top-p"><div class="si">
-  <h2>Sampling: temperature, top-k och top-p</h2>
+  <h2 data-i18n="p4.sampling-temperature-top-k.1"></h2>
   <div class="cols">
     <div>
-      <div class="eq">p = softmax(logits / temperature)
-top-k: behåll de k största
-top-p: behåll minsta mängden med Σp ≥ top_p
-renormalisera, dra en token</div>
+      <div class="eq" data-i18n="p4.sampling-temperature-top-k.2"></div>
       <ul>
-        <li><b>Temperature</b> &lt; 1 skärper fördelningen, &gt; 1 plattar till den. Temperature 0 betyder greedy: ta alltid den största.</li>
-        <li><b>Top-k</b> klipper bort allt utom de k bästa.</li>
-        <li><b>Top-p</b> (nucleus) klipper adaptivt: när modellen är säker återstår få kandidater, när den är osäker många.</li>
+        <li data-i18n="p4.sampling-temperature-top-k.3"></li>
+        <li data-i18n="p4.sampling-temperature-top-k.4"></li>
+        <li data-i18n="p4.sampling-temperature-top-k.5"></li>
       </ul>
-      <p>Logits efter ”Katten satt på” nedan är påhittade, men mekaniken är exakt den som körs.</p>
+      <p data-i18n="p4.sampling-temperature-top-k.6"></p>
     </div>
     <div class="panel">
       <div class="ctl">
         <label>temperature <input type="range" id="smp-t" min="0.05" max="2" step="0.05" value="1"><span class="mk" id="smp-tv">1.00</span></label>
         <label>top-p <input type="range" id="smp-p" min="0.1" max="1" step="0.05" value="1"><span class="mk" id="smp-pv">1.00</span></label>
-        <label>top-k <select id="smp-k"><option value="0">av</option><option>1</option><option>2</option><option>3</option><option>4</option></select></label>
+        <label>top-k <select id="smp-k"><option value="0" data-i18n="p4.sampling-temperature-top-k.7"></option><option>1</option><option>2</option><option>3</option><option>4</option></select></label>
       </div>
-      <svg class="viz" id="smp-svg" viewBox="0 0 560 270" role="img" aria-label="Sannolikheter för kandidattokens"></svg>
-      <div class="ctl"><button class="btn" id="smp-draw">Dra 20 tokens</button></div>
+      <svg class="viz" id="smp-svg" viewBox="0 0 560 270" role="img" aria-label="" data-i18n-aria-label="p4.sampling-temperature-top-k.arialabel"></svg>
+      <div class="ctl"><button class="btn" id="smp-draw" data-i18n="p4.sampling-temperature-top-k.8"></button></div>
       <div class="out" id="smp-out"></div>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-mod="3" data-title="Den autoregressiva loopen"><div class="si">
-  <h2>Den autoregressiva loopen</h2>
+  <h2 data-i18n="p4.den-autoregressiva-loopen.1"></h2>
   <div class="cols even">
     <div>
-      <p>En genererad token läggs till sekvensen och hela modellen körs igen. Svaret växer en token per varv tills något av följande händer:</p>
+      <p data-i18n="p4.den-autoregressiva-loopen.2"></p>
       <ul>
-        <li>modellen producerar en stopptoken (<span class="mk">&lt;|eot_id|&gt;</span>)</li>
-        <li>en stoppsträng matchar i den detokeniserade texten</li>
-        <li><span class="mk">max_tokens</span> för förfrågan är nådd</li>
-        <li>sekvensen når modellens <span class="mk">max_model_len</span></li>
+        <li data-i18n="p4.den-autoregressiva-loopen.3"></li>
+        <li data-i18n="p4.den-autoregressiva-loopen.4"></li>
+        <li data-i18n="p4.den-autoregressiva-loopen.5"></li>
+        <li data-i18n="p4.den-autoregressiva-loopen.6"></li>
       </ul>
-      <p>Utan KV-cache skulle varje varv räkna om hela sekvensen. Med cache räknas bara den nya positionen, men varje varv måste ändå läsa alla vikter. Det är grunden till allt i modul 6.</p>
-      <p class="note">Greedy (temperature 0) är inte garanterat deterministiskt i en server. Olika batchstorlekar kan ge olika ordning på flyttalsoperationer, och små skillnader kan vända en jämn argmax.</p>
+      <p data-i18n="p4.den-autoregressiva-loopen.7"></p>
+      <p class="note" data-i18n="p4.den-autoregressiva-loopen.8"></p>
     </div>
     <div class="panel">
-      <svg class="viz" viewBox="0 0 520 380" role="img" aria-label="Loop: forward pass, logits, sampler, stoppkontroll, lägg till token">
-        <rect x="160" y="20" width="200" height="44" rx="8" class="bt"/><text x="260" y="47" text-anchor="middle">Prompt + svar hittills</text>
+      <svg class="viz" viewBox="0 0 520 380" role="img" aria-label="" data-i18n-aria-label="p4.den-autoregressiva-loopen.arialabel">
+        <rect x="160" y="20" width="200" height="44" rx="8" class="bt"/><text x="260" y="47" text-anchor="middle" data-i18n="p4.den-autoregressiva-loopen.9"></text>
         <line x1="260" y1="64" x2="260" y2="92" class="ln" marker-end="url(#ah)"/>
-        <rect x="160" y="94" width="200" height="44" rx="8" class="bw"/><text x="260" y="121" text-anchor="middle">Forward pass (32 lager)</text>
+        <rect x="160" y="94" width="200" height="44" rx="8" class="bw"/><text x="260" y="121" text-anchor="middle" data-i18n="p4.den-autoregressiva-loopen.10"></text>
         <line x1="260" y1="138" x2="260" y2="166" class="ln" marker-end="url(#ah)"/>
-        <rect x="160" y="168" width="200" height="44" rx="8" class="ba"/><text x="260" y="195" text-anchor="middle">Logits, sista position</text>
+        <rect x="160" y="168" width="200" height="44" rx="8" class="ba"/><text x="260" y="195" text-anchor="middle" data-i18n="p4.den-autoregressiva-loopen.11"></text>
         <line x1="260" y1="212" x2="260" y2="240" class="ln" marker-end="url(#ah)"/>
-        <rect x="160" y="242" width="200" height="44" rx="8" class="bt"/><text x="260" y="269" text-anchor="middle">Sampler → ny token</text>
+        <rect x="160" y="242" width="200" height="44" rx="8" class="bt"/><text x="260" y="269" text-anchor="middle" data-i18n="p4.den-autoregressiva-loopen.12"></text>
         <line x1="260" y1="286" x2="260" y2="314" class="ln" marker-end="url(#ah)"/>
-        <rect x="185" y="316" width="150" height="44" rx="8" class="box"/><text x="260" y="343" text-anchor="middle">Stopp?</text>
+        <rect x="185" y="316" width="150" height="44" rx="8" class="box"/><text x="260" y="343" text-anchor="middle" data-i18n="p4.den-autoregressiva-loopen.13"></text>
         <path d="M185 338 H70 V42 H158" class="ln" marker-end="url(#ah)"/>
-        <text x="62" y="200" class="s" text-anchor="end" transform="rotate(-90 62 200)">nej: lägg till token</text>
+        <text x="62" y="200" class="s" text-anchor="end" transform="rotate(-90 62 200)" data-i18n="p4.den-autoregressiva-loopen.14"></text>
         <line x1="335" y1="338" x2="430" y2="338" class="ln" marker-end="url(#ah)"/>
-        <text x="440" y="343" class="s">ja: klar</text>
+        <text x="440" y="343" class="s" data-i18n="p4.den-autoregressiva-loopen.15"></text>
       </svg>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-mod="3" data-title="Testa dig själv: logits"><div class="si">
-  <h2>Testa dig själv: logits och sampling</h2>
-  <details class="q"><summary>Hur stor är logits-tensorn om du (felaktigt) räknar logits för alla positioner i en prompt på 8 000 tokens, i fp32?</summary><p>8 000 × 128 256 × 4 byte ≈ 4,1 GB. Därför räknas bara sista positionen.</p></details>
-  <details class="q"><summary>Vad gör top-p = 0,9 när modellen ger 95 % till en enda token?</summary><p>Bara den token återstår, eftersom den ensam når 0,9. Samplingen blir i praktiken greedy just då.</p></details>
-  <details class="q"><summary>Varför kan temperature 0 ge olika svar på samma fråga i en server med många användare?</summary><p>Batchsammansättningen påverkar kernelval och summeringsordning. Flyttalsaddition är inte associativ, så logits kan skilja sig i sista decimalen och vända en jämn argmax.</p></details>
+  <h2 data-i18n="p4.testa-dig-sjalv-logits.1"></h2>
+  <details class="q"><summary data-i18n="p4.testa-dig-sjalv-logits.2"></summary><p data-i18n="p4.testa-dig-sjalv-logits.3"></p></details>
+  <details class="q"><summary data-i18n="p4.testa-dig-sjalv-logits.4"></summary><p data-i18n="p4.testa-dig-sjalv-logits.5"></p></details>
+  <details class="q"><summary data-i18n="p4.testa-dig-sjalv-logits.6"></summary><p data-i18n="p4.testa-dig-sjalv-logits.7"></p></details>
 </div></section>
 
 <!-- ============ MODUL 4 ============ -->
 <section class="slide" data-mod="4" data-title="Träning: next-token loss"><div class="si">
-  <h2>Träning: förutsäg nästa token</h2>
+  <h2 data-i18n="p4.traning-next-token-loss.1"></h2>
   <div class="cols even">
     <div>
-      <p>Under träning är målet för varje position helt enkelt nästa token i texten. Inputs och targets är samma sekvens, förskjuten ett steg.</p>
-      <div class="eq">logits  = model(ids)          [B, T, V]
-targets = ids skiftad ett steg  [B, T]
-loss    = −mean log softmax(logits)[target]</div>
-      <p>Tack vare causal mask räknas alla T förutsägelser i <b>ett enda</b> forward pass. Det är därför träning är parallell över sekvensen medan generering är seriell: vid generering finns inte nästa token förrän den samplats.</p>
+      <p data-i18n="p4.traning-next-token-loss.2"></p>
+      <div class="eq" data-i18n="p4.traning-next-token-loss.3"></div>
+      <p data-i18n="p4.traning-next-token-loss.4"></p>
     </div>
     <div class="panel">
-      <svg class="viz" viewBox="0 0 560 230" role="img" aria-label="Inputs och targets förskjutna ett steg">
-        <text x="10" y="58" class="s">input</text>
-        <text x="10" y="168" class="s">target</text>
+      <svg class="viz" viewBox="0 0 560 230" role="img" aria-label="" data-i18n-aria-label="p4.traning-next-token-loss.arialabel">
+        <text x="10" y="58" class="s" data-i18n="p4.traning-next-token-loss.5"></text>
+        <text x="10" y="168" class="s" data-i18n="p4.traning-next-token-loss.6"></text>
         <g id="shift-g"></g>
       </svg>
-      <p class="note">Positionen som ser ”Katten satt på” tränas att ge hög sannolikhet åt ” mattan”.</p>
+      <p class="note" data-i18n="p4.traning-next-token-loss.7"></p>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-mod="4" data-title="Gradienter och minne"><div class="si">
-  <h2>Gradienter och minne</h2>
+  <h2 data-i18n="p4.gradienter-och-minne.1"></h2>
   <div class="cols even">
     <div>
-      <p>Backpropagation ger en gradient med exakt samma shape som varje viktmatris. Optimeraren (AdamW) uppdaterar vikterna i gradientens motsatta riktning och håller två egna tillstånd per parameter.</p>
-      <p>Med mixed precision kostar varje parameter ungefär 16 byte under träning, mot 2 byte vid inference. Därtill kommer aktiveringar som måste sparas för backward pass.</p>
-      <p>Det är därför du kan köra en 8B-modell på en GPU med 24 GB men behöver ett kluster för att träna den.</p>
+      <p data-i18n="p4.gradienter-och-minne.2"></p>
+      <p data-i18n="p4.gradienter-och-minne.3"></p>
+      <p data-i18n="p4.gradienter-och-minne.4"></p>
     </div>
-    <div class="panel"><svg class="viz" id="mem-svg" viewBox="0 0 560 260" role="img" aria-label="Minne per parameter vid träning och inference"></svg></div>
+    <div class="panel"><svg class="viz" id="mem-svg" viewBox="0 0 560 260" role="img" aria-label="" data-i18n-aria-label="p4.gradienter-och-minne.arialabel"></svg></div>
   </div>
 </div></section>
 
 <section class="slide" data-mod="4" data-title="Från basmodell till assistent"><div class="si">
-  <h2>Från basmodell till assistent</h2>
-  <p class="lead">Arkitekturen är densamma genom alla faser. Bara vikterna ändras, och därmed beteendet.</p>
-  <svg class="viz" viewBox="0 0 1000 220" role="img" aria-label="Tre träningsfaser: pretraining, SFT, preferens- och RL-träning">
+  <h2 data-i18n="p4.fran-basmodell-till.1"></h2>
+  <p class="lead" data-i18n="p4.fran-basmodell-till.2"></p>
+  <svg class="viz" viewBox="0 0 1000 220" role="img" aria-label="" data-i18n-aria-label="p4.fran-basmodell-till.arialabel">
     <rect x="10" y="40" width="300" height="130" rx="10" class="bw"/>
-    <text x="30" y="72" class="b">Pretraining</text>
-    <text x="30" y="98" class="s">Biljontals tokens webbtext, kod, böcker.</text>
-    <text x="30" y="118" class="s">Mål: nästa token. Lär sig språk och fakta.</text>
-    <text x="30" y="138" class="s">Resultat: basmodell som fortsätter text.</text>
+    <text x="30" y="72" class="b" data-i18n="p4.fran-basmodell-till.3"></text>
+    <text x="30" y="98" class="s" data-i18n="p4.fran-basmodell-till.4"></text>
+    <text x="30" y="118" class="s" data-i18n="p4.fran-basmodell-till.5"></text>
+    <text x="30" y="138" class="s" data-i18n="p4.fran-basmodell-till.6"></text>
     <line x1="312" y1="105" x2="346" y2="105" class="ln" marker-end="url(#ah)"/>
     <rect x="350" y="40" width="300" height="130" rx="10" class="bt"/>
-    <text x="370" y="72" class="b">SFT</text>
-    <text x="370" y="98" class="s">Exempeldialoger i chat template.</text>
-    <text x="370" y="118" class="s">Samma loss, men bara på assistentens svar.</text>
-    <text x="370" y="138" class="s">Lär sig format, roller och stopptoken.</text>
+    <text x="370" y="72" class="b" data-i18n="p4.fran-basmodell-till.7"></text>
+    <text x="370" y="98" class="s" data-i18n="p4.fran-basmodell-till.8"></text>
+    <text x="370" y="118" class="s" data-i18n="p4.fran-basmodell-till.9"></text>
+    <text x="370" y="138" class="s" data-i18n="p4.fran-basmodell-till.10"></text>
     <line x1="652" y1="105" x2="686" y2="105" class="ln" marker-end="url(#ah)"/>
     <rect x="690" y="40" width="300" height="130" rx="10" class="bkv"/>
-    <text x="710" y="72" class="b">Preferenser och RL</text>
-    <text x="710" y="98" class="s">RLHF/DPO: vilket svar föredras?</text>
-    <text x="710" y="118" class="s">RL med verifierbar belöning (matte, kod)</text>
-    <text x="710" y="138" class="s">ger resonerande modeller med lång thinking.</text>
+    <text x="710" y="72" class="b" data-i18n="p4.fran-basmodell-till.11"></text>
+    <text x="710" y="98" class="s" data-i18n="p4.fran-basmodell-till.12"></text>
+    <text x="710" y="118" class="s" data-i18n="p4.fran-basmodell-till.13"></text>
+    <text x="710" y="138" class="s" data-i18n="p4.fran-basmodell-till.14"></text>
   </svg>
-  <p>För inference är fasen ointressant: en resonerande modell körs exakt som en vanlig. Den genererar bara många fler tokens innan svaret, vilket syns i kostnad och latens.</p>
+  <p data-i18n="p4.fran-basmodell-till.15"></p>
 </div></section>

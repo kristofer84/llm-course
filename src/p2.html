@@ -1,8 +1,8 @@
 <!-- ============ MODUL 0 ============ -->
 <section class="slide" data-mod="0" data-title="Från prompt till token"><div class="si">
-  <h1>Från prompt till token</h1>
-  <p class="lead">Från noll till expert. En kurs om vad en språkmodell består av, hur en fråga flödar genom den som tensorer med konkreta shapes, och hur en inference-motor som vLLM kör den snabbt för många användare samtidigt.</p>
-  <svg class="viz" viewBox="0 0 1000 250" role="img" aria-label="Pipeline: prompt, tokenizer, embedding, transformerblock, LM head, sampler, och en loop tillbaka med den nya token">
+  <h1 data-i18n="p2.fran-prompt-till-token.1"></h1>
+  <p class="lead" data-i18n="p2.fran-prompt-till-token.2"></p>
+  <svg class="viz" viewBox="0 0 1000 250" role="img" aria-label="" data-i18n-aria-label="p2.fran-prompt-till-token.arialabel">
     <path id="heropath" d="M130 120 H930 V212 H370 V152" class="lnf"/>
     <line x1="130" y1="120" x2="158" y2="120" class="ln" marker-end="url(#ah)"/>
     <line x1="280" y1="120" x2="308" y2="120" class="ln" marker-end="url(#ah)"/>
@@ -10,166 +10,153 @@
     <line x1="630" y1="120" x2="658" y2="120" class="ln" marker-end="url(#ah)"/>
     <line x1="780" y1="120" x2="808" y2="120" class="ln" marker-end="url(#ah)"/>
     <path d="M870 150 V212 H370 V154" class="ln" marker-end="url(#ah)"/>
-    <text x="620" y="232" class="s" text-anchor="middle">ny token läggs till sekvensen, nästa varv börjar</text>
-    <rect x="20" y="90" width="110" height="60" rx="8" class="box"/><text x="75" y="125" text-anchor="middle">Prompt</text>
-    <rect x="160" y="90" width="120" height="60" rx="8" class="bt"/><text x="220" y="125" text-anchor="middle">Tokenizer</text>
-    <rect x="310" y="90" width="120" height="60" rx="8" class="bw"/><text x="370" y="125" text-anchor="middle">Embedding</text>
+    <text x="620" y="232" class="s" text-anchor="middle" data-i18n="p2.fran-prompt-till-token.3"></text>
+    <rect x="20" y="90" width="110" height="60" rx="8" class="box"/><text x="75" y="125" text-anchor="middle" data-i18n="p2.fran-prompt-till-token.4"></text>
+    <rect x="160" y="90" width="120" height="60" rx="8" class="bt"/><text x="220" y="125" text-anchor="middle" data-i18n="p2.fran-prompt-till-token.5"></text>
+    <rect x="310" y="90" width="120" height="60" rx="8" class="bw"/><text x="370" y="125" text-anchor="middle" data-i18n="p2.fran-prompt-till-token.6"></text>
     <rect x="472" y="78" width="160" height="60" rx="8" class="bw" opacity=".5"/>
     <rect x="466" y="84" width="160" height="60" rx="8" class="bw" opacity=".75"/>
-    <rect x="460" y="90" width="160" height="60" rx="8" class="bw"/><text x="540" y="118" text-anchor="middle">32 × block</text><text x="540" y="136" class="s" text-anchor="middle">attention + MLP</text>
-    <rect x="660" y="90" width="120" height="60" rx="8" class="bw"/><text x="720" y="125" text-anchor="middle">LM head</text>
-    <rect x="810" y="90" width="120" height="60" rx="8" class="bt"/><text x="870" y="125" text-anchor="middle">Sampler</text>
-    <text x="220" y="76" class="m tt" text-anchor="middle">ids [T]</text>
-    <text x="370" y="76" class="m ta" text-anchor="middle">x [T, d]</text>
-    <text x="540" y="62" class="m ta" text-anchor="middle">x [T, d]</text>
-    <text x="720" y="76" class="m ta" text-anchor="middle">logits [V]</text>
-    <text x="870" y="76" class="m tt" text-anchor="middle">id</text>
+    <rect x="460" y="90" width="160" height="60" rx="8" class="bw"/><text x="540" y="118" text-anchor="middle" data-i18n="p2.fran-prompt-till-token.7"></text><text x="540" y="136" class="s" text-anchor="middle" data-i18n="p2.fran-prompt-till-token.8"></text>
+    <rect x="660" y="90" width="120" height="60" rx="8" class="bw"/><text x="720" y="125" text-anchor="middle" data-i18n="p2.fran-prompt-till-token.9"></text>
+    <rect x="810" y="90" width="120" height="60" rx="8" class="bt"/><text x="870" y="125" text-anchor="middle" data-i18n="p2.fran-prompt-till-token.10"></text>
+    <text x="220" y="76" class="m tt" text-anchor="middle" data-i18n="p2.fran-prompt-till-token.11"></text>
+    <text x="370" y="76" class="m ta" text-anchor="middle" data-i18n="p2.fran-prompt-till-token.12"></text>
+    <text x="540" y="62" class="m ta" text-anchor="middle" data-i18n="p2.fran-prompt-till-token.13"></text>
+    <text x="720" y="76" class="m ta" text-anchor="middle" data-i18n="p2.fran-prompt-till-token.14"></text>
+    <text x="870" y="76" class="m tt" text-anchor="middle" data-i18n="p2.fran-prompt-till-token.15"></text>
     <circle r="7" class="fa" id="herodot"><animateMotion dur="7s" repeatCount="indefinite"><mpath href="#heropath"/></animateMotion></circle>
   </svg>
-  <div class="legend">
-    <span><i style="background:var(--tok)"></i>tokens och ids</span>
-    <span><i style="background:var(--w)"></i>vikter (fasta)</span>
-    <span><i style="background:var(--a)"></i>aktiveringar (ändras per token)</span>
-    <span><i style="background:var(--kv)"></i>KV-cache</span>
-  </div>
-  <p class="note">Färgerna betyder samma sak i hela kursen. Navigera med piltangenterna, knapparna längst ner eller innehållsförteckningen.</p>
+  <div class="legend" data-i18n="p2.fran-prompt-till-token.16"></div>
+  <p class="note" data-i18n="p2.fran-prompt-till-token.17"></p>
 </div></section>
 
 <section class="slide" data-mod="0" data-title="Kursens karta"><div class="si">
-  <h2>Kursens karta</h2>
-  <p class="lead">Modulerna följer datats väg: först vad modellen är, sedan hur den körs, sist hur en motor kör många förfrågningar samtidigt.</p>
+  <h2 data-i18n="p2.kursens-karta.1"></h2>
+  <p class="lead" data-i18n="p2.kursens-karta.2"></p>
   <div class="modgrid" id="modgrid"></div>
 </div></section>
 
 <section class="slide" data-mod="0" data-title="Referensmodellen och notation"><div class="si">
-  <h2>Referensmodellen och notation</h2>
-  <p class="lead">Vi använder Llama-3-8B som genomgående exempel. Alla shapes i kursen räknas med dessa siffror, så att du kan känna igen dem i config.json och i vLLM:s loggar.</p>
+  <h2 data-i18n="p2.referensmodellen-och.1"></h2>
+  <p class="lead" data-i18n="p2.referensmodellen-och.2"></p>
   <div class="cols even">
     <div class="scroll-x"><table class="t">
-      <tr><th>Symbol</th><th>Betydelse</th><th>Llama-3-8B</th></tr>
-      <tr><td class="n">B</td><td>batch: antal sekvenser</td><td class="n">varierar</td></tr>
-      <tr><td class="n">T</td><td>tokens som bearbetas i steget</td><td class="n">varierar</td></tr>
-      <tr><td class="n">d</td><td>hidden size (d_model), residual streamens bredd</td><td class="n">4096</td></tr>
-      <tr><td class="n">L</td><td>antal lager (num_hidden_layers)</td><td class="n">32</td></tr>
-      <tr><td class="n">n_h</td><td>query heads (num_attention_heads)</td><td class="n">32</td></tr>
-      <tr><td class="n">n_kv</td><td>KV heads (num_key_value_heads)</td><td class="n">8</td></tr>
-      <tr><td class="n">d_h</td><td>head_dim = d / n_h</td><td class="n">128</td></tr>
-      <tr><td class="n">d_ff</td><td>MLP:ns inre bredd (intermediate_size)</td><td class="n">14336</td></tr>
-      <tr><td class="n">V</td><td>vokabulär (vocab_size)</td><td class="n">128256</td></tr>
+      <tr><th data-i18n="p2.referensmodellen-och.3"></th><th data-i18n="p2.referensmodellen-och.4"></th><th data-i18n="p2.referensmodellen-och.5"></th></tr>
+      <tr><td class="n" data-i18n="p2.referensmodellen-och.6"></td><td data-i18n="p2.referensmodellen-och.7"></td><td class="n" data-i18n="p2.referensmodellen-och.8"></td></tr>
+      <tr><td class="n" data-i18n="p2.referensmodellen-och.9"></td><td data-i18n="p2.referensmodellen-och.10"></td><td class="n" data-i18n="p2.referensmodellen-och.11"></td></tr>
+      <tr><td class="n" data-i18n="p2.referensmodellen-och.12"></td><td data-i18n="p2.referensmodellen-och.13"></td><td class="n">4096</td></tr>
+      <tr><td class="n" data-i18n="p2.referensmodellen-och.14"></td><td data-i18n="p2.referensmodellen-och.15"></td><td class="n">32</td></tr>
+      <tr><td class="n" data-i18n="p2.referensmodellen-och.16"></td><td data-i18n="p2.referensmodellen-och.17"></td><td class="n">32</td></tr>
+      <tr><td class="n" data-i18n="p2.referensmodellen-och.18"></td><td data-i18n="p2.referensmodellen-och.19"></td><td class="n">8</td></tr>
+      <tr><td class="n" data-i18n="p2.referensmodellen-och.20"></td><td data-i18n="p2.referensmodellen-och.21"></td><td class="n">128</td></tr>
+      <tr><td class="n" data-i18n="p2.referensmodellen-och.22"></td><td data-i18n="p2.referensmodellen-och.23"></td><td class="n">14336</td></tr>
+      <tr><td class="n" data-i18n="p2.referensmodellen-och.24"></td><td data-i18n="p2.referensmodellen-och.25"></td><td class="n">128256</td></tr>
     </table></div>
     <div>
-      <h3>Så läser du shapes</h3>
-      <p><span class="sh a">x [B, T, d]</span> är en tensor med B·T·d tal. Sista axeln är den som matrismultipliceras.</p>
-      <p><span class="sh w">W [d_in, d_out]</span> är en viktmatris. <span class="mk">x @ W</span> ger <span class="sh a">[B, T, d_out]</span>.</p>
-      <p><span class="sh kv">K_cache [n_kv, ctx, d_h]</span> per lager och sekvens.</p>
-      <p><span class="sh t">ids [B, T]</span> är heltal, index i vokabulären.</p>
-      <p class="note">PyTorch lagrar nn.Linear-vikter som [d_out, d_in] och räknar x @ Wᵀ. Här skriver vi [d_in, d_out] eftersom det läses i flödesriktningen.</p>
+      <h3 data-i18n="p2.referensmodellen-och.26"></h3>
+      <p data-i18n="p2.referensmodellen-och.27"></p>
+      <p data-i18n="p2.referensmodellen-och.28"></p>
+      <p data-i18n="p2.referensmodellen-och.29"></p>
+      <p data-i18n="p2.referensmodellen-och.30"></p>
+      <p class="note" data-i18n="p2.referensmodellen-och.31"></p>
     </div>
   </div>
 </div></section>
 
 <!-- ============ MODUL 1 ============ -->
 <section class="slide" data-mod="1" data-title="Varför tokens?"><div class="si">
-  <h2>Varför tokens?</h2>
+  <h2 data-i18n="p2.varfor-tokens.1"></h2>
   <div class="cols">
     <div>
-      <p>Modellen räknar bara med tal. Texten måste delas i bitar som var och en har ett id i en fast vokabulär.</p>
+      <p data-i18n="p2.varfor-tokens.2"></p>
       <ul>
-        <li>Tecken för tecken ger korta vokabulärer men mycket långa sekvenser, och attention kostar mer ju längre sekvensen är.</li>
-        <li>Hela ord ger korta sekvenser men en enorm vokabulär och inget sätt att hantera nya ord.</li>
-        <li>Subword-tokens (BPE) är en kompromiss: vanliga ord blir en token, ovanliga delas upp.</li>
+        <li data-i18n="p2.varfor-tokens.3"></li>
+        <li data-i18n="p2.varfor-tokens.4"></li>
+        <li data-i18n="p2.varfor-tokens.5"></li>
       </ul>
-      <p><b>Byte Pair Encoding</b> tränas en gång innan modellen tränas: börja med enskilda bytes, hitta det vanligaste paret i träningstexten, slå ihop det till en ny token och upprepa tills vokabulären är full. Llama 3 har 128 256 tokens.</p>
+      <p data-i18n="p2.varfor-tokens.6"></p>
     </div>
     <div class="panel">
-      <div class="ctl"><button class="btn" id="bpe-next">Nästa merge</button><button class="btn" id="bpe-reset">Börja om</button></div>
+      <div class="ctl"><button class="btn" id="bpe-next" data-i18n="p2.varfor-tokens.7"></button><button class="btn" id="bpe-reset" data-i18n="p2.varfor-tokens.8"></button></div>
       <div class="chips" id="bpe-chips" aria-live="polite"></div>
       <div class="out" id="bpe-out"></div>
-      <p class="note">Illustration: ordningen på merges här är påhittad. I en riktig tokenizer bestäms den av hur vanliga paren är i träningsdatat.</p>
+      <p class="note" data-i18n="p2.varfor-tokens.9"></p>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-mod="1" data-title="Tokenisering i praktiken"><div class="si">
-  <h2>Tokenisering i praktiken</h2>
-  <p class="lead">Mellanslag hör oftast till början av nästa token. Svenska delas i fler bitar än engelska eftersom tokenizern tränats mest på engelska.</p>
+  <h2 data-i18n="p2.tokenisering-i-praktiken.1"></h2>
+  <p class="lead" data-i18n="p2.tokenisering-i-praktiken.2"></p>
   <div class="cols even">
     <div class="panel">
-      <h3 style="margin-top:0">Engelska, 6 ord</h3>
-      <div class="chips"><span class="chip t">The</span><span class="chip t"> cat</span><span class="chip t"> sat</span><span class="chip t"> on</span><span class="chip t"> the</span><span class="chip t"> mat</span></div>
-      <p class="s" style="color:var(--ink2);font-size:14px">6 tokens</p>
-      <h3>Svenska, 4 ord</h3>
-      <div class="chips"><span class="chip t">K</span><span class="chip t">atten</span><span class="chip t"> satt</span><span class="chip t"> på</span><span class="chip t"> matt</span><span class="chip t">an</span></div>
-      <p style="color:var(--ink2);font-size:14px">6 tokens</p>
-      <h3>Siffror</h3>
+      <h3 style="margin-top:0" data-i18n="p2.tokenisering-i-praktiken.3"></h3>
+      <div class="chips" data-i18n="p2.tokenisering-i-praktiken.4"></div>
+      <p class="s" style="color:var(--ink2);font-size:14px" data-i18n="p2.tokenisering-i-praktiken.5"></p>
+      <h3 data-i18n="p2.tokenisering-i-praktiken.6"></h3>
+      <div class="chips" data-i18n="p2.tokenisering-i-praktiken.7"></div>
+      <p style="color:var(--ink2);font-size:14px" data-i18n="p2.tokenisering-i-praktiken.8"></p>
+      <h3 data-i18n="p2.tokenisering-i-praktiken.9"></h3>
       <div class="chips"><span class="chip t">123</span><span class="chip t">456</span><span class="chip t">7</span></div>
-      <p style="color:var(--ink2);font-size:14px">Llama 3:s tokenizer delar siffror i grupper om högst tre.</p>
+      <p style="color:var(--ink2);font-size:14px" data-i18n="p2.tokenisering-i-praktiken.10"></p>
     </div>
     <div>
-      <h3 style="margin-top:0">Varför det spelar roll</h3>
+      <h3 style="margin-top:0" data-i18n="p2.tokenisering-i-praktiken.11"></h3>
       <ul>
-        <li><b>Kostnad och hastighet.</b> Varje output-token är ett forward pass. Fler tokens per ord betyder långsammare svar.</li>
-        <li><b>Kontextfönstret</b> mäts i tokens, inte ord.</li>
-        <li><b>Konstiga fel.</b> Modellen ser aldrig enskilda bokstäver i ”atten”, därför är det svårt för den att räkna bokstäver.</li>
-        <li><b>Tokenizern måste matcha modellen.</b> Fel tokenizer ger ids som pekar på fel rader i embedding-tabellen.</li>
+        <li data-i18n="p2.tokenisering-i-praktiken.12"></li>
+        <li data-i18n="p2.tokenisering-i-praktiken.13"></li>
+        <li data-i18n="p2.tokenisering-i-praktiken.14"></li>
+        <li data-i18n="p2.tokenisering-i-praktiken.15"></li>
       </ul>
-      <p class="note">Uppdelningarna till vänster är illustrativa. Exakta gränser beror på tokenizerns merges.</p>
+      <p class="note" data-i18n="p2.tokenisering-i-praktiken.16"></p>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-mod="1" data-title="Chat template och specialtokens"><div class="si">
-  <h2>Chat template och specialtokens</h2>
-  <p class="lead">En chattmodell ser aldrig en lista med meddelanden. Den ser en enda lång textsträng med specialtokens som markerar roller. vLLM bygger strängen med modellens chat template (Jinja i tokenizer_config.json).</p>
+  <h2 data-i18n="p2.chat-template-och.1"></h2>
+  <p class="lead" data-i18n="p2.chat-template-och.2"></p>
   <div class="cols even">
     <div>
-<div class="eq" style="white-space:pre-wrap;word-break:break-all">&lt;|begin_of_text|&gt;&lt;|start_header_id|&gt;system&lt;|end_header_id|&gt;
-
-Du är en hjälpsam assistent.&lt;|eot_id|&gt;&lt;|start_header_id|&gt;user&lt;|end_header_id|&gt;
-
-Vad är en KV-cache?&lt;|eot_id|&gt;&lt;|start_header_id|&gt;assistant&lt;|end_header_id|&gt;
-
-</div>
-      <p>Strängen slutar mitt i assistentens tur. Modellen fortsätter därifrån, och genereringen stoppas när den producerar <span class="mk">&lt;|eot_id|&gt;</span>.</p>
+<div class="eq" style="white-space:pre-wrap;word-break:break-all" data-i18n="p2.chat-template-och.3"></div>
+      <p data-i18n="p2.chat-template-och.4"></p>
     </div>
     <div>
       <table class="t">
-        <tr><th>Specialtoken</th><th>id</th><th>Roll</th></tr>
-        <tr><td class="n">&lt;|begin_of_text|&gt;</td><td class="n">128000</td><td>början på sekvensen (BOS)</td></tr>
-        <tr><td class="n">&lt;|start_header_id|&gt;</td><td class="n">128006</td><td>rollnamn börjar</td></tr>
-        <tr><td class="n">&lt;|end_header_id|&gt;</td><td class="n">128007</td><td>rollnamn slutar</td></tr>
-        <tr><td class="n">&lt;|eot_id|&gt;</td><td class="n">128009</td><td>slut på en tur, används som stopptoken</td></tr>
+        <tr><th data-i18n="p2.chat-template-och.5"></th><th data-i18n="p2.chat-template-och.6"></th><th data-i18n="p2.chat-template-och.7"></th></tr>
+        <tr><td class="n" data-i18n="p2.chat-template-och.8"></td><td class="n">128000</td><td data-i18n="p2.chat-template-och.9"></td></tr>
+        <tr><td class="n" data-i18n="p2.chat-template-och.10"></td><td class="n">128006</td><td data-i18n="p2.chat-template-och.11"></td></tr>
+        <tr><td class="n" data-i18n="p2.chat-template-och.12"></td><td class="n">128007</td><td data-i18n="p2.chat-template-och.13"></td></tr>
+        <tr><td class="n" data-i18n="p2.chat-template-och.14"></td><td class="n">128009</td><td data-i18n="p2.chat-template-och.15"></td></tr>
       </table>
-      <p>Efter tokenisering har vi <span class="sh t">ids [B, T]</span>, en matris med heltal. Det är allt modellen får.</p>
-      <p class="note">Specialtokens har egna rader i embedding-tabellen precis som vanliga tokens. Deras betydelse lärs in under finjusteringen.</p>
+      <p data-i18n="p2.chat-template-och.16"></p>
+      <p class="note" data-i18n="p2.chat-template-och.17"></p>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-mod="1" data-title="Embedding: från id till vektor"><div class="si">
-  <h2>Embedding: från id till vektor</h2>
+  <h2 data-i18n="p2.embedding-fran-id-till.1"></h2>
   <div class="cols wide">
     <div>
-      <p>Embedding-tabellen <span class="sh w">E [V, d]</span> har en rad per token. Steget är en ren tabelluppslagning, ingen multiplikation:</p>
-      <div class="eq">x = E[ids]
-[B, T] → [B, T, d]
-[1, 5] → [1, 5, 4096]</div>
-      <p>Resultatet <span class="sh a">x</span> är startvärdet i residual stream. Varje token är nu en punkt i ett 4096-dimensionellt rum.</p>
-      <p>Tabellen är 128 256 × 4 096 ≈ 525 miljoner parametrar, ungefär 6,5 % av modellen.</p>
-      <p class="note">Det här är den enda platsen i en tät modell där bara en liten del av vikterna används per token: fem rader av 128 256.</p>
+      <p data-i18n="p2.embedding-fran-id-till.2"></p>
+      <div class="eq" data-i18n="p2.embedding-fran-id-till.3"></div>
+      <p data-i18n="p2.embedding-fran-id-till.4"></p>
+      <p data-i18n="p2.embedding-fran-id-till.5"></p>
+      <p class="note" data-i18n="p2.embedding-fran-id-till.6"></p>
     </div>
-    <svg class="viz" viewBox="0 0 720 340" role="img" aria-label="Fem token-ids pekar på rader i embedding-tabellen, raderna kopieras till x">
-      <text x="85" y="22" class="s" text-anchor="middle">ids</text>
-      <text x="360" y="14" class="m tw" text-anchor="middle">E [128256, 4096]</text>
-      <text x="625" y="78" class="m ta" text-anchor="middle">x [5, 4096]</text>
+    <svg class="viz" viewBox="0 0 720 340" role="img" aria-label="" data-i18n-aria-label="p2.embedding-fran-id-till.arialabel">
+      <text x="85" y="22" class="s" text-anchor="middle" data-i18n="p2.embedding-fran-id-till.7"></text>
+      <text x="360" y="14" class="m tw" text-anchor="middle" data-i18n="p2.embedding-fran-id-till.8"></text>
+      <text x="625" y="78" class="m ta" text-anchor="middle" data-i18n="p2.embedding-fran-id-till.9"></text>
       <g id="emb-rows"></g>
     </svg>
   </div>
 </div></section>
 
 <section class="slide" data-mod="1" data-title="Testa dig själv: tokens"><div class="si">
-  <h2>Testa dig själv: tokens</h2>
-  <details class="q"><summary>Varför är ett svenskt svar ofta långsammare att generera än ett engelskt med samma innehåll?</summary><p>Svenska delas i fler tokens per ord, och varje output-token kräver ett eget forward pass genom hela modellen.</p></details>
-  <details class="q"><summary>Vilken shape har embedding-utdata för en batch med 4 prompter om 100 tokens i Llama-3-8B?</summary><p>[4, 100, 4096]. (I praktiken plattar vLLM ut batchen till [400, 4096], mer om det i modul 8.)</p></details>
-  <details class="q"><summary>Vad händer om du skickar en prompt utan chat template till en instruktionstränad modell?</summary><p>Modellen ser text i ett format den inte tränats på att svara på. Den fortsätter ofta texten i stället för att svara, eller slutar inte i tid eftersom den aldrig ser en assistent-header.</p></details>
+  <h2 data-i18n="p2.testa-dig-sjalv-tokens.1"></h2>
+  <details class="q"><summary data-i18n="p2.testa-dig-sjalv-tokens.2"></summary><p data-i18n="p2.testa-dig-sjalv-tokens.3"></p></details>
+  <details class="q"><summary data-i18n="p2.testa-dig-sjalv-tokens.4"></summary><p data-i18n="p2.testa-dig-sjalv-tokens.5"></p></details>
+  <details class="q"><summary data-i18n="p2.testa-dig-sjalv-tokens.6"></summary><p data-i18n="p2.testa-dig-sjalv-tokens.7"></p></details>
 </div></section>

@@ -1,172 +1,159 @@
 <!-- ============ MODUL 5 ============ -->
 <section class="slide" data-mod="5" data-title="Prefill och decode"><div class="si">
-  <h2>Två faser: prefill och decode</h2>
+  <h2 data-i18n="p5.prefill-och-decode.1"></h2>
   <div class="cols">
     <div>
-      <p><b>Prefill</b> kör hela prompten på en gång. T rader multipliceras med samma vikter, så varje byte som läses från minnet används för många beräkningar. GPU:n begränsas av sin räknekraft (compute-bound).</p>
-      <p><b>Decode</b> kör en token åt gången. Alla 16 GB vikter läses för att räkna en enda rad. GPU:n väntar nästan hela tiden på minnet (memory-bound).</p>
-      <p>Prefill bestämmer hur snabbt första token kommer. Decode bestämmer hur snabbt resten strömmar ut. Nästan allt en inference-motor gör handlar om att få decode att använda GPU:n bättre.</p>
+      <p data-i18n="p5.prefill-och-decode.2"></p>
+      <p data-i18n="p5.prefill-och-decode.3"></p>
+      <p data-i18n="p5.prefill-och-decode.4"></p>
     </div>
     <div class="panel">
-      <svg class="viz" viewBox="0 0 640 300" role="img" aria-label="Prefill: många rader mot samma vikter. Decode: en rad mot samma vikter.">
-        <text x="160" y="22" text-anchor="middle" class="b">Prefill</text>
-        <text x="480" y="22" text-anchor="middle" class="b">Decode</text>
-        <rect x="20" y="50" width="70" height="160" class="ba"/><text x="55" y="232" text-anchor="middle" class="m ta">[T, 4096]</text>
+      <svg class="viz" viewBox="0 0 640 300" role="img" aria-label="" data-i18n-aria-label="p5.prefill-och-decode.arialabel">
+        <text x="160" y="22" text-anchor="middle" class="b" data-i18n="p5.prefill-och-decode.5"></text>
+        <text x="480" y="22" text-anchor="middle" class="b" data-i18n="p5.prefill-och-decode.6"></text>
+        <rect x="20" y="50" width="70" height="160" class="ba"/><text x="55" y="232" text-anchor="middle" class="m ta" data-i18n="p5.prefill-och-decode.7"></text>
         <text x="105" y="135" text-anchor="middle" class="b">@</text>
-        <rect x="120" y="50" width="160" height="160" class="bw"/><text x="200" y="232" text-anchor="middle" class="m tw">W [4096, 4096]</text>
+        <rect x="120" y="50" width="160" height="160" class="bw"/><text x="200" y="232" text-anchor="middle" class="m tw" data-i18n="p5.prefill-och-decode.8"></text>
         <rect x="360" y="122" width="70" height="16" class="ba"/><text x="395" y="232" text-anchor="middle" class="m ta">[1, 4096]</text>
         <text x="445" y="135" text-anchor="middle" class="b">@</text>
-        <rect x="460" y="50" width="160" height="160" class="bw"/><text x="540" y="232" text-anchor="middle" class="m tw">W [4096, 4096]</text>
+        <rect x="460" y="50" width="160" height="160" class="bw"/><text x="540" y="232" text-anchor="middle" class="m tw" data-i18n="p5.prefill-och-decode.9"></text>
         <line x1="320" y1="40" x2="320" y2="280" class="lnf"/>
-        <text x="160" y="262" text-anchor="middle" class="s">läs W en gång, räkna T rader</text>
-        <text x="160" y="280" text-anchor="middle" class="s">compute-bound</text>
-        <text x="480" y="262" text-anchor="middle" class="s">läs W en gång, räkna 1 rad</text>
-        <text x="480" y="280" text-anchor="middle" class="s">memory-bound</text>
+        <text x="160" y="262" text-anchor="middle" class="s" data-i18n="p5.prefill-och-decode.10"></text>
+        <text x="160" y="280" text-anchor="middle" class="s" data-i18n="p5.prefill-och-decode.11"></text>
+        <text x="480" y="262" text-anchor="middle" class="s" data-i18n="p5.prefill-och-decode.12"></text>
+        <text x="480" y="280" text-anchor="middle" class="s" data-i18n="p5.prefill-och-decode.13"></text>
       </svg>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-mod="5" data-title="KV-cache steg för steg"><div class="si">
-  <h2>KV-cache steg för steg</h2>
+  <h2 data-i18n="p5.kv-cache-steg-for-steg.1"></h2>
   <div class="cols">
     <div>
-      <p>K och V för en position ändras aldrig efter att de räknats (causal mask). Så varför räkna om dem?</p>
-      <p>Utan cache räknar varje decode-steg om K och V för hela sekvensen. Med cache räknas bara den nya positionens K och V, som läggs till. Den nya tokenens query jämförs sedan mot alla sparade keys.</p>
-      <p>Cachen byter beräkning mot minne: varje token i varje sekvens tar plats i GPU-minnet i varje lager så länge sekvensen lever.</p>
-      <p class="note">Bilden visar ett lager och ett KV head. I verkligheten finns cachen i alla 32 lager och för alla 8 KV heads.</p>
+      <p data-i18n="p5.kv-cache-steg-for-steg.2"></p>
+      <p data-i18n="p5.kv-cache-steg-for-steg.3"></p>
+      <p data-i18n="p5.kv-cache-steg-for-steg.4"></p>
+      <p class="note" data-i18n="p5.kv-cache-steg-for-steg.5"></p>
     </div>
     <div class="panel">
-      <div class="ctl"><button class="btn" id="kv-next">Nästa steg</button><button class="btn" id="kv-reset">Börja om</button></div>
-      <svg class="viz" id="kv-svg" viewBox="0 0 600 300" role="img" aria-label="Animering av KV-cachen som växer en kolumn per decode-steg"></svg>
+      <div class="ctl"><button class="btn" id="kv-next" data-i18n="p5.kv-cache-steg-for-steg.6"></button><button class="btn" id="kv-reset" data-i18n="p5.kv-cache-steg-for-steg.7"></button></div>
+      <svg class="viz" id="kv-svg" viewBox="0 0 600 300" role="img" aria-label="" data-i18n-aria-label="p5.kv-cache-steg-for-steg.arialabel"></svg>
       <div class="out" id="kv-out" aria-live="polite"></div>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-mod="5" data-title="Ett decode-steg med shapes"><div class="si">
-  <h2>Ett decode-steg med shapes</h2>
+  <h2 data-i18n="p5.ett-decode-steg-med-shapes.1"></h2>
   <div class="cols even">
     <div>
-<div class="eq">x_new               [1, 4096]   position p
-q, k, v = qkv_proj  [1, 4096], [1, 1024], [1, 1024]
-→ heads             q [32, 1, 128]  k,v [8, 1, 128]
-RoPE(q, k, pos=p)
-
-skriv k, v i cache  K_cache [8, p+1, 128]
-                    V_cache [8, p+1, 128]
-
-S = q Kᵀ / √128     [32, 1, p+1]
-P = softmax(S)      [32, 1, p+1]
-O = P V             [32, 1, 128] → [1, 4096]
-out = O @ Wo        [1, 4096]</div>
-      <p>Ingen causal mask behövs i decode: den nya tokenen är sist och får se allt.</p>
+<div class="eq" data-i18n="p5.ett-decode-steg-med-shapes.2"></div>
+      <p data-i18n="p5.ett-decode-steg-med-shapes.3"></p>
     </div>
     <div>
-      <p>Arbetet i ett decode-steg består av två helt olika delar:</p>
+      <p data-i18n="p5.ett-decode-steg-med-shapes.4"></p>
       <ul>
-        <li><b>Matmuls mot vikter</b> (qkv, o, gate/up, down): samma kostnad oavsett kontextlängd. Delas mellan alla sekvenser i en batch.</li>
-        <li><b>Attention mot cachen</b>: läser p+1 keys och values. Växer linjärt med kontexten och är unik per sekvens, så den kan inte delas.</li>
+        <li data-i18n="p5.ett-decode-steg-med-shapes.5"></li>
+        <li data-i18n="p5.ett-decode-steg-med-shapes.6"></li>
       </ul>
-      <p>Därför blir långa konversationer dyrare per token: allt mer av tiden går åt till att läsa cachen.</p>
-      <svg class="viz" id="dec-svg" viewBox="0 0 520 170" role="img" aria-label="Query jämförs mot alla positioner i cachen"></svg>
+      <p data-i18n="p5.ett-decode-steg-med-shapes.7"></p>
+      <svg class="viz" id="dec-svg" viewBox="0 0 520 170" role="img" aria-label="" data-i18n-aria-label="p5.ett-decode-steg-med-shapes.arialabel"></svg>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-mod="5" data-title="Hur stor blir KV-cachen?"><div class="si">
-  <h2>Hur stor blir KV-cachen?</h2>
+  <h2 data-i18n="p5.hur-stor-blir-kv-cachen.1"></h2>
   <div class="cols">
     <div>
-      <div class="eq">bytes per token = 2 · L · n_kv · d_h · dtype
-Llama-3-8B, bf16:
-2 · 32 · 8 · 128 · 2 = 131 072 B = 128 KiB</div>
-      <p>En konversation på 8 000 tokens tar alltså 1 GB cache. På en H100 med 80 GB, där 16 GB går till vikter, blir ungefär 50 GB över till cache, alltså runt 390 000 tokens totalt fördelat på alla samtidiga sekvenser.</p>
-      <p>Det är den här siffran som i praktiken bestämmer hur många användare en GPU kan betjäna samtidigt.</p>
-      <p class="note">MLA (DeepSeek) cachar en komprimerad latent vektor i stället för K och V: 576 tal per token och lager.</p>
+      <div class="eq" data-i18n="p5.hur-stor-blir-kv-cachen.2"></div>
+      <p data-i18n="p5.hur-stor-blir-kv-cachen.3"></p>
+      <p data-i18n="p5.hur-stor-blir-kv-cachen.4"></p>
+      <p class="note" data-i18n="p5.hur-stor-blir-kv-cachen.5"></p>
     </div>
     <div class="panel">
       <div class="ctl">
         <label>Modell <select id="kvc-preset"></select></label>
-        <label>GPU <select id="kvc-gpu"><option value="24">24 GB</option><option value="48">48 GB</option><option value="80" selected>80 GB</option><option value="141">141 GB</option></select></label>
-        <label>KV dtype <select id="kvc-dt"><option value="2">bf16</option><option value="1">fp8</option></select></label>
+        <label>GPU <select id="kvc-gpu"><option value="24" data-i18n="p5.hur-stor-blir-kv-cachen.6"></option><option value="48" data-i18n="p5.hur-stor-blir-kv-cachen.7"></option><option value="80" selected data-i18n="p5.hur-stor-blir-kv-cachen.8"></option><option value="141" data-i18n="p5.hur-stor-blir-kv-cachen.9"></option></select></label>
+        <label>KV dtype <select id="kvc-dt"><option value="2" data-i18n="p5.hur-stor-blir-kv-cachen.10"></option><option value="1" data-i18n="p5.hur-stor-blir-kv-cachen.11"></option></select></label>
       </div>
       <div class="ctl">
         <label>Kontext <input type="range" id="kvc-ctx" min="9" max="17" step="1" value="13"><span class="mk" id="kvc-ctxv"></span></label>
         <label>Sekvenser <input type="range" id="kvc-n" min="0" max="9" step="1" value="4"><span class="mk" id="kvc-nv"></span></label>
       </div>
-      <svg class="viz" id="kvc-svg" viewBox="0 0 560 120" role="img" aria-label="GPU-minne: vikter, KV-cache och ledigt"></svg>
+      <svg class="viz" id="kvc-svg" viewBox="0 0 560 120" role="img" aria-label="" data-i18n-aria-label="p5.hur-stor-blir-kv-cachen.arialabel"></svg>
       <div class="out" id="kvc-out" aria-live="polite"></div>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-mod="5" data-title="Varför batching räddar decode"><div class="si">
-  <h2>Varför batching räddar decode</h2>
+  <h2 data-i18n="p5.varfor-batching-raddar.1"></h2>
   <div class="cols">
     <div>
-      <p>En H100 läser ungefär 3,35 TB/s och räknar ungefär 990 TFLOPS i bf16. Kvoten är cirka 300: GPU:n måste göra 300 operationer per läst byte för att inte vänta på minnet.</p>
-      <p>Decode med en sekvens gör 2 operationer per parameter och läser 2 byte per parameter: kvoten 1. GPU:n står still 99 % av tiden.</p>
-      <p>Med B sekvenser i samma steg läses vikterna en gång men används B gånger. Genomströmningen ökar nästan linjärt tills beräkningen eller KV-minnet tar slut.</p>
-      <p class="note">Idealiserad modell för Llama-3-8B i bf16 på en H100. Verkliga siffror ligger lägre, men formen stämmer.</p>
+      <p data-i18n="p5.varfor-batching-raddar.2"></p>
+      <p data-i18n="p5.varfor-batching-raddar.3"></p>
+      <p data-i18n="p5.varfor-batching-raddar.4"></p>
+      <p class="note" data-i18n="p5.varfor-batching-raddar.5"></p>
     </div>
     <div class="panel">
       <div class="ctl">
         <label>Batch <input type="range" id="rf-b" min="0" max="9" value="0"><span class="mk" id="rf-bv"></span></label>
         <label>Kontext <input type="range" id="rf-c" min="9" max="15" value="11"><span class="mk" id="rf-cv"></span></label>
       </div>
-      <svg class="viz" id="rf-svg" viewBox="0 0 560 300" role="img" aria-label="Total genomströmning som funktion av batchstorlek"></svg>
+      <svg class="viz" id="rf-svg" viewBox="0 0 560 300" role="img" aria-label="" data-i18n-aria-label="p5.varfor-batching-raddar.arialabel"></svg>
       <div class="out" id="rf-out" aria-live="polite"></div>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-mod="5" data-title="Latensmått"><div class="si">
-  <h2>Latensmått: TTFT, ITL och genomströmning</h2>
-  <svg class="viz" viewBox="0 0 1000 200" role="img" aria-label="Tidslinje för en request: kö, prefill, första token, sedan tokens med jämna mellanrum">
+  <h2 data-i18n="p5.latensmatt.1"></h2>
+  <svg class="viz" viewBox="0 0 1000 200" role="img" aria-label="" data-i18n-aria-label="p5.latensmatt.arialabel">
     <line x1="20" y1="110" x2="980" y2="110" class="ln" marker-end="url(#ah)"/>
-    <rect x="40" y="90" width="140" height="40" rx="6" class="bg"/><text x="110" y="115" text-anchor="middle" class="s">kö</text>
-    <rect x="180" y="90" width="200" height="40" rx="6" class="bw"/><text x="280" y="115" text-anchor="middle">prefill</text>
+    <rect x="40" y="90" width="140" height="40" rx="6" class="bg"/><text x="110" y="115" text-anchor="middle" class="s" data-i18n="p5.latensmatt.2"></text>
+    <rect x="180" y="90" width="200" height="40" rx="6" class="bw"/><text x="280" y="115" text-anchor="middle" data-i18n="p5.latensmatt.3"></text>
     <g id="itl-g"></g>
-    <path d="M40 70 V60 H380 V70" class="ln"/><text x="210" y="50" text-anchor="middle" class="b">TTFT</text>
-    <path d="M392 150 V160 H448 V150" class="ln"/><text x="420" y="180" text-anchor="middle" class="b">ITL</text>
-    <text x="40" y="195" class="s">request in</text>
+    <path d="M40 70 V60 H380 V70" class="ln"/><text x="210" y="50" text-anchor="middle" class="b" data-i18n="p5.latensmatt.4"></text>
+    <path d="M392 150 V160 H448 V150" class="ln"/><text x="420" y="180" text-anchor="middle" class="b" data-i18n="p5.latensmatt.5"></text>
+    <text x="40" y="195" class="s" data-i18n="p5.latensmatt.6"></text>
   </svg>
   <div class="cols even">
     <div>
-      <p><b>TTFT</b> (time to first token): kötid plus prefill. Växer med promptlängden och med hur mycket annat som körs.</p>
-      <p><b>ITL / TPOT</b> (inter-token latency, time per output token): tiden för ett decode-steg. Det är det användaren upplever som skrivhastighet.</p>
+      <p data-i18n="p5.latensmatt.7"></p>
+      <p data-i18n="p5.latensmatt.8"></p>
     </div>
     <div>
-      <p><b>Throughput</b>: tokens per sekund summerat över alla användare. Större batch höjer throughput men också ITL för var och en.</p>
-      <p>En server väljer alltid en punkt på kurvan mellan snabbt för en och effektivt för många. vLLM:s scheduler-parametrar är rattarna för det.</p>
+      <p data-i18n="p5.latensmatt.9"></p>
+      <p data-i18n="p5.latensmatt.10"></p>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-mod="5" data-title="Kvantisering"><div class="si">
-  <h2>Kvantisering</h2>
+  <h2 data-i18n="p5.kvantisering.1"></h2>
   <div class="cols">
     <div>
-      <p>Färre bitar per vikt betyder färre bytes att läsa per decode-steg och plats för mer KV-cache.</p>
+      <p data-i18n="p5.kvantisering.2"></p>
       <ul>
-        <li><b>Weight-only int4</b> (AWQ, GPTQ): vikter lagras med 4 bitar plus en skalfaktor per grupp om till exempel 128 vikter. Kerneln packar upp till bf16 i farten. Bra för memory-bound decode.</li>
-        <li><b>FP8 (W8A8)</b>: både vikter och aktiveringar i 8 bitar. På H100 räknar tensorkärnorna dubbelt så snabbt i FP8, så även prefill blir snabbare.</li>
-        <li><b>FP8 KV-cache</b>: halverar cachen, alltså dubbelt så många tokens i minnet.</li>
+        <li data-i18n="p5.kvantisering.3"></li>
+        <li data-i18n="p5.kvantisering.4"></li>
+        <li data-i18n="p5.kvantisering.5"></li>
       </ul>
-      <p>Priset är lite precision. Int4 har bara 16 nivåer per grupp, så skalfaktorn måste väljas klokt.</p>
+      <p data-i18n="p5.kvantisering.6"></p>
     </div>
     <div class="panel">
-      <svg class="viz" id="q-svg" viewBox="0 0 560 250" role="img" aria-label="Viktminne för 8B och 70B vid olika precision"></svg>
-      <svg class="viz" id="q4-svg" viewBox="0 0 560 110" role="img" aria-label="16 int4-nivåer och avrundning av vikter"></svg>
+      <svg class="viz" id="q-svg" viewBox="0 0 560 250" role="img" aria-label="" data-i18n-aria-label="p5.kvantisering.arialabel"></svg>
+      <svg class="viz" id="q4-svg" viewBox="0 0 560 110" role="img" aria-label="" data-i18n-aria-label="p5.kvantisering.arialabel-2"></svg>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-mod="5" data-title="Testa dig själv: inferens"><div class="si">
-  <h2>Testa dig själv: inferens och KV-cache</h2>
-  <details class="q"><summary>Hur stor är KV-cachen för 16 samtidiga sekvenser om 4 000 tokens i Llama-3-8B med bf16?</summary><p>16 · 4 000 · 128 KiB ≈ 7,8 GiB.</p></details>
-  <details class="q"><summary>Varför blir decode inte dubbelt så långsamt när batchen går från 1 till 2 sekvenser?</summary><p>Steget domineras av att läsa vikterna, och det görs en gång oavsett batchstorlek. Den extra beräkningen och KV-läsningen för sekvens nummer två är liten i jämförelse.</p></details>
-  <details class="q"><summary>Vad påverkar en lång systemprompt mest: TTFT eller ITL?</summary><p>Framför allt TTFT, eftersom den ska prefillas. ITL ökar också något eftersom varje decode-steg läser fler cachade positioner. Prefix caching i modul 8 tar bort det mesta av TTFT-kostnaden vid upprepning.</p></details>
-  <details class="q"><summary>Varför hjälper int4-vikter decode mer än prefill?</summary><p>Decode är memory-bound, så fyra gånger färre bytes ger nästan fyra gånger snabbare viktläsning. Prefill är compute-bound, och weight-only int4 räknar fortfarande i bf16 efter uppackning.</p></details>
+  <h2 data-i18n="p5.testa-dig-sjalv-inferens.1"></h2>
+  <details class="q"><summary data-i18n="p5.testa-dig-sjalv-inferens.2"></summary><p data-i18n="p5.testa-dig-sjalv-inferens.3"></p></details>
+  <details class="q"><summary data-i18n="p5.testa-dig-sjalv-inferens.4"></summary><p data-i18n="p5.testa-dig-sjalv-inferens.5"></p></details>
+  <details class="q"><summary data-i18n="p5.testa-dig-sjalv-inferens.6"></summary><p data-i18n="p5.testa-dig-sjalv-inferens.7"></p></details>
+  <details class="q"><summary data-i18n="p5.testa-dig-sjalv-inferens.8"></summary><p data-i18n="p5.testa-dig-sjalv-inferens.9"></p></details>
 </div></section>

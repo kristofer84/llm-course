@@ -1,95 +1,92 @@
 <section class="slide" data-title="Ett lager inifrån"><div class="si">
-  <h2>Ett lager inifrån: nio vikter och några fasta räkneregler</h2>
+  <h2 data-i18n="n3b.ett-lager-inifran.1"></h2>
   <div class="cols">
     <div>
-      <p>”Ett lager” i en transformer är inte en matris utan hela blocket. I Llama-3-8B innehåller varje lager <b>sju viktmatriser och två viktvektorer</b>, totalt drygt 218 miljoner parametrar.</p>
-      <p>Mellan vikterna finns steg som <b>saknar vikter</b>: RoPE, scores, softmax, SiLU och de två additionerna. De är fasta formler som är likadana i alla modeller av samma typ.</p>
-      <p>Klicka på en del i diagrammet för att se vad den gör, dess shape och vad den heter i en modellfil.</p>
+      <p data-i18n="n3b.ett-lager-inifran.2"></p>
+      <p data-i18n="n3b.ett-lager-inifran.3"></p>
+      <p data-i18n="n3b.ett-lager-inifran.4"></p>
       <div class="panel" id="ly-info" aria-live="polite" style="min-height:170px"></div>
-      <div class="legend"><span><i style="background:var(--w)"></i>vikt (inlärd)</span><span><i style="background:var(--soft);border:1px dashed var(--ink2)"></i>räkneregel (ingen vikt)</span><span><i style="background:var(--a)"></i>residual stream</span></div>
+      <div class="legend" data-i18n="n3b.ett-lager-inifran.5"></div>
     </div>
     <div class="panel">
-      <div class="ctl"><button class="btn on" id="ly-ours">Kursens namn</button><button class="btn" id="ly-ckpt">Namn i modellfilen</button><button class="btn" id="ly-vllm">Namn i vLLM</button></div>
-      <svg class="viz" id="ly-svg" viewBox="0 0 640 610" role="img" aria-label="Ett lagers delar i ordning, med vikter och räkneregler"></svg>
+      <div class="ctl"><button class="btn on" id="ly-ours" data-i18n="n3b.ett-lager-inifran.6"></button><button class="btn" id="ly-ckpt" data-i18n="n3b.ett-lager-inifran.7"></button><button class="btn" id="ly-vllm" data-i18n="n3b.ett-lager-inifran.8"></button></div>
+      <svg class="viz" id="ly-svg" viewBox="0 0 640 610" role="img" aria-label="" data-i18n-aria-label="n3b.ett-lager-inifran.arialabel"></svg>
       <p class="note" id="ly-total"></p>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-title="32 lager i en modellfil"><div class="si">
-  <h2>32 lager i en modellfil</h2>
+  <h2 data-i18n="n3b.32-lager-i-en-modellfil.1"></h2>
   <div class="cols">
     <div>
-      <p>En modellfil (safetensors) är i grunden en ordbok: <b>namn → tensor</b>. Llama-3-8B innehåller 291 tensorer: 9 per lager gånger 32 lager, plus tre utanför lagren.</p>
+      <p data-i18n="n3b.32-lager-i-en-modellfil.2"></p>
       <div class="scroll-x"><table class="t">
-        <tr><th>Utanför lagren</th><th>Shape</th></tr>
-        <tr><td class="n">model.embed_tokens.weight</td><td class="n">[128256, 4096]</td></tr>
-        <tr><td class="n">model.norm.weight</td><td class="n">[4096]</td></tr>
-        <tr><td class="n">lm_head.weight</td><td class="n">[128256, 4096]</td></tr>
+        <tr><th data-i18n="n3b.32-lager-i-en-modellfil.3"></th><th data-i18n="n3b.32-lager-i-en-modellfil.4"></th></tr>
+        <tr><td class="n" data-i18n="n3b.32-lager-i-en-modellfil.5"></td><td class="n">[128256, 4096]</td></tr>
+        <tr><td class="n" data-i18n="n3b.32-lager-i-en-modellfil.6"></td><td class="n">[4096]</td></tr>
+        <tr><td class="n" data-i18n="n3b.32-lager-i-en-modellfil.7"></td><td class="n">[128256, 4096]</td></tr>
       </table></div>
-      <p>Alla 32 lager har <b>exakt samma namn och shapes</b>, bara lagrets nummer skiljer. Värdena är helt olika: varje lager har lärt sig sin egen del av jobbet. Därför kan samma kod köras i en loop, med en ny uppsättning vikter varje varv.</p>
-      <p class="note">PyTorch lagrar en linjär vikt som [ut, in]. Därför står det [1024, 4096] för k_proj, medan kursen skriver [4096, 1024] i flödesriktningen. Det är samma matris, transponerad.</p>
+      <p data-i18n="n3b.32-lager-i-en-modellfil.8"></p>
+      <p class="note" data-i18n="n3b.32-lager-i-en-modellfil.9"></p>
     </div>
     <div class="panel">
       <div class="ctl"><label>Lager <input type="range" id="ck-l" min="0" max="31" value="5"><span class="mk" id="ck-lv"></span></label></div>
       <div class="scroll-x"><table class="t" id="ck-tbl"></table></div>
-      <p style="font-size:14px;color:var(--ink2);margin:14px 0 6px">Ett utsnitt ur q_proj.weight, 10 × 24 av 4096 × 4096 tal:</p>
+      <p style="font-size:14px;color:var(--ink2);margin:14px 0 6px" data-i18n="n3b.32-lager-i-en-modellfil.10"></p>
       <div class="tworow" id="ck-heat"></div>
-      <p class="note">Värdena i utsnitten är påhittade. I en riktig modell ser de ut som brus för ögat, men skiljer sig på samma sätt mellan lagren.</p>
+      <p class="note" data-i18n="n3b.32-lager-i-en-modellfil.11"></p>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-title="Två rader, ett lager"><div class="si">
-  <h2>Två rader kod, ett helt lager</h2>
-  <p class="lead">Varje lager är bara de här två raderna. Stega igenom dem med en token och se exakt vad som läses, vad som räknas och vad som skrivs till strömmen.</p>
+  <h2 data-i18n="n3b.tva-rader-ett-lager.1"></h2>
+  <p class="lead" data-i18n="n3b.tva-rader-ett-lager.2"></p>
   <div class="cols even">
     <div>
       <pre class="code" id="tl-code" style="font-size:15px"></pre>
-      <div class="ctl"><button class="btn" id="tl-prev">Föregående</button><button class="btn" id="tl-next">Nästa steg</button><span class="mk" id="tl-n"></span></div>
+      <div class="ctl"><button class="btn" id="tl-prev" data-i18n="n3b.tva-rader-ett-lager.3"></button><button class="btn" id="tl-next" data-i18n="n3b.tva-rader-ett-lager.4"></button><span class="mk" id="tl-n"></span></div>
       <div id="tl-text" aria-live="polite"></div>
     </div>
     <div class="panel">
       <div id="tl-rows"></div>
-      <div class="legend"><span><i style="background:var(--a)"></i>strömmen x</span><span><i style="background:var(--soft);border:1px solid var(--a)"></i>normaliserad kopia</span><span><i style="background:color-mix(in srgb,var(--kv) 35%,transparent);border:1px dashed var(--kv)"></i>bidrag</span></div>
-      <p class="note">6 av 4096 dimensioner för token ”den”. Värdena är påhittade men all aritmetik är räknad på riktigt. RMS visas till höger.</p>
+      <div class="legend" data-i18n="n3b.tva-rader-ett-lager.5"></div>
+      <p class="note" data-i18n="n3b.tva-rader-ett-lager.6"></p>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-title="Attention och MLP: olika jobb"><div class="si">
-  <h2>Attention och MLP: två helt olika jobb</h2>
+  <h2 data-i18n="n3b.attention-och-mlp-olika-jobb.1"></h2>
   <div class="cols">
     <div>
-      <p>Tänk på residual stream som en tabell <span class="sh a">x [T, 4096]</span>: en rad per token, en kolumn per dimension.</p>
-      <p><b>Attention flyttar information mellan rader.</b> Varje token hämtar en viktad blandning från tidigare tokens. Det är så ”den” kan få veta något om ”Katten”.</p>
-      <p><b>MLP:n bearbetar en rad i taget.</b> Den blandar om dimensionerna inom raden, men kan aldrig se andra rader. Alla rader går genom samma MLP-vikter, var för sig.</p>
-      <p>En detalj som är lätt att missa: även inne i attention arbetar viktmatriserna Wq, Wk, Wv och Wo rad för rad. Det enda steget som korsar rader är P · V.</p>
-      <div class="eq">attention: blandar längs T   (mellan tokens)
-MLP:       blandar längs d   (inom en token)</div>
+      <p data-i18n="n3b.attention-och-mlp-olika-jobb.2"></p>
+      <p data-i18n="n3b.attention-och-mlp-olika-jobb.3"></p>
+      <p data-i18n="n3b.attention-och-mlp-olika-jobb.4"></p>
+      <p data-i18n="n3b.attention-och-mlp-olika-jobb.5"></p>
+      <div class="eq" data-i18n="n3b.attention-och-mlp-olika-jobb.6"></div>
     </div>
     <div class="panel">
-      <div class="ctl"><button class="btn on" id="am-att">Attention</button><button class="btn" id="am-mlp">MLP</button><span style="font-size:13px;color:var(--ink2)">Klicka på en rad för att välja token.</span></div>
-      <svg class="viz" id="am-svg" viewBox="0 0 560 330" role="img" aria-label="Residual stream som tabell: attention läser andra rader, MLP bara den egna raden"></svg>
+      <div class="ctl"><button class="btn on" id="am-att" data-i18n="n3b.attention-och-mlp-olika-jobb.7"></button><button class="btn" id="am-mlp" data-i18n="n3b.attention-och-mlp-olika-jobb.8"></button><span style="font-size:13px;color:var(--ink2)" data-i18n="n3b.attention-och-mlp-olika-jobb.9"></span></div>
+      <svg class="viz" id="am-svg" viewBox="0 0 560 330" role="img" aria-label="" data-i18n-aria-label="n3b.attention-och-mlp-olika-jobb.arialabel"></svg>
       <div class="out" id="am-out" aria-live="polite"></div>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-title="MLP:n som detektorer"><div class="si">
-  <h2>MLP:n som detektorer</h2>
+  <h2 data-i18n="n3b.mlp-n-som-detektorer.1"></h2>
   <div class="cols">
     <div>
-      <p>Varje neuron i MLP:n är en kolumn i W_gate och en rad i W_down. Kolumnen i W_gate är ett <b>mönster</b>. Skalärprodukten med tokenens vektor avgör hur väl vektorn matchar mönstret.</p>
-      <div class="eq">gate = h · W_gate[:, n]       hur väl matchar h?
-a    = SiLU(gate) · up         släpp fram om ja
-ut  += a · W_down[n, :]        skriv neuronens riktning</div>
-      <p>En neuron som slår till skriver alltså sin egen riktning till strömmen. Med 14 336 neuroner per lager och 32 lager finns det plats för väldigt många sådana regler.</p>
-      <p>Slå på och av egenskaper i tokenens vektor till höger och se vilka neuroner som tänds.</p>
-      <p class="note">Förenklad bild. Verkliga neuroner har sällan en ren mänsklig betydelse; de flesta reagerar på blandningar av många mönster, och ett begrepp sprids ofta över många neuroner (superposition).</p>
+      <p data-i18n="n3b.mlp-n-som-detektorer.2"></p>
+      <div class="eq" data-i18n="n3b.mlp-n-som-detektorer.3"></div>
+      <p data-i18n="n3b.mlp-n-som-detektorer.4"></p>
+      <p data-i18n="n3b.mlp-n-som-detektorer.5"></p>
+      <p class="note" data-i18n="n3b.mlp-n-som-detektorer.6"></p>
     </div>
     <div class="panel">
-      <p style="margin:0 0 6px;font-size:14px;color:var(--ink2)">Egenskaper i vektorn för ”den” efter attention:</p>
+      <p style="margin:0 0 6px;font-size:14px;color:var(--ink2)" data-i18n="n3b.mlp-n-som-detektorer.7"></p>
       <div class="chips" id="dt-feat"></div>
       <div id="dt-rows" style="margin-top:10px"></div>
       <div class="out" id="dt-out" aria-live="polite"></div>
@@ -98,23 +95,23 @@ ut  += a · W_down[n, :]        skriv neuronens riktning</div>
 </div></section>
 
 <section class="slide" data-title="Lager för lager"><div class="si">
-  <h2>Lager för lager: hur svaret växer fram</h2>
+  <h2 data-i18n="n3b.lager-for-lager.1"></h2>
   <div class="cols">
     <div>
-      <p>Eftersom strömmen har samma shape i alla lager kan man ta <b>vilket mellanläge som helst</b> och skicka det genom final norm och LM head, som om modellen slutade där. Tekniken kallas <i>logit lens</i>.</p>
-      <p>Resultatet visar hur förutsägelsen byggs upp:</p>
+      <p data-i18n="n3b.lager-for-lager.2"></p>
+      <p data-i18n="n3b.lager-for-lager.3"></p>
       <ul>
-        <li>Tidigt liknar strömmen mest den egna tokenens embedding.</li>
-        <li>Mitt i dyker grammatiskt rimliga fortsättningar upp.</li>
-        <li>Sent har attention hämtat sammanhanget och MLP:erna dragit slutsatser, och rätt svar tar över.</li>
+        <li data-i18n="n3b.lager-for-lager.4"></li>
+        <li data-i18n="n3b.lager-for-lager.5"></li>
+        <li data-i18n="n3b.lager-for-lager.6"></li>
       </ul>
-      <p>Inget lager ”bestämmer” svaret. Varje lager knuffar fördelningen en bit, och summan av alla knuffar blir den slutliga.</p>
-      <p class="note">Siffrorna är påhittade för att visa mönstret. I verkliga modeller är de tidiga lagren ofta svåra att läsa med en ren logit lens, och varianter som tuned lens fungerar bättre.</p>
+      <p data-i18n="n3b.lager-for-lager.7"></p>
+      <p class="note" data-i18n="n3b.lager-for-lager.8"></p>
     </div>
     <div class="panel">
-      <p style="margin:0 0 6px;font-size:14px;color:var(--ink2)">Prompt: <span class="mk">Katten satt på mattan eftersom den var</span></p>
+      <p style="margin:0 0 6px;font-size:14px;color:var(--ink2)" data-i18n="n3b.lager-for-lager.9"></p>
       <div class="ctl"><label>Läs strömmen efter lager <input type="range" id="ll-k" min="0" max="4" value="0"><span class="mk" id="ll-kv"></span></label></div>
-      <svg class="viz" id="ll-svg" viewBox="0 0 560 56" role="img" aria-label="32 lager med markering av var strömmen läses"></svg>
+      <svg class="viz" id="ll-svg" viewBox="0 0 560 56" role="img" aria-label="" data-i18n-aria-label="n3b.lager-for-lager.arialabel"></svg>
       <div id="ll-bars"></div>
       <div class="out" id="ll-out" aria-live="polite"></div>
     </div>

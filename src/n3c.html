@@ -1,52 +1,52 @@
 <section class="slide" data-title="Uppgiften: från vektorer till nästa token"><div class="si">
-  <h2>Uppgiften: från vektorer till nästa token</h2>
+  <h2 data-i18n="n3c.uppgiften-fran-vektorer-till.1"></h2>
   <div class="cols">
     <div>
-      <p>Efter modul 2 har vi en vektor per token, <span class="sh a">x [T, 4096]</span>. Men varje vektor vet bara något om <b>sin egen</b> token. Vektorn för ”på” vet inte att det var en katt som satt.</p>
-      <p>För att gissa nästa token behöver sista positionen veta allt relevant om hela texten: vem som gör vad, var, och vad som brukar komma härnäst.</p>
-      <p>Det är jobbet för resten av modellen: <b>fylla varje tokens vektor med sammanhang</b>, steg för steg, tills den sista räcker för att förutsäga fortsättningen.</p>
-      <p>Det som gör jobbet kallas en <b>transformer</b>. Nästa slides förklarar ordet, sedan hur den är byggd.</p>
+      <p data-i18n="n3c.uppgiften-fran-vektorer-till.2"></p>
+      <p data-i18n="n3c.uppgiften-fran-vektorer-till.3"></p>
+      <p data-i18n="n3c.uppgiften-fran-vektorer-till.4"></p>
+      <p data-i18n="n3c.uppgiften-fran-vektorer-till.5"></p>
     </div>
     <div class="panel">
-      <div class="ctl"><button class="btn on" id="tk-0">Efter embedding</button><button class="btn" id="tk-1">Efter alla block</button></div>
+      <div class="ctl"><button class="btn on" id="tk-0" data-i18n="n3c.uppgiften-fran-vektorer-till.6"></button><button class="btn" id="tk-1" data-i18n="n3c.uppgiften-fran-vektorer-till.7"></button></div>
       <div id="tk-view"></div>
       <div class="out" id="tk-out" aria-live="polite"></div>
-      <p class="note">Etiketterna beskriver i ord vad vektorerna ungefär kan bära. I modellen är det bara tal, och innehållet är inte så prydligt uppdelat.</p>
+      <p class="note" data-i18n="n3c.uppgiften-fran-vektorer-till.8"></p>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-title="Transformer och decoder-only"><div class="si">
-  <h2>Vad betyder ”transformer” och ”decoder-only”?</h2>
+  <h2 data-i18n="n3c.transformer-och-decoder-only.1"></h2>
   <div class="cols even">
     <div>
-      <p><b>Transformer</b> är en arkitektur som presenterades 2017 i artikeln ”Attention Is All You Need”. Det nya var att låta <b>attention</b>, mekanismen där tokens hämtar information från varandra, göra nästan allt arbete. Allt i den här kursen är en transformer.</p>
-      <p>Originalet byggdes för översättning och hade två halvor:</p>
+      <p data-i18n="n3c.transformer-och-decoder-only.2"></p>
+      <p data-i18n="n3c.transformer-och-decoder-only.3"></p>
       <ul>
-        <li>en <b>encoder</b> som läser hela källtexten, där varje ord ser alla andra</li>
-        <li>en <b>decoder</b> som skriver översättningen ett ord i taget och bara ser det som redan skrivits</li>
+        <li data-i18n="n3c.transformer-och-decoder-only.4"></li>
+        <li data-i18n="n3c.transformer-och-decoder-only.5"></li>
       </ul>
-      <p><b>Decoder-only</b> betyder att man bara behåller den andra halvan. Det räcker för att fortsätta text: prompten och svaret är en enda sekvens, och varje token ser bara tokens före sig själv. GPT- och Llama-familjerna är byggda så.</p>
+      <p data-i18n="n3c.transformer-och-decoder-only.6"></p>
     </div>
     <div class="panel">
-      <svg class="viz" viewBox="0 0 560 360" role="img" aria-label="Originalets encoder och decoder jämfört med decoder-only">
-        <text x="140" y="22" text-anchor="middle" class="b">Original (2017)</text>
-        <text x="420" y="22" text-anchor="middle" class="b">Decoder-only</text>
+      <svg class="viz" viewBox="0 0 560 360" role="img" aria-label="" data-i18n-aria-label="n3c.transformer-och-decoder-only.arialabel">
+        <text x="140" y="22" text-anchor="middle" class="b" data-i18n="n3c.transformer-och-decoder-only.7"></text>
+        <text x="420" y="22" text-anchor="middle" class="b" data-i18n="n3c.transformer-och-decoder-only.8"></text>
         <line x1="280" y1="10" x2="280" y2="350" class="lnf"/>
-        <rect x="20" y="40" width="110" height="34" rx="6" class="bt"/><text x="75" y="62" text-anchor="middle" class="s">The cat sat</text>
+        <rect x="20" y="40" width="110" height="34" rx="6" class="bt"/><text x="75" y="62" text-anchor="middle" class="s" data-i18n="n3c.transformer-och-decoder-only.9"></text>
         <line x1="75" y1="74" x2="75" y2="96" class="ln" marker-end="url(#ah)"/>
-        <rect x="20" y="98" width="110" height="120" rx="8" class="bw"/><text x="75" y="150" text-anchor="middle">Encoder</text><text x="75" y="170" text-anchor="middle" class="s">ser allt</text>
-        <rect x="150" y="98" width="110" height="120" rx="8" class="bw"/><text x="205" y="150" text-anchor="middle">Decoder</text><text x="205" y="170" text-anchor="middle" class="s">ser bakåt</text>
+        <rect x="20" y="98" width="110" height="120" rx="8" class="bw"/><text x="75" y="150" text-anchor="middle" data-i18n="n3c.transformer-och-decoder-only.10"></text><text x="75" y="170" text-anchor="middle" class="s" data-i18n="n3c.transformer-och-decoder-only.11"></text>
+        <rect x="150" y="98" width="110" height="120" rx="8" class="bw"/><text x="205" y="150" text-anchor="middle" data-i18n="n3c.transformer-och-decoder-only.12"></text><text x="205" y="170" text-anchor="middle" class="s" data-i18n="n3c.transformer-och-decoder-only.13"></text>
         <line x1="130" y1="158" x2="148" y2="158" class="ln" marker-end="url(#ah)"/>
-        <rect x="150" y="40" width="110" height="34" rx="6" class="bt"/><text x="205" y="62" text-anchor="middle" class="s">Katten satt</text>
+        <rect x="150" y="40" width="110" height="34" rx="6" class="bt"/><text x="205" y="62" text-anchor="middle" class="s" data-i18n="n3c.transformer-och-decoder-only.14"></text>
         <line x1="205" y1="74" x2="205" y2="96" class="ln" marker-end="url(#ah)"/>
         <line x1="205" y1="218" x2="205" y2="240" class="ln" marker-end="url(#ah)"/>
-        <rect x="150" y="242" width="110" height="34" rx="6" class="bt"/><text x="205" y="264" text-anchor="middle" class="s">nästa ord</text>
-        <rect x="340" y="40" width="160" height="34" rx="6" class="bt"/><text x="420" y="62" text-anchor="middle" class="s">Katten satt på</text>
+        <rect x="150" y="242" width="110" height="34" rx="6" class="bt"/><text x="205" y="264" text-anchor="middle" class="s" data-i18n="n3c.transformer-och-decoder-only.15"></text>
+        <rect x="340" y="40" width="160" height="34" rx="6" class="bt"/><text x="420" y="62" text-anchor="middle" class="s" data-i18n="n3c.transformer-och-decoder-only.16"></text>
         <line x1="420" y1="74" x2="420" y2="96" class="ln" marker-end="url(#ah)"/>
-        <rect x="340" y="98" width="160" height="120" rx="8" class="bw"/><text x="420" y="150" text-anchor="middle">Decoder</text><text x="420" y="170" text-anchor="middle" class="s">ser bakåt</text>
+        <rect x="340" y="98" width="160" height="120" rx="8" class="bw"/><text x="420" y="150" text-anchor="middle" data-i18n="n3c.transformer-och-decoder-only.17"></text><text x="420" y="170" text-anchor="middle" class="s" data-i18n="n3c.transformer-och-decoder-only.18"></text>
         <line x1="420" y1="218" x2="420" y2="240" class="ln" marker-end="url(#ah)"/>
-        <rect x="340" y="242" width="160" height="34" rx="6" class="bt"/><text x="420" y="264" text-anchor="middle" class="s">nästa token</text>
+        <rect x="340" y="242" width="160" height="34" rx="6" class="bt"/><text x="420" y="264" text-anchor="middle" class="s" data-i18n="n3c.transformer-och-decoder-only.19"></text>
         <g id="dc-masks"></g>
       </svg>
     </div>
@@ -54,62 +54,62 @@
 </div></section>
 
 <section class="slide" data-title="Ett block, staplat 32 gånger"><div class="si">
-  <h2>Ett block, staplat 32 gånger</h2>
+  <h2 data-i18n="n3c.ett-block-staplat-32-ganger.1"></h2>
   <div class="cols">
     <div>
-      <p>Modellen består av en enda konstruktion, ett <b>block</b> (kallas också <b>lager</b>), som upprepas. Antalet kallas <b>L</b>. Llama-3-8B har L = 32.</p>
-      <p>Alla block har samma ritning: först attention, sedan MLP. Men varje block har <b>egna vikter</b>, så de lär sig göra olika saker.</p>
-      <p>Varför stapla? Ett block kan bara göra en runda av ”hämta information från andra tokens, bearbeta den”. Många slutsatser kräver flera rundor i följd, där varje runda bygger på den förra.</p>
-      <p>Dra i reglaget och se vad fler block kostar och ger.</p>
+      <p data-i18n="n3c.ett-block-staplat-32-ganger.2"></p>
+      <p data-i18n="n3c.ett-block-staplat-32-ganger.3"></p>
+      <p data-i18n="n3c.ett-block-staplat-32-ganger.4"></p>
+      <p data-i18n="n3c.ett-block-staplat-32-ganger.5"></p>
     </div>
     <div class="panel">
       <div class="ctl"><label>Antal block L <input type="range" id="st-l" min="1" max="32" value="32"><span class="mk" id="st-lv"></span></label></div>
-      <svg class="viz" id="st-svg" viewBox="0 0 560 320" role="img" aria-label="Staplade block med parameterräkning"></svg>
+      <svg class="viz" id="st-svg" viewBox="0 0 560 320" role="img" aria-label="" data-i18n-aria-label="n3c.ett-block-staplat-32-ganger.arialabel"></svg>
       <div class="out" id="st-out" aria-live="polite"></div>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-title="Shapen ändras aldrig"><div class="si">
-  <h2>Shapen ändras aldrig, förrän i slutet</h2>
+  <h2 data-i18n="n3c.shapen-andras-aldrig.1"></h2>
   <div class="cols">
     <div>
-      <p>Strömmen <span class="sh a">x</span> har shape <span class="sh a">[T, 4096]</span>: T rader, en per token, och 4096 tal per rad. Den shapen gäller efter embedding, efter varje block och efter final norm.</p>
-      <p>Det är ett medvetet val, och det möjliggör tre saker:</p>
+      <p data-i18n="n3c.shapen-andras-aldrig.2"></p>
+      <p data-i18n="n3c.shapen-andras-aldrig.3"></p>
       <ol>
-        <li><b>Block kan staplas.</b> Det som kommer ut ur ett block passar rakt in i nästa.</li>
-        <li><b>Bidrag kan adderas.</b> x + bidrag kräver att båda har samma shape.</li>
-        <li><b>Strömmen kan läsas var som helst.</b> Efter vilket block som helst är det samma sorts vektor, vilket tolkningsmetoder utnyttjar.</li>
+        <li data-i18n="n3c.shapen-andras-aldrig.4"></li>
+        <li data-i18n="n3c.shapen-andras-aldrig.5"></li>
+        <li data-i18n="n3c.shapen-andras-aldrig.6"></li>
       </ol>
-      <p>Först i <b>LM head</b>, modellens sista matris, byter den form: från 4096 tal per rad till 128 256, ett tal per token i vokabulären. Mer om det i modul 4.</p>
+      <p data-i18n="n3c.shapen-andras-aldrig.7"></p>
     </div>
     <div class="panel">
-      <div class="ctl"><button class="btn" id="sp-prev">Föregående</button><button class="btn" id="sp-next">Nästa steg</button></div>
-      <svg class="viz" id="sp-svg" viewBox="0 0 560 400" role="img" aria-label="Tensorns shape i varje steg genom modellen"></svg>
+      <div class="ctl"><button class="btn" id="sp-prev" data-i18n="n3c.shapen-andras-aldrig.8"></button><button class="btn" id="sp-next" data-i18n="n3c.shapen-andras-aldrig.9"></button></div>
+      <svg class="viz" id="sp-svg" viewBox="0 0 560 400" role="img" aria-label="" data-i18n-aria-label="n3c.shapen-andras-aldrig.arialabel"></svg>
       <div class="out" id="sp-out" aria-live="polite"></div>
     </div>
   </div>
 </div></section>
 
 <section class="slide" data-title="Normalisering: varför och var"><div class="si">
-  <h2>Normalisering: varför och var</h2>
+  <h2 data-i18n="n3c.normalisering-varfor-och-var.1"></h2>
   <div class="cols">
     <div>
-      <p><b>Problemet.</b> Eftersom varje block <i>adderar</i> till strömmen växer x i storlek ju längre in i modellen man kommer. Attention och MLP fungerar däremot bäst om deras indata alltid har ungefär samma skala.</p>
-      <p><b>Lösningen</b> är normalisering: skala om en vektor så att dess storlek (RMS) blir 1, utan att ändra riktningen. Formeln kommer på RMSNorm-sliden.</p>
-      <p><b>Var</b> man normaliserar finns det två varianter av:</p>
+      <p data-i18n="n3c.normalisering-varfor-och-var.2"></p>
+      <p data-i18n="n3c.normalisering-varfor-och-var.3"></p>
+      <p data-i18n="n3c.normalisering-varfor-och-var.4"></p>
       <ul>
-        <li><b>Post-norm</b> (originalet 2017): strömmen själv normaliseras efter varje addition.</li>
-        <li><b>Pre-norm</b> (Llama och de flesta moderna modeller): blocket normaliserar en <i>kopia</i> innan det läser. Strömmen själv lämnas orörd och får växa.</li>
+        <li data-i18n="n3c.normalisering-varfor-och-var.5"></li>
+        <li data-i18n="n3c.normalisering-varfor-och-var.6"></li>
       </ul>
-      <p>Pre-norm gör djupa modeller stabilare att träna, eftersom vägen rakt genom strömmen aldrig störs. Priset är att strömmen aldrig normaliseras under vägen, så den måste normaliseras <b>en gång i slutet</b>, före LM head. Det är final RMSNorm.</p>
+      <p data-i18n="n3c.normalisering-varfor-och-var.7"></p>
     </div>
     <div class="panel">
-      <div class="ctl"><button class="btn on" id="pn-pre">Pre-norm</button><button class="btn" id="pn-post">Post-norm</button></div>
-      <svg class="viz" id="pn-diag" viewBox="0 0 560 150" role="img" aria-label="Var normaliseringen sitter"></svg>
-      <svg class="viz" id="pn-chart" viewBox="0 0 560 230" role="img" aria-label="Storleken på strömmen och på det blocken läser, genom 32 block"></svg>
+      <div class="ctl"><button class="btn on" id="pn-pre" data-i18n="n3c.normalisering-varfor-och-var.8"></button><button class="btn" id="pn-post" data-i18n="n3c.normalisering-varfor-och-var.9"></button></div>
+      <svg class="viz" id="pn-diag" viewBox="0 0 560 150" role="img" aria-label="" data-i18n-aria-label="n3c.normalisering-varfor-och-var.arialabel"></svg>
+      <svg class="viz" id="pn-chart" viewBox="0 0 560 230" role="img" aria-label="" data-i18n-aria-label="n3c.normalisering-varfor-och-var.arialabel-2"></svg>
       <div class="out" id="pn-out" aria-live="polite"></div>
-      <p class="note">Kurvan är en illustration. Att strömmens storlek växer med djupet i pre-norm-modeller stämmer i stort, men exakta värden varierar mellan modeller.</p>
+      <p class="note" data-i18n="n3c.normalisering-varfor-och-var.10"></p>
     </div>
   </div>
 </div></section>

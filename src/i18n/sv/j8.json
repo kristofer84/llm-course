@@ -1,0 +1,20 @@
+{
+ "j8.1": "Gör en query för varje ord: vad ordet letar efter hos de andra.",
+ "j8.2": "Gör en key för varje ord: ordets etikett, som andras queries jämförs med.",
+ "j8.3": "Gör en value för varje ord: det innehåll som skickas vidare om ordet väljs.",
+ "j8.4": "Slår ihop resultaten från attentionens 32 heads till en vektor som kan läggas till anteckningsblocket.",
+ "j8.5": "Expanderar till 14 336 neuroner och avgör vilka som ska släppas igenom. Fungerar som en dimmer.",
+ "j8.6": "Expanderar också till 14 336, men bär innehållet som gaten släpper fram.",
+ "j8.7": "Trycker tillbaka från 14 336 till 4096 tal, så att resultatet passar anteckningsblocket.",
+ "j8.8": "Skalar varje dimension efter normaliseringen före attention.",
+ "j8.9": "Samma sak före MLP:n, med egna tal.",
+ "j8.10": "Skalenligt: höjd = indata, bredd = utdata.",
+ "j8.11": "Normerna är så små att de bara syns som streck.",
+ "j8.12": "De nio delarna i ett lager blir tillsammans 218 miljoner tal. Nästan 81 % av dem sitter i MLP:ns tre matriser.",
+ "j8.13": "Gånger 32 lager",
+ "j8.14": "Ordförrådstabellen i början: 128 256 ord × 4 096 tal = 525 miljoner. Den är ungefär lika stor som 2,4 lager.",
+ "j8.15": "Lika stor tabell i slutet som gör om sista vektorn till ett betyg per ord: ytterligare 525 miljoner.",
+ "j8.16": "En sista normaliseringslista med 4 096 tal. Försumbart, men med för att summan ska bli exakt.",
+ "j8.17": "Från tal till gigabyte",
+ "j8.18": "Varje tal lagras med 2 byte i bf16. 8,03 miljarder × 2 byte ≈ 16 GB, och det är så mycket grafikkortsminne vikterna kräver."
+}

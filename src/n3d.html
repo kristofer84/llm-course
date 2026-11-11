@@ -1,31 +1,27 @@
 <section class="slide" data-title="Blocket som ett löpande band"><div class="si">
-  <h2>Blocket som ett löpande band</h2>
-  <p class="plain">Inuti varje block händer sex saker i fast ordning, som stationer på ett löpande band. Inget körs samtidigt: MLP:n väntar på attention, eftersom den ska bearbeta det attention har hämtat.</p>
+  <h2 data-i18n="n3d.blocket-som-ett-lopande-band.1"></h2>
+  <p class="plain" data-i18n="n3d.blocket-som-ett-lopande-band.2"></p>
   <div class="cols even">
     <div>
-      <div class="ctl"><button class="btn" id="lb-prev">Föregående</button><button class="btn" id="lb-next">Nästa station</button><span class="mk" id="lb-n"></span></div>
+      <div class="ctl"><button class="btn" id="lb-prev" data-i18n="n3d.blocket-som-ett-lopande-band.3"></button><button class="btn" id="lb-next" data-i18n="n3d.blocket-som-ett-lopande-band.4"></button><span class="mk" id="lb-n"></span></div>
       <div id="lb-detail" aria-live="polite"></div>
     </div>
-    <div class="panel"><svg class="viz" id="lb-svg" viewBox="0 0 520 470" role="img" aria-label="Blockets sex stationer längs strömmen"></svg></div>
+    <div class="panel"><svg class="viz" id="lb-svg" viewBox="0 0 520 470" role="img" aria-label="" data-i18n-aria-label="n3d.blocket-som-ett-lopande-band.arialabel"></svg></div>
   </div>
 </div></section>
 
 <section class="slide" data-title="Attention i klartext"><div class="si">
-  <h2>Attention i klartext</h2>
-  <p class="plain">Attention är modellens sätt att låta ord samla information från andra ord. Det fungerar ungefär som en sökning, med en viktig skillnad: man får inte ett enda träffresultat, utan en blandning av alla, viktad efter hur bra de matchar.</p>
+  <h2 data-i18n="n3d.attention-i-klartext.1"></h2>
+  <p class="plain" data-i18n="n3d.attention-i-klartext.2"></p>
   <div class="cols even">
     <div class="ige">
-      <div class="in"><span class="lb">Inmatning</span>Varje ords vektor, normaliserad. Vid det här laget vet vektorn mest om sitt eget ord.</div>
-      <div class="do"><span class="lb">Genomförande</span>
-        1. Varje ord gör tre nya vektorer med var sin inlärd matris: en <b>query</b> (vad letar jag efter?), en <b>key</b> (vad kan jag erbjuda?) och en <b>value</b> (vad skickar jag vidare?).<br>
-        2. Ordets query jämförs med varje tidigare ords key. Ju mer de pekar åt samma håll, desto högre poäng.<br>
-        3. Poängen görs om till procent som summerar till 100 %.<br>
-        4. Ordet tar en blandning av alla values, viktad med procenten. Inget sorteras bort helt, men det som matchar dåligt får väldigt liten vikt.</div>
-      <div class="out"><span class="lb">Resultat</span>Ett bidrag per ord som adderas till dess vektor. Nu vet ordet något om sitt sammanhang.</div>
-      <div class="why"><span class="lb">Varför</span>Det här är det enda stället i hela modellen där ord kan påverka varandra. Utan attention skulle varje ord behandlas helt isolerat.</div>
+      <div class="in" data-i18n="n3d.attention-i-klartext.3"></div>
+      <div class="do" data-i18n="n3d.attention-i-klartext.4"></div>
+      <div class="out" data-i18n="n3d.attention-i-klartext.5"></div>
+      <div class="why" data-i18n="n3d.attention-i-klartext.6"></div>
     </div>
     <div class="panel">
-      <p style="margin:0 0 8px;font-size:14px;color:var(--ink2)">Liknelse: att söka bland videor. Välj vad ordet ”den” letar efter:</p>
+      <p style="margin:0 0 8px;font-size:14px;color:var(--ink2)" data-i18n="n3d.attention-i-klartext.7"></p>
       <div class="ctl" id="yt-q"></div>
       <div id="yt-view"></div>
       <div class="out" id="yt-out" aria-live="polite"></div>
@@ -34,9 +30,9 @@
 </div></section>
 
 <section class="slide" data-title="Attention-formeln bit för bit"><div class="si">
-  <h2>Attention-formeln bit för bit</h2>
-  <p class="plain">Hela attention-steget ryms i en rad. Klicka på varje del för att se vad den gör, varför den finns och vilka tal den ger i vårt räkneexempel från ”Attention räknat för hand”.</p>
-  <div class="fx" id="fx-row" role="group" aria-label="Formelns delar"></div>
+  <h2 data-i18n="n3d.attention-formeln-bit-for.1"></h2>
+  <p class="plain" data-i18n="n3d.attention-formeln-bit-for.2"></p>
+  <div class="fx" id="fx-row" role="group" aria-label="" data-i18n-aria-label="n3d.attention-formeln-bit-for.arialabel"></div>
   <div class="cols even">
     <div id="fx-text" aria-live="polite"></div>
     <div class="panel" id="fx-panel"></div>
@@ -44,24 +40,21 @@
 </div></section>
 
 <section class="slide" data-title="MLP i klartext"><div class="si">
-  <h2>MLP i klartext</h2>
-  <p class="plain">Attention har samlat in information. MLP:n tar reda på vad den betyder. Den arbetar med ett ord i taget och fungerar ungefär som ett stort uppslagsverk: känner den igen ett mönster, lägger den till det den vet om det.</p>
+  <h2 data-i18n="n3d.mlp-i-klartext.1"></h2>
+  <p class="plain" data-i18n="n3d.mlp-i-klartext.2"></p>
   <div class="cols even">
     <div class="ige">
-      <div class="in"><span class="lb">Inmatning</span>Ett ords vektor efter attention, normaliserad: 4096 tal som nu innehåller sammanhang.</div>
-      <div class="do"><span class="lb">Genomförande</span>
-        1. <b>Expansion.</b> Vektorn jämförs med 14 336 inlärda mönster, ett per neuron. I Llama görs det med två matriser parallellt: <i>gate</i> (passar mönstret?) och <i>up</i> (hur mycket ska skickas?).<br>
-        2. <b>Aktivering.</b> SiLU på gaten fungerar som en dimmer: neuroner vars mönster passar släpps fram, resten dämpas nästan till noll.<br>
-        3. <b>Projektion.</b> En tredje matris, <i>down</i>, översätter de neuroner som tändes tillbaka till 4096 tal.</div>
-      <div class="out"><span class="lb">Resultat</span>Ett bidrag som adderas till ordets vektor: det modellen ”vet” om det som hämtats.</div>
-      <div class="why"><span class="lb">Varför icke-linjär?</span>Utan dimmern vore de tre matriserna bara en enda matris, och modellen kunde inte fatta beslut av typen ”om A och B, men inte C”.</div>
+      <div class="in" data-i18n="n3d.mlp-i-klartext.3"></div>
+      <div class="do" data-i18n="n3d.mlp-i-klartext.4"></div>
+      <div class="out" data-i18n="n3d.mlp-i-klartext.5"></div>
+      <div class="why" data-i18n="n3d.mlp-i-klartext.6"></div>
     </div>
     <div class="panel">
-      <div class="ctl"><button class="btn" id="mk-prev">Föregående</button><button class="btn" id="mk-next">Nästa steg</button><span class="mk" id="mk-n"></span></div>
-      <svg class="viz" id="mk-svg" viewBox="0 0 520 200" role="img" aria-label="Vektorn expanderas, filtreras och trycks ihop"></svg>
+      <div class="ctl"><button class="btn" id="mk-prev" data-i18n="n3d.mlp-i-klartext.7"></button><button class="btn" id="mk-next" data-i18n="n3d.mlp-i-klartext.8"></button><span class="mk" id="mk-n"></span></div>
+      <svg class="viz" id="mk-svg" viewBox="0 0 520 200" role="img" aria-label="" data-i18n-aria-label="n3d.mlp-i-klartext.arialabel"></svg>
       <div class="out" id="mk-out" aria-live="polite"></div>
-      <h3>Som ett minne</h3>
-      <p style="font-size:15px;margin:4px 0">En neurons mönster i W_gate är som en <b>nyckel</b> och dess rad i W_down som ett <b>värde</b>. Slå på det ordets vektor innehåller:</p>
+      <h3 data-i18n="n3d.mlp-i-klartext.9"></h3>
+      <p style="font-size:15px;margin:4px 0" data-i18n="n3d.mlp-i-klartext.10"></p>
       <div class="chips" id="mk-feat"></div>
       <div class="out" id="mk-mem" aria-live="polite"></div>
     </div>

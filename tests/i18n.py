@@ -3,18 +3,18 @@
     python3 tests/i18n.py            # build first: (cd src && python3 build.py)
 
 Checks that
-  1. every extracted source string has an English translation,
+  1. every Swedish key has an English translation (static, from the catalogs),
   2. the language switch exists and reflects the active language,
   3. <html lang>, <title> and the top bar follow the selected language,
   4. English mode shows no Swedish — neither on load nor after clicking the
      interactive parts of every slide,
-  5. Swedish mode is unchanged (the switch does not leak into the source).
+  5. switching language keeps the slide and remembers the choice.
 
-Point 4 is a rendering diff, not a word list: every string the Swedish deck
-shows (on load and after the same interactions) must be *replaced* in English.
-Strings that are deliberately identical in both languages (code, `RMSNorm`,
-data tokens like `katt`) are in the catalog as identity mappings, so they are
-accepted; anything else that still renders as Swedish is a missing translation.
+Point 4 is a rendering diff per key: the same key is collected in both
+languages, and if the English text is identical to the Swedish one *and* looks
+Swedish, the translation is missing. Values listed as identity data in
+``src/i18n/en/data.json`` (sample tokens like ``katt``) are identical on
+purpose and are accepted.
 """
 import asyncio
 import json
@@ -29,9 +29,6 @@ from _common import HTML, prepare
 ROOT = Path(__file__).resolve().parent.parent
 I18N = ROOT / "src" / "i18n"
 
-# A leftover is a string that renders identically in both languages *and* looks
-# Swedish. Data tokens (`katt`, `expert 1`, `model.layers.5…`) are identical on
-# purpose, so they must not trip the check — Swedish-only words do.
 SV_LETTERS = re.compile(r"[ÅÄÖåäö]")
 SV_WORDS = re.compile(
     r"\b(och|att|är|för|som|inte|till|från|men|eller|så|när|kan|blir|vara|har|"
@@ -54,60 +51,37 @@ def check(ok, msg):
         failures.append(msg)
 
 
-def load_catalog():
+def load_catalog(locale="en"):
     cat = {}
-    for f in sorted((I18N / "en").glob("*.json")):
-        if f.name.startswith("_"):
+    for f in sorted((I18N / locale).glob("*.json")):
+        if f.name.startswith("_") or f.name == "data.json":
             continue
-        for k, v in json.loads(f.read_text(encoding="utf-8")).items():
-            cat[k] = v
+        cat.update(json.loads(f.read_text(encoding="utf-8")))
     return cat
 
 
-def coverage(cat):
-    keys = set()
-    for f in (I18N / "source").glob("*.keys.json"):
-        keys |= set(json.loads(f.read_text(encoding="utf-8")))
-    missing = sorted(k for k in keys if k not in cat or not str(cat[k]).strip())
-    check(not missing, f"English catalog covers {len(keys)} source strings"
-          + (f" — missing {len(missing)}: {[m[:40] for m in missing[:3]]}" if missing else ""))
+def identity_values():
+    path = I18N / "en" / "data.json"
+    if not path.exists():
+        return set()
+    d = json.loads(path.read_text(encoding="utf-8"))
+    return {k for k, v in d.items() if k == v}
+
+
+def coverage(sv, en):
+    missing = sorted(k for k in sv if k not in en or not str(en[k]).strip())
+    check(not missing, f"English catalog covers {len(sv)} keys"
+          + (f" — missing {len(missing)}: {missing[:3]}" if missing else ""))
 
 
 COLLECT = r"""
 (sel) => {
   const out = [];
   const roots = sel ? [...document.querySelectorAll(sel)] : [document.body];
-  roots.forEach(r => L.collect(r).forEach(u => { if (u.text.trim()) out.push(u.text.trim()); }));
-  if (!sel) {
-    ['aria-label', 'placeholder', 'alt', 'title'].forEach(a =>
-      document.querySelectorAll('[' + a + ']').forEach(el => {
-        const v = L.norm(el.getAttribute(a));
-        if (v) out.push(v);
-      }));
-    out.push(document.title.trim());
-  }
+  roots.forEach(r => L.collect(r).forEach(u => out.push([u.key, u.html])));
   return out;
 }
 """
-
-# Chrome (top bar, footer, drawers) is rendered once, so one full pass covers it.
-COLLECT_CHROME = r"""
-() => {
-  const out = [];
-  ['.topbar', '.botbar', '#toc', '#gloss'].forEach(sel => {
-    const el = document.querySelector(sel);
-    if (el) L.collect(el).forEach(u => { if (u.text.trim()) out.push(u.text.trim()); });
-  });
-  ['aria-label', 'placeholder', 'alt', 'title'].forEach(a =>
-    document.querySelectorAll('[' + a + ']').forEach(el => {
-      const v = L.norm(el.getAttribute(a));
-      if (v) out.push(v);
-    }));
-  out.push(document.title.trim());
-  return out;
-}
-"""
-
 
 COUNT = r"""
 () => document.querySelectorAll(
@@ -133,12 +107,19 @@ CLICK = r"""
 
 
 async def render_pass(browser, lang, max_clicks=8):
-    """Show every slide with its interactions and return the strings rendered."""
+    """Show every slide with its interactions; return key -> [rendered texts]."""
     page = await browser.new_page(viewport={"width": 1440, "height": 900})
     errors = await prepare(page, [])
     await page.goto(HTML.as_uri() + f"?lang={lang}", wait_until="domcontentloaded")
     await page.wait_for_timeout(400)
-    strings = set(await page.evaluate(COLLECT_CHROME))
+
+    seen = {}
+
+    def collect(pairs):
+        for key, text in pairs:
+            seen.setdefault(key, set()).add(text)
+
+    collect(await page.evaluate(COLLECT, ""))
     slides = []
     n = await page.evaluate('document.querySelectorAll(".slide").length')
     for i in range(n):
@@ -146,50 +127,54 @@ async def render_pass(browser, lang, max_clicks=8):
         await page.wait_for_timeout(15)
         title = await page.evaluate(
             "(document.querySelector('.slide.active h1, .slide.active h2') || {}).textContent || ''")
-        strings |= set(await page.evaluate(COLLECT, ".slide.active"))
+        collect(await page.evaluate(COLLECT, ".slide.active"))
         for j in range(min(await page.evaluate(COUNT), max_clicks)):
             await page.evaluate(CLICK, j)
             await page.wait_for_timeout(8)
-            strings |= set(await page.evaluate(COLLECT, ".slide.active"))
-        slides.append((title.strip(), None))
-    warnings = []
-    page.on("pageerror", lambda e: warnings.append(str(e)))
+            collect(await page.evaluate(COLLECT, ".slide.active"))
+        slides.append(title.strip())
     await page.close()
-    return strings, slides, errors
+    return seen, slides, errors
 
 
 async def main():
     if not HTML.is_file():
         print(f"FAIL missing build: {HTML}")
         return 1
-    cat = load_catalog()
-    coverage(cat)
+    sv_cat, en_cat = load_catalog("sv"), load_catalog("en")
+    coverage(sv_cat, en_cat)
+    ident = identity_values()
 
     async with async_playwright() as p:
         browser = await p.chromium.launch()
 
-        sv_strings, sv_slides, _ = await render_pass(browser, "sv")
-        en_strings, en_slides, errors = await render_pass(browser, "en")
-
+        sv_seen, sv_slides, _ = await render_pass(browser, "sv")
+        en_seen, en_slides, errors = await render_pass(browser, "en")
         check(not errors, f"no JS errors in English mode ({errors[:3]})")
 
-        # Slide titles must change with the language (the contents panel is part of the deck).
-        same_titles = [
-            i + 1 for i, ((st, _), (et, _)) in enumerate(zip(sv_slides, en_slides))
-            if st == et and any(c in st for c in "ÅÄÖåäö")
-        ]
+        # Slide titles must change with the language.
+        same_titles = [i + 1 for i, (st, et) in enumerate(zip(sv_slides, en_slides))
+                       if st == et and swedish(st)]
         check(not same_titles, f"slide titles translated (still Swedish: {same_titles[:5]})")
 
-        # Typing/step animations render prefixes of a longer data string; only the
-        # longest form is a real unit.
-        prefixes = {s for s in en_strings if any(o != s and o.startswith(s) for o in en_strings)}
-        leftovers = sorted(
-            s for s in en_strings - {""} - prefixes
-            if s in sv_strings and s not in cat and any(ch.isalpha() for ch in s) and swedish(s)
-        )
+        # Per key: English must not be the Swedish text, unless it is data.
+        leftovers = []
+        for key, sv_texts in sv_seen.items():
+            if key not in en_seen:
+                continue
+            for text in sorted(en_seen[key]):
+                if not text.strip() or text not in sv_texts:
+                    continue
+                if key in ("doc.title",):
+                    continue
+                if text in ident or sv_cat.get(key) in ident:
+                    continue
+                if swedish(text):
+                    leftovers.append((key, text))
+        leftovers = sorted(set(leftovers))
         check(not leftovers, f"no Swedish left in English mode ({len(leftovers)} string(s))")
-        for s in leftovers[:40]:
-            print("   ", repr(s[:100]))
+        for key, text in leftovers[:40]:
+            print("   ", key, "|", repr(text[:90]))
 
         # Switch UI + document metadata, on a fresh page.
         page = await browser.new_page(viewport={"width": 1440, "height": 900})
@@ -199,13 +184,11 @@ async def main():
         check(await page.evaluate("document.documentElement.lang") == "en", "html lang is en")
         check("Inuti en LLM" not in await page.title(), f"document title translated ({await page.title()!r})")
         buttons = await page.evaluate(
-            "[...document.querySelectorAll('#langsw .lg')].map(b => [b.textContent, b.getAttribute('aria-pressed')])"
-        )
+            "[...document.querySelectorAll('#langsw .lg')].map(b => [b.textContent, b.getAttribute('aria-pressed')])")
         check([b[0] for b in buttons] == ["SV", "EN"], f"language switch rendered ({buttons})")
         check(any(b == ["EN", "true"] for b in buttons), "EN marked active")
         bars = await page.evaluate(
-            "[...document.querySelectorAll('.topbar button, .botbar button')].map(b => b.textContent)"
-        )
+            "[...document.querySelectorAll('.topbar button, .botbar button')].map(b => b.textContent)")
         check("Contents" in bars and "Next" in bars, f"top/bottom bar translated ({bars})")
 
         # Switching language keeps the slide and stores the choice.
@@ -225,7 +208,7 @@ async def main():
         check("Inuti en LLM" in await sv.title(), "Swedish document title intact")
         await browser.close()
 
-    print(f"\n{'FAILED' if failures else 'PASSED'}: {len(failures)} failure(s), {len(cat)} translations")
+    print(f"\n{'FAILED' if failures else 'PASSED'}: {len(failures)} failure(s), {len(en_cat)} translations")
     return 1 if failures else 0
 
 

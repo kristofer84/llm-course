@@ -1,0 +1,14 @@
+{
+ "n0b.vad-ar-en-sprakmodell.1": "Vad är en språkmodell?",
+ "n0b.vad-ar-en-sprakmodell.2": "En språkmodell gör en enda sak: den gissar vilket ord som kommer härnäst. Det är samma idé som ordförslagen i mobilen, bara enormt mycket större. Allt annat, att svara på frågor, skriva kod och resonera, byggs av att göra den gissningen om och om igen.",
+ "n0b.vad-ar-en-sprakmodell.3": "Det viktigaste att veta från början",
+ "n0b.vad-ar-en-sprakmodell.4": "<b>Den är gjord av tal.</b> En modell som Llama-3-8B består av ungefär 8 miljarder tal, kallade <i>vikter</i> eller <i>parametrar</i>. Tillsammans tar de 16 GB.",
+ "n0b.vad-ar-en-sprakmodell.5": "<b>Talen är inlärda.</b> Modellen har läst enorma mängder text och justerat sina tal tills den blev bra på att gissa nästa ord. Ingen har skrivit in regler för hand.",
+ "n0b.vad-ar-en-sprakmodell.6": "<b>Den slår inte upp svar.</b> Det finns ingen databas med fakta inuti, bara tal som räknas ihop. Kunskapen ligger utspridd i talen.",
+ "n0b.vad-ar-en-sprakmodell.7": "<b>Den skriver ett ord i taget.</b> Varje nytt ord läggs till texten, och modellen körs igen för att gissa nästa.",
+ "n0b.vad-ar-en-sprakmodell.8": "Prova till höger: välj själv nästa ord, eller låt ”modellen” välja det mest sannolika.",
+ "n0b.vad-ar-en-sprakmodell.9": "Modellens gissningar för nästa ord:",
+ "n0b.vad-ar-en-sprakmodell.10": "Låt modellen välja",
+ "n0b.vad-ar-en-sprakmodell.11": "Börja om",
+ "n0b.vad-ar-en-sprakmodell.12": "Sannolikheterna är påhittade för att visa idén. Resten av kursen förklarar hur en riktig modell räknar fram dem."
+}

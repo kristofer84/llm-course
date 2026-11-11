@@ -1,133 +1,167 @@
 #!/usr/bin/env python3
-"""Validate translation catalogs against the extracted source lists.
+"""Check the translation catalogs against each other. No browser needed.
 
-    python3 tools/check_i18n.py                 # all groups, language en
-    python3 tools/check_i18n.py --group m3a     # one translator's file
-    python3 tools/check_i18n.py --lang en --verbose
+Keys are explicit (`p3.rmsnorm.2`), the Swedish catalog is the source of truth.
+For every other locale this verifies:
 
-Checks per group:
-  * every source key is translated (and nothing else is invented)
-  * no empty values
-  * inline markup is preserved: same tags, same attributes, same order
-  * code blocks keep every identifier, flag and number (comments may change)
+  * every Swedish key has a non-empty translation, and nothing stale is left
+  * the inline markup is identical (same tags, same attributes, same order)
+  * every {{placeholder}} survives
+  * code tokens (identifiers, shapes like [T, 4096], numbers) are preserved
+  * a translation equal to the Swedish text is only allowed for real data
+    (sample tokens listed in src/i18n/en/data.json)
 
-Exit code 1 on any error. Regenerate the source lists with
-`python3 tools/extract_i18n.py` after changing the course content.
+Usage:
+    python3 tools/check_i18n.py                # everything
+    python3 tools/check_i18n.py --group j6      # one group
+    python3 tools/check_i18n.py --quiet
 """
+
 import argparse
+import glob
 import json
+import os
 import re
 import sys
-from collections import Counter
-from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-I18N = ROOT / "src" / "i18n"
-SOURCE = I18N / "source"
-TAG = re.compile(r"<[^>]+>")
-TOKEN = re.compile(r"[A-Za-z_][A-Za-z0-9_]*|\d+(?:[.,]\d+)?")
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CATALOG = os.path.join(ROOT, "src", "i18n")
+SRC = "sv"
 
-
-def load_json(path):
-    try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except Exception as exc:  # noqa: BLE001
-        raise SystemExit(f"{path}: {exc}")
+TAG = re.compile(r"<(/?)([a-zA-Z][\w-]*)((?:\s+[\w:-]+(?:=\"[^\"]*\")?)*)\s*/?>")
+PH = re.compile(r"\{\{(\w+)\}\}")
+# Only numbers and digit shapes are enforced: prose inside a formula may and
+# should be translated ("rad för rad" -> "row by row").
+NUM = re.compile(r"\d+(?:[ \u00a0,.]\d+)*")
+KEYISH = re.compile(r"^[a-z][\w]*\.[\w.-]+$")
 
 
-def tags(s):
-    return TAG.findall(s)
+def load(locale):
+    cat = {}
+    origin = {}
+    for path in sorted(glob.glob(os.path.join(CATALOG, locale, "*.json"))):
+        name = os.path.basename(path)
+        if name.startswith("_") or name == "data.json":
+            continue    # identity data, not translatable keys
+        data = json.load(open(path, encoding="utf-8"))
+        if not isinstance(data, dict):
+            continue
+        for k, v in data.items():
+            if k in cat and cat[k] != v:
+                print("duplicate key with different text:", k, "in", name)
+            cat[k] = v
+            origin[k] = name
+    return cat, origin
 
 
-def code_tokens(s):
-    out = []
-    for line in s.split("\n"):
-        cut = len(line)
-        for marker in ("#", "//"):
-            i = line.find(marker)
-            if i >= 0:
-                cut = min(cut, i)
-        out.extend(TOKEN.findall(line[:cut]))
-    return Counter(out)
+def markup(value):
+    return [(m.group(1), m.group(2).lower(), m.group(3).strip()) for m in TAG.finditer(value)]
+
+
+def code_tokens(value):
+    """The numbers, compared by digits only: decimal comma vs point and the
+    choice of thousands separator are exactly what translation may change."""
+    text = TAG.sub(" ", value)
+    out = set()
+    for tok in NUM.findall(text):
+        digits = re.sub(r"\D", "", tok)
+        if digits:
+            out.add(digits)
+    return out
+
+
+def identity_values():
+    path = os.path.join(CATALOG, "en", "data.json")
+    if not os.path.exists(path):
+        return set()
+    d = json.load(open(path, encoding="utf-8"))
+    return {k for k, v in d.items() if k == v}
+
+
+def referenced_keys():
+    """Keys the page actually uses: data-i18n attributes plus key-shaped
+    strings in the scripts (quiz data refers to keys directly)."""
+    page = open(os.path.join(ROOT, "llm-kurs.html"), encoding="utf-8").read()
+    keys = set(re.findall(r'data-i18n(?:-[\w-]+)?="([^"]+)"', page))
+    keys |= {k for k in re.findall(r"'([^'\n]{3,90})'", page) if KEYISH.match(k)}
+    keys |= {k for k in re.findall(r'"([^"\n]{3,90})"', page) if KEYISH.match(k)}
+    return keys
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--group", action="append", help="only this group (repeatable)")
-    ap.add_argument("--from-json", action="append",
-                    help="validate a slice: a source-style [{k,code}] list (repeatable)")
-    ap.add_argument("--lang", default="en")
-    ap.add_argument("--verbose", action="store_true")
+    ap.add_argument("--group", help="only keys starting with this prefix")
+    ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
 
-    slices = [load_json(Path(f)) for f in (args.from_json or [])]
-    groups = sorted(p.name for p in SOURCE.glob("*.keys.json"))
-    if not groups and not slices:
-        raise SystemExit("no source lists found — run tools/extract_i18n.py first")
-    wanted = {g.split(".")[0] for g in groups}
-    if args.group:
-        missing = set(args.group) - wanted
-        if missing:
-            raise SystemExit(f"unknown group(s): {sorted(missing)}")
-        wanted &= set(args.group)
+    sv, _ = load(SRC)
+    locales = sorted(d for d in os.listdir(CATALOG)
+                     if os.path.isdir(os.path.join(CATALOG, d)) and d not in (SRC, "source"))
+    ident = identity_values()
+    used = referenced_keys()
+    failures, warnings = [], []
 
-    catalog, origin = {}, {}
-    for f in sorted((I18N / args.lang).glob("*.json")):
-        if f.name.startswith("_"):
-            continue
-        data = load_json(f)
-        if not isinstance(data, dict):
-            print(f"{f.name}: not an object, ignored")
-            continue
-        for k, v in data.items():
-            if k in catalog and catalog[k] != v:
-                print(f"{f.name}: conflicting translation for {k[:50]!r}")
-            catalog[k] = v
-            origin.setdefault(k, f.name)
+    def wanted(k):
+        return not args.group or k.startswith(args.group + ".") or k.startswith(args.group + "-")
 
-    errors, empties, markup, code = [], [], [], []
-    total = done = 0
-    work = [(g, load_json(SOURCE / f"{g}.json"), load_json(SOURCE / f"{g}.keys.json"))
-            for g in sorted(wanted)]
-    work += [(f"slice-{i + 1}", items, [x["k"] for x in items]) for i, items in enumerate(slices)]
-    for g, items, keys in work:
-        missing = [k for k in keys if k not in catalog]
-        total += len(keys)
-        done += len(keys) - len(missing)
-        if missing:
-            errors.append(f"{g}: {len(missing)} untranslated, e.g. {missing[0][:70]!r}")
-            for k in missing[:5]:
-                errors.append(f"    missing in {args.lang}/: {k[:90]!r}")
-        for item in items:
-            k = item["k"]
-            v = catalog.get(k)
-            if v is None:
+    for key in sorted(sv):
+        if not wanted(key):
+            continue
+        if not sv[key].strip():
+            failures.append("empty Swedish text: %s" % key)
+        if key not in used:
+            warnings.append("unused key: %s" % key)
+
+    for loc in locales:
+        cat, _ = load(loc)
+        missing = [k for k in sv if wanted(k) and (k not in cat or not cat.get(k, "").strip())]
+        stale = [k for k in cat if k not in sv]
+        for k in missing[:200]:
+            failures.append("%s: missing translation for %s" % (loc, k))
+        for k in stale[:50]:
+            warnings.append("%s: key not in the Swedish catalog: %s" % (loc, k))
+        checked = 0
+        for key, src in sv.items():
+            if not wanted(key) or key not in cat or not cat[key].strip():
                 continue
-            if not v.strip():
-                empties.append(f"{g}: empty value for {k[:70]!r}")
-            if tags(k) != tags(v):
-                markup.append(f"{g}: markup differs for {k[:70]!r}\n      src {tags(k)}\n      got {tags(v)}")
-            elif item.get("code") and code_tokens(k) != code_tokens(v):
-                diff = (code_tokens(k) - code_tokens(v)) + (code_tokens(v) - code_tokens(k))
-                code.append(f"{g}: code changed in {k[:60]!r}: {dict(diff)}")
+            out = cat[key]
+            checked += 1
+            if markup(src) != markup(out):
+                failures.append("%s: markup differs in %s" % (loc, key))
+            if sorted(PH.findall(src)) != sorted(PH.findall(out)):
+                failures.append("%s: placeholder differs in %s (%s vs %s)"
+                                % (loc, key, PH.findall(src), PH.findall(out)))
+            if src != out:
+                code_src, code_out = code_tokens(src), code_tokens(out)
+                if code_src != code_out:
+                    only = sorted(code_src - code_out)
+                    if only:
+                        failures.append("%s: code token changed in %s: %s" % (loc, key, only[:3]))
+            elif src not in ident and re.search(r"[ÅÄÖåäö]", src) and len(src.split()) >= 3:
+                warnings.append("%s: identical to the Swedish text: %s" % (loc, key))
+        if not args.quiet:
+            print("%s: %d/%d strings translated (%.1f%%)"
+                  % (loc, checked, len([k for k in sv if wanted(k)]),
+                     100.0 * checked / max(1, len([k for k in sv if wanted(k)]))))
 
-    extra = [k for k in catalog if k not in set().union(*[set(keys) for _, _, keys in work])]
-    if extra and not args.group:
-        print(f"note: {len(extra)} translated strings no longer in the sources (stale, e.g. {extra[0][:60]!r})")
+    # Swedish literals left inside the JavaScript, outside the catalogs
+    page = open(os.path.join(ROOT, "llm-kurs.html"), encoding="utf-8").read()
+    blocks = re.findall(r"<script>(.*?)</script>", page, re.S)
+    js = "\n".join(b for b in blocks
+                   if "I18N_DATA" not in b and "window.COURSE" not in b and "i18next" not in b)
+    leftovers = [m for m in re.findall(r"'([^'\\\n]{6,})'", js)
+                 if re.search(r"[ÅÄÖåäö]", m) and m not in ident]
+    for lit in leftovers[:20]:
+        warnings.append("Swedish literal left in JS: %r" % lit)
 
-    for bucket in (errors, empties, markup, code):
-        for line in bucket:
-            print(("ERROR " if bucket is not code else "WARN  ") + line)
-    pct = (done / total * 100) if total else 100.0
-    print(f"\n{args.lang}: {done}/{total} strings translated ({pct:.1f}%)")
-    hard = errors or empties or markup
-    if args.verbose:
-        print(f"files: {sorted({origin[k] for k in catalog})}")
-    if hard:
-        print(f"FAILED: {len(errors)} coverage, {len(empties)} empty, {len(markup)} markup problem(s)")
-        return 1
-    print("OK" + (f" ({len(code)} code warning(s))" if code else ""))
-    return 0
+    for w in warnings:
+        print("WARN", w)
+    for f in failures:
+        print("FAIL", f)
+    total = len([k for k in sv if wanted(k)])
+    print("%s (%d key(s), %d warning(s), %d failure(s))"
+          % ("OK" if not failures else "FAILED", total, len(warnings), len(failures)))
+    return 1 if failures else 0
 
 
 if __name__ == "__main__":

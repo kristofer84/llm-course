@@ -12,17 +12,17 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
   function heat(seed,hi){const d=H('div','heat',null,view);d.style.gridTemplateColumns='70px repeat(20,1fr)';const R=rng(seed);tk.forEach((t,i)=>heatRow(d,t,Array.from({length:20},()=>R()*2-1),'var(--a)',i===hi));}
   function cap(t){const p=H('p',null,t,view);p.style.cssText='font-family:var(--mono);font-size:13px;color:var(--ink2);margin:10px 0 0';}
   const st=[
-   [L.t('Text'),2,L.t('Allt börjar som en vanlig textsträng. Modellen kan inte läsa den i den här formen.'),()=>{chips(['Katten satt på'],'');cap(L.t('en sträng, 14 tecken'));}],
-   [L.t('Tokens'),2,L.t('Tokenizern delar texten i bitar ur en fast vokabulär och ger varje bit ett id. Först läggs en specialtoken som markerar början.'),()=>{chips(tk,'t');cap(L.t('ids [5]   fem heltal mellan 0 och 128 255'));}],
-   [L.t('Embedding'),2,L.t('Varje id slår upp en rad i embedding-tabellen. Nu är varje token en vektor med 4096 tal. Det här är startvärdet i residual stream.'),()=>{heat(11,-1);cap(L.t('x [5, 4096]   (20 av 4096 dimensioner visas)'));}],
-   [L.t('32 block'),3,L.t('Varje block låter positionerna läsa från varandra (attention) och bearbetar sedan varje position för sig (MLP). Resultaten adderas till strömmen. Efter 32 block bär sista raden allt som behövs för att gissa nästa token.'),()=>{heat(29,4);cap(L.t('x [5, 4096]   samma shape, nytt innehåll. Sista raden används.'));}],
-   [L.t('Logits'),4,L.t('Sista radens vektor multipliceras med LM head. Resultatet är ett tal per token i vokabulären: ju högre, desto troligare fortsättning.'),()=>{cand.forEach((c,i)=>hbar(view,c,lg[i]/5.5,L.num(lg[i],1),'var(--a)'));cap(L.t('logits [128256]   de fem högsta visas'));}],
-   [L.t('Sampling'),4,L.t('Softmax gör om logits till sannolikheter, och en token dras. Här blev det ” mattan”.'),()=>{cand.forEach((c,i)=>hbar(view,c,pr[i],L.num(pr[i]*100,0)+' %','var(--tok)',i>0));cap(L.t('ett id: token för ” mattan”'));}],
-   [L.t('Nästa varv'),6,L.t('Den nya token läggs till och allt körs igen. Men bara den nya positionen behöver räknas: keys och values för de fem första ligger kvar i KV-cachen. Så växer svaret, en token per varv.'),()=>{chips(tk.concat([' mattan']),'t',5);cap(L.t('1 ny position räknas, 5 läses ur KV-cachen'));}]];
+   [L.t('Text'),2,L.t('j3.1'),()=>{chips([L.t('j3.2')],'');cap(L.t('j3.3'));}],
+   [L.t('Tokens'),2,L.t('j3.4'),()=>{chips(tk,'t');cap(L.t('ids [5]   fem heltal mellan 0 och 128 255'));}],
+   [L.t('Embedding'),2,L.t('j3.5'),()=>{heat(11,-1);cap(L.t('x [5, 4096]   (20 av 4096 dimensioner visas)'));}],
+   [L.t('32 block'),3,L.t('j3.6'),()=>{heat(29,4);cap(L.t('j3.7'));}],
+   [L.t('Logits'),4,L.t('j3.8'),()=>{cand.forEach((c,i)=>hbar(view,c,lg[i]/5.5,L.num(lg[i],1),'var(--a)'));cap(L.t('j3.9'));}],
+   [L.t('Sampling'),4,L.t('j3.10'),()=>{cand.forEach((c,i)=>hbar(view,c,pr[i],L.num(pr[i]*100,0)+' %','var(--tok)',i>0));cap(L.t('j3.11'));}],
+   [L.t('j3.12'),6,L.t('j3.13'),()=>{chips(tk.concat([' mattan']),'t',5);cap(L.t('j3.14'));}]];
   function draw(){clear(box);st.forEach((s,i)=>{const b=H('button','btn'+(i===cur?' on':''),L.t('{{n}}. {{title}}',{n:i+1,title:s[0]}),box);b.addEventListener('click',()=>{cur=i;draw();});});
     clear(view);st[cur][3]();clear(tx);H('h3',null,L.t('{{n}}. {{title}}',{n:cur+1,title:st[cur][0]}),tx).style.marginTop='0';H('p',null,st[cur][2],tx);
-    const g=H('button','btn',L.t('Fördjupning: modul {{n}}, {{mod}}',{n:st[cur][1],mod:L.t(MODS[st[cur][1]])}),tx);g.dataset.gomod=st[cur][1];
-    if(cur<st.length-1){const n=H('button','btn',L.t('Nästa steg'),tx);n.style.marginLeft='8px';n.addEventListener('click',()=>{cur++;draw();});}}
+    const g=H('button','btn',L.t('j3.15',{n:st[cur][1],mod:L.t(MODS[st[cur][1]])}),tx);g.dataset.gomod=st[cur][1];
+    if(cur<st.length-1){const n=H('button','btn',L.t('j3.16'),tx);n.style.marginLeft='8px';n.addEventListener('click',()=>{cur++;draw();});}}
   draw();
 })();
 (function dot(){
@@ -35,8 +35,8 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
     S('line',{x1:cx,y1:cy,x2:cx+a[0]*d*sc,y2:cy-a[1]*d*sc,stroke:d>=0?'var(--a)':'var(--neg)','stroke-width':7,'stroke-linecap':'round',style:'opacity:.55'},svg);
     arrow(a[0],a[1],'var(--tok)',3,'a');arrow(b[0],b[1],'var(--kv)',3,'b');
     let th=Math.abs((+$('dp-b').value)-(+$('dp-a').value))%360;if(th>180)th=360-th;
-    const w=d>0.15?L.t('pekar delvis åt samma håll'):(d<-0.15?L.t('pekar åt motsatta håll'):L.t('är nästan vinkelräta: b säger inget om a'));
-    $('dp-out').innerHTML=L.t('a · b = <b>{{dot}}</b>  (|a| = 1, |b| = {{b}}, vinkel {{deg}}°). Vektorerna {{w}}. Det tjocka strecket är b:s skugga på a.',{dot:L.num(d,2),b:L.num(bl,1),deg:Math.round(th),w:w});}
+    const w=d>0.15?L.t('j3.17'):(d<-0.15?L.t('j3.18'):L.t('j3.19'));
+    $('dp-out').innerHTML=L.t('j3.20',{dot:L.num(d,2),b:L.num(bl,1),deg:Math.round(th),w:w});}
   ['dp-a','dp-b','dp-l'].forEach(id=>$(id).addEventListener('input',draw));draw();
 })();
 (function matvec(){
@@ -64,8 +64,8 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
       kn.forEach(k=>S('circle',{cx:X(k),cy:Y(f(k)),r:4,fill:'var(--a)'},svg));}
     else{let sx=0,sy=0,sxx=0,sxy=0,m=0;for(let x=-3;x<=3.001;x+=0.05){sx+=x;sy+=f(x);sxx+=x*x;sxy+=x*f(x);m++;}const b=(m*sxy-sx*sy)/(m*sxx-sx*sx),a=(sy-b*sx)/m;g=x=>a+b*x;}
     let d2='',err=0,m=0;for(let i=0;i<=120;i++){const x=-3+i*0.05;d2+=(i?'L':'M')+X(x).toFixed(1)+' '+Y(g(x)).toFixed(1);err+=Math.abs(g(x)-f(x));m++;}
-    S('path',{d:d2,fill:'none',stroke:'var(--a)','stroke-width':2.5},svg);txt(svg,44,32,L.t('streckad: kurvan som ska läras'),'s');txt(svg,44,50,L.t('orange: vad nätet kan uttrycka'),'s ta');
-    $('nl-out').innerHTML=relu?L.t('Med {{n}} ReLU-neuroner får kurvan {{n}} raka bitar. Medelfel: <b>{{err}}</b>. Fler neuroner ger fler knäckar och bättre passform.',{n:n,err:L.num(err/m,2)}):L.t('Utan aktiveringsfunktion blir summan av alla neuroner en enda rät linje, oavsett om det är {{n}} eller en miljon. Medelfel: <b>{{err}}</b>.',{n:n,err:L.num(err/m,2)});}
+    S('path',{d:d2,fill:'none',stroke:'var(--a)','stroke-width':2.5},svg);txt(svg,44,32,L.t('j3.21'),'s');txt(svg,44,50,L.t('j3.22'),'s ta');
+    $('nl-out').innerHTML=relu?L.t('j3.23',{n:n,err:L.num(err/m,2)}):L.t('j3.24',{n:n,err:L.num(err/m,2)});}
   $('nl-n').addEventListener('input',draw);
   $('nl-relu').addEventListener('click',()=>{relu=true;$('nl-relu').classList.add('on');$('nl-lin').classList.remove('on');draw();});
   $('nl-lin').addEventListener('click',()=>{relu=false;$('nl-lin').classList.add('on');$('nl-relu').classList.remove('on');draw();});draw();
@@ -75,7 +75,7 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
   function draw(){clear(svg);const c=+$('sm-c').value,s=+$('sm-s').value;$('sm-cv').textContent=String(c);$('sm-sv').textContent=s.toFixed(1);
     const zz=ins.map(r=>s*(+r.value)+c);const mx=Math.max(...zz);const e=zz.map(v=>Math.exp(v-mx));const su=e.reduce((a,b)=>a+b,0);const p=e.map(v=>v/su);
     zz.forEach((v,i)=>{const y=14+i*50;txt(svg,100,y+22,nm[i]+':  '+L.num(v,1),'m','end');S('rect',{x:110,y:y+4,width:330,height:26,rx:3,class:'bg'},svg);S('rect',{x:110,y:y+4,width:Math.max(1,p[i]*330),height:26,rx:3,fill:'var(--tok)',style:'opacity:.85'},svg);txt(svg,448,y+22,L.num(p[i]*100,1)+' %','m');});
-    const parts=[L.t('Summan är alltid 100 %.')];if(c!==0)parts.push(L.t('Du har lagt till {{c}} på alla logits: sannolikheterna påverkas inte.',{c:c}));if(s>1.05)parts.push(L.t('Skalning över 1 förstorar skillnaderna: fördelningen blir skarpare (som låg temperature).'));if(s<0.95)parts.push(L.t('Skalning under 1 krymper skillnaderna: fördelningen blir plattare (som hög temperature).'));
+    const parts=[L.t('j3.25')];if(c!==0)parts.push(L.t('j3.26',{c:c}));if(s>1.05)parts.push(L.t('j3.27'));if(s<0.95)parts.push(L.t('j3.28'));
     $('sm-out').textContent=parts.join(' ')+' ';}
   $('sm-c').addEventListener('input',draw);$('sm-s').addEventListener('input',draw);draw();
 })();
@@ -89,7 +89,7 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
         if(mode==='moe')txt(svg,bx+33,y+84,L.t('expert {{n}}',{n:e+1}),'s','middle').setAttribute('style','font-size:10.5px');}
       line(svg,374,y+35,394,y+35,'ln',true);const ar=rng(5000+tok*331+lw*17+(mode==='moe'?7:0));
       for(let i=0;i<8;i++){const v=Math.pow(ar(),1.6);S('rect',{x:400+i*18,y:y+20,width:15,height:30,rx:3,fill:'var(--a)',style:'opacity:'+(0.08+v*0.92).toFixed(2)},svg);}}
-    $('wa-out').innerHTML=mode==='dense'?L.t('Tät: alla vikter används för ”{{tok}}”. Byt token: de gröna vikterna står helt still, bara de orange aktiveringarna ändras.',{tok:names[tok]}):L.t('MoE: routern väljer 2 av 4 experter per lager för ”{{tok}}”. Byt token och se att andra viktblock används. Vikterna själva är fortfarande desamma.',{tok:names[tok]});}
+    $('wa-out').innerHTML=mode==='dense'?L.t('j3.29',{tok:names[tok]}):L.t('j3.30',{tok:names[tok]});}
   $('wa-dense').addEventListener('click',()=>{mode='dense';$('wa-dense').classList.add('on');$('wa-moe').classList.remove('on');draw();});
   $('wa-moe').addEventListener('click',()=>{mode='moe';$('wa-moe').classList.add('on');$('wa-dense').classList.remove('on');draw();});
   document.querySelectorAll('[data-wat]').forEach(b=>b.addEventListener('click',()=>{tok=+b.dataset.wat;document.querySelectorAll('[data-wat]').forEach(x=>x.classList.toggle('on',x===b));draw();}));draw();
@@ -99,12 +99,12 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
   const s=k.map(r=>r[0]*q[0]+r[1]*q[1]),sd=s.map(x=>x/Math.SQRT2),ex=sd.map(Math.exp),su=ex.reduce((a,b)=>a+b,0),p=ex.map(x=>x/su),pv=v.map((r,i)=>[r[0]*p[i],r[1]*p[i]]),out=[pv.reduce((a,r)=>a+r[0],0),pv.reduce((a,r)=>a+r[1],0)];
   const f2=x=>{const r=String(Math.round(x*100)/100);return L.num(x,(r.split('.')[1]||'').length);};const vec=a=>'['+a.map(f2).join('; ')+']';let st=0;
   const steps=[
-   [L.t('Utgångsläge'),L.t('Varje token har en key och en value, framräknade ur dess vektor med Wk och Wv. Den token som ska uppdateras, ”den”, har också en query: q = {{q}}. Query beskriver vad ”den” letar efter.',{q:vec(q)})],
-   [L.t('Skalärprodukt: q · k'),L.t('Query jämförs med varje key. För ”Katten”: 1,5·2 + 0,5·0 = 3,0. Högst poäng får den key som pekar mest åt samma håll som q.')],
-   [L.t('Dela med √d_h'),L.t('Poängen delas med √2 ≈ 1,41 (i Llama √128 ≈ 11,3). Utan det skulle skalärprodukter i många dimensioner bli så stora att softmax lägger all vikt på en enda token.')],
-   [L.t('Softmax'),L.t('exp av varje poäng, delat med summan. Nu är poängen vikter som summerar till 1: ”den” ska hämta {{p}} % från ”Katten”.',{p:L.num(p[0]*100,0)})],
+   [L.t('j3.31'),L.t('j3.32',{q:vec(q)})],
+   [L.t('j3.33'),L.t('j3.34')],
+   [L.t('Dela med √d_h'),L.t('j3.35')],
+   [L.t('Softmax'),L.t('j3.36',{p:L.num(p[0]*100,0)})],
    [L.t('Vikta values'),L.t('Varje value multipliceras med sin vikt.')],
-   [L.t('Summera'),L.t('Resultatet är summan: {{out}}. Det ligger närmast ”Katten”s value [1, 0]. Den här vektorn går genom Wo och adderas till ”den”s rad i residual stream. Informationen om katten har flyttat till en ny position.',{out:vec(out)})]];
+   [L.t('Summera'),L.t('j3.37',{out:vec(out)})]];
   function draw(){const el=$('ah-tbl');let h='<table class="numtbl"><tr><th>'+L.t('token')+'</th><th>'+L.t('key k')+'</th><th>'+L.t('q · k')+'</th><th>'+L.t('÷ √2')+'</th><th>'+L.t('softmax P')+'</th><th>'+L.t('value v')+'</th><th>'+L.t('P · v')+'</th></tr>';
     const cls=(c)=>st===c?' class="hi"':(st<c?' class="dim"':'');const val=(c,t)=>st>=c?t:'·';
     T.forEach((t,i)=>{h+='<tr><th>'+t+'</th><td'+(st===0?' class="hi"':'')+'>'+vec(k[i])+'</td><td'+cls(1)+'>'+val(1,L.num(s[i],2))+'</td><td'+cls(2)+'>'+val(2,L.num(sd[i],2))+'</td><td'+cls(3)+'>'+val(3,L.num(p[i],2))+'</td><td'+(st===0||st===4?' class="hi"':'')+'>'+vec(v[i])+'</td><td'+cls(4)+'>'+val(4,vec(pv[i]))+'</td></tr>';});
@@ -113,7 +113,7 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
   $('ah-next').addEventListener('click',()=>{if(st<steps.length-1){st++;draw();}});$('ah-prev').addEventListener('click',()=>{if(st>0){st--;draw();}});draw();
 })();
 (function mini(){
-  const V=['katten','satt','på','mattan','och','sov','en','hund','.','den','var','trött'],d=16,NH=2,dh=8,NL=2,dff=32;const R=rng(20261);
+  const V=['katten','satt','på','mattan','och','sov','en','hund','.','den','var',L.t('j3.38')],d=16,NH=2,dh=8,NL=2,dff=32;const R=rng(20261);
   const M=(r,c,s)=>Array.from({length:r},()=>Array.from({length:c},()=>(R()*2-1)*s));
   const E=M(V.length,d,1),U=M(d,V.length,0.9);const Ls=Array.from({length:NL},()=>({q:M(d,d,.6),k:M(d,d,.6),v:M(d,d,.6),o:M(d,d,.5),a:M(d,dff,.5),b:M(dff,d,.5)}));
   const mv=(x,W)=>{const o=new Array(W[0].length).fill(0);for(let i=0;i<x.length;i++){const xi=x[i],w=W[i];for(let j=0;j<o.length;j++)o[j]+=xi*w[j];}return o;};
@@ -140,7 +140,7 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
     log.forEach(r=>{a+=r[2];b+=r[3];h+='<tr><th>'+r[0]+'</th><td>'+r[1]+'</td><td>'+r[2]+'</td><td class="hi">'+r[3]+'</td><td>'+(r[4]===0?'0':r[4].toExponential(1))+'</td></tr>';});
     h+='<tr><th>'+L.t('totalt')+'</th><td></td><td>'+a+'</td><td class="hi">'+b+'</td><td></td></tr>';$('mm-tbl').innerHTML=h;
     const ht=$('mm-heat');clear(ht);cache[0].K.forEach((k,p)=>heatRow(ht,p+' '+V[seq[p]],k.slice(0,8).map(x=>x/2.5),'var(--kv)',p===seq.length-1&&p>2));
-    $('mm-out').innerHTML=seq.length>=10?L.t('Max längd nådd. Utan cache räknades <b>{{a}}</b> rader genom lagren, med cache <b>{{b}}</b>. Samma logits.',{a:a,b:b}):L.t('”Rader” är positioner som körs genom ett lager. Utan cache växer arbetet med sekvensens längd i varje steg, med cache är det 2 rader (en per lager).');
+    $('mm-out').innerHTML=seq.length>=10?L.t('j3.39',{a:a,b:b}):L.t('j3.40');
     $('mm-step').disabled=seq.length>=10;}
   $('mm-step').addEventListener('click',step);$('mm-reset').addEventListener('click',reset);reset();
 })();
@@ -151,13 +151,13 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
     const W=m.P*prec,perGpu=72e9-5e9,pool=g*perGpu-W,kvTok=2*m.L*m.kv*128*2,kvSeq=kvTok*c,maxS=Math.max(0,Math.floor(pool/kvSeq)),fits=pool>0;
     const act=Math.min(u,maxS);const bytes=W+act*kvSeq,t=Math.max(bytes/(3.35e12*g),act*2*m.P/(989e12*g));
     const row=(a,b,ok)=>'<tr><td>'+a+'</td><td class="n"'+(ok===false?' style="color:var(--neg)"':'')+'>'+b+'</td></tr>';
-    let h=row(L.t('1. Vikter'),L.t('{{gb}} GB på {{g}} × 80 GB',{gb:L.num(W/1e9,1),g:g})+(fits?'':L.t('   får inte plats')),fits);
+    let h=row(L.t('1. Vikter'),L.t('j3.41',{gb:L.num(W/1e9,1),g:g})+(fits?'':L.t('j3.42')),fits);
     if(fits){h+=row(L.t('2. KV-pool'),L.t('{{gb}} GB',{gb:L.num(pool/1e9,0)}))+row('   '+L.t('KV per konversation'),L.t('{{gb}} GB',{gb:L.num(kvSeq/1e9,2)}))+row(L.t('3. Ryms samtidigt'),L.t('{{n}} konversationer',{n:L.num(maxS,0)}),maxS>=u)
-      +row(L.t('4. Ett decode-steg (ITL)'),act?L.t('{{ms}} ms',{ms:L.num(t*1000,1)}):'–')+row('   '+L.t('Per användare'),act?L.t('{{n}} tokens/s',{n:Math.round(1/t)}):'–')+row('   '+L.t('Totalt'),act?L.t('{{n}} tokens/s',{n:L.num(Math.round(act/t),0)}):'–');}
+      +row(L.t('4. Ett decode-steg (ITL)'),act?L.t('{{ms}} ms',{ms:L.num(t*1000,1)}):'–')+row('   '+L.t('j3.43'),act?L.t('{{n}} tokens/s',{n:Math.round(1/t)}):'–')+row('   '+L.t('Totalt'),act?L.t('{{n}} tokens/s',{n:L.num(Math.round(act/t),0)}):'–');}
     $('cp-tbl').innerHTML=h;let msg;
-    if(!fits)msg=L.t('<b>Vikterna får inte plats.</b> Kvantisera eller lägg till GPU:er.');
-    else if(maxS<u)msg=L.t('<b>KV-minnet tar slut först.</b> Bara {{max}} av {{u}} användare ryms. Resten hamnar i kö eller preemptas. Kortare kontext, fp8 för KV, fler GPU:er eller fler repliker.',{max:maxS,u:u});
-    else{const kvShare=act*kvSeq/bytes;msg=L.t('Alla {{u}} ryms.',{u:u})+' '+(kvShare>0.5?L.t('Det mesta av varje steg går åt till att läsa KV-cache ({{p}} %), så ITL växer med antalet användare och kontextlängden.',{p:L.num(kvShare*100,0)}):L.t('Varje steg domineras av att läsa vikterna ({{p}} %), så fler användare är nästan gratis.',{p:L.num((1-kvShare)*100,0)}));}
+    if(!fits)msg=L.t('j3.44');
+    else if(maxS<u)msg=L.t('j3.45',{max:maxS,u:u});
+    else{const kvShare=act*kvSeq/bytes;msg=L.t('Alla {{u}} ryms.',{u:u})+' '+(kvShare>0.5?L.t('j3.46',{p:L.num(kvShare*100,0)}):L.t('j3.47',{p:L.num((1-kvShare)*100,0)}));}
     $('cp-out').innerHTML=msg;}
   ['cp-model','cp-prec','cp-gpus','cp-u','cp-c'].forEach(id=>$(id).addEventListener('input',draw));draw();
 })();

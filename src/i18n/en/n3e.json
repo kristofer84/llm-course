@@ -1,0 +1,10 @@
+{
+ "n3e.vad-ett-lager-innehaller.1": "What a layer contains: nine parts",
+ "n3e.vad-ett-lager-innehaller.2": "A layer in Llama consists of just nine things: seven large tables of numbers (weight matrices) and two small lists. Everything else that happens in the layer is fixed arithmetic with no learned numbers. Click a part to see it in the diagram.",
+ "n3e.sa-blir-det-8-miljarder.1": "How it becomes 8 billion parameters",
+ "n3e.sa-blir-det-8-miljarder.2": "“8 billion parameters” is simply a count of every number in all the tables together. Most of it sits in the nine parts times 32 layers. The rest is the vocabulary at the start (embedding) and at the end (LM head).",
+ "n3e.sa-blir-det-8-miljarder.3": "Previous",
+ "n3e.sa-blir-det-8-miljarder.4": "Next step",
+ "n3e.vad-ett-lager-innehaller.arialabel": "The layer’s nine weights drawn to scale",
+ "n3e.sa-blir-det-8-miljarder.arialabel": "The parameters add up step by step"
+}
