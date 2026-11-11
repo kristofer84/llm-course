@@ -36,7 +36,7 @@
  "n8.mat-med-metrics.27": "vllm:kv_cache_usage_perc",
  "n8.mat-med-metrics.28": "Andel av KV-poolen som används (1 = full)",
  "n8.mat-med-metrics.29": "PagedAttention-block",
- "n8.mat-med-metrics.30": "vllm:prefix_cache_queries_total / _hits_total",
+ "n8.mat-med-metrics.30": "vllm:prefix_cache_queries_total<br>/ _hits_total",
  "n8.mat-med-metrics.31": "Efterfrågade respektive träffade tokens",
  "n8.mat-med-metrics.32": "Prefix caching",
  "n8.mat-med-metrics.33": "vllm:num_preemptions_total",
