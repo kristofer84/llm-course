@@ -12,8 +12,8 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
   function heat(seed,hi){const d=H('div','heat',null,view);d.style.gridTemplateColumns='70px repeat(20,1fr)';const R=rng(seed);tk.forEach((t,i)=>heatRow(d,t,Array.from({length:20},()=>R()*2-1),'var(--a)',i===hi));}
   function cap(t){const p=H('p',null,t,view);p.style.cssText='font-family:var(--mono);font-size:13px;color:var(--ink2);margin:10px 0 0';}
   const st=[
-   [L.t('Text'),2,L.t('j3.1'),()=>{chips([L.t('j3.2')],'');cap(L.t('j3.3'));}],
-   [L.t('Tokens'),2,L.t('j3.4'),()=>{chips(tk,'t');cap(L.t('j3.48'));}],
+   [L.t('build.stage.0'),2,L.t('j3.1'),()=>{chips([L.t('j3.2')],'');cap(L.t('j3.3'));}],
+   [L.t('build.stage.1'),2,L.t('j3.4'),()=>{chips(tk,'t');cap(L.t('j3.48'));}],
    [L.t('Embedding'),2,L.t('j3.5'),()=>{heat(11,-1);cap(L.t('j3.49'));}],
    [L.t('j3.50'),3,L.t('j3.6'),()=>{heat(29,4);cap(L.t('j3.7'));}],
    [L.t('Logits'),4,L.t('j3.8'),()=>{cand.forEach((c,i)=>hbar(view,c,lg[i]/5.5,L.num(lg[i],1),'var(--a)'));cap(L.t('j3.9'));}],
@@ -132,7 +132,7 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
   let seq,cache,pending,log,SR;
   function compare(newIds,start,label){const c=run(newIds,start,cache);const f=run(seq,0,newCache());let dm=0;c.logits.forEach((v,i)=>{dm=Math.max(dm,Math.abs(v-f.logits[i]));});
     log.push([label,V[seq[seq.length-1]],f.rows,c.rows,dm]);pending=c.logits;}
-  function reset(){seq=[0,1,2];cache=newCache();log=[];SR=rng(99);compare(seq,0,L.t('prefill'));draw();}
+  function reset(){seq=[0,1,2];cache=newCache();log=[];SR=rng(99);compare(seq,0,L.t('p5.latensmatt.3'));draw();}
   function step(){if(seq.length>=10)return;const mx=Math.max(...pending);const e=pending.map(v=>Math.exp((v-mx)*1.5));const su=e.reduce((a,b)=>a+b,0);let r=SR()*su,id=0;for(;id<e.length;id++){r-=e[id];if(r<=0)break;}id=Math.min(id,e.length-1);
     seq.push(id);compare([id],seq.length-1,L.t('decode {{n}}',{n:seq.length-3}));draw();}
   function draw(){const sq=$('mm-seq');clear(sq);seq.forEach((id,i)=>H('span','chip '+(i<3?'t':(i===seq.length-1?'new':'ok')),V[id],sq));

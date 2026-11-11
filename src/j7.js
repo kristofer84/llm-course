@@ -21,7 +21,7 @@
   function step(b){const by=16.06e9+b*1024*131072,fl=b*2*8.03e9;const t=Math.max(by/3.35e12,fl/989e12);return{t,util:(fl/989e12)/t};}
   function draw(){clear(svg);const s=step(n);
     S('rect',{x:16,y:40,width:150,height:220,rx:10,class:'bg'},svg);txt(svg,91,32,L.t('j7.9'),'s','middle');
-    rect(svg,30,60,122,110,'bw',6);txt(svg,91,110,L.t('j7.10'),'','middle');txt(svg,91,128,L.t('16 GB'),'m','middle');
+    rect(svg,30,60,122,110,'bw',6);txt(svg,91,110,L.t('j7.10'),'','middle');txt(svg,91,128,L.t('n6.vad-ligger-i-gpu-minnet.22'),'m','middle');
     const kv=Math.min(70,n*1.1);rect(svg,30,240-kv,122,Math.max(4,kv),'bkv',6);if(kv>20)txt(svg,91,245-kv/2,L.t('j7.11'),'s','middle');
     S('rect',{x:166,y:40,width:340,height:220,rx:10,fill:'none',class:'lnf'},svg);txt(svg,336,32,L.t('j7.2'),'s','middle');
     S('rect',{x:160,y:136,width:16,height:28,fill:'var(--surface)'},svg);line(svg,166,40,166,136,'ln');line(svg,166,164,166,260,'ln');txt(svg,168,184,L.t('j7.3'),'s');
