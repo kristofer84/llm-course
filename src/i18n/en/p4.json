@@ -41,7 +41,7 @@
  "p4.testa-dig-sjalv-logits.7": "Batch composition affects kernel selection and summation order. Floating-point addition is not associative, so logits can differ in the last decimal place and flip a close argmax.",
  "p4.traning-next-token-loss.1": "Training: predict the next token",
  "p4.traning-next-token-loss.2": "During training the target for each position is simply the next token in the text. Inputs and targets are the same sequence, shifted one step.",
- "p4.traning-next-token-loss.3": "logits  = model(ids)            [B, T, V]\ntargets = ids shifted one step  [B, T]\nloss    = −mean log softmax(logits)[target]",
+ "p4.traning-next-token-loss.3": "logits  = model(ids)          [B, T, V]\ntargets = ids shifted one step  [B, T]\nloss    = −mean log softmax(logits)[target]",
  "p4.traning-next-token-loss.4": "Thanks to the causal mask, all T predictions are computed in <b>a single</b> forward pass. That is why training is parallel across the sequence while generation is serial: at generation time the next token does not exist until it has been sampled.",
  "p4.traning-next-token-loss.5": "input",
  "p4.traning-next-token-loss.6": "target",

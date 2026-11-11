@@ -29,7 +29,7 @@
  "n3b.attention-och-mlp-olika-jobb.3": "<b>Attention moves information between rows.</b> Each token fetches a weighted mix from earlier tokens. That is how “den” can learn something about “Katten”.",
  "n3b.attention-och-mlp-olika-jobb.4": "<b>The MLP processes one row at a time.</b> It mixes the dimensions within the row, but can never see other rows. Every row goes through the same MLP weights, one at a time.",
  "n3b.attention-och-mlp-olika-jobb.5": "A detail that is easy to miss: even inside attention, the weight matrices Wq, Wk, Wv and Wo work row by row. The only step that crosses rows is P · V.",
- "n3b.attention-och-mlp-olika-jobb.6": "attention: mixes along T (between tokens) MLP: mixes along d (within a token)",
+ "n3b.attention-och-mlp-olika-jobb.6": "attention: mixes along T     (between tokens)\nMLP:       mixes along d     (within a token)",
  "n3b.attention-och-mlp-olika-jobb.7": "Attention",
  "n3b.attention-och-mlp-olika-jobb.8": "MLP",
  "n3b.attention-och-mlp-olika-jobb.9": "Click a row to select a token.",
