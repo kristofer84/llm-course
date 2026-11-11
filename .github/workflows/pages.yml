@@ -28,7 +28,19 @@ jobs:
       - name: Install Playwright
         run: |
           pip install -r tests/requirements.txt
-          python -m playwright install --with-deps chromium
+          # The runner's apt mirror is occasionally unreachable ("Failed to fetch
+          # xfonts-scalable ... Temporary failure resolving"); retry instead of
+          # failing the whole job on a mirror hiccup.
+          for attempt in 1 2 3; do
+            if python -m playwright install --with-deps chromium; then
+              exit 0
+            fi
+            echo "playwright install failed (attempt $attempt), retrying in 15s"
+            sudo apt-get update || true
+            sleep 15
+          done
+          echo "::warning::playwright install failed three times, trying browser-only"
+          python -m playwright install chromium
 
       - name: Build course HTML
         working-directory: src
