@@ -9,7 +9,7 @@
  "build.minimap.label": "the inference engine around the model",
  "build.minimap.aria": "Where the module sits in the flow",
  "doc.title": "Inside an LLM – from prompt to token",
- "doc.description": "An interactive bilingual course connecting LLM foundations and tensor operations to training, quantization, inference, evaluation and tool-enabled systems. Worked examples, visual experiments and practical serving exercises in one offline HTML file.",
+ "doc.description": "An interactive multilingual course connecting LLM foundations and tensor operations to training, quantization, inference, evaluation and tool-enabled systems. Worked examples, visual experiments and practical serving exercises in one offline HTML file.",
  "build.stage.0": "Text",
  "build.stage.1": "Tokens",
  "build.stage.2": "Embedding",

@@ -1,20 +1,12 @@
-"""Acceptance test for the dual-language build.
+"""Multilingual rendering, switching and glossary acceptance checks.
 
-    python3 tests/i18n.py            # build first: (cd src && python3 build.py)
-
-Checks that
-  1. every Swedish key has an English translation (static, from the catalogs),
-  2. the language switch exists and reflects the active language,
-  3. <html lang>, <title> and the top bar follow the selected language,
-  4. English mode shows no Swedish — neither on load nor after clicking the
-     interactive parts of every slide,
-  5. switching language keeps the slide and remembers the choice.
-
-Point 4 is a rendering diff per key: the same key is collected in both
-languages, and if the English text is identical to the Swedish one *and* looks
-Swedish, the translation is missing. Values listed as identity data in
-``src/i18n/en/data.json`` (sample tokens like ``katt``) are identical on
-purpose and are accepted.
+Build first: (cd src && python3 build.py), then python3 tests/i18n.py.
+Every shipped locale is rendered slide by slide with interactive controls.
+Check catalog coverage, translated keyed DOM, document metadata, switch order,
+locale numbers, glossary collation, browser detection and persisted/hash-safe
+switching. Swedish sample tokens are deliberate data (en/data.json), not leaks.
+German shares umlauts with Swedish, so runtime leak checks compare catalog
+values rather than treating German letters as evidence of Swedish.
 """
 import asyncio
 import json
@@ -24,7 +16,7 @@ from pathlib import Path
 
 from playwright.async_api import async_playwright
 
-from _common import HTML, prepare
+from _common import HTML, LOCALES, prepare
 
 ROOT = Path(__file__).resolve().parent.parent
 I18N = ROOT / "src" / "i18n"
@@ -68,9 +60,9 @@ def identity_values():
     return {k for k, v in d.items() if k == v}
 
 
-def coverage(sv, en):
-    missing = sorted(k for k in sv if k not in en or not str(en[k]).strip())
-    check(not missing, f"English catalog covers {len(sv)} keys"
+def coverage(sv, target, locale):
+    missing = sorted(k for k in sv if k not in target or not str(target[k]).strip())
+    check(not missing, f"{locale} catalog covers {len(sv)} keys"
           + (f" — missing {len(missing)}: {missing[:3]}" if missing else ""))
 
 
@@ -143,12 +135,15 @@ async def render_pass(browser, lang, max_clicks=8):
             await page.wait_for_timeout(8)
             collect(await page.evaluate(COLLECT, ".slide.active"))
         slides.append(title.strip())
-    if lang == 'en':
+    if lang != 'sv':
         missing = await page.evaluate('L.missing')
         ident = identity_values()
-        suspicious = [value for value in missing if swedish(value) and value not in ident]
-        check(not suspicious, f'no unresolved Swedish runtime lookups ({suspicious[:5]})')
-        print(f'Runtime lookup diagnostics: {len(missing)} unresolved literal/key calls')
+        source_values, target_values = set(load_catalog('sv').values()), set(load_catalog(lang).values())
+        # German shares umlauts with Swedish: letter heuristics alone are invalid.
+        suspicious = [value for value in missing if value not in ident and
+                      (swedish(value) if lang == 'en' else value in source_values and value not in target_values)]
+        check(not suspicious, f'no unresolved Swedish runtime lookups in {lang} ({suspicious[:5]})')
+        print(f'{lang} lookup diagnostics: {len(missing)} unresolved literal/key calls')
     await page.close()
     return seen, slides, errors
 
@@ -157,89 +152,81 @@ async def main():
     if not HTML.is_file():
         print(f"FAIL missing build: {HTML}")
         return 1
-    sv_cat, en_cat = load_catalog("sv"), load_catalog("en")
-    coverage(sv_cat, en_cat)
-    ident = identity_values()
+    catalogs = {locale: load_catalog(locale) for locale in LOCALES}
+    sv_cat, ident = catalogs['sv'], identity_values()
+    for locale in LOCALES[1:]:
+        coverage(sv_cat, catalogs[locale], locale)
 
     async with async_playwright() as p:
         browser = await p.chromium.launch()
+        sv_seen, sv_slides, errors = await render_pass(browser, 'sv')
+        check(not errors, f'no JS errors in sv ({errors[:3]})')
+        for locale in LOCALES[1:]:
+            target_seen, target_slides, errors = await render_pass(browser, locale)
+            check(not errors, f'no JS errors in {locale} ({errors[:3]})')
+            same_titles = [i + 1 for i, (source, target) in enumerate(zip(sv_slides, target_slides))
+                           if source == target and swedish(source)]
+            check(not same_titles, f'{locale} slide titles translated ({same_titles[:5]})')
+            leftovers = []
+            for key, source_texts in sv_seen.items():
+                for text in target_seen.get(key, set()):
+                    if not text.strip() or text not in source_texts or key == 'doc.title':
+                        continue
+                    if text in ident or sv_cat.get(key) in ident:
+                        continue
+                    if swedish(text):
+                        leftovers.append((key, text))
+            leftovers = sorted(set(leftovers))
+            check(not leftovers, f'no Swedish left in {locale} ({len(leftovers)} strings)')
+            for key, text in leftovers[:30]:
+                print('   ', key, '|', repr(text[:100]))
 
-        sv_seen, sv_slides, _ = await render_pass(browser, "sv")
-        en_seen, en_slides, errors = await render_pass(browser, "en")
-        check(not errors, f"no JS errors in English mode ({errors[:3]})")
-
-        # Slide titles must change with the language.
-        same_titles = [i + 1 for i, (st, et) in enumerate(zip(sv_slides, en_slides))
-                       if st == et and swedish(st)]
-        check(not same_titles, f"slide titles translated (still Swedish: {same_titles[:5]})")
-
-        # Per key: English must not be the Swedish text, unless it is data.
-        leftovers = []
-        for key, sv_texts in sv_seen.items():
-            if key not in en_seen:
-                continue
-            for text in sorted(en_seen[key]):
-                if not text.strip() or text not in sv_texts:
-                    continue
-                if key in ("doc.title",):
-                    continue
-                if text in ident or sv_cat.get(key) in ident:
-                    continue
-                if swedish(text):
-                    leftovers.append((key, text))
-        leftovers = sorted(set(leftovers))
-        check(not leftovers, f"no Swedish left in English mode ({len(leftovers)} string(s))")
-        for key, text in leftovers[:40]:
-            print("   ", key, "|", repr(text[:90]))
-
-        # The glossary is sorted with the active language's collation, so the
-        # English term list must be alphabetical as well (Swedish puts Å Ä Ö last).
-        for lang in ("sv", "en"):
-            page = await browser.new_page(viewport={"width": 1440, "height": 900})
+        for index, locale in enumerate(LOCALES):
+            page = await browser.new_page(viewport={'width': 1440, 'height': 900})
             await prepare(page, [])
-            await page.goto(HTML.as_uri() + f"?lang={lang}", wait_until="domcontentloaded")
-            await page.wait_for_timeout(300)
-            await page.evaluate("document.getElementById('glossbtn').click()")
-            await page.wait_for_timeout(250)
-            res = await page.evaluate(GLOSSARY_SORTED)
-            check(res["n"] > 50 and not res["wrong"],
-                  f"glossary is alphabetical in {lang} ({res['n']} terms)"
-                  + (f" — out of order: {res['wrong']}" if res["wrong"] else ""))
+            await page.goto(HTML.as_uri() + f'?lang={locale}#s12', wait_until='domcontentloaded')
+            await page.wait_for_timeout(200)
+            check(await page.evaluate('document.documentElement.lang') == locale, f'html lang is {locale}')
+            check(await page.title() == catalogs[locale]['doc.title'], f'document title localized in {locale}')
+            check(await page.locator('meta[name=description]').get_attribute('content') == catalogs[locale]['doc.description'],
+                  f'description localized in {locale}')
+            buttons = await page.evaluate("[...document.querySelectorAll('#langsw .lg')].map(b=>[b.textContent,b.getAttribute('aria-pressed')])")
+            check([b[0] for b in buttons] == [code.upper() for code in LOCALES], f'language switch order ({locale}: {buttons})')
+            check(any(b == [locale.upper(), 'true'] for b in buttons), f'{locale} marked active')
+            check(await page.locator('#glossbtn').inner_text() == catalogs[locale]['p1.topbar.2'], f'glossary button localized in {locale}')
+            if locale == 'de':
+                check(await page.evaluate('L.num(1234.5,1)') == '1.234,5', 'German numbers use decimal comma and grouping')
+            await page.locator('#glossbtn').click()
+            result = await page.evaluate(GLOSSARY_SORTED)
+            check(result['n'] > 50 and not result['wrong'], f'glossary alphabetical in {locale}: {result}')
+            await page.keyboard.press('Escape')
+            target = LOCALES[(index + 1) % len(LOCALES)]
+            await page.locator('#langsw .lg').nth(LOCALES.index(target)).click()
+            await page.wait_for_function('lang => document.documentElement.lang === lang', arg=target)
+            check(await page.evaluate('location.hash') == '#s12', f'{locale} -> {target} keeps hash')
+            check(await page.evaluate("localStorage.getItem('llm-kurs-lang')") == target, f'{target} choice persisted')
             await page.close()
 
-        # Switch UI + document metadata, on a fresh page.
-        page = await browser.new_page(viewport={"width": 1440, "height": 900})
+        # Real browser locale, saved choice, and URL precedence (no query means auto-detect).
+        for browser_locale, expected in [('de-DE', 'de'), ('de-AT', 'de'), ('sv-SE', 'sv'), ('fr-FR', 'en')]:
+            context = await browser.new_context(locale=browser_locale)
+            page = await context.new_page()
+            await prepare(page, [])
+            await page.goto(HTML.as_uri(), wait_until='domcontentloaded')
+            check(await page.evaluate('L.lang') == expected, f'{browser_locale} browser selects {expected}')
+            await context.close()
+        context = await browser.new_context(locale='de-DE')
+        await context.add_init_script("localStorage.setItem('llm-kurs-lang','en')")
+        page = await context.new_page()
         await prepare(page, [])
-        await page.goto(HTML.as_uri() + "?lang=en", wait_until="domcontentloaded")
-        await page.wait_for_timeout(400)
-        check(await page.evaluate("document.documentElement.lang") == "en", "html lang is en")
-        check("Inuti en LLM" not in await page.title(), f"document title translated ({await page.title()!r})")
-        buttons = await page.evaluate(
-            "[...document.querySelectorAll('#langsw .lg')].map(b => [b.textContent, b.getAttribute('aria-pressed')])")
-        check([b[0] for b in buttons] == ["SV", "EN"], f"language switch rendered ({buttons})")
-        check(any(b == ["EN", "true"] for b in buttons), "EN marked active")
-        bars = await page.evaluate(
-            "[...document.querySelectorAll('.topbar button, .botbar button')].map(b => b.textContent)")
-        check("Contents" in bars and "Next" in bars, f"top/bottom bar translated ({bars})")
-
-        # Switching language keeps the slide and stores the choice.
-        await page.goto(HTML.as_uri() + "?lang=en#s12", wait_until="domcontentloaded")
-        await page.wait_for_timeout(300)
-        await page.click("#langsw .lg:nth-child(1)")
-        await page.wait_for_timeout(500)
-        check(await page.evaluate("document.documentElement.lang") == "sv", "switch reloads into Swedish")
-        check(await page.evaluate("document.querySelector('.slide.active').id || location.hash") in ("", "#s12"),
-              f"switch keeps the slide ({await page.evaluate('location.hash')})")
-        check("sv" in await page.evaluate("localStorage.getItem('llm-kurs-lang') || ''"), "language choice persisted")
-
-        sv = await browser.new_page(viewport={"width": 1440, "height": 900})
-        await prepare(sv, [])
-        await sv.goto(HTML.as_uri() + "?lang=sv", wait_until="domcontentloaded")
-        await sv.wait_for_timeout(400)
-        check("Inuti en LLM" in await sv.title(), "Swedish document title intact")
+        await page.goto(HTML.as_uri(), wait_until='domcontentloaded')
+        check(await page.evaluate('L.lang') == 'en', 'saved English overrides German browser')
+        await page.goto(HTML.as_uri() + '?lang=sv', wait_until='domcontentloaded')
+        check(await page.evaluate('L.lang') == 'sv', 'URL overrides saved choice and German browser')
+        await context.close()
         await browser.close()
 
-    print(f"\n{'FAILED' if failures else 'PASSED'}: {len(failures)} failure(s), {len(en_cat)} translations")
+    print(f"\n{'FAILED' if failures else 'PASSED'}: {len(failures)} failures; languages {', '.join(LOCALES)}")
     return 1 if failures else 0
 
 

@@ -1,7 +1,7 @@
-"""Sequential bilingual checks replacing the old numbered debug/screenshot scripts."""
+"""Sequential checks for every shipped locale and interactive regression."""
 import asyncio
 from playwright.async_api import async_playwright
-from _common import HTML, prepare, shot
+from _common import HTML, LOCALES, prepare, shot
 
 
 async def reveal(page, selector):
@@ -14,7 +14,7 @@ async def reveal(page, selector):
 async def run():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
-        for lang in ("sv", "en"):
+        for lang in LOCALES:
             page = await browser.new_page(viewport={"width": 1440, "height": 900})
             errors = await prepare(page, [])
             await page.goto(HTML.as_uri() + f"?lang={lang}", wait_until="domcontentloaded")
@@ -119,7 +119,7 @@ async def run():
             assert not errors, errors
             await page.close()
         await browser.close()
-    print("OK: bilingual depth, original controls, stepper burst, ablation, study tools")
+    print("OK: depth, simulations, stepper, ablation and study tools in " + ", ".join(LOCALES))
 
 
 if __name__ == "__main__":

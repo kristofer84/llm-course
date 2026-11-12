@@ -9,7 +9,7 @@
  "build.minimap.label": "inference-motorn runt modellen",
  "build.minimap.aria": "Var modulen hör hemma i flödet",
  "doc.title": "Inuti en LLM – från prompt till token",
- "doc.description": "En interaktiv tvåspråkig kurs som kopplar LLM-grunder och tensorberäkningar till träning, kvantisering, inference, utvärdering och verktygsbaserade system. Räkneexempel, visuella experiment och praktiska serverövningar i en enda offline-HTML-fil.",
+ "doc.description": "En interaktiv flerspråkig kurs som kopplar LLM-grunder och tensorberäkningar till träning, kvantisering, inference, utvärdering och verktygsbaserade system. Räkneexempel, visuella experiment och praktiska serverövningar i en enda offline-HTML-fil.",
  "build.stage.0": "Text",
  "build.stage.1": "Tokens",
  "build.stage.2": "Embedding",

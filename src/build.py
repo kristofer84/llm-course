@@ -31,7 +31,7 @@ for lf in sorted(glob.glob('i18n/*/*.json')):
         raise SystemExit('Duplicate catalog keys in %s: %s' % (lf, sorted(duplicate)))
     catalog.update(data)
 SV = CAT.get('sv', {})
-LANGS = ['sv'] + sorted(l for l in CAT if l != 'sv')
+LANGS = ['sv'] + (['en'] if 'en' in CAT else []) + sorted(l for l in CAT if l not in ('sv', 'en'))
 
 
 def s(key):

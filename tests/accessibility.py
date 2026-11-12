@@ -10,7 +10,7 @@ import sys
 
 from playwright.async_api import async_playwright, expect
 
-from _common import HTML, ROOT, prepare
+from _common import HTML, ROOT, LOCALES, prepare
 
 # Stable DOM IDs, never slide indexes: integrated lessons may move in the deck.
 TARGETS = [
@@ -141,7 +141,7 @@ async def main():
     async with async_playwright() as playwright:
         browser = await playwright.chromium.launch()
         try:
-            for lang in ("sv", "en"):
+            for lang in LOCALES:
                 page = await browser.new_page(viewport={"width": 1440, "height": 1000})
                 try:
                     errors = await prepare(page, [])
@@ -155,7 +155,7 @@ async def main():
                     await page.close()
         finally:
             await browser.close()
-    print("PASSED: keyboard accessibility in Swedish and English (one browser worker)")
+    print("PASSED: keyboard accessibility in " + ", ".join(LOCALES) + " (one browser worker)")
     return 0
 
 
