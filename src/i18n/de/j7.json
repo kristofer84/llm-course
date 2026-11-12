@@ -12,5 +12,7 @@
  "j7.11": "KV-Cache",
  "j7.12": "Wort {{n}}",
  "j7.13": "ohne Cache",
- "j7.14": "mit Cache"
+ "j7.14": "mit Cache",
+ "j7.lm.mass": "Weitere, nicht gezeigte Optionen: {{p}}%. Die obigen Wahrscheinlichkeiten sind nicht neu normiert.",
+ "j7.lm.limit": "Die Demonstration stoppt bei {{n}} Wörtern oder Satzzeichen. Starte neu, um einen anderen Zweig zu testen."
 }

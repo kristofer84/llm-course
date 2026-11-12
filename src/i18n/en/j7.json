@@ -12,5 +12,7 @@
  "j7.11": "KV cache",
  "j7.12": "word {{n}}",
  "j7.13": "without cache",
- "j7.14": "with cache"
+ "j7.14": "with cache",
+ "j7.lm.mass": "Other, unshown options: {{p}}%. The probabilities above are not renormalized.",
+ "j7.lm.limit": "The demonstration stops at {{n}} words or punctuation marks. Reset to try another branch."
 }

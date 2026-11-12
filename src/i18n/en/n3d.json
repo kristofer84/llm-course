@@ -9,7 +9,7 @@
  "n3d.attention-i-klartext.4": "<span class=\"lb\">Process</span>\n        1. Each word makes three new vectors, each with its own learned matrix: a <b>query</b> (what am I looking for?), a <b>key</b> (what can I offer?) and a <b>value</b> (what do I pass on?).<br>\n        2. The word’s query is compared with the key of every earlier word. The more they point the same way, the higher the score.<br>\n        3. The scores become percentages that add up to 100 %.<br>\n        4. The word takes a mix of all the values, weighted by the percentages. Nothing is filtered out entirely, but a poor match gets a very small weight.",
  "n3d.attention-i-klartext.5": "<span class=\"lb\">Result</span>A contribution per word that is added to its vector. Now the word knows something about its context.",
  "n3d.attention-i-klartext.6": "<span class=\"lb\">Why</span>This is the only place in the whole model where words can affect each other. Without attention, every word would be handled in complete isolation.",
- "n3d.attention-i-klartext.7": "Analogy: searching among videos. Choose what the word “den” is looking for:",
+ "n3d.attention-i-klartext.7": "Analogy: searching among videos. Choose a query view; the first looks for what “{{example_pronoun}}” refers to. This uses whole words and handcrafted weights; each query sees only its own and earlier rows.",
  "n3d.attention-formeln-bit-for.1": "The attention formula, piece by piece",
  "n3d.attention-formeln-bit-for.2": "The whole attention step fits in one line. Click each part to see what it does, why it is there, and which numbers it gives in our worked example from “Attention worked out by hand”.",
  "n3d.mlp-i-klartext.1": "The MLP in plain words",

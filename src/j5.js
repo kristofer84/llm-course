@@ -1,15 +1,30 @@
 /* ================= v4: gentle intro to the block ================= */
 (function task(){
-  const B=[['Katten',[L.t('j5.32'),L.t('j5.33'),L.t('j5.1')]],['satt',[L.t('j5.34'),L.t('j5.2')]],['på',['preposition']]];
-  const A=[['Katten',[L.t('j5.32'),L.t('j5.3')]],['satt',[L.t('j5.4'),L.t('j5.5')]],['på',['preposition',L.t('j5.6'),L.t('j5.7'),L.t('j5.35')]]];
+  // Word-level teaching rows, NOT the verified BPE embedding positions in module 2.
+  // Include the final article in English/German: it belongs to the actual prompt.
+  const roles=EX.scene.roles;
+  let end=roles.preposition+1;
+  while(end<EX.scene.context.length && EX.scene.context.slice(0,end).join(' ')!==EX.tokenizer.prompt.text)end++;
+  const words=EX.scene.context.slice(0,end);
+  const tr=(key,vars)=>L.t(key,vars);
+  const prep=tr('j5.task.preposition');
+  function features(i,contextual){
+    if(i===roles.subject)return contextual?[tr('j5.32'),tr('j5.3')]:[tr('j5.32'),tr('j5.33'),...(EX.locale==='sv'?[tr('j5.1')]:[])];
+    if(i===roles.verb)return contextual?[tr('j5.4',{lemma:EX.words.verbLemma}),tr('j5.5')]:[tr('j5.34',{lemma:EX.words.verbLemma}),tr('j5.2')];
+    if(i===roles.preposition)return contextual?[prep,tr('j5.6'),tr('j5.7')]:[prep];
+    // Definite articles own their grammar features, rather than noun suffixes.
+    return [tr(i<roles.subject?'j5.task.subjectArticle':'j5.task.placeArticle'),...(contextual?[tr(i<roles.subject?'j5.task.subjectLink':'j5.task.placeLink')]:[])];
+  }
   let s=0;
-  function draw(){const v=$('tk-view');clear(v);const D=s?A:B;
-    D.forEach(([t,ch],i)=>{const c=H('div',null,null,v);const last=i===D.length-1;c.style.cssText='border:1px solid '+(last&&s?'var(--tok)':'var(--line)')+';border-radius:10px;padding:10px 12px;margin:8px 0;background:var(--bg)';
-      const h=H('div',null,null,c);h.style.cssText='display:flex;justify-content:space-between;align-items:center';H('b',null,t,h);H('span','mk','x['+i+'] [4096]',h);
-      const cs=H('div','chips',null,c);ch.forEach(x=>H('span','chip '+(s&&i===2&&x!=='preposition'?'new':''),L.t(x),cs));});
-    if(s){const p=H('div',null,null,v);p.style.cssText='text-align:right;font-size:15px;margin-top:4px';p.innerHTML=L.t('j5.8');}
-    $('tk-out').innerHTML=s?L.t('j5.9'):L.t('j5.10');
-    $('tk-0').classList.toggle('on',!s);$('tk-1').classList.toggle('on',!!s);}
+  function draw(){const v=$('tk-view');clear(v);
+    words.forEach((t,i)=>{const ch=features(i,!!s);const last=i===words.length-1;if(last&&s)ch.push(tr('j5.35'));
+      const c=H('div',null,null,v);c.style.cssText='border:1px solid '+(last&&s?'var(--tok)':'var(--line)')+';border-radius:10px;padding:10px 12px;margin:8px 0;background:var(--bg)';
+      const h=H('div',null,null,c);h.style.cssText='display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center';H('b',null,t,h);H('span','mk','x['+i+'] [4096]',h);
+      const cs=H('div','chips',null,c);ch.forEach((x,k)=>H('span','chip '+(s&&k>0?'new':''),x,cs));});
+    if(s){const p=H('div',null,null,v);p.style.cssText='text-align:right;font-size:15px;margin-top:4px';p.innerHTML=tr('j5.8');}
+    $('tk-out').innerHTML=tr(s?'j5.9':'j5.10',{last:words[words.length-1],feature:features(words.length-1,false)[0]});
+    $('tk-0').classList.toggle('on',!s);$('tk-1').classList.toggle('on',!!s);
+    $('tk-0').setAttribute('aria-pressed',String(!s));$('tk-1').setAttribute('aria-pressed',String(!!s));}
   $('tk-0').addEventListener('click',()=>{s=0;draw();});$('tk-1').addEventListener('click',()=>{s=1;draw();});draw();
 })();
 (function dcMasks(){const g=$('dc-masks');const c=9;
@@ -37,15 +52,16 @@
   $('st-l').addEventListener('input',draw);draw();
 })();
 (function shapes(){
-  const svg=$('sp-svg');let i=0;
-  const S0=[[L.t('j5.40'),'[5]','ids',L.t('j5.18')],
-   ['Embedding','[5, 4096]','x',L.t('j5.19')],
-   [L.t('j5.41'),'[5, 4096]','x',L.t('j5.20')],
-   [L.t('j5.42'),'[5, 4096]','x',L.t('j5.21')],
-   [L.t('j5.43'),'[5, 4096]','dots',L.t('j5.44')],
-   [L.t('j5.45'),'[5, 4096]','x',L.t('j5.22')],
-   ['p3.hela-modellen-i-en-bild.19','[5, 4096]','x',L.t('j5.23')],
-   ['p3.hela-modellen-i-en-bild.20','[5, 128256]','logits',L.t('j5.24')],
+  const svg=$('sp-svg');let i=0;const T=EX.tokenizer.prompt.count;
+  exampleSvg(svg,560,400,560);
+  const S0=[[L.t('j5.40'),'['+T+']','ids',L.t('j5.18')],
+   [L.t('Embedding'),'['+T+', 4096]','x',L.t('j5.19')],
+   [L.t('j5.41'),'['+T+', 4096]','x',L.t('j5.20')],
+   [L.t('j5.42'),'['+T+', 4096]','x',L.t('j5.21')],
+   [L.t('j5.43'),'['+T+', 4096]','dots',L.t('j5.44')],
+   [L.t('j5.45'),'['+T+', 4096]','x',L.t('j5.22')],
+   ['p3.hela-modellen-i-en-bild.19','['+T+', 4096]','x',L.t('j5.23')],
+   ['p3.hela-modellen-i-en-bild.20','['+T+', 128256]','logits',L.t('j5.24')],
    [L.t('j5.46'),'[128256]','last',L.t('j5.25')]];
   function draw(){clear(svg);S0.forEach((s,k)=>{const y=12+k*42;const cur=k===i,fut=k>i;const g=S('g',{style:'opacity:'+(fut?0.3:1)},svg);
       txt(g,10,y+18,L.t(s[0]),cur?'b':'s');txt(g,140,y+18,s[1],'m '+(s[2]==='ids'?'tt':'ta'));
