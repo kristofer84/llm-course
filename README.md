@@ -141,6 +141,7 @@ python3 tests/content_editor.py      # isolated per-language editing/provenance 
 node tests/locales.js               # locale precedence, regional detection, German formatting
 node tests/foundation_state.js      # guided model math, fixed data, probe independence
 python3 tests/inference_demo.py     # actual training/frozen-input/reset transitions in every locale
+python3 tools/check_terms.py         # every technical term explained before later slides use it
 python3 tests/examples.py            # offline tokenizer/data/merge/role/shift/grammar contracts
 python3 tests/example_interactions.py # native examples, dynamic lengths, cached logits, no old SV data
 python3 tests/contracts.py           # Node: prerequisites/order, module mapping, balance, migration,
@@ -177,6 +178,7 @@ and acceptance notes are in [`docs/GERMAN.md`](docs/GERMAN.md).
 | `src/j0.js`, `src/learning.js`, `src/quiz-groups.js` | navigation, persistence, assessment and depth |
 | `src/a11y.js`, `src/course-ui.js` | accessible diagram controls and study tools |
 | `src/examples.js`, `src/examples/*.json` | locale-native scenario packs and responsive diagram helper |
+| `src/terms/*.json`, `docs/TERMS.md` | checked term-introduction registry and per-slide list |
 | `src/j1b.js` … `src/j8.js` | original interactive visualizations |
 | `src/jd.js`, `src/jz.js` | original quiz/glossary data and initialization |
 | `src/i18n/` | translation engine, catalogs, and editing guide |

@@ -10,5 +10,5 @@
  "n0b.vad-ar-en-sprakmodell.9": "Die Vorhersagen des Modells für das nächste Wort:",
  "n0b.vad-ar-en-sprakmodell.10": "Modell wählen lassen",
  "n0b.vad-ar-en-sprakmodell.11": "Neu starten",
- "n0b.vad-ar-en-sprakmodell.12": "Dies ist ein handgeschriebener Grammatikgraph aus ganzen Wörtern und Satzzeichen, kein echtes Modell und keine BPE-Tokenisierung. Die Wahrscheinlichkeiten sind erfunden; nicht gezeigte Optionen bilden den Rest. Der weitere Kurs erklärt, wie ein echtes Modell seine Wahrscheinlichkeiten berechnet."
+ "n0b.vad-ar-en-sprakmodell.12": "Dies ist ein handgeschriebener Grammatikgraph aus ganzen Wörtern und Satzzeichen, kein echtes Modell und keine echte Worttrennung. Die Wahrscheinlichkeiten (die Chance für jedes mögliche nächste Wort) sind erfunden; nicht gezeigte Optionen bilden den Rest. Der weitere Kurs erklärt, wie ein echtes Modell seine Wahrscheinlichkeiten berechnet."
 }

@@ -1,0 +1,1587 @@
+{
+ "terms": [
+  {
+   "id": "kvantisering",
+   "spellings": {
+    "sv": [
+     "kvantisering",
+     "kvantiseringen",
+     "kvantiseringar",
+     "kvantiseringsfel",
+     "kvantiseringsmedveten",
+     "kvantisera",
+     "kvantiserar",
+     "kvantiserad",
+     "kvantiserade",
+     "kvantiseras",
+     "kvantiserats"
+    ],
+    "en": [
+     "quantization",
+     "quantized",
+     "quantize",
+     "quantizing"
+    ],
+    "de": [
+     "Quantisierung",
+     "quantisiert",
+     "quantisieren"
+    ]
+   },
+   "introduced": "QLoRA: vad har vilken precision?",
+   "note": "Storing the model's numbers in fewer bits; first glossed on the QLoRA slide, full lesson on 'Kvantisering'."
+  },
+  {
+   "id": "avkvantisering",
+   "spellings": {
+    "sv": [
+     "avkvantisering",
+     "avkvantiseringen",
+     "avkvantiserar",
+     "avkvantisera",
+     "avkvantiserad",
+     "avkvantiserade",
+     "avkvantiseras"
+    ],
+    "en": [
+     "dequantization",
+     "dequantize",
+     "dequantized"
+    ],
+    "de": [
+     "Dequantisierung",
+     "dequantisieren",
+     "dequantisiert"
+    ]
+   },
+   "introduced": "QLoRA: vad har vilken precision?",
+   "note": "Turning a stored code back into an approximate value; the formula is on 'Skala, nollpunkt och avrundning'."
+  },
+  {
+   "id": "nollpunkt",
+   "spellings": {
+    "sv": [
+     "nollpunkt",
+     "nollpunkten",
+     "nollpunkter",
+     "heltalsnollpunkt",
+     "heltalsnollpunkten"
+    ],
+    "en": [
+     "zero point"
+    ],
+    "de": [
+     "Nullpunkt"
+    ]
+   },
+   "introduced": "Modul: Kvantisering i praktiken",
+   "note": "Integer code that represents 0 in affine quantization; defined on 'Skala, nollpunkt och avrundning' (module goal names it first)."
+  },
+  {
+   "id": "klippning",
+   "spellings": {
+    "sv": [
+     "klippning",
+     "klippningen",
+     "klippfel",
+     "klippfelet",
+     "klipptröskel",
+     "klipptrösklar",
+     "klippas",
+     "klipps"
+    ],
+    "en": [
+     "clipping",
+     "clip",
+     "clipping error"
+    ],
+    "de": [
+     "Clipping",
+     "Abschneiden",
+     "Clipping-Fehler"
+    ]
+   },
+   "introduced": "Modul: Kvantisering i praktiken",
+   "note": "Cutting values outside the chosen range; clipping error dominates outside it ('Skala, nollpunkt och avrundning')."
+  },
+  {
+   "id": "gruppstorlek",
+   "spellings": {
+    "sv": [
+     "gruppstorlek",
+     "gruppstorleken",
+     "gruppstorlekar"
+    ],
+    "en": [
+     "group size",
+     "values per group"
+    ],
+    "de": [
+     "Gruppengröße",
+     "Werte pro Gruppe"
+    ]
+   },
+   "introduced": "Modul: Kvantisering i praktiken",
+   "note": "Values that share one quantization scale; the experiment is on 'Grupper, utliggare och fel'."
+  },
+  {
+   "id": "utliggare",
+   "spellings": {
+    "sv": [
+     "utliggare",
+     "utliggaren",
+     "utliggarens",
+     "utliggarna"
+    ],
+    "en": [
+     "outlier",
+     "outliers"
+    ],
+    "de": [
+     "Ausreißer",
+     "Ausreißerwert"
+    ]
+   },
+   "introduced": "Modul: Kvantisering i praktiken",
+   "note": "Extreme value that can dictate one scale for a whole tensor; measured on 'Grupper, utliggare och fel'."
+  },
+  {
+   "id": "kalibrering",
+   "spellings": {
+    "sv": [
+     "kalibrering",
+     "kalibreringen",
+     "kalibreringsexempel",
+     "kalibreringsprompter",
+     "kalibreringsurval",
+     "kalibrerade",
+     "kalibrerad",
+     "kalibrera",
+     "kalibrerar"
+    ],
+    "en": [
+     "calibration",
+     "calibrated",
+     "calibrate"
+    ],
+    "de": [
+     "Kalibrierung",
+     "kalibriert",
+     "kalibrieren"
+    ]
+   },
+   "introduced": "Kalibrering utan dataläckage",
+   "note": "Choosing activation ranges from representative examples; adaptation, not an independent test."
+  },
+  {
+   "id": "skalfaktor",
+   "spellings": {
+    "sv": [
+     "skalfaktor",
+     "skalfaktorn",
+     "skalfaktorer",
+     "skalfaktorerna",
+     "skalor"
+    ],
+    "en": [
+     "scale factor",
+     "scale",
+     "scales"
+    ],
+    "de": [
+     "Skalierungsfaktor",
+     "Skala",
+     "Skalen"
+    ]
+   },
+   "introduced": "Kvantisering",
+   "note": "One scale per weight group in weight-only int4; the quantization formula follows on the next slide."
+  },
+  {
+   "id": "weight-only",
+   "spellings": {
+    "sv": [
+     "weight-only",
+     "viktbaserad",
+     "viktbaserade",
+     "viktbaserat"
+    ],
+    "en": [
+     "weight-only"
+    ],
+    "de": [
+     "weight-only",
+     "nur Gewichte"
+    ]
+   },
+   "introduced": "Kvantisering",
+   "note": "Weights stored narrow, activations left at 16-bit; the W4A16 schema is on 'Vikter, aktiveringar och mätning'."
+  },
+  {
+   "id": "w4a16",
+   "spellings": {
+    "sv": [
+     "W4A16",
+     "W8A8",
+     "w4a16",
+     "w8a8"
+    ],
+    "en": [
+     "W4A16",
+     "W8A8"
+    ],
+    "de": [
+     "W4A16",
+     "W8A8"
+    ]
+   },
+   "introduced": "Kvantisering",
+   "note": "Notation W=weight bits, A=activation bits; FP8/W8A8 is introduced here, the schema table is on 'Vikter, aktiveringar och mätning'."
+  },
+  {
+   "id": "symmetrisk-kvantisering",
+   "spellings": {
+    "sv": [
+     "symmetriskt",
+     "symmetrisk",
+     "symmetriska",
+     "asymmetrisk",
+     "affin",
+     "affint",
+     "affina"
+    ],
+    "en": [
+     "symmetric quantization",
+     "asymmetric",
+     "affine quantization"
+    ],
+    "de": [
+     "symmetrische Quantisierung",
+     "asymmetrisch",
+     "affin"
+    ]
+   },
+   "introduced": "Skala, nollpunkt och avrundning",
+   "note": "Symmetric range without zero point versus affine range with one; same slide contrasts both codes."
+  },
+  {
+   "id": "datalackage",
+   "spellings": {
+    "sv": [
+     "dataläckage",
+     "dataläckaget"
+    ],
+    "en": [
+     "data leakage",
+     "leakage",
+     "leak"
+    ],
+    "de": [
+     "Datenleck",
+     "Leakage",
+     "Leck"
+    ]
+   },
+   "introduced": "Kalibrering utan dataläckage",
+   "note": "Test information reaching calibration or method choice; near-duplicates can leak without identical rows."
+  },
+  {
+   "id": "ptq",
+   "spellings": {
+    "sv": [
+     "PTQ",
+     "efterträningskvantisering",
+     "efterträningskvantiseringen"
+    ],
+    "en": [
+     "PTQ",
+     "post-training quantization"
+    ],
+    "de": [
+     "PTQ",
+     "Post-Training-Quantisierung"
+    ]
+   },
+   "introduced": "Kalibrering utan dataläckage",
+   "note": "Post-training quantization of an already trained model, contrasted with QAT on the same slide."
+  },
+  {
+   "id": "qat",
+   "spellings": {
+    "sv": [
+     "QAT",
+     "kvantiseringsmedveten",
+     "kvantiseringsmedveten träning"
+    ],
+    "en": [
+     "QAT",
+     "quantization-aware training"
+    ],
+    "de": [
+     "QAT",
+     "quantisierungsbewusstes Training"
+    ]
+   },
+   "introduced": "Kalibrering utan dataläckage",
+   "note": "Quantization-aware training simulates quantization error during training; no quality guarantee for future input."
+  },
+  {
+   "id": "perplexitet",
+   "spellings": {
+    "sv": [
+     "perplexitet",
+     "perplexiteten",
+     "perplexitetsmått",
+     "PPL"
+    ],
+    "en": [
+     "perplexity",
+     "PPL"
+    ],
+    "de": [
+     "Perplexität",
+     "PPL"
+    ]
+   },
+   "introduced": "Vikter, aktiveringar och mätning",
+   "note": "exp of mean loss, an effective number of alternatives; first glossed in the measurement checklist, full lesson on 'Loss och perplexitet i siffror'."
+  },
+  {
+   "id": "aktiva-parametrar",
+   "spellings": {
+    "sv": [
+     "aktiva parametrar",
+     "aktiva parametern",
+     "aktiv parameter",
+     "aktiva"
+    ],
+    "en": [
+     "active parameters",
+     "total parameters"
+    ],
+    "de": [
+     "aktive Parameter",
+     "Gesamtparameter"
+    ]
+   },
+   "introduced": "Tät modell eller MoE",
+   "note": "Parameters used per token versus parameters stored; the totals/active table is on 'Tät modell eller MoE'."
+  },
+  {
+   "id": "expert-parallelism",
+   "spellings": {
+    "sv": [
+     "expert parallel",
+     "expert parallelism",
+     "expert-parallellism"
+    ],
+    "en": [
+     "expert parallelism",
+     "EP"
+    ],
+    "de": [
+     "Expert-Parallelismus",
+     "EP"
+    ]
+   },
+   "introduced": "MoE i inferens",
+   "note": "Experts spread across GPUs; tokens are dispatched all-to-all and combined back."
+  },
+  {
+   "id": "sliding-window",
+   "spellings": {
+    "sv": [
+     "Sliding window",
+     "sliding window",
+     "sliding-fönster",
+     "slidingfönster"
+    ],
+    "en": [
+     "sliding window"
+    ],
+    "de": [
+     "Sliding Window",
+     "gleitendes Fenster"
+    ]
+   },
+   "introduced": "Attention-varianter",
+   "note": "Layers that see only the latest W tokens, so their logical cache stops growing."
+  },
+  {
+   "id": "lokalt-fonster",
+   "spellings": {
+    "sv": [
+     "lokalt fönster",
+     "lokala fönstret",
+     "lokal attention"
+    ],
+    "en": [
+     "local window",
+     "local attention"
+    ],
+    "de": [
+     "lokales Fenster",
+     "lokale Attention"
+    ]
+   },
+   "introduced": "Attention sinks och lokal attention",
+   "note": "Each token sees only the latest w tokens; mixed local/global stacks vary the ratio."
+  },
+  {
+   "id": "attention-sinks",
+   "spellings": {
+    "sv": [
+     "attention sinks",
+     "attention sink",
+     "avlastningsplats"
+    ],
+    "en": [
+     "attention sinks"
+    ],
+    "de": [
+     "Attention Sinks"
+    ]
+   },
+   "introduced": "Attention sinks och lokal attention",
+   "note": "The first tokens stay in the cache as an offload slot for attention (StreamingLLM)."
+  },
+  {
+   "id": "multimodal",
+   "spellings": {
+    "sv": [
+     "multimodal",
+     "multimodala",
+     "multimodalt",
+     "multimodala modeller"
+    ],
+    "en": [
+     "multimodal"
+    ],
+    "de": [
+     "multimodal",
+     "multimodale Modelle"
+    ]
+   },
+   "introduced": "Multimodala modeller",
+   "note": "Images turned into the same kind of vectors as words and read as positions in the stream."
+  },
+  {
+   "id": "patch",
+   "spellings": {
+    "sv": [
+     "patches",
+     "rutor",
+     "bildrutor",
+     "bildruta"
+    ],
+    "en": [
+     "patch",
+     "patches",
+     "image tiles"
+    ],
+    "de": [
+     "Patch",
+     "Patches",
+     "Bildkacheln"
+    ]
+   },
+   "introduced": "Multimodala modeller",
+   "note": "Image tile fed to the vision encoder; 336x336 pixels in 14x14 tiles give 576 image tokens."
+  },
+  {
+   "id": "vision-encoder",
+   "spellings": {
+    "sv": [
+     "vision encoder",
+     "vision-encodern",
+     "ViT",
+     "bildencoder"
+    ],
+    "en": [
+     "vision encoder",
+     "ViT"
+    ],
+    "de": [
+     "Vision-Encoder",
+     "ViT"
+    ]
+   },
+   "introduced": "Multimodala modeller",
+   "note": "Image network (usually a ViT) whose output is projected into the language stream."
+  },
+  {
+   "id": "ssm",
+   "spellings": {
+    "sv": [
+     "SSM",
+     "state space",
+     "tillståndsmodell",
+     "tillståndsmodeller"
+    ],
+    "en": [
+     "SSM",
+     "state-space model"
+    ],
+    "de": [
+     "SSM",
+     "Zustandsraummodell"
+    ]
+   },
+   "introduced": "Andra arkitekturer",
+   "note": "Fixed-size state replacing the growing KV cache, linear time in sequence length."
+  },
+  {
+   "id": "cross-attention",
+   "spellings": {
+    "sv": [
+     "cross-attention",
+     "korsattention"
+    ],
+    "en": [
+     "cross-attention"
+    ],
+    "de": [
+     "Cross-Attention"
+    ]
+   },
+   "introduced": "Andra arkitekturer",
+   "note": "Decoder reading an encoder through attention in encoder-decoder models."
+  },
+  {
+   "id": "encoder-decoder",
+   "spellings": {
+    "sv": [
+     "encoder-decoder",
+     "Encoder-decoder"
+    ],
+    "en": [
+     "encoder-decoder"
+    ],
+    "de": [
+     "Encoder-Decoder"
+    ]
+   },
+   "introduced": "Andra arkitekturer",
+   "note": "Separate encoder and decoder (T5, Whisper); the decoder reads the encoder via cross-attention."
+  },
+  {
+   "id": "http",
+   "spellings": {
+    "sv": [
+     "HTTP",
+     "HTTP-request",
+     "HTTP-requesten",
+     "HTTP-anrop",
+     "HTTP-server"
+    ],
+    "en": [
+     "HTTP",
+     "HTTP request"
+    ],
+    "de": [
+     "HTTP",
+     "HTTP-Anfrage"
+    ]
+   },
+   "introduced": "HTTP, JSON och streaming",
+   "note": "Request/response protocol between client and server; defined on 'HTTP, JSON och streaming'."
+  },
+  {
+   "id": "paged-attention",
+   "spellings": {
+    "sv": [
+     "PagedAttention"
+    ],
+    "en": [
+     "PagedAttention"
+    ],
+    "de": [
+     "PagedAttention"
+    ]
+   },
+   "introduced": "vLLM i klartext",
+   "note": "KV cache in fixed blocks with a block table; mechanism on 'PagedAttention'."
+  },
+  {
+   "id": "continuous-batching",
+   "spellings": {
+    "sv": [
+     "continuous batching",
+     "Continuous batching",
+     "continuous-batchning"
+    ],
+    "en": [
+     "continuous batching"
+    ],
+    "de": [
+     "Continuous Batching"
+    ]
+   },
+   "introduced": "vLLM i klartext",
+   "note": "Rebuilding the batch every step so a finished slot is refilled immediately; lesson on 'Continuous batching'."
+  },
+  {
+   "id": "disaggregering",
+   "spellings": {
+    "sv": [
+     "disaggregering",
+     "disaggregerad",
+     "disaggregerade",
+     "disaggregerat"
+    ],
+    "en": [
+     "disaggregation",
+     "disaggregated"
+    ],
+    "de": [
+     "Disaggregierung",
+     "disaggregiert"
+    ]
+   },
+   "introduced": "Disaggregerad prefill och decode",
+   "note": "Separate prefill and decode pools with KV moved between them; trade-offs on 'Disaggregerad prefill och decode'."
+  },
+  {
+   "id": "sse",
+   "spellings": {
+    "sv": [
+     "SSE",
+     "SSE-händelser",
+     "Server-Sent Events"
+    ],
+    "en": [
+     "SSE",
+     "Server-Sent Events"
+    ],
+    "de": [
+     "SSE",
+     "Server-Sent Events"
+    ]
+   },
+   "introduced": "HTTP, JSON och streaming",
+   "note": "Streaming events that carry JSON chunks while the answer is generated."
+  },
+  {
+   "id": "chunk",
+   "spellings": {
+    "sv": [
+     "chunk",
+     "chunken",
+     "chunkar",
+     "chunkarna",
+     "chunkning"
+    ],
+    "en": [
+     "chunk",
+     "chunks"
+    ],
+    "de": [
+     "Chunk",
+     "Chunks"
+    ]
+   },
+   "introduced": "HTTP, JSON och streaming",
+   "note": "Piece of a streamed answer; not guaranteed to equal one token and may carry metadata."
+  },
+  {
+   "id": "response",
+   "spellings": {
+    "sv": [
+     "response",
+     "responsen",
+     "responser"
+    ],
+    "en": [
+     "response"
+    ],
+    "de": [
+     "Response",
+     "Antwort"
+    ]
+   },
+   "introduced": "HTTP, JSON och streaming",
+   "note": "What the server returns: status code plus content, here JSON."
+  },
+  {
+   "id": "chunked-prefill",
+   "spellings": {
+    "sv": [
+     "chunked prefill",
+     "Chunked prefill",
+     "chunkad prefill",
+     "chunkade prefill"
+    ],
+    "en": [
+     "chunked prefill"
+    ],
+    "de": [
+     "Chunked Prefill"
+    ]
+   },
+   "introduced": "vLLM i klartext",
+   "note": "Long prompts split into chunks so they do not block decode; the token budget is on 'Chunked prefill och token-budget'."
+  },
+  {
+   "id": "tensor-parallelism",
+   "spellings": {
+    "sv": [
+     "tensor parallelism",
+     "tensor-parallellism",
+     "tensorparallelism"
+    ],
+    "en": [
+     "tensor parallelism",
+     "TP"
+    ],
+    "de": [
+     "Tensor-Parallelismus",
+     "TP"
+    ]
+   },
+   "introduced": "vLLM i klartext",
+   "note": "Each weight matrix split across GPUs; mechanics and all-reduce on 'Tensor parallelism' (TP abbreviation used from slide 96)."
+  },
+  {
+   "id": "frontend",
+   "spellings": {
+    "sv": [
+     "frontend",
+     "frontend-process",
+     "frontend-processen"
+    ],
+    "en": [
+     "frontend",
+     "frontend process"
+    ],
+    "de": [
+     "Frontend",
+     "Frontend-Prozess"
+    ]
+   },
+   "introduced": "vLLM: arkitekturen",
+   "note": "Process that speaks HTTP and text; the engine works only with token ids and GPU memory."
+  },
+  {
+   "id": "enginecore",
+   "spellings": {
+    "sv": [
+     "EngineCore",
+     "EngineCore-process",
+     "EngineCore-processen"
+    ],
+    "en": [
+     "EngineCore",
+     "engine core"
+    ],
+    "de": [
+     "EngineCore",
+     "Engine-Kern"
+    ]
+   },
+   "introduced": "vLLM: arkitekturen",
+   "note": "Engine process that schedules and executes steps away from the HTTP frontend."
+  },
+  {
+   "id": "kv-block",
+   "spellings": {
+    "sv": [
+     "KV-block",
+     "KV-blocken",
+     "KV-blocket",
+     "KV-blockets"
+    ],
+    "en": [
+     "KV block",
+     "KV blocks",
+     "KV cache block"
+    ],
+    "de": [
+     "KV-Block",
+     "KV-Blöcke",
+     "KV-Cache-Block"
+    ]
+   },
+   "introduced": "vLLM: arkitekturen",
+   "note": "Fixed-size unit of the KV cache (16 tokens) shown in the engine diagram; block table and sharing on 'PagedAttention'."
+  },
+  {
+   "id": "preemption",
+   "spellings": {
+    "sv": [
+     "preemption",
+     "preemptions",
+     "Preempted",
+     "preempted",
+     "preemptera",
+     "preempteras",
+     "preempterar"
+    ],
+    "en": [
+     "preemption",
+     "preempted",
+     "preempt"
+    ],
+    "de": [
+     "Preemption",
+     "verdrängt",
+     "verdrängen"
+    ]
+   },
+   "introduced": "En requests livscykel",
+   "note": "A request thrown out when KV blocks run out; its blocks are freed and it is queued for recomputation."
+  },
+  {
+   "id": "block-table",
+   "spellings": {
+    "sv": [
+     "block table",
+     "block tables",
+     "blocktabell",
+     "blocktabellen"
+    ],
+    "en": [
+     "block table"
+    ],
+    "de": [
+     "Blocktabelle",
+     "Block Table"
+    ]
+   },
+   "introduced": "vLLM i klartext",
+   "note": "Per-sequence mapping from logical to physical KV blocks, like virtual memory."
+  },
+  {
+   "id": "statisk-batching",
+   "spellings": {
+    "sv": [
+     "statisk batching",
+     "Statisk batching",
+     "statisk-batchning"
+    ],
+    "en": [
+     "static batching"
+    ],
+    "de": [
+     "statisches Batching"
+    ]
+   },
+   "introduced": "Continuous batching",
+   "note": "One batch runs until the longest sequence finishes; idle slots are wasted capacity."
+  },
+  {
+   "id": "cuda-graphs",
+   "spellings": {
+    "sv": [
+     "CUDA graphs",
+     "CUDA-grafer",
+     "CUDA graph",
+     "CUDA-graf"
+    ],
+    "en": [
+     "CUDA graphs"
+    ],
+    "de": [
+     "CUDA Graphs"
+    ]
+   },
+   "introduced": "Ett steg i model runner",
+   "note": "Recorded decode steps replayed for fixed batch sizes to remove CPU overhead; --enforce-eager disables it."
+  },
+  {
+   "id": "structured-output",
+   "spellings": {
+    "sv": [
+     "structured output",
+     "strukturerad utdata",
+     "strukturerade utdata",
+     "strukturerat output"
+    ],
+    "en": [
+     "structured output"
+    ],
+    "de": [
+     "strukturierte Ausgabe",
+     "Structured Output"
+    ]
+   },
+   "introduced": "Samplern och structured output",
+   "note": "Mask over the vocabulary that admits only tokens valid for a JSON schema, regex or grammar."
+  },
+  {
+   "id": "column-parallel",
+   "spellings": {
+    "sv": [
+     "column parallel",
+     "Column parallel"
+    ],
+    "en": [
+     "column parallel"
+    ],
+    "de": [
+     "Column Parallel",
+     "spaltenweise"
+    ]
+   },
+   "introduced": "Tensor parallelism",
+   "note": "Each GPU holds part of the output columns (qkv, gate_up); attention splits by head."
+  },
+  {
+   "id": "row-parallel",
+   "spellings": {
+    "sv": [
+     "row parallel",
+     "Row parallel"
+    ],
+    "en": [
+     "row parallel"
+    ],
+    "de": [
+     "Row Parallel",
+     "zeilenweise"
+    ]
+   },
+   "introduced": "Tensor parallelism",
+   "note": "Each GPU holds part of the input, sums a partial result and an all-reduce combines it."
+  },
+  {
+   "id": "all-reduce",
+   "spellings": {
+    "sv": [
+     "all-reduce",
+     "all reduce",
+     "allreduce"
+    ],
+    "en": [
+     "all-reduce"
+    ],
+    "de": [
+     "All-Reduce"
+    ]
+   },
+   "introduced": "Tensor parallelism",
+   "note": "Collective that sums partial results; two per layer when tensor parallelism is used."
+  },
+  {
+   "id": "pipeline-parallelism",
+   "spellings": {
+    "sv": [
+     "pipeline parallel",
+     "pipeline parallelism",
+     "pipeline-parallellism"
+    ],
+    "en": [
+     "pipeline parallelism",
+     "PP"
+    ],
+    "de": [
+     "Pipeline-Parallelismus",
+     "PP"
+    ]
+   },
+   "introduced": "Pipeline, data och expert parallelism",
+   "note": "Layers split into stages across GPUs; needs several batches in flight to fill every stage."
+  },
+  {
+   "id": "data-parallelism",
+   "spellings": {
+    "sv": [
+     "data parallel",
+     "data parallelism",
+     "data-parallellism"
+    ],
+    "en": [
+     "data parallelism",
+     "DP"
+    ],
+    "de": [
+     "Daten-Parallelismus",
+     "DP"
+    ]
+   },
+   "introduced": "Pipeline, data och expert parallelism",
+   "note": "Full model copies taking separate requests; best for throughput when the model fits."
+  },
+  {
+   "id": "speculative-decoding",
+   "spellings": {
+    "sv": [
+     "speculative decoding",
+     "Speculative decoding",
+     "spekulativ avkodning"
+    ],
+    "en": [
+     "speculative decoding",
+     "speculative sampling"
+    ],
+    "de": [
+     "spekulative Dekodierung",
+     "Speculative Decoding"
+    ]
+   },
+   "introduced": "Speculative decoding",
+   "note": "A small drafter proposes tokens and the large model verifies several positions in one pass."
+  },
+  {
+   "id": "draft-modell",
+   "spellings": {
+    "sv": [
+     "draft-modell",
+     "draft-modellen",
+     "draft-tokens",
+     "draft-modeller"
+    ],
+    "en": [
+     "draft model",
+     "draft tokens"
+    ],
+    "de": [
+     "Draft-Modell",
+     "Draft-Tokens"
+    ]
+   },
+   "introduced": "Speculative decoding",
+   "note": "Cheap proposer: small model, n-grams, EAGLE heads or built-in MTP layers; accepted from the left."
+  },
+  {
+   "id": "rejection-sampling",
+   "spellings": {
+    "sv": [
+     "rejection sampling",
+     "rejection-sampling"
+    ],
+    "en": [
+     "rejection sampling"
+    ],
+    "de": [
+     "Rejection Sampling",
+     "Verwerfungs-Sampling"
+    ]
+   },
+   "introduced": "Speculative decoding",
+   "note": "Accept with probability min(1, p/q) and draw the replacement from the residual, keeping the large model's distribution."
+  },
+  {
+   "id": "multi-lora",
+   "spellings": {
+    "sv": [
+     "Multi-LoRA",
+     "multi-LoRA",
+     "MultiLoRA"
+    ],
+    "en": [
+     "Multi-LoRA",
+     "multi-LoRA"
+    ],
+    "de": [
+     "Multi-LoRA"
+    ]
+   },
+   "introduced": "Multi-LoRA: många modeller på en GPU",
+   "note": "Many adapters on one frozen base; requests with different adapters share a batch."
+  },
+  {
+   "id": "antagning",
+   "spellings": {
+    "sv": [
+     "antagning",
+     "antagningen",
+     "antagningskontroll",
+     "admission"
+    ],
+    "en": [
+     "admission",
+     "admission control"
+    ],
+    "de": [
+     "Zulassung",
+     "Admission Control"
+    ]
+   },
+   "introduced": "Kö, antagning och avbrott",
+   "note": "Limiting concurrent jobs and queue length; rate limits cap arrival rate instead."
+  },
+  {
+   "id": "rate-limit",
+   "spellings": {
+    "sv": [
+     "rate limit",
+     "rate limits",
+     "rate-limit",
+     "rate-limits"
+    ],
+    "en": [
+     "rate limit",
+     "rate limits"
+    ],
+    "de": [
+     "Rate Limit",
+     "Rate Limits"
+    ]
+   },
+   "introduced": "Kö, antagning och avbrott",
+   "note": "Cap on arrival rate per tenant; complements admission control over concurrency and queue length."
+  },
+  {
+   "id": "tenant",
+   "spellings": {
+    "sv": [
+     "tenant",
+     "tenants",
+     "tenantgräns",
+     "tenantgränser",
+     "tenantgränserna"
+    ],
+    "en": [
+     "tenant",
+     "tenants",
+     "tenant isolation"
+    ],
+    "de": [
+     "Tenant",
+     "Tenants",
+     "Tenant-Grenzen"
+    ]
+   },
+   "introduced": "Kö, antagning och avbrott",
+   "note": "Separated customer or organisation with its own quota; isolation on 'Robust drift och tenantgränser'."
+  },
+  {
+   "id": "noisy-neighbors",
+   "spellings": {
+    "sv": [
+     "noisy neighbors",
+     "noisy neighbour",
+     "noisy-neighbours"
+    ],
+    "en": [
+     "noisy neighbors"
+    ],
+    "de": [
+     "Noisy Neighbors"
+    ]
+   },
+   "introduced": "Robust drift och tenantgränser",
+   "note": "Tenants degrading each other; separate quotas, permissions and cache isolation."
+  },
+  {
+   "id": "readiness",
+   "spellings": {
+    "sv": [
+     "readiness",
+     "health checks",
+     "health check",
+     "readiness-check"
+    ],
+    "en": [
+     "readiness",
+     "health check"
+    ],
+    "de": [
+     "Readiness",
+     "Bereitschaft",
+     "Health Check"
+    ]
+   },
+   "introduced": "Robust drift och tenantgränser",
+   "note": "Only replicas with loaded weights and passing health checks should receive traffic."
+  },
+  {
+   "id": "idempotency",
+   "spellings": {
+    "sv": [
+     "idempotency",
+     "idempotency key",
+     "idempotens",
+     "idempotent",
+     "idempotenta"
+    ],
+    "en": [
+     "idempotency",
+     "idempotency key"
+    ],
+    "de": [
+     "Idempotenz",
+     "Idempotenzschlüssel"
+    ]
+   },
+   "introduced": "Robust drift och tenantgränser",
+   "note": "Same logical action may be sent again without repeating its effect; requires durable deduplication in the tool."
+  },
+  {
+   "id": "side-effect",
+   "spellings": {
+    "sv": [
+     "side effect",
+     "side effects",
+     "sidoeffekt",
+     "sidoeffekter"
+    ],
+    "en": [
+     "side effect",
+     "side effects"
+    ],
+    "de": [
+     "Seiteneffekt",
+     "Seiteneffekte"
+    ]
+   },
+   "introduced": "Robust drift och tenantgränser",
+   "note": "Action that changes something outside the model; needs approval, exact binding and an idempotency key."
+  },
+  {
+   "id": "svanslatens",
+   "spellings": {
+    "sv": [
+     "svanslatens",
+     "svanslatensen",
+     "svanslatenser",
+     "tail latency"
+    ],
+    "en": [
+     "tail latency",
+     "tail latencies"
+    ],
+    "de": [
+     "Tail-Latenz",
+     "Tail Latency"
+    ]
+   },
+   "introduced": "Spårning, svanslatens och kostnad",
+   "note": "Slow-request percentiles such as p95/p99, not the mean; nearest-rank construction on the same slide."
+  },
+  {
+   "id": "riktning-i-residual-stream",
+   "spellings": {
+    "sv": [
+     "riktning i residual stream",
+     "riktningar i residual stream",
+     "riktningen i residual stream",
+     "riktningarna i residual stream"
+    ],
+    "en": [
+     "direction in the residual stream",
+     "residual-stream direction"
+    ],
+    "de": [
+     "Richtung im Residual Stream",
+     "Residual-Stream-Richtung"
+    ]
+   },
+   "introduced": "Riktningar i residual stream",
+   "note": "Concept represented as a direction, found as the difference between two group means; mechanism on 'Riktningar i residual stream'."
+  },
+  {
+   "id": "steering",
+   "spellings": {
+    "sv": [
+     "steering",
+     "styrning"
+    ],
+    "en": [
+     "steering"
+    ],
+    "de": [
+     "Steering",
+     "Steuerung"
+    ]
+   },
+   "introduced": "Steering och ablation",
+   "note": "Adding a scaled direction during the forward pass; mechanics on 'Steering och ablation'."
+  },
+  {
+   "id": "ablation",
+   "spellings": {
+    "sv": [
+     "ablation",
+     "ablationen",
+     "ablationer",
+     "ablations"
+    ],
+    "en": [
+     "ablation"
+    ],
+    "de": [
+     "Ablation"
+    ]
+   },
+   "introduced": "Steering och ablation",
+   "note": "Removing the component along a direction; hook versus baked-in projection on 'Steering och ablation' and 'Baka in ablation i vikterna'."
+  },
+  {
+   "id": "linear-probe",
+   "spellings": {
+    "sv": [
+     "linear probe",
+     "linjär probe",
+     "linjära probe",
+     "linjär klassificerare"
+    ],
+    "en": [
+     "linear probe",
+     "linear classifier"
+    ],
+    "de": [
+     "Linear Probe",
+     "linearer Klassifikator"
+    ]
+   },
+   "introduced": "Riktningar i residual stream",
+   "note": "Same difference direction trained as a classifier to test whether the split is linear in the stream."
+  },
+  {
+   "id": "hook",
+   "spellings": {
+    "sv": [
+     "hook",
+     "hooken",
+     "hooks",
+     "hookar"
+    ],
+    "en": [
+     "hook",
+     "hooks"
+    ],
+    "de": [
+     "Hook",
+     "Hooks"
+    ]
+   },
+   "introduced": "Steering och ablation",
+   "note": "Code that reads or edits activations in chosen layers during the run."
+  },
+  {
+   "id": "faktastod",
+   "spellings": {
+    "sv": [
+     "faktastöd",
+     "faktastödet",
+     "faktastöds",
+     "grounding",
+     "grounded"
+    ],
+    "en": [
+     "grounding",
+     "factual support",
+     "factuality"
+    ],
+    "de": [
+     "Faktenbeleg",
+     "Grounding",
+     "Faktenstützung"
+    ]
+   },
+   "introduced": "Utvärdering",
+   "note": "Claims judged against trusted evidence; a cited URL proves nothing, low loss does not guarantee truth."
+  },
+  {
+   "id": "regressionstest",
+   "spellings": {
+    "sv": [
+     "regressionstest",
+     "regressionstester",
+     "regressionstesterna",
+     "regressionstestet"
+    ],
+    "en": [
+     "regression test",
+     "regression tests"
+    ],
+    "de": [
+     "Regressionstest",
+     "Regressionstests"
+    ]
+   },
+   "introduced": "Utvärdering",
+   "note": "Fixed known failures and contracts checked on every change; does not replace a new independent test."
+  },
+  {
+   "id": "last-test",
+   "spellings": {
+    "sv": [
+     "låst test",
+     "låsta testet",
+     "låsta test",
+     "held-out test",
+     "låsta testmängden"
+    ],
+    "en": [
+     "held-out test",
+     "locked test",
+     "holdout"
+    ],
+    "de": [
+     "gesperrter Test",
+     "Held-out-Test"
+    ]
+   },
+   "introduced": "Utvärdering",
+   "note": "Frozen configuration on unseen tasks, split by document, user or time; no tuning after reading results."
+  },
+  {
+   "id": "kontaminering",
+   "spellings": {
+    "sv": [
+     "kontaminering",
+     "träningskontaminering",
+     "kontaminerat",
+     "kontaminerade"
+    ],
+    "en": [
+     "contamination",
+     "training contamination"
+    ],
+    "de": [
+     "Kontamination",
+     "Trainingskontamination"
+    ]
+   },
+   "introduced": "Benchmark och egna testmängder",
+   "note": "Test data seen in training, prompt format, language or domain shifting a public benchmark score."
+  },
+  {
+   "id": "hallucination",
+   "spellings": {
+    "sv": [
+     "hallucination",
+     "hallucinationer",
+     "hallucinera",
+     "hallucinerar",
+     "hallucinerade"
+    ],
+    "en": [
+     "hallucination",
+     "hallucinations",
+     "hallucinate"
+    ],
+    "de": [
+     "Halluzination",
+     "Halluzinationen",
+     "halluzinieren"
+    ]
+   },
+   "introduced": "Faktastöd och regressioner",
+   "note": "Fluent answer without support; judged per claim, not by the model's own confidence."
+  },
+  {
+   "id": "kvalitetsgolv",
+   "spellings": {
+    "sv": [
+     "kvalitetsgolv",
+     "kvalitetsgolvet"
+    ],
+    "en": [
+     "quality floor",
+     "minimum quality"
+    ],
+    "de": [
+     "Qualitätsuntergrenze",
+     "Qualitätsminimum"
+    ]
+   },
+   "introduced": "Kvalitet efter kvantisering",
+   "note": "Minimum task quality accepted before a latency or cost gain is allowed."
+  },
+  {
+   "id": "verktygsanrop",
+   "spellings": {
+    "sv": [
+     "verktygsanrop",
+     "verktygsanropet",
+     "verktygsanropen",
+     "verktygsförslag",
+     "verktygsförslaget",
+     "tool call",
+     "tool-calling"
+    ],
+    "en": [
+     "tool call",
+     "tool calling",
+     "tool proposal"
+    ],
+    "de": [
+     "Tool-Aufruf",
+     "Tool-Aufrufe",
+     "Werkzeugvorschlag"
+    ]
+   },
+   "introduced": "Verktyg och inferenslabb",
+   "note": "Structured name and arguments proposed by the model; the application decides whether to execute."
+  },
+  {
+   "id": "orchestrator",
+   "spellings": {
+    "sv": [
+     "orchestrator",
+     "orchestratorn",
+     "orchestratorns",
+     "orchestrering"
+    ],
+    "en": [
+     "orchestrator"
+    ],
+    "de": [
+     "Orchestrator"
+    ]
+   },
+   "introduced": "Verktygsanrop är data",
+   "note": "Application layer that validates, authorises, executes and feeds results into the next model step."
+  },
+  {
+   "id": "prompt-injection",
+   "spellings": {
+    "sv": [
+     "prompt injection",
+     "promptinjektion",
+     "promptinjektioner"
+    ],
+    "en": [
+     "prompt injection"
+    ],
+    "de": [
+     "Prompt Injection",
+     "Prompt-Injection"
+    ]
+   },
+   "introduced": "Säkra verktyg och obetrodda resultat",
+   "note": "Instructions hidden in fetched pages, files or tool results; treat the content as data, not new permissions."
+  },
+  {
+   "id": "minsta-behorighet",
+   "spellings": {
+    "sv": [
+     "minsta behörighet",
+     "minsta behörigheten",
+     "least privilege"
+    ],
+    "en": [
+     "least privilege"
+    ],
+    "de": [
+     "Least Privilege",
+     "minimale Rechte"
+    ]
+   },
+   "introduced": "Säkra verktyg och obetrodda resultat",
+   "note": "Check user, tenant and object on the server at every call; no secrets in the prompt."
+  },
+  {
+   "id": "allowlist",
+   "spellings": {
+    "sv": [
+     "allowlist",
+     "allowlisten",
+     "allowlists"
+    ],
+    "en": [
+     "allowlist"
+    ],
+    "de": [
+     "Allowlist",
+     "Positivliste"
+    ]
+   },
+   "introduced": "Säkra verktyg och obetrodda resultat",
+   "note": "Names and arguments validated against an explicit list before execution; never eval or shell on model text."
+  }
+ ]
+}

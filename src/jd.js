@@ -157,4 +157,5 @@ const GLOSS=[
 ['jd.gloss.69.term','jd.gloss.69.def'],
 ['jd.gloss.70.term','jd.gloss.70.def'],
 ['jd.gloss.71.term','jd.gloss.71.def'],
+['jd.gloss.72.term','jd.gloss.72.def'],
 ];

@@ -7,5 +7,5 @@
  "n0.kursens-karta.6": "Every slide has a level: <span class=\"lvb l1\">Basic</span> assumes no prior knowledge, <span class=\"lvb l2\">Advanced</span> shows formulas and shapes, <span class=\"lvb l3\">Expert</span> goes into code and operations. New here? Take the basic track and read the whole course, then go through it again at the advanced level. Paging skips slides above the level you chose.",
  "n0.kursens-karta.7": "Each module provides goals, a summary and a checkpoint; the final module also points to further reading. Your progress and quiz results are stored in this browser. Keys: <span class=\"kbd\">←</span> <span class=\"kbd\">→</span> paging, <span class=\"kbd\">T</span> contents, <span class=\"kbd\">O</span> glossary.",
  "n0.ett-exempel-hela-vagen.1": "One example, end to end",
- "n0.ett-exempel-hela-vagen.2": "The whole course on one slide. Follow “{{example_prompt}}” through the model until it is one token longer. Each step is covered in its own module."
+ "n0.ett-exempel-hela-vagen.2": "The whole course on one slide. The text is first split into subword tokens: common words become one piece, rare ones are split up. Then follow the text “{{example_prompt}}” through the model until it is one token longer. Each step gets its own module."
 }

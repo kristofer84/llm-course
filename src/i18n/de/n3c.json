@@ -3,7 +3,7 @@
  "n3c.uppgiften-fran-vektorer-till.2": "Nach Modul 2 haben wir einen Vektor pro Token, <span class=\"sh a\">x [T, 4096]</span>. Hier vereinfachen wir auf eine Zeile pro <b>Wort</b>. Das Wort „{{example_preposition}}“ kennt seinen Kontext noch nicht.",
  "n3c.uppgiften-fran-vektorer-till.3": "Um das nächste Token zu erraten, muss die letzte Position alles Relevante über den ganzen Text wissen: wer was tut, wo und was gewöhnlich als Nächstes kommt.",
  "n3c.uppgiften-fran-vektorer-till.4": "Das ist die Aufgabe des restlichen Modells: <b>den Vektor jedes Tokens mit Kontext füllen</b>, Schritt für Schritt, bis der letzte ausreicht, um die Fortsetzung vorherzusagen.",
- "n3c.uppgiften-fran-vektorer-till.5": "Das, was diese Aufgabe erledigt, heißt <b>Transformer</b>. Die nächsten Folien erklären den Begriff und dann den Aufbau.",
+ "n3c.uppgiften-fran-vektorer-till.5": "Das, was diese Aufgabe erledigt, heißt <b>Transformer</b>: ein Stapel identischer Blöcke, die pro Token denselben Vektor lesen und schreiben. Die nächsten Folien erklären den Begriff und dann den Aufbau.",
  "n3c.uppgiften-fran-vektorer-till.6": "Nach dem Embedding",
  "n3c.uppgiften-fran-vektorer-till.7": "Nach allen Blöcken",
  "n3c.uppgiften-fran-vektorer-till.8": "Die Illustration verwendet ganze Wörter mit eigenen Zeilen für Artikel, nicht die tatsächlichen BPE-Grenzen aus Modul 2. Die Beschriftungen beschreiben ungefähr den Inhalt der Vektoren. Im Modell sind es nur Zahlen, und der Inhalt ist nicht so sauber getrennt.",

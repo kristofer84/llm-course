@@ -1,6 +1,6 @@
 {
  "n8b.vllm-i-klartext.1": "vLLM i klartext",
- "n8b.vllm-i-klartext.2": "Modellen själv kan bara räkna ut nästa ord för en text. vLLM är programmet runt modellen som tar emot frågor från många användare, delar upp grafikkortets minne mellan dem och ser till att kortet alltid har så mycket nyttigt arbete som möjligt. Tänk på en restaurang med ett enda, mycket snabbt kök.",
+ "n8b.vllm-i-klartext.2": "Modellen själv kan bara räkna ut nästa ord för en text. vLLM är programmet runt modellen som tar emot frågor från många användare, delar upp grafikkortets minne mellan dem och ser till att kortet alltid har så mycket nyttigt arbete som möjligt. Två mekanismer får egna namn här: PagedAttention lagrar KV-cachen i fasta block med en blocktabell, och continuous batching bygger om batchen varje steg så att en ledig plats fylls direkt. Tänk på en restaurang med ett enda, mycket snabbt kök.",
  "n8b.vllm-i-klartext.3": "I restaurangen",
  "n8b.vllm-i-klartext.4": "I vLLM",
  "n8b.vllm-i-klartext.5": "Mer om det",

@@ -380,7 +380,7 @@
  "jd.gloss.10.term": "Causal mask",
  "jd.gloss.10.def": "A rule in attention that makes position i see only positions 0..i.",
  "jd.gloss.11.term": "Chat template",
- "jd.gloss.11.def": "A template that turns a list of messages into a single string with special tokens.",
+ "jd.gloss.11.def": "A template (usually written in the templating language Jinja) that turns a list of messages into a single string with special tokens.",
  "jd.gloss.12.term": "Chunked prefill",
  "jd.gloss.12.def": "A long prompt is split over several steps so that it does not block other requests.",
  "jd.gloss.13.term": "Compute-bound",
@@ -500,5 +500,7 @@
  "jd.gloss.70.term": "Weight",
  "jd.gloss.70.def": "A learned number in the model. Fixed after training and used for every token.",
  "jd.gloss.71.term": "Vocabulary (V)",
- "jd.gloss.71.def": "The set of all tokens. 128,256 in Llama 3."
+ "jd.gloss.71.def": "The set of all tokens. 128,256 in Llama 3.",
+ "jd.gloss.72.term": "Jinja",
+ "jd.gloss.72.def": "Templating language used to write a model’s chat template; the template lives in tokenizer_config.json."
 }

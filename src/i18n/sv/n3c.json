@@ -3,7 +3,7 @@
  "n3c.uppgiften-fran-vektorer-till.2": "Efter modul 2 har vi en vektor per token, <span class=\"sh a\">x [T, 4096]</span>. Här förenklar vi till en rad per <b>ord</b>. Ordet ”{{example_preposition}}” känner ännu inte sitt sammanhang.",
  "n3c.uppgiften-fran-vektorer-till.3": "För att gissa nästa token behöver sista positionen veta allt relevant om hela texten: vem som gör vad, var, och vad som brukar komma härnäst.",
  "n3c.uppgiften-fran-vektorer-till.4": "Det är jobbet för resten av modellen: <b>fylla varje tokens vektor med sammanhang</b>, steg för steg, tills den sista räcker för att förutsäga fortsättningen.",
- "n3c.uppgiften-fran-vektorer-till.5": "Det som gör jobbet kallas en <b>transformer</b>. Nästa slides förklarar ordet, sedan hur den är byggd.",
+ "n3c.uppgiften-fran-vektorer-till.5": "Det som gör jobbet kallas en <b>transformer</b>: en stapel av identiska block som läser och skriver samma vektor per token. Nästa slides förklarar ordet, sedan hur den är byggd.",
  "n3c.uppgiften-fran-vektorer-till.6": "Efter embedding",
  "n3c.uppgiften-fran-vektorer-till.7": "Efter alla block",
  "n3c.uppgiften-fran-vektorer-till.8": "Illustrationen använder hela ord, med egna rader för artiklar, inte de verkliga BPE-gränserna från modul 2. Etiketterna beskriver ungefär vad vektorerna kan bära. I modellen är det bara tal, och innehållet är inte så prydligt uppdelat.",

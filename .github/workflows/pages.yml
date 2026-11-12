@@ -69,6 +69,9 @@ jobs:
       - name: Check translation coverage, markup and code blocks
         run: python3 tools/check_i18n.py
 
+      - name: Terminology is explained before later slides use it
+        run: python3 tools/check_terms.py
+
       - name: Translation provenance for every target language
         run: python3 tools/content.py status --all --strict
 

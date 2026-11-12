@@ -56,5 +56,8 @@
  "n1.vektorer-och-skalarprodukt.14": "b:s längd",
  "n1.varfor-icke-linjaritet.15": "Neuroner",
  "n1.softmax.16": "Lägg till på alla",
- "n1.softmax.17": "Skala alla"
+ "n1.softmax.17": "Skala alla",
+ "n1.vikter-och-aktiveringar.12": "<b>Var sitter routern?</b> Bara i MoE-modeller. Där ersätts blockets MLP av flera expert-MLP:er plus en liten router. Routern är en egen viktmatris som ligger före experterna och läser varje tokens vektor: <span class=\"mk\">W_router [d, E]</span> ger en poäng per expert.",
+ "n1.vikter-och-aktiveringar.13": "<b>Hur den fungerar:</b> för varje token behålls de k starkaste poängen (top-k, till exempel 2 av 8). En softmax över just dessa ger vikter, bara de experterna körs, och deras utdata summeras med vikterna. Routern är liten — några tiotusen tal per lager — jämfört med experternas hundratals miljoner, och den tränas tillsammans med resten av modellen.",
+ "n1.vikter-och-aktiveringar.14": "Kursens Llama-3-8B är tät och har ingen router; Mixtral 8×7B är ett MoE-exempel som har det."
 }

@@ -1,5 +1,5 @@
 {
-  "op.queue.lead": "<b>Capacity is finite.</b> A queue absorbs short bursts, not unlimited load. Admission bounds active work and queue length; rate limits bound arrival rate per tenant.",
+  "op.queue.lead": "<b>Capacity is finite.</b> A queue absorbs short bursts, not unlimited load. Admission bounds active work and queue length; rate limits bound arrival rate per tenant (a separated customer or organisation with its own quota).",
   "op.queue.arrivals": "Arrivals per click (1–8)",
   "op.queue.enqueue": "Submit arrivals",
   "op.queue.tick": "Next time step",
@@ -17,7 +17,7 @@
   "op.resilience.table.5": "Replica disappears",
   "op.resilience.table.6": "Readiness and health checks, drain before stopping; a stream may already have delivered partial output.",
   "op.resilience.table.7": "Uncertain whether an action ran",
-  "op.resilience.table.8": "Generation retries may yield different answers. Side effects need an idempotency key and durable deduplication in the tool.",
+  "op.resilience.table.8": "Generation retries may yield different answers. Side effects (actions that change something outside the model) need an idempotency key and durable deduplication in the tool.",
   "op.resilience.table.9": "Multiple tenants",
   "op.resilience.table.10": "Separate quotas, permissions and logging policies; isolate cache and tool access, avoid noisy neighbors.",
   "op.resilience.boundary": "A model or prompt is not a security boundary. Authentication, authorization and cost quotas live outside the model. Do not assume arbitrary sharing of private prefixes across tenants is safe.",

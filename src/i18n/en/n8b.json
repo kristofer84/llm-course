@@ -1,6 +1,6 @@
 {
  "n8b.vllm-i-klartext.1": "vLLM in plain language",
- "n8b.vllm-i-klartext.2": "The model itself can only work out the next word for one text. vLLM is the program around the model that takes questions from many users, divides the GPU’s memory between them and makes sure the GPU always has as much useful work as possible. Think of a restaurant with a single, very fast kitchen.",
+ "n8b.vllm-i-klartext.2": "The model itself can only compute the next word for a text. vLLM is the program around the model that accepts requests from many users, shares the GPU memory between them and keeps the card doing useful work. Two mechanisms get their own names here: PagedAttention stores the KV cache in fixed-size blocks with a block table, and continuous batching rebuilds the batch at every step so a freed slot is refilled at once. Think of a restaurant with one very fast kitchen.",
  "n8b.vllm-i-klartext.3": "In the restaurant",
  "n8b.vllm-i-klartext.4": "In vLLM",
  "n8b.vllm-i-klartext.5": "More on that",

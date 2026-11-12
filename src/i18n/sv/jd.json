@@ -380,7 +380,7 @@
  "jd.gloss.10.term": "Causal mask",
  "jd.gloss.10.def": "Regel i attention som gör att position i bara ser position 0..i.",
  "jd.gloss.11.term": "Chat template",
- "jd.gloss.11.def": "Mall som gör om en lista av meddelanden till en enda textsträng med specialtokens.",
+ "jd.gloss.11.def": "En mall (oftast skriven i mallspråket Jinja) som gör en lista med meddelanden till en enda sträng med specialtokens.",
  "jd.gloss.12.term": "Chunked prefill",
  "jd.gloss.12.def": "En lång prompt delas upp över flera steg så att den inte blockerar andra requests.",
  "jd.gloss.13.term": "Compute-bound",
@@ -500,5 +500,7 @@
  "jd.gloss.70.term": "Vikt",
  "jd.gloss.70.def": "Inlärt tal i modellen. Fast efter träning och används för varje token.",
  "jd.gloss.71.term": "Vokabulär (V)",
- "jd.gloss.71.def": "Mängden av alla tokens. 128 256 i Llama 3."
+ "jd.gloss.71.def": "Mängden av alla tokens. 128 256 i Llama 3.",
+ "jd.gloss.72.term": "Jinja",
+ "jd.gloss.72.def": "Mallspråk som används för att skriva modellens chat template; mallen ligger i tokenizer_config.json."
 }

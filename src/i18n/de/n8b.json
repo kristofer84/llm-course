@@ -1,6 +1,6 @@
 {
  "n8b.vllm-i-klartext.1": "vLLM einfach erklärt",
- "n8b.vllm-i-klartext.2": "Das Modell selbst kann nur das nächste Wort für einen Text berechnen. vLLM ist das Programm um das Modell herum, das Fragen vieler Nutzer entgegennimmt, den GPU-Speicher zwischen ihnen aufteilt und dafür sorgt, dass die GPU immer möglichst viel nützliche Arbeit hat. Stell dir ein Restaurant mit einer einzigen, sehr schnellen Küche vor.",
+ "n8b.vllm-i-klartext.2": "Das Modell selbst kann nur das nächste Wort für einen Text berechnen. vLLM ist das Programm um das Modell, das Anfragen vieler Nutzer annimmt, den GPU-Speicher zwischen ihnen aufteilt und die Karte mit nützlicher Arbeit beschäftigt. Zwei Mechanismen bekommen hier eigene Namen: PagedAttention legt den KV-Cache in festen Blöcken mit einer Blocktabelle ab, und Continuous Batching baut den Batch bei jedem Schritt neu, sodass ein frei gewordener Platz sofort gefüllt wird. Denk an ein Restaurant mit einer einzigen, sehr schnellen Küche.",
  "n8b.vllm-i-klartext.3": "Im Restaurant",
  "n8b.vllm-i-klartext.4": "In vLLM",
  "n8b.vllm-i-klartext.5": "Mehr dazu",

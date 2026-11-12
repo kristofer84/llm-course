@@ -89,8 +89,20 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
 })();
 (function wact(){
   const svg=$('wa-svg');let mode='dense',tok=0;const routes=[[[0,2],[1,3],[0,1]],[[0,3],[2,3],[1,2]],[[1,2],[0,2],[3,0]]];const names=EX.weightInputs;
-  function draw(){clear(svg);txt(svg,224,22,mode==='moe'?L.t('j3.51'):L.t('j3.52'),'b','middle');txt(svg,468,22,L.t('j3.53'),'b','middle');
-    for(let lw=0;lw<3;lw++){const y=40+lw*94;txt(svg,10,y+38,L.t('j3.54',{n:lw+1}),'s');const wr=rng(1000+lw*97);
+  function draw(){clear(svg);const offset=mode==='moe'?64:0;
+    txt(svg,224,22,mode==='moe'?L.t('j3.51'):L.t('j3.52'),'b','middle');txt(svg,468,22,L.t('j3.53'),'b','middle');
+    if(mode==='moe'){
+      // The router is a separate small matrix in each MoE layer, before the experts.
+      const chosen=routes[tok][0],scores=rng(900+tok*13);
+      txt(svg,74,53,L.t('j3.73'),'s','end').setAttribute('style','font-size:10.5px;font-weight:600');
+      for(let e=0;e<4;e++){const bx=82+e*72,picked=chosen.indexOf(e)>=0;
+        // Chosen experts get the two highest scores, matching the highlight.
+        const score=picked?.55+scores()*.3:.05+scores()*.3;
+        S('rect',{x:bx,y:38,width:66,height:26,rx:3,fill:picked?'var(--w)':'var(--ink2)',style:'opacity:'+(picked?.85:.18)},svg);
+        txt(svg,bx+33,55,L.num(score,2),'s','middle').setAttribute('style','font-size:10.5px'+(picked?';fill:var(--surface);font-weight:600':''));}
+      txt(svg,376,53,L.t('j3.74'),'s').setAttribute('style','font-size:10.5px');
+    }
+    for(let lw=0;lw<3;lw++){const y=40+offset+lw*94;txt(svg,10,y+38,L.t('j3.54',{n:lw+1}),'s');const wr=rng(1000+lw*97);
       for(let e=0;e<4;e++){const bx=82+e*72;const on=mode==='dense'||routes[tok][lw].indexOf(e)>=0;
         S('rect',{x:bx,y,width:66,height:70,rx:4,fill:'none',stroke:on?'var(--w)':'var(--line)','stroke-width':on?1.4:0.8},svg);
         for(let r=0;r<6;r++)for(let c=0;c<6;c++){const v=wr();S('rect',{x:bx+5+c*9.6,y:y+5+r*10.4,width:8,height:8.6,rx:1.5,fill:on?'var(--w)':'var(--ink2)',style:'opacity:'+(on?(0.2+v*0.7):(0.05+v*0.08)).toFixed(2)},svg);}
