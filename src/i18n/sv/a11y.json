@@ -1,0 +1,4 @@
+{
+ "a11y.query": "Frågetoken {{n}}: {{token}}",
+ "a11y.output": "Utdata y[{{index}}]"
+}

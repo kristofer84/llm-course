@@ -16,9 +16,9 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
    [L.t('build.stage.1'),2,L.t('j3.4'),()=>{chips(tk,'t');cap(L.t('j3.48'));}],
    [L.t('Embedding'),2,L.t('j3.5'),()=>{heat(11,-1);cap(L.t('j3.49'));}],
    [L.t('j3.50'),3,L.t('j3.6'),()=>{heat(29,4);cap(L.t('j3.7'));}],
-   [L.t('Logits'),4,L.t('j3.8'),()=>{cand.forEach((c,i)=>hbar(view,c,lg[i]/5.5,L.num(lg[i],1),'var(--a)'));cap(L.t('j3.9'));}],
-   [L.t('Sampling'),4,L.t('j3.10'),()=>{cand.forEach((c,i)=>hbar(view,c,pr[i],L.num(pr[i]*100,0)+' %','var(--tok)',i>0));cap(L.t('j3.11'));}],
-   [L.t('j3.12'),6,L.t('j3.13'),()=>{chips(tk.concat([' mattan']),'t',5);cap(L.t('j3.14'));}]];
+   [L.t('Logits'),5,L.t('j3.8'),()=>{cand.forEach((c,i)=>hbar(view,c,lg[i]/5.5,L.num(lg[i],1),'var(--a)'));cap(L.t('j3.9'));}],
+   [L.t('Sampling'),5,L.t('j3.10'),()=>{cand.forEach((c,i)=>hbar(view,c,pr[i],L.num(pr[i]*100,0)+' %','var(--tok)',i>0));cap(L.t('j3.11'));}],
+   [L.t('j3.12'),7,L.t('j3.13'),()=>{chips(tk.concat([' mattan']),'t',5);cap(L.t('j3.14'));}]];
   function draw(){
     if(!st.length)return;
     // clicks can land on buttons from an earlier render (same tick, detached nodes),
@@ -28,7 +28,8 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
     clear(box);
     st.forEach((_,i)=>{const b=H('button','btn'+(i===cur?' on':''),L.t('{{n}}. {{title}}',{n:i+1,title:st[i][0]}),box);b.addEventListener('click',()=>{cur=i;draw();});});
     clear(view);s[3]();clear(tx);H('h3',null,L.t('{{n}}. {{title}}',{n:cur+1,title:s[0]}),tx).style.marginTop='0';H('p',null,s[2],tx);
-    const g=H('button','btn',L.t('j3.15',{n:s[1],mod:L.t(MODS[s[1]]||'')}),tx);g.dataset.gomod=s[1];
+    const target=window.COURSE.moduleNumbers[String(s[1])];
+    const g=H('button','btn',L.t('j3.15',{n:target,mod:L.t(MODS[target]||'')}),tx);g.dataset.gomod=target;
     if(cur<st.length-1){const n=H('button','btn',L.t('j3.16'),tx);n.style.marginLeft='8px';n.addEventListener('click',()=>{cur=Math.min(cur+1,st.length-1);draw();});}}
   draw();
 })();
@@ -57,7 +58,7 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
       for(let j=0;j<DO;j++){cell(wx+j*c,wy+i*c,W[i][j],'var(--w)','var(--neg)');txt(svg,wx+j*c+19,wy+i*c+24,L.num(W[i][j],1),'m','middle').setAttribute('style','font-size:11px');}}
     txt(svg,wx-22,wy+DI*c/2+4,'@','b','middle');
     for(let j=0;j<DO;j++){const r=cell(wx+j*c,wy+DI*c+14,y[j]/my,'var(--a)','var(--neg)');txt(svg,wx+j*c+19,wy+DI*c+38,L.num(y[j],1),'m','middle').setAttribute('style','font-size:11px');
-      const hit=S('rect',{x:wx+j*c-2,y:wy+DI*c+12,width:c,height:c,fill:'transparent',style:'cursor:pointer'},svg);hit.addEventListener('click',()=>{sel=j;draw();});}
+      const hit=S('rect',{x:wx+j*c-2,y:wy+DI*c+12,width:c,height:c,fill:'transparent',style:'cursor:pointer','data-a11y-control':'mv-output-'+j},svg);activateControl(hit,L.t('a11y.output',{index:j}),()=>{sel=j;draw();},j===sel);}
     S('rect',{x:wx+sel*c-3,y:wy-3,width:c+2,height:DI*c+2,rx:5,class:'hl'},svg);S('rect',{x:xx-3,y:wy-3,width:c+2,height:DI*c+2,rx:5,class:'hl'},svg);S('rect',{x:wx+sel*c-3,y:wy+DI*c+11,width:c+2,height:c+2,rx:5,class:'hl'},svg);
     $('mv-out').innerHTML='y['+sel+'] = x · W[:, '+sel+'] = '+x.map((v,i)=>L.num(v,1)+'·'+(W[i][sel]<0?'(−'+L.num(-W[i][sel],1)+')':L.num(W[i][sel],1))).join(' + ')+' ≈ <b>'+L.num(y[sel],2)+'</b>';}
   $('mv-rand').addEventListener('click',()=>{seed++;mk();draw();});mk();draw();

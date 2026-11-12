@@ -28,7 +28,7 @@
  "p5.ett-decode-steg-med-shapes.7": "That is why long conversations get more expensive per token: more and more of the time goes to reading the cache.",
  "p5.hur-stor-blir-kv-cachen.1": "How big is the KV cache?",
  "p5.hur-stor-blir-kv-cachen.2": "bytes per token = 2 · L · n_kv · d_h · dtype\nLlama-3-8B, bf16:\n2 · 32 · 8 · 128 · 2 = 131 072 B = 128 KiB",
- "p5.hur-stor-blir-kv-cachen.3": "So a conversation of 8,000 tokens takes 1 GB of cache. On an H100 with 80 GB, where 16 GB goes to weights, about 50 GB is left for cache, which is around 390,000 tokens in total across all concurrent sequences.",
+ "p5.hur-stor-blir-kv-cachen.3": "A conversation of 8000 tokens takes about 1.05 GB of cache. On an H100 with 80 GB and about 16 GB of weights, roughly 50 GB may remain for cache, around 390000 tokens across all sequences. The calculator shows memory arithmetic; context beyond 8192 requires, for example, Llama-3.1 rather than the original Llama-3-8B.",
  "p5.hur-stor-blir-kv-cachen.4": "This is the number that in practice decides how many users a GPU can serve at once.",
  "p5.hur-stor-blir-kv-cachen.5": "MLA (DeepSeek) caches a compressed latent vector instead of K and V: 576 numbers per token and layer.",
  "p5.hur-stor-blir-kv-cachen.6": "24 GB",
@@ -64,9 +64,9 @@
  "p5.testa-dig-sjalv-inferens.4": "Why doesn't decode become twice as slow when the batch goes from 1 to 2 sequences?",
  "p5.testa-dig-sjalv-inferens.5": "The step is dominated by reading the weights, and that happens once regardless of batch size. The extra computation and KV reads for the second sequence are small in comparison.",
  "p5.testa-dig-sjalv-inferens.6": "What does a long system prompt affect most: TTFT or ITL?",
- "p5.testa-dig-sjalv-inferens.7": "Mainly TTFT, since it has to be prefilled. ITL also rises slightly because every decode step reads more cached positions. Prefix caching in module 8 removes most of the TTFT cost on repeats.",
+ "p5.testa-dig-sjalv-inferens.7": "Mainly TTFT, since it has to be prefilled. ITL also rises slightly because every decode step reads more cached positions. A prefix-cache hit can avoid the shared prefix’s prefill work; queueing and the uncached suffix still contribute to TTFT.",
  "p5.testa-dig-sjalv-inferens.8": "Why do int4 weights help decode more than prefill?",
- "p5.testa-dig-sjalv-inferens.9": "Decode is memory-bound, so four times fewer bytes gives almost four times faster weight reads. Prefill only becomes compute-bound with long prompts, once each byte read has been used enough times (a ratio of about 300 operations per byte). A short prompt therefore benefits from int4 as well. With long prompts int4 helps only indirectly, since weight-only int4 still computes in bf16 after unpacking.",
+ "p5.testa-dig-sjalv-inferens.9": "Weight-only int4 reduces the weight bytes by about 4 compared with bf16. That can help bandwidth-bound decode, but KV reads, unpacking, kernels and batching limit the latency gain. Long-prompt prefill often spends more time on arithmetic. Neither phase has a universal speedup guarantee.",
  "p5.prefill-och-decode.arialabel": "Prefill: many rows against the same weights. Decode: one row against the same weights.",
  "p5.kv-cache-steg-for-steg.arialabel": "Animation of the KV cache growing one column per decode step",
  "p5.ett-decode-steg-med-shapes.arialabel": "Query compared against every position in the cache",
@@ -81,5 +81,5 @@
  "p5.hur-stor-blir-kv-cachen.17": "Context",
  "p5.hur-stor-blir-kv-cachen.18": "Sequences",
  "p5.varfor-batching-raddar.19": "Batch",
- "p5.kontext             .20": "Context"
+ "p5.kontext.20": "Context"
 }

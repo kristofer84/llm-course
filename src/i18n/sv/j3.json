@@ -17,7 +17,7 @@
  "j3.16": "Nästa steg",
  "j3.17": "pekar delvis åt samma håll",
  "j3.18": "pekar åt motsatta håll",
- "j3.19": "är nästan vinkelräta: b säger inget om a",
+ "j3.19": "är nästan vinkelräta: b har nästan ingen komponent längs a",
  "j3.20": "a · b = <b>{{dot}}</b>  (|a| = 1, |b| = {{b}}, vinkel {{deg}}°). Vektorerna {{w}}. Det tjocka strecket är b:s skugga på a.",
  "j3.21": "streckad: kurvan som ska läras",
  "j3.22": "orange: vad nätet kan uttrycka",

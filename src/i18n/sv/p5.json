@@ -28,7 +28,7 @@
  "p5.ett-decode-steg-med-shapes.7": "Därför blir långa konversationer dyrare per token: allt mer av tiden går åt till att läsa cachen.",
  "p5.hur-stor-blir-kv-cachen.1": "Hur stor blir KV-cachen?",
  "p5.hur-stor-blir-kv-cachen.2": "bytes per token = 2 · L · n_kv · d_h · dtype\nLlama-3-8B, bf16:\n2 · 32 · 8 · 128 · 2 = 131 072 B = 128 KiB",
- "p5.hur-stor-blir-kv-cachen.3": "En konversation på 8 000 tokens tar alltså 1 GB cache. På en H100 med 80 GB, där 16 GB går till vikter, blir ungefär 50 GB över till cache, alltså runt 390 000 tokens totalt fördelat på alla samtidiga sekvenser.",
+ "p5.hur-stor-blir-kv-cachen.3": "En konversation på 8000 tokens tar cirka 1.05 GB cache. På en H100 med 80 GB och cirka 16 GB vikter kan ungefär 50 GB bli över till cache, runt 390000 tokens över alla sekvenser. Räknaren visar minnesaritmetik; kontext över 8192 kräver exempelvis Llama-3.1, inte ursprungliga Llama-3-8B.",
  "p5.hur-stor-blir-kv-cachen.4": "Det är den här siffran som i praktiken bestämmer hur många användare en GPU kan betjäna samtidigt.",
  "p5.hur-stor-blir-kv-cachen.5": "MLA (DeepSeek) cachar en komprimerad latent vektor i stället för K och V: 576 tal per token och lager.",
  "p5.hur-stor-blir-kv-cachen.6": "24 GB",
@@ -64,9 +64,9 @@
  "p5.testa-dig-sjalv-inferens.4": "Varför blir decode inte dubbelt så långsamt när batchen går från 1 till 2 sekvenser?",
  "p5.testa-dig-sjalv-inferens.5": "Steget domineras av att läsa vikterna, och det görs en gång oavsett batchstorlek. Den extra beräkningen och KV-läsningen för sekvens nummer två är liten i jämförelse.",
  "p5.testa-dig-sjalv-inferens.6": "Vad påverkar en lång systemprompt mest: TTFT eller ITL?",
- "p5.testa-dig-sjalv-inferens.7": "Framför allt TTFT, eftersom den ska prefillas. ITL ökar också något eftersom varje decode-steg läser fler cachade positioner. Prefix caching i modul 8 tar bort det mesta av TTFT-kostnaden vid upprepning.",
+ "p5.testa-dig-sjalv-inferens.7": "Framför allt TTFT, eftersom den ska prefillas. ITL ökar också något eftersom varje decode-steg läser fler cachade positioner. En träff i prefix-cachen kan undvika prefill-arbetet för det delade prefixet; kötid och den ej cachade fortsättningen bidrar fortfarande till TTFT.",
  "p5.testa-dig-sjalv-inferens.8": "Varför hjälper int4-vikter decode mer än prefill?",
- "p5.testa-dig-sjalv-inferens.9": "Decode är memory-bound, så fyra gånger färre bytes ger nästan fyra gånger snabbare viktläsning. Prefill blir compute-bound först vid långa prompter, när varje läst byte hunnit användas tillräckligt många gånger (kvoten cirka 300 operationer per byte). En kort prompt vinner därför också på int4. Vid långa prompter hjälper int4 bara indirekt, eftersom weight-only int4 fortfarande räknar i bf16 efter uppackning.",
+ "p5.testa-dig-sjalv-inferens.9": "Viktbaserad int4 minskar antalet viktbyte med ungefär 4 jämfört med bf16. Det kan hjälpa bandbreddsbegränsad decode, men KV-läsningar, uppackning, kärnor och batching begränsar latensvinsten. Prefill med långa promptar lägger ofta mer tid på beräkning. Ingen fas har en allmän garanti om hastighetsökning.",
  "p5.prefill-och-decode.arialabel": "Prefill: många rader mot samma vikter. Decode: en rad mot samma vikter.",
  "p5.kv-cache-steg-for-steg.arialabel": "Animering av KV-cachen som växer en kolumn per decode-steg",
  "p5.ett-decode-steg-med-shapes.arialabel": "Query jämförs mot alla positioner i cachen",
@@ -81,5 +81,5 @@
  "p5.hur-stor-blir-kv-cachen.17": "Kontext",
  "p5.hur-stor-blir-kv-cachen.18": "Sekvenser",
  "p5.varfor-batching-raddar.19": "Batch",
- "p5.kontext             .20": "Kontext"
+ "p5.kontext.20": "Kontext"
 }

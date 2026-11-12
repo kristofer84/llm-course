@@ -1,0 +1,137 @@
+<section class="slide" data-title="Träning: ett synligt viktsteg" data-level="1"><div class="si">
+  <h2 data-i18n="trn.update.title"></h2>
+  <div class="cols"><div>
+    <p data-i18n="trn.update.intro"></p>
+    <p data-i18n="trn.update.formula"></p>
+    <p data-i18n="trn.update.example"></p>
+    <p data-i18n="trn.update.predict"></p>
+    <p class="note" data-i18n="trn.update.caveat"></p>
+  </div><div class="panel">
+    <label for="trn-rate" data-i18n="trn.update.rate"></label>
+    <input id="trn-rate" style="width:100%;accent-color:var(--tok)" type="range" min="0" max="2.5" step="0.05" value="0.5" aria-describedby="trn-update-out">
+    <svg id="trn-update-svg" class="viz" viewBox="0 0 560 270" role="img" data-i18n-aria-label="trn.update.aria"></svg>
+    <output id="trn-update-out" for="trn-rate" class="out" style="display:block" aria-live="polite"></output>
+  </div></div>
+</div></section>
+
+<section class="slide" data-title="Förträning och SFT: olika data" data-level="1"><div class="si">
+  <h2 data-i18n="trn.stages.title"></h2>
+  <p data-i18n="trn.stages.intro"></p>
+  <div class="cols"><div class="panel">
+    <h3 data-i18n="trn.stages.pre.title"></h3>
+    <p data-i18n="trn.stages.pre.data"></p>
+    <p data-i18n="trn.stages.pre.example"></p>
+    <p data-i18n="trn.stages.pre.loss"></p>
+  </div><div class="panel">
+    <h3 data-i18n="trn.stages.sft.title"></h3>
+    <p data-i18n="trn.stages.sft.data"></p>
+    <p data-i18n="trn.stages.sft.example"></p>
+    <p data-i18n="trn.stages.sft.loss"></p>
+  </div></div>
+  <p data-i18n="trn.stages.separate"></p>
+  <p class="note" data-i18n="trn.stages.caveat"></p>
+</div></section>
+
+<section class="slide" data-title="Preferenser: RLHF och DPO" data-level="1"><div class="si">
+  <h2 data-i18n="trn.pref.title"></h2>
+  <div class="cols"><div>
+    <p data-i18n="trn.pref.pair"></p>
+    <p data-i18n="trn.pref.rlhf"></p>
+    <p data-i18n="trn.pref.dpo"></p>
+    <p data-i18n="trn.pref.formula"></p>
+    <p class="note" data-i18n="trn.pref.caveat"></p>
+  </div><div class="panel">
+    <label for="trn-margin" data-i18n="trn.pref.margin"></label>
+    <input id="trn-margin" style="width:100%;accent-color:var(--tok)" type="range" min="-3" max="3" step="0.1" value="0" aria-describedby="trn-pref-out">
+    <label for="trn-beta" data-i18n="trn.pref.beta"></label>
+    <select id="trn-beta"><option value="0.5" data-i18n="trn.pref.beta.low"></option><option value="1" selected data-i18n="trn.pref.beta.mid"></option><option value="2" data-i18n="trn.pref.beta.high"></option></select>
+    <svg id="trn-pref-svg" class="viz" viewBox="0 0 560 240" role="img" data-i18n-aria-label="trn.pref.aria"></svg>
+    <output id="trn-pref-out" for="trn-margin trn-beta" class="out" style="display:block" aria-live="polite"></output>
+    <p class="note" data-i18n="trn.pref.readout"></p>
+  </div></div>
+</div></section>
+
+<section class="slide" data-title="LoRA: frusen bas och låg rang" data-level="2"><div class="si">
+  <h2 data-i18n="trn.lora.title"></h2>
+  <div class="cols"><div>
+    <p data-i18n="trn.lora.intro"></p>
+    <p data-i18n="trn.lora.formula"></p>
+    <p data-i18n="trn.lora.shapes"></p>
+    <p data-i18n="trn.lora.rank"></p>
+    <p class="note" data-i18n="trn.lora.caveat"></p>
+  </div><div class="panel">
+    <label for="trn-rank" data-i18n="trn.lora.control"></label>
+    <input id="trn-rank" style="width:100%;accent-color:var(--tok)" type="range" min="1" max="4" step="1" value="1" aria-describedby="trn-lora-out">
+    <svg id="trn-lora-svg" class="viz" viewBox="0 0 560 280" role="img" data-i18n-aria-label="trn.lora.aria"></svg>
+    <output id="trn-lora-out" for="trn-rank" class="out" style="display:block" aria-live="polite"></output>
+  </div></div>
+</div></section>
+
+<section class="slide" data-title="QLoRA: vad har vilken precision?" data-level="2"><div class="si">
+  <h2 data-i18n="trn.qlora.title"></h2>
+  <p data-i18n="trn.qlora.intro"></p>
+  <table class="t"><thead><tr><th data-i18n="trn.qlora.part"></th><th data-i18n="trn.qlora.storage"></th><th data-i18n="trn.qlora.update"></th></tr></thead><tbody>
+    <tr><td data-i18n="trn.qlora.base"></td><td data-i18n="trn.qlora.base.precision"></td><td data-i18n="trn.qlora.base.update"></td></tr>
+    <tr><td data-i18n="trn.qlora.adapter"></td><td data-i18n="trn.qlora.adapter.precision"></td><td data-i18n="trn.qlora.adapter.update"></td></tr>
+    <tr><td data-i18n="trn.qlora.compute"></td><td data-i18n="trn.qlora.compute.precision"></td><td data-i18n="trn.qlora.compute.update"></td></tr>
+  </tbody></table>
+  <p data-i18n="trn.qlora.flow"></p>
+  <p data-i18n="trn.qlora.memory"></p>
+  <p class="note" data-i18n="trn.qlora.caveat"></p>
+</div></section>
+
+<section class="slide" data-title="Skala, nollpunkt och avrundning" data-level="1"><div class="si">
+  <h2 data-i18n="ql.scale.title"></h2>
+  <div class="cols"><div>
+    <p data-i18n="ql.scale.intro"></p>
+    <p data-i18n="ql.scale.symmetric"></p>
+    <p data-i18n="ql.scale.affine"></p>
+    <p data-i18n="ql.scale.round"></p>
+    <p class="note" data-i18n="ql.scale.caveat"></p>
+  </div><div class="panel">
+    <div class="ctl"><label for="ql-bits" data-i18n="ql.scale.bits"></label><select id="ql-bits"><option value="2" data-i18n="ql.scale.bits2"></option><option value="4" selected data-i18n="ql.scale.bits4"></option><option value="8" data-i18n="ql.scale.bits8"></option></select>
+    <label for="ql-mode" data-i18n="ql.scale.mode"></label><select id="ql-mode"><option value="symmetric" data-i18n="ql.scale.mode.symmetric"></option><option value="affine" data-i18n="ql.scale.mode.affine"></option></select></div>
+    <label for="ql-value" data-i18n="ql.scale.value"></label><input id="ql-value" style="width:100%;accent-color:var(--tok)" type="range" min="-4" max="4" step="0.05" value="1.25" aria-describedby="ql-scale-out">
+    <svg id="ql-scale-svg" class="viz" viewBox="0 0 560 225" role="img" data-i18n-aria-label="ql.scale.aria"></svg>
+    <output id="ql-scale-out" for="ql-bits ql-mode ql-value" class="out" style="display:block" aria-live="polite"></output>
+  </div></div>
+</div></section>
+
+<section class="slide" data-title="Grupper, utliggare och fel" data-level="1"><div class="si">
+  <h2 data-i18n="ql.groups.title"></h2>
+  <div class="cols"><div>
+    <p data-i18n="ql.groups.intro"></p>
+    <p data-i18n="ql.groups.example"></p>
+    <p data-i18n="ql.groups.storage"></p>
+    <p class="note" data-i18n="ql.groups.caveat"></p>
+  </div><div class="panel">
+    <label for="ql-group" data-i18n="ql.groups.size"></label><select id="ql-group"><option value="2" data-i18n="ql.groups.size2"></option><option value="4" selected data-i18n="ql.groups.size4"></option><option value="8" data-i18n="ql.groups.size8"></option></select>
+    <label for="ql-outlier" data-i18n="ql.groups.outlier"></label><input id="ql-outlier" style="width:100%;accent-color:var(--tok)" type="range" min="1" max="8" step="0.5" value="6" aria-describedby="ql-groups-out">
+    <svg id="ql-groups-svg" class="viz" viewBox="0 0 560 280" role="img" data-i18n-aria-label="ql.groups.aria"></svg>
+    <output id="ql-groups-out" for="ql-group ql-outlier" class="out" style="display:block" aria-live="polite"></output>
+  </div></div>
+</div></section>
+
+<section class="slide" data-title="Kalibrering utan dataläckage" data-level="1"><div class="si">
+  <h2 data-i18n="ql.cal.title"></h2>
+  <p data-i18n="ql.cal.intro"></p>
+  <div class="cols"><div class="panel"><h3 data-i18n="ql.cal.fit.title"></h3>
+    <ol><li data-i18n="ql.cal.fit.1"></li><li data-i18n="ql.cal.fit.2"></li><li data-i18n="ql.cal.fit.3"></li></ol>
+  </div><div class="panel"><h3 data-i18n="ql.cal.test.title"></h3>
+    <ol><li data-i18n="ql.cal.test.1"></li><li data-i18n="ql.cal.test.2"></li><li data-i18n="ql.cal.test.3"></li></ol>
+  </div></div>
+  <p data-i18n="ql.cal.outliers"></p>
+  <p class="note" data-i18n="ql.cal.caveat"></p>
+</div></section>
+
+<section class="slide" data-title="Vikter, aktiveringar och mätning" data-level="1"><div class="si">
+  <h2 data-i18n="ql.eval.title"></h2>
+  <table class="t"><thead><tr><th data-i18n="ql.eval.scheme"></th><th data-i18n="ql.eval.changes"></th><th data-i18n="ql.eval.check"></th></tr></thead><tbody>
+    <tr><td data-i18n="ql.eval.wo"></td><td data-i18n="ql.eval.wo.changes"></td><td data-i18n="ql.eval.wo.check"></td></tr>
+    <tr><td data-i18n="ql.eval.wa"></td><td data-i18n="ql.eval.wa.changes"></td><td data-i18n="ql.eval.wa.check"></td></tr>
+  </tbody></table>
+  <p data-i18n="ql.eval.kv"></p>
+  <ol><li data-i18n="ql.eval.protocol.1"></li><li data-i18n="ql.eval.protocol.2"></li><li data-i18n="ql.eval.protocol.3"></li></ol>
+  <p class="note" data-i18n="ql.eval.caveat"></p>
+  <details class="q"><summary data-i18n="p5.testa-dig-sjalv-inferens.8"></summary><p data-i18n="p5.testa-dig-sjalv-inferens.9"></p></details>
+</div></section>

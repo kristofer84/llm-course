@@ -4,14 +4,14 @@ import os
 import re
 import sys
 import unicodedata
+import hashlib
+import base64
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "tools"))
 import i18n_dom as D  # noqa: E402
 from leads import level  # noqa: E402
 
-OLD = ['p2.html', 'p3.html', 'p4.html', 'p5.html', 'p6.html', 'p7.html', 'p8.html']
-NEW = ['n0.html', 'n0b.html', 'n6b.html', 'n8b.html', 'n1.html', 'n3.html', 'n3b.html', 'n3c.html',
-       'n3d.html', 'n3e.html', 'n5.html', 'n6.html', 'n8.html', 'n9.html', 'n10.html']
+SOURCE_FILES = sorted(fn for fn in glob.glob('*.html') if fn not in ('p1.html', 'p9.html'))
 
 # ---------------------------------------------------------------- catalogs
 # key -> value per locale; the Swedish catalog is the source of everything the
@@ -25,7 +25,11 @@ for lf in sorted(glob.glob('i18n/*/*.json')):
     if not isinstance(data, dict):
         print('i18n: skipping', lf)
         continue
-    CAT.setdefault(loc, {}).update(data)
+    catalog = CAT.setdefault(loc, {})
+    duplicate = set(catalog).intersection(data)
+    if duplicate:
+        raise SystemExit('Duplicate catalog keys in %s: %s' % (lf, sorted(duplicate)))
+    catalog.update(data)
 SV = CAT.get('sv', {})
 LANGS = ['sv'] + sorted(l for l in CAT if l != 'sv')
 
@@ -66,9 +70,11 @@ def numbered(prefix):
 
 # ---------------------------------------------------------------- sections
 secs = {}
-for fn in OLD + NEW:
+for fn in SOURCE_FILES:
     text = open(fn, encoding='utf-8').read()
     for m in re.finditer(r'<section class="slide"[^>]*data-title="([^"]+)"[^>]*>.*?</section>', text, re.S):
+        if m.group(1) in secs:
+            raise SystemExit('Duplicate source slide title: %s' % m.group(1))
         secs[m.group(1)] = m.group(0)
 
 # MODS keeps structure only: prose comes from the catalog (i18n/sv/build.json).
@@ -121,6 +127,50 @@ ORDER = [
 QUIZMAP = {'Testa dig själv: tokens': 'm2', 'Testa dig själv: transformerblocket': 'm3',
            'Testa dig själv: logits': 'm4', 'Testa dig själv: inferens': 'm6',
            'Testa dig själv: modellvarianter': 'm7', 'Testa dig själv: vLLM': 'm8'}
+# Stable catalog identities are independent of displayed module numbers.
+for index, module in enumerate(MODS):
+    module['id'] = str(index)
+    module['time'] = {1: 35, 4: 60, 6: 40, 7: 55, 10: 15}.get(index, module['time'])
+ORDER[3].append('@quiz:blocks')
+ORDER[11].insert(ORDER[11].index('Slutprov'), '@sum')
+SUMMARY_REQUIRES = json.load(open('summary-requirements.json', encoding='utf-8'))
+EXERCISE_REQUIRES = json.load(open('exercise-requirements.json', encoding='utf-8'))
+# Additions declare first-use insertion points in the original module sequence.
+ADDITIONS = [json.load(open(path, encoding='utf-8')) for path in sorted(glob.glob('*-manifest.json'))]
+for additions in ADDITIONS:
+    for insertion in additions.get('insertions', []):
+        target = ORDER[insertion['module']]
+        at = target.index(insertion['before'])
+        target[at:at] = insertion['titles']
+    SUMMARY_REQUIRES.update(additions.get('summary_requires', {}))
+# Keep scheduling/memory and execution/operation manageable in one sequence.
+split_at = ORDER[9].index('Ett steg i model runner')
+execution = ['@open'] + ORDER[9][split_at:]
+ORDER[9] = ORDER[9][:split_at] + ['@sum', '@quiz:scheduling']
+MODS[9]['summary_keys'] = ['mod.9.key.%d' % n for n in (1, 2, 3, 4)]
+MODS[9]['time'] = 35
+ORDER.insert(10, execution)
+MODS.insert(10, dict(id='serving', time=65, hl=[], engine=True,
+                    summary_keys=['mod.serving.key.1', 'mod.9.key.5', 'mod.9.key.6']))
+for additions in ADDITIONS:
+    for module in additions.get('new_modules', []):
+        module = dict(module)
+        titles = module.pop('titles')
+        before, after = module.pop('before_module', None), module.pop('after_module', None)
+        # Explicitly move reused lessons instead of rendering duplicate IDs.
+        moved = {t for t in titles if not t.startswith('@')}
+        for sequence in ORDER:
+            sequence[:] = [t for t in sequence if t not in moved]
+        anchor = str(before if before is not None else after)
+        at = next(i for i, item in enumerate(MODS) if item['id'] == anchor)
+        if after is not None:
+            at += 1
+        MODS.insert(at, module)
+        ORDER.insert(at, titles)
+LEVELS = {}
+for title, section in secs.items():
+    explicit = re.search(r'<section[^>]*data-level="([123])"', section)
+    LEVELS[title] = int(explicit[1]) if explicit else level(title, False)
 STAGES = ['Text', 'Tokens', 'Embedding', '32 block', 'Logits', 'Sampling']
 NMOD = len(MODS) - 1
 
@@ -154,24 +204,37 @@ def sec_attrs(i, kind, title_key):
 
 
 def opener(i, m):
-    goals = ''.join('<li data-i18n="mod.%d.goal.%d"></li>' % (i, j) for j in range(1, len(numbered('mod.%d.goal' % i)) + 1))
+    ident = m['id']
+    prefix = 'mod.' + ident
+    goals = ''.join('<li data-i18n="%s.goal.%d"></li>' % (prefix, j)
+                    for j in range(1, len(numbered(prefix + '.goal')) + 1))
     vars_ = json.dumps({'m': i, 'n': NMOD, 't': m['time']})
-    return ('<section class="slide" data-level="1" data-mod="%d" data-title="%s" data-i18n-title="title.mod.%d"><div class="si"><div class="opener">'
-            '<div><p class="modnum" data-i18n="build.opener.num" data-i18n-vars=\'%s\'></p>'
-            '<h1 data-i18n="mod.%d.name"></h1><p class="lead" data-i18n="mod.%d.lead"></p></div>'
-            '<div><h3 style="margin-top:0" data-i18n="build.opener.goals"></h3><ul class="goals">%s</ul>%s</div></div></div></section>'
-            % (i, fmt('title.mod.%d' % i), i, vars_, i, i, goals, minimap(i, m)))
+    note = '<p class="note" data-i18n="learning.vllm.reference"></p>' if ident in ('9', 'serving') else ''
+    return ("""<section class="slide" data-level="1" data-mod="%d" data-title="%s" data-i18n-title="title.mod.%s"><div class="si"><div class="opener">
+<div><p class="modnum" data-i18n="build.opener.num" data-i18n-vars='%s'></p>
+<h1 data-i18n="%s.name"></h1><p class="lead" data-i18n="%s.lead"></p>%s</div>
+<div><h3 data-i18n="build.opener.goals"></h3><ul class="goals">%s</ul>%s</div></div></div></section>"""
+            % (i, fmt('title.mod.' + ident), ident, vars_, prefix, prefix, note, goals, minimap(i, m)))
 
 
 def summary(i, m):
-    keys = ''.join('<li data-i18n="mod.%d.key.%d"></li>' % (i, j) for j in range(1, len(numbered('mod.%d.key' % i)) + 1))
-    return ('<section class="slide" data-level="1" data-mod="%d" data-title="%s" data-i18n-title="title.summary.%d"><div class="si">'
-            '<p class="modnum" data-i18n="build.summary.num" data-i18n-vars=\'%s\'></p>'
-            '<h2 data-i18n="build.summary.title" data-i18n-vars=\'%s\'></h2><ol class="keys">%s</ol>'
-            '<p class="note" data-i18n="build.summary.note"></p></div></section>'
-            % (i, fmt('title.summary.%d' % i), i,
-               json.dumps({'m': i}),
-               json.dumps({'name': '#mod.%d.name' % i}), keys))
+    prefix = 'mod.' + m['id']
+    keys = []
+    summary_keys = m.get('summary_keys', ['%s.key.%d' % (prefix, j)
+                      for j in range(1, len(numbered(prefix + '.key')) + 1)])
+    for key in summary_keys:
+        required = SUMMARY_REQUIRES.get(key)
+        if not required or any(t not in LEVELS for t in required):
+            raise SystemExit('Missing summary prerequisite metadata: %s' % key)
+        depth = max(LEVELS[t] for t in required)
+        keys.append("""<li data-detail-level="%d" data-prerequisites='%s' data-i18n="%s"></li>"""
+                    % (depth, json.dumps(required, ensure_ascii=False), key))
+    return ("""<section class="slide" data-level="1" data-mod="%d" data-title="%s" data-i18n-title="title.summary.%s"><div class="si">
+<p class="modnum" data-i18n="build.summary.num" data-i18n-vars='%s'></p>
+<h2 data-i18n="build.summary.title" data-i18n-vars='%s'></h2><ol class="keys">%s</ol>
+<p class="note" data-i18n="build.summary.note"></p></div></section>"""
+            % (i, fmt('title.summary.' + m['id']), m['id'], json.dumps({'m': i}),
+               json.dumps({'name': '#' + prefix + '.name'}), ''.join(keys)))
 
 
 out = []
@@ -199,27 +262,49 @@ for i, lst in enumerate(ORDER):
         elif t == '@sum':
             out.append(summary(i, m))
         elif t.startswith('@quiz:'):
-            out.append('<section class="slide" data-level="1" data-mod="%d" data-title="%s" data-i18n-title="title.quiz.%d">'
-                       '<div class="si"><h2 data-i18n="build.quiz.title" data-i18n-vars=\'%s\'></h2>'
-                       '<div class="quiz" data-quiz="%s"></div></div></section>'
-                       % (i, fmt('title.quiz.%d' % i), i,
-                          json.dumps({'name': '#mod.%d.quizname' % i}), t[6:]))
+            out.append("""<section class="slide" data-level="1" data-mod="%d" data-title="%s" data-i18n-title="title.quiz.%s"><div class="si"><h2 data-i18n="build.quiz.title" data-i18n-vars='%s'></h2><div class="quiz" data-quiz="%s"></div></div></section>"""
+                       % (i, fmt('title.quiz.' + m['id']), m['id'],
+                          json.dumps({'name': '#mod.' + m['id'] + '.quizname'}), t[6:]))
         else:
             sec = secs[t]
             used.add(t)
-            lvl = level(t, False)
+            lvl = LEVELS[t]
             sec = re.sub(r'<section class="slide"[^>]*>',
                          '<section class="slide" data-level="%d" data-mod="%d" data-title="%s" data-i18n-title="title.%s">'
-                         % (lvl, i, t, title_key(t)), sec, 1)
+                         % (lvl, i, t, title_key(t)), sec, count=1)
             if slug(t) in LEADS and 'class="plain"' not in sec and 'class="lead"' not in sec:
                 sec = sec.replace('</h2>', '</h2>\n  <p class="plain" data-i18n="lead.%s"></p>' % slug(t), 1)
+            def annotate_exercise(match):
+                key = match[1]
+                required = EXERCISE_REQUIRES.get(key)
+                if not required or any(title not in LEVELS for title in required):
+                    raise SystemExit('Missing exercise prerequisite metadata: %s' % key)
+                depth = max(LEVELS[title] for title in required)
+                return ("""<details class="q" data-detail-level="%d" data-prerequisites='%s'><summary data-i18n="%s">"""
+                        % (depth, json.dumps(required, ensure_ascii=False), key))
+            sec = re.sub(r'<details class="q"><summary data-i18n="([^"]+)">', annotate_exercise, sec)
             if t in QUIZMAP:
-                sec = sec.replace('</h2>', '</h2>\n  <div class="quiz" data-quiz="%s"></div>\n  <h3 data-i18n="build.calc"></h3>' % QUIZMAP[t], 1)
+                depths = [int(value) for value in re.findall(r'<details class="q" data-detail-level="([123])"', sec)]
+                minimum = min(depths) if depths else 1
+                sec = sec.replace('</h2>', '</h2>\n  <div class="quiz" data-quiz="%s"></div>\n  <h3 data-detail-level="%d" data-i18n="build.calc"></h3>' % (QUIZMAP[t], minimum), 1)
             out.append(sec)
 
 print('unused:', set(secs) - used)
-course = dict(mods=['mod.%d.name' % i for i in range(len(MODS))],
-              desc=['mod.%d.desc' % i for i in range(len(MODS))],
+quiz_for_module = {}
+for section in out:
+    mod = re.search(r'data-mod="(\d+)"', section)
+    quiz = re.search(r'data-quiz="([^"]+)"', section)
+    if mod and quiz:
+        quiz_for_module[int(mod[1])] = quiz[1]
+lesson_positions = {re.search(r'data-title="([^"]+)"', section)[1]: index for index, section in enumerate(out)}
+quiz_positions = {re.search(r'data-quiz="([^"]+)"', section)[1]: index
+                  for index, section in enumerate(out) if 'data-quiz=' in section}
+course = dict(quizForModule=quiz_for_module, slideLevels=LEVELS,
+              moduleNumbers={m['id']: i for i, m in enumerate(MODS)},
+              lessonPositions=lesson_positions, quizPositions=quiz_positions,
+              legacyQuiz=json.load(open('quiz-legacy.json', encoding='utf-8')),
+              mods=['mod.' + m['id'] + '.name' for m in MODS],
+              desc=['mod.' + m['id'] + '.desc' for m in MODS],
               time=[m['time'] for m in MODS])
 
 # ---------------------------------------------------------------- assemble
@@ -228,9 +313,31 @@ parts = [open('p1.html', encoding='utf-8').read(), '\n'.join(out), open('p9.html
          '<script>window.I18N_DATA=%s;</script>' % json.dumps(CAT, ensure_ascii=False),
          '<script>\n' + open('vendor/i18next.min.js', encoding='utf-8').read() + '\n</script>',
          open('i18n/engine.js', encoding='utf-8').read()]
-for j in ['j0.js', 'jd.js', 'j1b.js', 'j2b.js', 'j3.js', 'j4.js', 'j5.js', 'j6.js', 'j7.js', 'j8.js', 'jz.js']:
-    parts.append(open(j, encoding='utf-8').read())
+SCRIPTS = ['j0.js', 'jd.js', 'quiz-groups.js', 'learning.js', 'a11y.js', 'j1b.js', 'j2b.js', 'j3.js',
+           'j4.js', 'j5.js', 'j6.js', 'j7.js', 'j8.js', 'foundations.js',
+           'training-lab.js', 'operations-lab.js', 'course-ui.js', 'jz.js']
+for j in SCRIPTS:
+    if os.path.exists(j):
+        parts.append(open(j, encoding='utf-8').read())
+    elif j not in ('a11y.js', 'foundations.js', 'training-lab.js', 'operations-lab.js'):
+        raise SystemExit('Missing runtime: %s' % j)
 full = '\n'.join(parts)
+GUIDES = ['INFERENCE-LAB.md']
+for guide in GUIDES:
+    payload = base64.b64encode(open('../docs/' + guide, 'rb').read()).decode('ascii')
+    full = full.replace('href="#" data-guide="%s"' % guide,
+                        'href="data:text/markdown;base64,%s" data-guide="%s"' % (payload, guide))
+# A content fingerprint is reproducible and avoids a self-referential Git SHA
+# in a committed generated artifact. It is useful when diagnosing stale caches.
+inputs = sorted(set(SOURCE_FILES + [j for j in SCRIPTS if os.path.exists(j)] +
+                    glob.glob('*-manifest.json') + glob.glob('i18n/*/*.json') + ['../docs/' + guide for guide in GUIDES] +
+                    ['build.py', 'leads.py', 'p1.html', 'p9.html', 'i18n/engine.js',
+                     'vendor/i18next.min.js', 'summary-requirements.json', 'exercise-requirements.json', 'quiz-legacy.json']))
+fingerprint = hashlib.sha256()
+for path in inputs:
+    fingerprint.update(path.encode())
+    fingerprint.update(open(path, 'rb').read())
+full = full.replace('</head>', '<meta name="course-revision" content="%s">\n</head>' % fingerprint.hexdigest()[:12], 1)
 
 
 # ------------------------------------------------- base language, statically

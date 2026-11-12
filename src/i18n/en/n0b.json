@@ -6,7 +6,7 @@
  "n0b.vad-ar-en-sprakmodell.5": "<b>The numbers are learned.</b> The model has read enormous amounts of text and adjusted its numbers until it got good at guessing the next word. No one typed in the rules by hand.",
  "n0b.vad-ar-en-sprakmodell.6": "<b>It does not look up answers.</b> There is no database of facts inside, only numbers that get added up. The knowledge is spread out across the numbers.",
  "n0b.vad-ar-en-sprakmodell.7": "<b>It writes one word at a time.</b> Each new word is appended to the text, and the model runs again to guess the next.",
- "n0b.vad-ar-en-sprakmodell.8": "Try it on the right: pick the next word yourself, or let the “model” choose the most likely one.",
+ "n0b.vad-ar-en-sprakmodell.8": "Try the demonstration: pick the next word yourself, or let the “model” choose the most likely one.",
  "n0b.vad-ar-en-sprakmodell.9": "The model’s guesses for the next word:",
  "n0b.vad-ar-en-sprakmodell.10": "Let the model choose",
  "n0b.vad-ar-en-sprakmodell.11": "Start over",

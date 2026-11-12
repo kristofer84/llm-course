@@ -35,7 +35,7 @@
  "n6.kv-cachen-pa-riktigt-en.3": "Varje steg räknas på två sätt:",
  "n6.kv-cachen-pa-riktigt-en.4": "<b>Utan cache</b>: hela sekvensen körs om från början.",
  "n6.kv-cachen-pa-riktigt-en.5": "<b>Med cache</b>: bara den nya token körs, K och V för resten läses.",
- "n6.kv-cachen-pa-riktigt-en.6": "Jämför kolumnen längst till höger: skillnaden i logits är noll eller ren flyttalsavrundning. KV-cachen är ingen approximation.",
+ "n6.kv-cachen-pa-riktigt-en.6": "Jämför kolumnen längst till höger: skillnaden i logits är noll eller ren flyttalsavrundning. En okvantiserad KV-cache är ingen matematisk approximation, men olika beräkningsordning kan ge små numeriska skillnader.",
  "n6.kv-cachen-pa-riktigt-en.7": "Rutnätet visar den faktiska K-cachen i lager 0, head 0. En rad per position, och gamla rader ändras aldrig.",
  "n6.kv-cachen-pa-riktigt-en.8": "Generera en token",
  "n6.kv-cachen-pa-riktigt-en.9": "Börja om",

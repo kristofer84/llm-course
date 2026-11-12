@@ -37,7 +37,7 @@
  "n3b.mlp-n-som-detektorer.2": "Varje neuron i MLP:n är en kolumn i W_gate och en rad i W_down. Kolumnen i W_gate är ett <b>mönster</b>. Skalärprodukten med tokenens vektor avgör hur väl vektorn matchar mönstret.",
  "n3b.mlp-n-som-detektorer.3": "gate = h · W_gate[:, n]       hur väl matchar h?\na    = SiLU(gate) · up         släpp fram om ja\nut  += a · W_down[n, :]        skriv neuronens riktning",
  "n3b.mlp-n-som-detektorer.4": "En neuron som slår till skriver alltså sin egen riktning till strömmen. Med 14 336 neuroner per lager och 32 lager finns det plats för väldigt många sådana regler.",
- "n3b.mlp-n-som-detektorer.5": "Slå på och av egenskaper i tokenens vektor till höger och se vilka neuroner som tänds.",
+ "n3b.mlp-n-som-detektorer.5": "Slå på och av egenskaper i demonstrationens tokenvektor och se vilka neuroner som tänds.",
  "n3b.mlp-n-som-detektorer.6": "Förenklad bild. Verkliga neuroner har sällan en ren mänsklig betydelse; de flesta reagerar på blandningar av många mönster, och ett begrepp sprids ofta över många neuroner (superposition).",
  "n3b.mlp-n-som-detektorer.7": "Egenskaper i vektorn för ”den” efter attention:",
  "n3b.lager-for-lager.1": "Lager för lager: hur svaret växer fram",

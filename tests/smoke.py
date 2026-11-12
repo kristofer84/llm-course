@@ -94,8 +94,9 @@ async def main():
         mobile = await browser.new_page(viewport={"width": 390, "height": 844})
         merrors = await prepare(mobile, [])
         wide = []
+        await mobile.goto(URL, wait_until="domcontentloaded")
         for i in range(n):
-            await mobile.goto(f"{URL}#s{i + 1}",wait_until="domcontentloaded")
+            await mobile.evaluate(f'location.hash="#s{i + 1}"')
             await mobile.wait_for_timeout(30)
             w = await mobile.evaluate("document.documentElement.scrollWidth")
             if w > 391:

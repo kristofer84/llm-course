@@ -1,0 +1,202 @@
+<section class="slide" data-title="HTTP, JSON och streaming" data-level="1"><div class="si">
+<h2 data-i18n="op.http.title"></h2>
+<p class="plain" data-i18n="op.http.lead"></p>
+<p data-i18n="op.http.json"></p>
+<svg id="op-http" class="viz" viewBox="0 0 600 300" role="img" aria-label="" data-i18n-aria-label="op.http.aria">
+  <rect x="10" y="40" width="140" height="115" rx="8" class="box"/>
+  <text x="80" y="102" text-anchor="middle" class="s" data-i18n="op.http.client"></text>
+  <rect x="325" y="15" width="265" height="160" rx="8" class="box"/>
+  <text x="338" y="40" class="s" data-i18n="op.http.server"></text>
+  <text x="338" y="100" class="s" data-i18n="op.http.format"></text>
+  <rect x="460" y="65" width="115" height="70" rx="8" class="bt"/>
+  <text x="517" y="105" text-anchor="middle" class="s" data-i18n="op.http.model"></text>
+  <line x1="150" y1="65" x2="325" y2="65" class="ln" marker-end="url(#ah)"/>
+  <text x="235" y="53" text-anchor="middle" class="s" data-i18n="op.http.request"></text>
+  <line x1="325" y1="135" x2="150" y2="135" class="ln" marker-end="url(#ah)"/>
+  <text x="235" y="123" text-anchor="middle" class="s" data-i18n="op.http.response"></text>
+  <rect x="10" y="200" width="280" height="85" rx="8" class="box"/>
+  <text x="22" y="222" class="s" data-i18n="op.http.whole"></text>
+  <text x="150" y="261" text-anchor="middle" class="m" data-i18n="op.http.body"></text>
+  <rect x="310" y="200" width="280" height="85" rx="8" class="box"/>
+  <text x="322" y="222" class="s" data-i18n="op.http.chunks"></text>
+  <text x="355" y="261" text-anchor="middle" class="s" data-i18n="op.http.chunk" data-i18n-vars='{"n":1}'></text>
+  <text x="450" y="261" text-anchor="middle" class="s" data-i18n="op.http.chunk" data-i18n-vars='{"n":2}'></text>
+  <text x="545" y="261" text-anchor="middle" class="s" data-i18n="op.http.chunk" data-i18n-vars='{"n":3}'></text>
+</svg>
+<p data-i18n="op.http.streaming"></p>
+<p class="note" data-i18n="op.http.note"></p>
+</div></section>
+
+<section class="slide" data-title="Kö, antagning och avbrott" data-level="1"><div class="si">
+<h2 data-i18n="op.queue.title"></h2>
+<p data-i18n="op.queue.lead"></p><div class="ctl"><label for="op-arrivals" data-i18n="op.queue.arrivals"></label> <input type="range" id="op-arrivals" min="1" max="8" value="4" step="1"> <button type="button" class="btn" id="op-enqueue" data-i18n="op.queue.enqueue"></button> <button type="button" class="btn" id="op-tick" data-i18n="op.queue.tick"></button> <button type="button" class="btn" id="op-cancel" data-i18n="op.queue.cancel"></button> <button type="button" class="btn" id="op-queue-reset" data-i18n="op.reset"></button></div><svg id="op-queue" class="viz" viewBox="0 0 600 180" role="img" aria-label="" data-i18n-aria-label="op.queue.aria"></svg>
+<p class="note" id="op-queue-out" role="status" aria-live="polite" aria-atomic="true"></p><p class="note" data-i18n="op.queue.model"></p><p data-i18n="op.queue.cancelnote"></p>
+</div></section>
+
+<section class="slide" data-title="Robust drift och tenantgränser" data-level="1"><div class="si">
+<h2 data-i18n="op.resilience.title"></h2>
+<p data-i18n="op.resilience.lead"></p><div class="scroll-x"><table class="t"><thead><tr><th data-i18n="op.resilience.table.1"></th><th data-i18n="op.resilience.table.2"></th></tr></thead><tbody><tr><td data-i18n="op.resilience.table.3"></td><td data-i18n="op.resilience.table.4"></td></tr><tr><td data-i18n="op.resilience.table.5"></td><td data-i18n="op.resilience.table.6"></td></tr><tr><td data-i18n="op.resilience.table.7"></td><td data-i18n="op.resilience.table.8"></td></tr><tr><td data-i18n="op.resilience.table.9"></td><td data-i18n="op.resilience.table.10"></td></tr></tbody></table></div><p class="note" data-i18n="op.resilience.boundary"></p>
+</div></section>
+
+<section class="slide" data-title="Spårning, svanslatens och kostnad" data-level="1"><div class="si">
+<h2 data-i18n="op.cost.title"></h2>
+<p data-i18n="op.cost.lead"></p><div class="ctl"><label for="op-tails" data-i18n="op.cost.tails"></label> <input type="range" id="op-tails" min="0" max="10" value="5" step="1"> <label for="op-fixed" data-i18n="op.cost.fixed"></label> <input type="range" id="op-fixed" min="0.5" max="8" value="2" step="0.5"> <label for="op-completed" data-i18n="op.cost.completed"></label> <input type="range" id="op-completed" min="250" max="4000" value="1000" step="250"> <label for="op-output" data-i18n="op.cost.output"></label> <input type="range" id="op-output" min="16" max="256" value="64" step="16"></div><svg id="op-cost" class="viz" viewBox="0 0 600 190" role="img" aria-label="" data-i18n-aria-label="op.cost.aria"></svg>
+<p class="note" id="op-cost-out" role="status" aria-live="polite" aria-atomic="true"></p><pre class="eq" data-i18n="op.cost.formula"></pre><p class="note" data-i18n="op.cost.note"></p>
+</div></section>
+
+<section class="slide" data-title="Loss och perplexitet i siffror" data-level="1"><div class="si">
+<h2 data-i18n="op.loss.title"></h2>
+<p data-i18n="op.loss.lead"></p><p data-i18n="op.loss.intuition"></p>
+<pre class="eq" data-i18n="op.loss.formula"></pre><div class="ctl"><label for="op-probability" data-i18n="op.loss.probability"></label> <input type="range" id="op-probability" min="1" max="99" value="12.5" step="0.5"></div><svg id="op-loss" class="viz" viewBox="0 0 600 210" role="img" aria-label="" data-i18n-aria-label="op.loss.aria"></svg>
+<p class="note" id="op-loss-out" role="status" aria-live="polite" aria-atomic="true"></p><p class="note" data-i18n="op.loss.note"></p>
+</div></section>
+
+<section class="slide" data-title="Benchmark och egna testmängder" data-level="1"><div class="si">
+<h2 data-i18n="op.splits.title"></h2>
+<p data-i18n="op.splits.lead"></p><div class="scroll-x"><table class="t"><thead><tr><th data-i18n="op.splits.table.1"></th><th data-i18n="op.splits.table.2"></th><th data-i18n="op.splits.table.3"></th></tr></thead><tbody><tr><td data-i18n="op.splits.table.4"></td><td data-i18n="op.splits.table.5"></td><td data-i18n="op.splits.table.6"></td></tr><tr><td data-i18n="op.splits.table.7"></td><td data-i18n="op.splits.table.8"></td><td data-i18n="op.splits.table.9"></td></tr><tr><td data-i18n="op.splits.table.10"></td><td data-i18n="op.splits.table.11"></td><td data-i18n="op.splits.table.12"></td></tr><tr><td data-i18n="op.splits.table.13"></td><td data-i18n="op.splits.table.14"></td><td data-i18n="op.splits.table.15"></td></tr></tbody></table></div><p data-i18n="op.splits.plan"></p>
+</div></section>
+
+<section class="slide" data-title="Faktastöd och regressioner" data-level="1"><div class="si">
+<h2 data-i18n="op.regressions.title"></h2>
+<p data-i18n="op.regressions.lead"></p><label for="op-eval-config" data-i18n="op.regressions.config"></label> <select id="op-eval-config"><option value="baseline" data-i18n="op.regressions.baseline"></option><option value="candidate" selected data-i18n="op.regressions.candidate"></option></select><svg id="op-eval" class="viz" viewBox="0 0 600 290" role="img" aria-label="" data-i18n-aria-label="op.regressions.aria"></svg>
+<p class="note" id="op-eval-out" role="status" aria-live="polite" aria-atomic="true"></p><p class="note" data-i18n="op.regressions.explain"></p><p data-i18n="op.regressions.release"></p>
+</div></section>
+
+<section class="slide" data-title="Kvalitet efter kvantisering" data-level="2"><div class="si">
+<h2 data-i18n="op.tradeoff.title"></h2>
+<p data-i18n="op.tradeoff.lead"></p><div class="scroll-x"><table class="t"><thead><tr><th data-i18n="op.tradeoff.table.1"></th><th data-i18n="op.tradeoff.table.2"></th><th data-i18n="op.tradeoff.table.3"></th><th data-i18n="op.tradeoff.table.4"></th></tr></thead><tbody><tr><td data-i18n="op.tradeoff.table.5"></td><td data-i18n="op.tradeoff.table.6"></td><td data-i18n="op.tradeoff.table.7"></td><td data-i18n="op.tradeoff.table.8"></td></tr><tr><td data-i18n="op.tradeoff.table.9"></td><td data-i18n="op.tradeoff.table.10"></td><td data-i18n="op.tradeoff.table.11"></td><td data-i18n="op.tradeoff.table.12"></td></tr><tr><td data-i18n="op.tradeoff.table.13"></td><td data-i18n="op.tradeoff.table.14"></td><td data-i18n="op.tradeoff.table.15"></td><td data-i18n="op.tradeoff.table.16"></td></tr></tbody></table></div><p data-i18n="op.tradeoff.check"></p><p class="note" data-i18n="op.tradeoff.note"></p>
+</div></section>
+
+<section class="slide" data-title="Verktygsanrop är data" data-level="1"><div class="si">
+<h2 data-i18n="op.tools.title"></h2>
+<p data-i18n="op.tools.lead"></p><pre class="code"><code>{"name":"lookup_order","arguments":{"order_id":"A17"}}</code></pre><div class="scroll-x"><table class="t"><thead><tr><th data-i18n="op.tools.table.1"></th><th data-i18n="op.tools.table.2"></th><th data-i18n="op.tools.table.3"></th></tr></thead><tbody><tr><td data-i18n="op.tools.table.4"></td><td data-i18n="op.tools.table.5"></td><td data-i18n="op.tools.table.6"></td></tr><tr><td data-i18n="op.tools.table.7"></td><td data-i18n="op.tools.table.8"></td><td data-i18n="op.tools.table.9"></td></tr><tr><td data-i18n="op.tools.table.10"></td><td data-i18n="op.tools.table.11"></td><td data-i18n="op.tools.table.12"></td></tr></tbody></table></div><p class="note" data-i18n="op.tools.note"></p>
+</div></section>
+
+<section class="slide" data-title="Verktygsloopen steg för steg" data-level="1"><div class="si">
+<h2 data-i18n="op.loop.title"></h2>
+<p data-i18n="op.loop.lead"></p><div class="ctl"><label for="op-tool-case" data-i18n="op.loop.case"></label> <select id="op-tool-case"><option value="ok" data-i18n="op.loop.case.ok"></option><option value="bad" data-i18n="op.loop.case.bad"></option><option value="inject" data-i18n="op.loop.case.inject"></option><option value="side" data-i18n="op.loop.case.side"></option></select> <label><input type="checkbox" id="op-tool-approval"> <span data-i18n="op.loop.approval"></span></label> <button type="button" class="btn" id="op-tool-next" data-i18n="op.loop.next"></button> <button type="button" class="btn" id="op-tool-reset" data-i18n="op.reset"></button></div><svg id="op-tool" class="viz" viewBox="0 0 600 260" role="img" aria-label="" data-i18n-aria-label="op.loop.aria"></svg><p id="op-tool-out" role="status" aria-live="polite" aria-atomic="true"></p><p class="note" data-i18n="op.loop.limit"></p>
+</div></section>
+
+<section class="slide" data-title="Säkra verktyg och obetrodda resultat" data-level="2"><div class="si">
+<h2 data-i18n="op.security.title"></h2>
+<p data-i18n="op.security.lead"></p><div class="scroll-x"><table class="t"><thead><tr><th data-i18n="op.security.table.1"></th><th data-i18n="op.security.table.2"></th></tr></thead><tbody><tr><td data-i18n="op.security.table.3"></td><td data-i18n="op.security.table.4"></td></tr><tr><td data-i18n="op.security.table.5"></td><td data-i18n="op.security.table.6"></td></tr><tr><td data-i18n="op.security.table.7"></td><td data-i18n="op.security.table.8"></td></tr><tr><td data-i18n="op.security.table.9"></td><td data-i18n="op.security.table.10"></td></tr></tbody></table></div><p data-i18n="op.security.exit"></p>
+</div></section>
+
+<section class="slide" data-title="Labben: en liten lokal server" data-level="1"><div class="si">
+<h2 data-i18n="op.local.title"></h2>
+<p data-i18n="op.local.lead"></p><pre class="code"><code>python3.11 -m venv .venv-inference
+. .venv-inference/bin/activate
+python -m pip install "vllm==0.11.0"
+vllm --version
+vllm serve Qwen/Qwen2.5-0.5B-Instruct \
+  --host 127.0.0.1 --port 8000 \
+  --dtype half --max-model-len 2048 --gpu-memory-utilization 0.5</code></pre><p data-i18n="op.local.requirements"></p><p class="note" data-i18n="op.local.scope"></p>
+</div></section>
+
+<section class="slide" data-title="Labben: första anropet" data-level="1"><div class="si">
+<h2 data-i18n="op.request.title"></h2>
+<p data-i18n="op.request.lead"></p><pre class="code"><code>curl --fail --max-time 10 http://127.0.0.1:8000/health
+curl --fail --max-time 10 http://127.0.0.1:8000/v1/models
+curl --fail --max-time 60 http://127.0.0.1:8000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{"model":"Qwen/Qwen2.5-0.5B-Instruct","messages":[{"role":"user","content":"2 + 3 = ?"}],"max_tokens":32,"temperature":0,"stream":false}'</code></pre><p data-i18n="op.request.measure"></p><p class="note" data-i18n="op.request.safety"></p>
+</div></section>
+
+<section class="slide" data-title="Labben: samtidig belastning" data-level="2"><div class="si">
+<h2 data-i18n="op.load.title"></h2>
+<p data-i18n="op.load.lead"></p><pre class="code"><code>import concurrent.futures as cf, json, math, os, sys, time
+from urllib.request import Request, urlopen
+C, N = int(sys.argv[1]), 40
+MAX_TOKENS = int(os.environ.get("LAB_MAX_TOKENS", "64"))
+URL = "http://127.0.0.1:8000/v1/chat/completions"
+payload = json.dumps({"model":"Qwen/Qwen2.5-0.5B-Instruct",
+    "messages":[{"role":"user","content":"2 + 3 = ?"}],
+    "max_tokens":MAX_TOKENS,"temperature":0,"stream":False}).encode()
+def one(_):
+    start = time.perf_counter()
+    try:
+        req = Request(URL, payload, {"Content-Type":"application/json"})
+        with urlopen(req, timeout=60) as r: data = json.load(r)
+        tokens = int(data["usage"]["completion_tokens"])
+        answer = data["choices"][0]["message"]["content"]
+        return time.perf_counter()-start, tokens, answer, None, data["choices"][0]["finish_reason"]
+    except Exception as e:
+        return time.perf_counter()-start, 0, None, type(e).__name__, None
+one(0)
+start = time.perf_counter()
+with cf.ThreadPoolExecutor(max_workers=C) as pool:
+    rows = list(pool.map(one, range(N)))
+wall = time.perf_counter()-start
+ok = sorted(r[0] for r in rows if r[3] is None)
+def pct(q): return ok[math.ceil(q*len(ok))-1] if ok else None
+print(json.dumps({"concurrency":C,"requests":N,"seconds":wall,
+    "success":len(ok),"errors":N-len(ok),"max_tokens":MAX_TOKENS,
+    "truncated":sum(r[4]=="length" for r in rows),
+    "mean_s":sum(ok)/len(ok) if ok else None,
+    "p50_s":pct(.50),"p95_s":pct(.95),"p99_s":pct(.99),
+    "successful_output_tokens_s":sum(r[1] for r in rows)/wall,
+    "results":rows}, ensure_ascii=False))</code></pre><pre class="code"><code>python lab-load.py 1 &gt; run-c1.json
+python lab-load.py 4 &gt; run-c4.json
+python lab-load.py 8 &gt; run-c8.json</code></pre><p class="note" data-i18n="op.load.note"></p>
+</div></section>
+
+<section class="slide" data-title="Labben: mät rätt latens" data-level="1"><div class="si">
+<h2 data-i18n="op.observe.title"></h2>
+<p data-i18n="op.observe.lead"></p><div class="scroll-x"><table class="t"><thead><tr><th data-i18n="op.observe.table.1"></th><th data-i18n="op.observe.table.2"></th></tr></thead><tbody><tr><td data-i18n="op.observe.table.3"></td><td data-i18n="op.observe.table.4"></td></tr><tr><td data-i18n="op.observe.table.5"></td><td data-i18n="op.observe.table.6"></td></tr><tr><td data-i18n="op.observe.table.7"></td><td data-i18n="op.observe.table.8"></td></tr><tr><td data-i18n="op.observe.table.9"></td><td data-i18n="op.observe.table.10"></td></tr></tbody></table></div><pre class="code"><code>curl --fail --max-time 10 http://127.0.0.1:8000/metrics &gt; metrics-after.txt</code></pre><p class="note" data-i18n="op.observe.note"></p>
+</div></section>
+
+<section class="slide" data-title="Labben: jämför och dokumentera" data-level="1"><div class="si">
+<h2 data-i18n="op.repeat.title"></h2>
+<p data-i18n="op.repeat.lead"></p><div class="scroll-x"><table class="t"><thead><tr><th data-i18n="op.repeat.table.1"></th><th data-i18n="op.repeat.table.2"></th></tr></thead><tbody><tr><td data-i18n="op.repeat.table.3"></td><td data-i18n="op.repeat.table.4"></td></tr><tr><td data-i18n="op.repeat.table.5"></td><td data-i18n="op.repeat.table.6"></td></tr><tr><td data-i18n="op.repeat.table.7"></td><td data-i18n="op.repeat.table.8"></td></tr><tr><td data-i18n="op.repeat.table.9"></td><td data-i18n="op.repeat.table.10"></td></tr></tbody></table></div><p data-i18n="op.repeat.deliver"></p><p class="note" data-i18n="op.repeat.scope"></p>
+<details class="lab-guide"><summary data-i18n="learning.lab.quality"></summary>
+<p data-i18n="learning.lab.quality.note"></p>
+<pre class="code"><code>[
+  {"id":"sum","prompt":"Reply with only the integer: 2 + 3 = ?","kind":"exact","expected":"5"},
+  {"id":"extract","prompt":"From 'total=17;currency=SEK', return only the currency code.","kind":"exact","expected":"SEK"},
+  {"id":"json","prompt":"Return only a JSON object with status equal to ok and count equal to the integer 2.","kind":"json","expected":{"status":"ok","count":2}},
+  {"id":"grounded","prompt":"Evidence: Ada visited Oslo on Tuesday. Which city did Ada visit? Return only the city.","kind":"exact","expected":"Oslo"},
+  {"id":"missing","prompt":"Evidence: Ada visited Oslo. What is Ada's age? If missing, return only UNKNOWN.","kind":"exact","expected":"UNKNOWN"},
+  {"id":"swedish","prompt":"Svara bara med talet: tre plus fyra.","kind":"exact","expected":"7"}
+]</code></pre>
+<pre class="code"><code>import concurrent.futures as cf, json, os, sys
+from urllib.request import Request, urlopen
+
+with open("tasks.json", encoding="utf-8") as f:
+    tasks = json.load(f)
+C = int(sys.argv[1]) if len(sys.argv) &gt; 1 else 1
+MAX_TOKENS = int(os.environ.get("LAB_MAX_TOKENS", "64"))
+assert C &gt; 0 and MAX_TOKENS &gt; 0
+def grade(task):
+    payload = json.dumps({
+        "model": "Qwen/Qwen2.5-0.5B-Instruct",
+        "messages": [{"role": "user", "content": task["prompt"]}],
+        "temperature": 0, "max_tokens": MAX_TOKENS, "stream": False
+    }).encode()
+    try:
+        req = Request("http://127.0.0.1:8000/v1/chat/completions", payload,
+                      {"Content-Type": "application/json"})
+        with urlopen(req, timeout=60) as r:
+            data = json.load(r)
+        choice = data["choices"][0]
+        answer = choice["message"]["content"]
+        try:
+            value = json.loads(answer) if task["kind"] == "json" else answer.strip()
+            passed = value == task["expected"]
+            if task["kind"] == "json":
+                passed = passed and isinstance(value, dict) and type(value.get("count")) is int
+        except (ValueError, TypeError):
+            passed = False
+        return {"id": task["id"], "passed": passed, "answer": answer,
+                "finish_reason": choice["finish_reason"], "usage": data["usage"]}
+    except Exception as e:
+        return {"id": task["id"], "passed": False, "error": type(e).__name__}
+with cf.ThreadPoolExecutor(max_workers=C) as pool:
+    records = list(pool.map(grade, tasks))
+print(json.dumps({"requested_concurrency": C, "max_inflight": min(C, len(tasks)),
+                  "max_tokens": MAX_TOKENS, "correct": sum(r["passed"] for r in records),
+                  "total": len(tasks), "results": records}, ensure_ascii=False, indent=2))</code></pre>
+<pre class="code"><code>export LAB_MAX_TOKENS=64
+python lab-quality.py 4 &gt; quality-c4.json</code></pre>
+</details>
+<p><a href="#" data-guide="INFERENCE-LAB.md" download="INFERENCE-LAB.md" data-i18n="learning.lab.download"></a></p>
+</div></section>

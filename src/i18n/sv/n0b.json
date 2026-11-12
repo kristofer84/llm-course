@@ -6,7 +6,7 @@
  "n0b.vad-ar-en-sprakmodell.5": "<b>Talen är inlärda.</b> Modellen har läst enorma mängder text och justerat sina tal tills den blev bra på att gissa nästa ord. Ingen har skrivit in regler för hand.",
  "n0b.vad-ar-en-sprakmodell.6": "<b>Den slår inte upp svar.</b> Det finns ingen databas med fakta inuti, bara tal som räknas ihop. Kunskapen ligger utspridd i talen.",
  "n0b.vad-ar-en-sprakmodell.7": "<b>Den skriver ett ord i taget.</b> Varje nytt ord läggs till texten, och modellen körs igen för att gissa nästa.",
- "n0b.vad-ar-en-sprakmodell.8": "Prova till höger: välj själv nästa ord, eller låt ”modellen” välja det mest sannolika.",
+ "n0b.vad-ar-en-sprakmodell.8": "Prova i demonstrationen: välj själv nästa ord, eller låt ”modellen” välja det mest sannolika.",
  "n0b.vad-ar-en-sprakmodell.9": "Modellens gissningar för nästa ord:",
  "n0b.vad-ar-en-sprakmodell.10": "Låt modellen välja",
  "n0b.vad-ar-en-sprakmodell.11": "Börja om",

@@ -24,21 +24,22 @@ function rect(p,x,y,w,h,cls,rx){return S('rect',{x,y,width:w,height:h,class:cls|
 
 /* ================= persistence ================= */
 const KEY='llm-kurs-v2';
-let store={seen:{},last:null,quiz:{}};
+let store={seen:{},last:null,quiz:{},answers:{}};
 try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&typeof s==='object')store=Object.assign(store,s);}catch(e){}
+for(const key of ['seen','quiz','answers'])if(!store[key]||typeof store[key]!=='object'||Array.isArray(store[key]))store[key]={};
 function save(){try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}}
 
 /* ================= deck engine ================= */
 const MODS=window.COURSE.mods,MODDESC=window.COURSE.desc,MODTIME=window.COURSE.time;
 const slides=[...document.querySelectorAll('.slide')];
 const titles=slides.map(s=>s.dataset.title);
-const LV=slides.map(s=>+(s.dataset.level||1));const LVN=['',L.t('j0.13'),L.t('j0.1'),'Expert'].map(function(x){return x?L.t(x):x;});if(!store.maxlv)store.maxlv=3;
+const LV=slides.map(s=>+(s.dataset.level||1));const LVN=['',L.t('j0.13'),L.t('j0.1'),L.t('learning.level.expert')];if(![1,2,3].includes(store.maxlv))store.maxlv=1;
 function step(d){let i=cur+d;while(i>=0&&i<slides.length&&LV[i]>store.maxlv)i+=d;if(i>=0&&i<slides.length)show(i);}
 const modOf=slides.map(s=>+s.dataset.mod);
 const firstOf=MODS.map((_,m)=>modOf.indexOf(m));
 let cur=0;
 const prog=$('prog');
-MODS.forEach((m,i)=>{const d=H('div');d.title=m;d.appendChild(H('span'));d.addEventListener('click',()=>show(firstOf[i]));prog.appendChild(d);});
+MODS.forEach((m,i)=>{const d=H('button','progress-segment');d.type='button';d.title=L.t(m);d.setAttribute('aria-label',L.t(m));d.appendChild(H('span'));d.addEventListener('click',()=>show(firstOf[i]));prog.appendChild(d);});
 const toc=$('toc'),gloss=$('gloss'),scrim=$('scrim');
 const tocLinks=[];
 (function(){const h=H('div');h.style.cssText='display:flex;justify-content:space-between;align-items:center';
@@ -50,28 +51,44 @@ const tocLinks=[];
   f.addEventListener('input',()=>{const q=f.value.trim().toLowerCase();const vis=MODS.map(()=>false);
     tocLinks.forEach((a,i)=>{const ok=!q||a.textContent.toLowerCase().indexOf(q)>=0;a.style.display=ok?'':'none';if(ok)vis[modOf[i]]=true;});
     heads.forEach((h,m)=>{if(h)h.style.display=vis[m]?'':'none';});});})();
-function closeAll(){toc.classList.remove('open');gloss.classList.remove('open');scrim.classList.remove('open');$('tocbtn').setAttribute('aria-expanded','false');$('glossbtn').setAttribute('aria-expanded','false');}
-function openDrawer(el,btn){const was=el.classList.contains('open');closeAll();if(!was){el.classList.add('open');scrim.classList.add('open');btn.setAttribute('aria-expanded','true');const i=el.querySelector('input');if(i&&window.innerWidth>860)i.focus();}}
+let drawerTrigger=null;
+function closeAll(restore=true){
+  const trigger=drawerTrigger;drawerTrigger=null;
+  [toc,gloss].forEach(el=>{el.classList.remove('open');el.inert=true;el.setAttribute('aria-hidden','true');});
+  document.querySelectorAll('.topbar,.botbar,#deck').forEach(el=>{el.inert=false;});
+  scrim.classList.remove('open');$('tocbtn').setAttribute('aria-expanded','false');$('glossbtn').setAttribute('aria-expanded','false');
+  if(restore&&trigger&&trigger.isConnected)trigger.focus({preventScroll:true});
+}
+function openDrawer(el,btn,trigger=btn){
+  const was=el.classList.contains('open');closeAll(false);
+  if(!was){
+    drawerTrigger=trigger;el.inert=false;el.setAttribute('aria-hidden','false');el.classList.add('open');
+    document.querySelectorAll('.topbar,.botbar,#deck').forEach(node=>{node.inert=true;});
+    scrim.classList.add('open');btn.setAttribute('aria-expanded','true');
+    const first=window.innerWidth>860?el.querySelector('input'):el.querySelector('button');
+    (first||el).focus({preventScroll:true});
+  }else if(trigger)trigger.focus({preventScroll:true});
+}
 $('tocbtn').addEventListener('click',()=>openDrawer(toc,$('tocbtn')));
 $('glossbtn').addEventListener('click',()=>openDrawer(gloss,$('glossbtn')));
 scrim.addEventListener('click',closeAll);
 function modStats(m){let n=0,seen=0;slides.forEach((s,i)=>{if(modOf[i]===m){n++;if(store.seen[titles[i]])seen++;}});return{n,seen};}
-function quizScore(id){const qs=QUIZ[id];if(!qs)return null;const a=(store.quiz[id]||[]);let ok=0,done=0;qs.forEach((q,i)=>{if(a[i]!=null){done++;if(a[i]===q.a)ok++;}});return{ok,done,n:qs.length};}
+function quizScore(id){if(!id||!QUIZ[id])return null;migrateQuizAnswers();const qs=questionSet(id);return{ok:qs.filter(questionCorrect).length,done:qs.filter(questionAnswered).length,n:qs.length};}
 function renderMap(){const g=$('modgrid');if(!g)return;clear(g);
-  const ps=$('pathsel');if(ps){clear(ps);[[1,L.t('j0.6')],[2,L.t('j0.7')],[3,L.t('j0.8')]].forEach(([v,lab])=>{const b=H('button','btn'+(store.maxlv===v?' on':''),L.t(lab),ps);b.addEventListener('click',()=>{store.maxlv=v;save();renderMap();show(cur);});});
+  const ps=$('pathsel');if(ps){clear(ps);[[1,L.t('j0.6')],[2,L.t('j0.7')],[3,L.t('j0.8')]].forEach(([v,lab])=>{const b=H('button','btn'+(store.maxlv===v?' on':''),L.t(lab),ps);b.addEventListener('click',()=>setDepth(v));});
     const c=slides.filter((s,k)=>LV[k]<=store.maxlv).length;H('span',null,L.t('j0.19',{n:c}),ps).style.cssText='font-family:var(--mono);font-size:13px';}
   for(let m=1;m<MODS.length;m++){const b=H('button','modcard',null,g);H('div','n',L.t('j0.14',{n:m,t:MODTIME[m]}),b);H('div','h',L.t(MODS[m]),b);H('div','d',L.t(MODDESC[m]),b);
     const st=modStats(m);st.n=0;st.seen=0;slides.forEach((s,k)=>{if(modOf[k]===m&&LV[k]<=store.maxlv){st.n++;if(store.seen[titles[k]])st.seen++;}});const pb=H('div','pb',null,b);const sp=H('span',null,null,pb);sp.style.width=(st.seen/st.n*100)+'%';
-    const qs=quizScore(m===MODS.length-1?'final':'m'+m);let meta=L.t('j0.20',{seen:st.seen,n:st.n});if(qs&&qs.done)meta+='   '+L.t('quiz {{ok}} / {{n}}',{ok:qs.ok,n:qs.n});H('div','meta',meta,b);
+    const qs=quizScore(window.COURSE.quizForModule[m]);let meta=L.t('learning.viewed',{seen:st.seen,n:st.n});if(qs&&qs.done)meta+='   '+L.t('learning.mastery',{ok:qs.ok,n:qs.n});H('div','meta',meta,b);
     b.addEventListener('click',()=>show(firstOf[m]));}
-  const r=$('resume');if(r){const li=store.last?titles.indexOf(store.last):-1;if(li>2){r.classList.add('on');$('resume-t').textContent=L.t(store.last);$('resume-b').onclick=()=>show(li);}else r.classList.remove('on');}}
+  const r=$('resume');if(r){const li=store.last?titles.indexOf(store.last):-1;if(li>2){r.classList.add('on');$('resume-t').textContent=L.t(slides[li].dataset.i18nTitle||store.last);$('resume-b').onclick=()=>show(li);}else r.classList.remove('on');}}
 function show(i){
   i=Math.max(0,Math.min(slides.length-1,i|0));
   slides[cur].classList.remove('active');cur=i;slides[i].classList.add('active');slides[i].scrollTop=0;
   const m=modOf[i];$('modname').textContent=m?L.t('j0.15',{n:m,name:L.t(MODS[m])}):L.t(MODS[0]);const lb=$('lvl');lb.textContent=LVN[LV[i]];lb.className='lvb l'+LV[i];
   $('cnt').textContent=(i+1)+' / '+slides.length;
   [...prog.children].forEach((d,k)=>{const f=firstOf[k];const n=modOf.filter(x=>x===k).length;let w=0;if(i>=f+n)w=100;else if(i>=f)w=(i-f+1)/n*100;d.firstChild.style.width=w+'%';});
-  store.seen[titles[i]]=1;if(i>0)store.last=titles[i];save();
+  store.seen[titles[i]]=1;if(i>0&&!slides[i].querySelector('#modgrid'))store.last=titles[i];save();
   tocLinks.forEach((a,k)=>{a.classList.toggle('cur',k===i);a.classList.toggle('seen',!!store.seen[titles[k]]);a.style.opacity=LV[k]>store.maxlv?'.45':'';});
   if(slides[i].querySelector('#modgrid'))renderMap();
   try{history.replaceState(null,'','#s'+(i+1));}catch(e){}
@@ -82,7 +99,18 @@ window.addEventListener('hashchange',()=>{const h=fromHash();if(h!=null&&h!==cur
 $('prevbtn').addEventListener('click',()=>step(-1));
 $('nextbtn').addEventListener('click',()=>step(1));
 document.addEventListener('keydown',e=>{
-  const tg=e.target.tagName;if(e.key==='Escape'){closeAll();return;}
+  const tg=e.target.tagName;if(e.defaultPrevented)return;if(e.key==='Escape'){closeAll();return;}
+  const drawer=[toc,gloss].find(el=>el.classList.contains('open'));
+  if(drawer){
+    if(e.key==='Tab'){
+      const focusable=[...drawer.querySelectorAll('button,input,a[href],[tabindex="0"]')].filter(el=>!el.disabled&&el.getClientRects().length);
+      const first=focusable[0],last=focusable[focusable.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+      else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+    }
+    return;
+  }
+  if(e.target.closest('[role="button"],dialog,[contenteditable="true"]'))return;
   if(tg==='INPUT'||tg==='SELECT'||tg==='TEXTAREA'||e.metaKey||e.ctrlKey||e.altKey)return;
   if(e.key==='ArrowRight'||e.key==='PageDown'){e.preventDefault();step(1);}
   else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();step(-1);}
@@ -103,15 +131,4 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-goto]');if
     const nt=curT==='dark'?'light':'dark';r.setAttribute('data-theme',nt);try{localStorage.setItem('llm-kurs-tema',nt);}catch(e){}});})();
 if(reduce){const a=document.querySelector('#herodot animateMotion');if(a)a.remove();const d=$('herodot');if(d){d.setAttribute('cx',370);d.setAttribute('cy',120);}}
 
-/* ================= quiz component ================= */
-function initQuiz(el){const id=el.dataset.quiz;const qs=QUIZ[id];if(!qs)return;
-  function draw(){clear(el);const ans=store.quiz[id]||(store.quiz[id]=[]);
-    const sc=H('div','qscore',null,el);const sb=H('span',null,null,sc);const rb=H('button','btn',L.t('j0.9'),sc);rb.addEventListener('click',()=>{store.quiz[id]=[];save();draw();});
-    function score(){let ok=0,done=0;qs.forEach((q,i)=>{if(ans[i]!=null){done++;if(ans[i]===q.a)ok++;}});sb.innerHTML=L.t('j0.16',{ok:ok,n:qs.length})+(done<qs.length?' '+L.t('j0.17',{left:qs.length-done}):(ok===qs.length?' '+L.t('j0.10'):' '+L.t('j0.11')));}
-    qs.forEach((q,i)=>{const c=H('div','qq',null,el);H('p','qt',L.t('quiz.numbered',{n:i+1,q:L.t(q.q)}),c);const os=H('div','opts',null,c);const R=rng(977+i*131+id.length*17+id.charCodeAt(id.length-1));const ord=[0,1,2,3];for(let z=3;z>0;z--){const j=Math.floor(R()*(z+1));const t=ord[z];ord[z]=ord[j];ord[j]=t;}
-      const bs=[];ord.forEach(k=>{const b=H('button','opt',L.t(q.o[k]),os);b.addEventListener('click',()=>{if(ans[i]!=null)return;ans[i]=k;save();mark();score();});bs[k]=b;});
-      const ex=H('p','ex',L.t(q.e),c);
-      function mark(){if(ans[i]==null)return;c.classList.add('done');bs.forEach((b,k)=>{b.disabled=true;if(k===q.a)b.classList.add('right');else if(k===ans[i])b.classList.add('wrong');});ex.textContent=L.t(ans[i]===q.a?L.t('j0.12'):L.t('j0.18'))+L.t(q.e);}
-      mark();});
-    score();}
-  draw();}
+/* The depth-aware quiz component is in learning.js. */

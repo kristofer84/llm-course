@@ -30,7 +30,7 @@
     S('path',{d:'M360 322 V342 H72',class:'ln','marker-end':'url(#ah)'},svg);
     line(svg,64,384,118,384,'ln',true);line(svg,360,402,360,424,'ln',true);line(svg,237,462,237,482,'ln',true);line(svg,482,462,482,482,'ln',true);line(svg,360,514,360,528,'ln',true);
     S('path',{d:'M360 566 V586 H72',class:'ln','marker-end':'url(#ah)'},svg);
-    Object.keys(N).forEach(k=>{const n=N[k];const g=S('g',{style:'cursor:pointer'},svg);g.addEventListener('click',()=>{sel=k;draw();});
+    Object.keys(N).forEach(k=>{const n=N[k];const g=S('g',{style:'cursor:pointer','data-a11y-control':'ly-node-'+k},svg);activateControl(g,n[0]==='w'?label(k):L.t(n[5]),()=>{sel=k;draw();},k===sel);
       if(n[0]==='add'){S('circle',{cx:60,cy:n[2],r:12,class:'box',style:k===sel?'stroke:var(--tok);stroke-width:3':''},g);txt(g,60,n[2]+5,'+','b','middle');return;}
       const r=S('rect',{x:n[1],y:n[2],width:n[3],height:n[4],rx:6,class:n[0]==='w'?'bw':'bg',style:(n[0]==='op'?'stroke-dasharray:4 3;':'')+(k===sel?'stroke:var(--tok);stroke-width:3':'')},g);
       if(n[0]==='w'){txt(g,n[1]+n[3]/2,n[2]+16,label(k),'m','middle').setAttribute('style','font-size:'+(label(k).length>22?11:13)+'px;font-weight:600');txt(g,n[1]+n[3]/2,n[2]+30,n[8],'m tw','middle').setAttribute('style','font-size:11px');}
@@ -85,11 +85,11 @@
   const R0=rng(77);const val=T.map(()=>Array.from({length:12},()=>R0()));const x0=150,y0=50,cw=24,rh=40;
   function draw(){clear(svg);txt(svg,x0,24,L.t('j4.62',{n:12,d:4096}),'s');txt(svg,x0-10,y0-10,'T ↓','s','end');
     T.forEach((t,r)=>{const y=y0+r*rh;const masked=mode==='att'&&r>sel;const w=mode==='att'?((W[sel]||[])[r]||0):(r===sel?1:0);
-      const lb=txt(svg,x0-10,y+rh/2+2,t,r===sel?'b':'s','end');lb.setAttribute('style','cursor:pointer');lb.addEventListener('click',()=>{sel=r;draw();});
+      txt(svg,x0-10,y+rh/2+2,t,r===sel?'b':'s','end');
       for(let c=0;c<12;c++){const cx=x0+c*cw;if(masked){S('rect',{x:cx,y:y+4,width:cw-2,height:rh-8,rx:2,fill:'url(#hatch)'},svg);continue;}
         const on=mode==='att'?(r<=sel):(r===sel);const op=on?(mode==='att'?0.12+w*0.88:0.25+val[r][c]*0.7):0.08+val[r][c]*0.1;
         S('rect',{x:cx,y:y+4,width:cw-2,height:rh-8,rx:2,fill:'var(--a)',style:'opacity:'+op.toFixed(2)},svg);}
-      const hit=S('rect',{x:0,y,width:x0+12*cw,height:rh,fill:'transparent',style:'cursor:pointer'},svg);hit.addEventListener('click',()=>{sel=r;draw();});
+      const hit=S('rect',{x:0,y,width:x0+12*cw,height:rh,fill:'transparent',style:'cursor:pointer','data-a11y-control':'am-row-'+r},svg);activateControl(hit,L.t('a11y.query',{n:r+1,token:t}),()=>{sel=r;draw();},r===sel);
       if(r===sel)S('rect',{x:x0-3,y:y+1,width:12*cw+4,height:rh-2,rx:4,class:'hl'},svg);});
     const ex=x0+12*cw+14;
     if(mode==='att'){(W[sel]||[]).forEach((w,r)=>{if(r===sel||w<0.03)return;const y1=y0+r*rh+rh/2,y2=y0+sel*rh+rh/2,h=Math.abs(y2-y1);

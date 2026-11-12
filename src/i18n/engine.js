@@ -15,7 +15,7 @@
      L.setLang(lng)      persist choice and reload
      L.apply(root)       translate the rendered DOM ([data-i18n] elements,
                          [data-i18n-<attr>] attributes, title, description)
-     L.collect(root)     [{key, tag, html, ...}] for tools/extract_i18n.py
+     L.collect(root)     [{key, tag, html, ...}] for content and browser checks
      L.missing           keys that fell back to the base language at runtime
 */
 (function () {

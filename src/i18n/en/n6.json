@@ -35,7 +35,7 @@
  "n6.kv-cachen-pa-riktigt-en.3": "Every step is computed in two ways:",
  "n6.kv-cachen-pa-riktigt-en.4": "<b>Without a cache</b>: the whole sequence is run again from the start.",
  "n6.kv-cachen-pa-riktigt-en.5": "<b>With a cache</b>: only the new token runs, K and V for the rest are read.",
- "n6.kv-cachen-pa-riktigt-en.6": "Compare the rightmost column: the difference in logits is zero or pure floating-point rounding. The KV cache is not an approximation.",
+ "n6.kv-cachen-pa-riktigt-en.6": "Compare the rightmost column: the difference in logits is zero or pure floating-point rounding. An unquantized KV cache is not a mathematical approximation, but a different computation order can cause small numerical differences.",
  "n6.kv-cachen-pa-riktigt-en.7": "The grid shows the actual K cache in layer 0, head 0. One row per position, and old rows never change.",
  "n6.kv-cachen-pa-riktigt-en.8": "Generate one token",
  "n6.kv-cachen-pa-riktigt-en.9": "Start over",
