@@ -71,6 +71,6 @@
  "j3.70": "4. One decode step (ITL)",
  "j3.71": "Total",
  "j3.72": "All {{u}} fit.",
- "j3.73": "router W_router [4096, 4] → score per expert",
+ "j3.73": "router",
  "j3.74": "top-2 chosen"
 }
