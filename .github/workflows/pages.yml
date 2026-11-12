@@ -45,6 +45,7 @@ jobs:
           python3 tests/contracts.py
           python3 tests/examples.py
           node tests/locales.js
+          node tests/foundation_state.js
           python3 tests/content_editor.py
 
       - name: Smoke test (slides, overflow, JS errors, interactive controls)
@@ -61,6 +62,9 @@ jobs:
 
       - name: Locale-native examples, token counts and generation invariants
         run: python3 tests/example_interactions.py
+
+      - name: Guided training and frozen inference interaction
+        run: python3 tests/inference_demo.py
 
       - name: Check translation coverage, markup and code blocks
         run: python3 tools/check_i18n.py

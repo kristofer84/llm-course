@@ -103,20 +103,52 @@
     <div>
       <p data-i18n="fd.state.intro"></p>
       <div class="eq" data-i18n="fd.state.work"></div>
-      <p data-i18n="fd.state.inference"></p>
+      <h3 data-i18n="fd.state.guideTitle"></h3>
+      <ol><li data-i18n="fd.state.guide1"></li><li data-i18n="fd.state.guide2"></li><li data-i18n="fd.state.guide3"></li></ol>
       <p data-i18n="fd.state.training"></p>
+      <p data-i18n="fd.state.inference"></p>
+      <p class="note" data-i18n="fd.state.referenceNote"></p>
       <p class="note" data-i18n="fd.state.cache"></p>
     </div>
     <div class="panel">
       <div class="ctl">
         <label for="fd-state-mode" data-i18n="fd.state.mode"></label>
-        <select id="fd-state-mode"><option value="inference" data-i18n="fd.state.optinfer"></option><option value="training" data-i18n="fd.state.opttrain"></option></select>
-        <label style="flex-wrap:wrap;max-width:100%"><span data-i18n="fd.state.x"></span><input id="fd-state-x" type="range" min="1" max="3" value="2"></label>
-        <button class="btn" id="fd-state-update" type="button" disabled data-i18n="fd.state.update"></button>
+        <select id="fd-state-mode"><option value="training" selected data-i18n="fd.state.opttrain"></option><option value="inference" data-i18n="fd.state.optinfer"></option></select>
+        <button class="btn" id="fd-state-update" type="button" data-i18n="fd.state.update"></button>
+        <button class="btn" id="fd-state-test" type="button" data-i18n="fd.state.test"></button>
         <button class="btn" id="fd-state-reset" type="button" data-i18n="fd.state.reset"></button>
       </div>
-      <svg class="viz" id="fd-state-svg" viewBox="0 0 560 265" role="img" data-i18n-aria-label="fd.state.aria"></svg>
-      <div class="out" id="fd-state-out" aria-live="polite"></div>
+      <p class="note" id="fd-state-hint"></p>
+      <dl class="state-values">
+        <div><dt data-i18n="fd.state.input"></dt><dd><output id="fd-state-input-value" for="fd-state-x"></output></dd></div>
+        <div><dt data-i18n="fd.state.weight"></dt><dd><output id="fd-state-weight-value"></output></dd></div>
+        <div><dt data-i18n="fd.state.activation"></dt><dd><output id="fd-state-prediction-value"></output></dd></div>
+      </dl>
+      <div id="fd-state-training">
+        <div class="scroll-x"><table class="t">
+          <caption data-i18n="fd.state.tableCaption"></caption>
+          <thead><tr><th data-i18n="fd.state.tableInput"></th><th data-i18n="fd.state.tableTarget"></th><th data-i18n="fd.state.tablePrediction"></th></tr></thead>
+          <tbody id="fd-state-rows"></tbody>
+        </table></div>
+        <label id="fd-state-progress-label" for="fd-state-progress" data-i18n="fd.state.progress"></label>
+        <progress id="fd-state-progress" value="0" max="8" aria-labelledby="fd-state-progress-label" style="width:100%;accent-color:var(--tok)"></progress>
+      </div>
+      <div class="ctl">
+        <label for="fd-state-x" data-i18n="fd.state.x"></label>
+        <input id="fd-state-x" type="range" min="1" max="5" step="0.5" value="2" disabled aria-describedby="fd-state-slider-help">
+        <output id="fd-state-xv" for="fd-state-x" class="mk"></output>
+        <span id="fd-state-target"></span>
+      </div>
+      <p class="note" id="fd-state-slider-help" data-i18n="fd.state.sliderHelp"></p>
+      <svg class="viz" id="fd-state-svg" viewBox="0 0 560 245" role="img" data-i18n-aria-label="fd.state.aria"></svg>
+      <div class="out" id="fd-state-out" role="status" aria-live="polite" aria-atomic="true"></div>
+      <p class="note" id="fd-state-change"></p>
+      <p class="note" id="fd-state-probe"></p>
+      <details><summary data-i18n="fd.state.mathTitle"></summary>
+        <p data-i18n="fd.state.mathText"></p>
+        <div class="eq" data-i18n="fd.state.mathFormula"></div>
+        <p id="fd-state-math-last"></p>
+      </details>
     </div>
   </div>
 </div></section>

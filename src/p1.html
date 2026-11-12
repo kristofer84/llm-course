@@ -221,6 +221,12 @@ pre.log mark{background:color-mix(in srgb,var(--a) 28%,transparent);color:inheri
 .viz-actions,.copy-tools,.context-glossary{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0;font-size:13px;color:var(--ink2)}
 .viz-actions .btn,.copy-tools .btn,.context-glossary .btn{padding:4px 9px;font-size:12px}
 .context-glossary{border-top:1px solid var(--line);padding-top:10px;margin-top:18px}
+.state-values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+.state-values>div{padding:10px 8px;border:1px solid var(--line);border-radius:8px;background:var(--soft);min-width:0}
+.state-values dt{font-size:12px;color:var(--ink2);overflow-wrap:anywhere}
+.state-values dd{margin:6px 0 0;font:600 18px var(--mono);color:var(--tok)}
+.state-values>div:nth-child(2) dd{color:var(--w)}
+.state-values>div:nth-child(3) dd{color:var(--a)}
 .diagram-holder{min-width:0}
 .example-scroll{max-width:100%;min-width:0;overflow:auto;scrollbar-gutter:stable}
 .example-scroll>svg{display:block;max-width:none}
