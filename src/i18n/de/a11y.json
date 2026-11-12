@@ -1,0 +1,4 @@
+{
+ "a11y.query": "Query-Token {{n}}: {{token}}",
+ "a11y.output": "Ausgabe y[{{index}}]"
+}
