@@ -64,13 +64,13 @@
 
 ## Acceptance and release
 
-- [ ] Reproducible build; static translation, markup, numeric, placeholder, formula-line, key/reference, duplicate-ID, and uncovered-text checks.
-- [ ] Automated checks for quiz prerequisites, per-depth inclusion, stable identity migration, module-score association, position balance, and glossary ordering.
-- [ ] Bilingual browser checks for every original/new visual, keyboard controls, slide/hash navigation, level switching, language switching, code copying, and regressions (including ablation and mass-click stepper).
-- [ ] Desktop/mobile overflow and offline operation checks. Run one browser worker at a time locally; use CI for the full suite.
-- [ ] Independent review of implemented diffs, not merely agent summaries; address actionable findings.
-- [ ] Commit, push, run the complete GitHub workflow, deploy, and compare published bytes with the final artifact.
-- [ ] Record assumptions, actual validation limits, final slide/module/visual counts, and release results below.
+- [x] Reproducible build; static translation, markup, numeric, placeholder, formula-line, key/reference, duplicate-ID, and uncovered-text checks.
+- [x] Automated checks for quiz prerequisites, per-depth inclusion, stable identity migration, module-score association, position balance, and glossary ordering.
+- [x] Bilingual browser checks for every original/new visual, keyboard controls, slide/hash navigation, level switching, language switching, code copying, and regressions (including ablation and mass-click stepper).
+- [x] Desktop/mobile overflow and offline operation checks. Run one browser worker at a time locally; use CI for the full suite.
+- [x] Independent review of implemented diffs, not merely agent summaries; address actionable findings.
+- [x] Commit, push, run the complete GitHub workflow, deploy, and compare published bytes with the final artifact.
+- [x] Record assumptions, actual validation limits, final slide/module/visual counts, and release results below.
 
 ## Assumptions and decisions
 
@@ -81,13 +81,16 @@
 
 ## Completion notes
 
-- Implemented 178 slides: 35 new teaching slides plus the restored checkpoint, final recap, and scaffolding for adjacent modules. There are 15 numbered modules plus Start, 88 questions, and 3,571 bilingual keys.
+- Implemented 178 slides: 35 new teaching slides plus the restored checkpoint, final recap, and scaffolding for adjacent modules. There are 15 numbered modules plus Start, 88 questions, and 3,574 bilingual keys.
 - Added 20 interactive visualizations and one static HTTP/client/server boundary diagram. The HTML contains 106 SVGs including module maps and hidden definitions.
 - Split vLLM memory/scheduling from execution/operation; added adjacent quantization, evaluation, and tools/lab modules. No alternate curriculum was introduced.
 - Independent reviews identified and resolved source-map override precedence, glossary matching before translation, a missing fixed-beta DPO condition, and missing truncation/request-setting evidence in the capstone. Screenshot review also led to whole-term glossary matching and a more compact HTTP diagram.
 - Extended depth filtering to all 31 legacy reveal exercises/FAQ entries, not just scored questions and recap bullets. Moved the quantization exercise after its actual prerequisites.
 - Fixed the previously broken resume behavior and localized resume title; corrected overview-stage module links after the original split.
 - Legacy answer identities are migrated; credit for the substantially changed SFT question is reset. New visitors default to Basics, and existing saved depth is preserved.
-- Full CI passed at a45b068: bilingual render/interaction, all new simulation boundaries, actual SVG keyboard activation/focus, 360px bilingual and 390px layout, study controls, ablation, and simultaneous stepper clicks. The final candidate adds stricter provenance, resume, glossary-boundary and migration assertions; its final workflow/release evidence will be recorded below.
+- Full CI passed at a45b068: bilingual render/interaction, all new simulation boundaries, actual SVG keyboard activation/focus, 360px bilingual and 390px layout, study controls, ablation, and simultaneous stepper clicks. Final PR CI 43191227367 passed on 6161fa9 with stricter provenance, resume, glossary-boundary and migration assertions. Both capstone clients also passed mocked executions with token limits 1 and 64; completion/truncation evidence was preserved. The complete English lab guide is embedded offline, and quality fixtures/scoring code are included in the bilingual lesson.
 - No local browser fan-out, CUDA model execution, real vLLM server, or GPU benchmark was run. Browser verification uses one sequential worker on GitHub runners. Lab commands are documentation-referenced and syntax/mock checked, not presented as hardware-validated results.
 - Optional server work requires a suitable Linux/NVIDIA host, network/model downloads, and permission to use that hardware. The explanatory course and all simulations remain offline and hardware-independent.
+- Released through PR #2 (https://github.com/kristofer84/llm-course/pull/2), merge b0ce9fd. Main workflow 43191789690 passed test, build and Pages deployment. Canonical live page and downloadable HTML both returned HTTP 200 and matched the artifact byte-for-byte: 1,345,498 bytes; SHA-256 ad936b016291ea15bc89f5675fdf06671b3773e15d14a3647b09ce8179531f43; content revision 34cd3c47b807.
+- Final translation state: 3,574 keys; zero missing, behind or unreviewed translations; static checker zero warnings/failures. Browser audit found no unresolved Swedish runtime lookups. There are 88 questions across 15 banks; uniquely-longest correct choices are 25/88 English and 28/88 Swedish, versus 47/60 before rewriting; final exam 3/15 and 4/15 respectively. Visible positions are balanced independently at each depth.
+- Remaining validation limits: no claim of universal assistive-technology compatibility, real-server compatibility, measured GPU performance, or representative model quality follows from website/browser tests or mocked clients. The optional lab describes how to collect those results on the reader’s own host. No promised implementation work remains unchecked above.
