@@ -165,7 +165,7 @@
   "trn.quiz.sft.o3": "The instruction remains as context but contributes no direct target-position loss",
   "trn.quiz.sft.o4": "The instruction is evaluated only on the test set",
   "trn.quiz.sft.e": "The mask selects positions that contribute to loss. It need not remove text from the model’s input.",
-  "trn.quiz.preference.q": "What does a lower DPO loss for a response pair show?",
+  "trn.quiz.preference.q": "At fixed β > 0, what does a lower DPO loss for a response pair show?",
   "trn.quiz.preference.o1": "A higher reference-adjusted margin for chosen versus rejected response",
   "trn.quiz.preference.o2": "A guarantee that the chosen response is factually true",
   "trn.quiz.preference.o3": "A lower explicit KL term in this displayed loss value",

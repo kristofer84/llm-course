@@ -165,7 +165,7 @@
   "trn.quiz.sft.o3": "Instruktionen finns som kontext men ger ingen direkt målpositionsförlust",
   "trn.quiz.sft.o4": "Instruktionen utvärderas bara på testmängden",
   "trn.quiz.sft.e": "Maskeringen väljer vilka positioner som bidrar till förlusten. Den behöver inte ta bort text från modellens indata.",
-  "trn.quiz.preference.q": "Vad visar en lägre DPO-förlust för ett svarpar?",
+  "trn.quiz.preference.q": "Vid fast β > 0, vad visar en lägre DPO-loss för ett svarspar?",
   "trn.quiz.preference.o1": "En högre referensjusterad marginal för valt relativt avvisat svar",
   "trn.quiz.preference.o2": "En garanti att det valda svaret är faktamässigt sant",
   "trn.quiz.preference.o3": "En lägre explicit KL-term i just det visade förlustvärdet",

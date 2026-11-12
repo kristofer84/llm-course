@@ -146,7 +146,7 @@
   "op.observe.table.10": "Serverns metrics och spår: kötryck, cacheanvändning, preemption och fel. Läs faktisk version och metrikenheter.",
   "op.observe.note": "vLLM 0.11.0 V1 har bland annat time_to_first_token_seconds, inter_token_latency_seconds och kv_cache_usage_perc med prefix vllm:. Histogram har _bucket/_sum/_count. Verifiera vad just din server exponerar; en histogramkvantil är inte rådata eller klientlatens.",
   "op.observe.title": "Labben: mät rätt latens",
-  "op.repeat.lead": "Frys en liten uppgiftsfil innan du ändrar inställningar: aritmetik, extraktion, JSON/schema, faktastöd och vägran när belägg saknas. Spara varje svar och bedöm med samma facit. Load-scriptets enda prompt är en rökkontroll, inte denna kvalitetsutvärdering.",
+  "op.repeat.lead": "Frys en liten uppgiftsfil innan du ändrar inställningar: aritmetik, extraktion, JSON/schema, faktastöd och vägran när belägg saknas. Spara varje svar och bedöm med samma facit. Load-scriptets enda prompt är en rökkontroll, inte denna kvalitetsutvärdering. Använd samma LAB_MAX_TOKENS och vald klient-samtidighet i båda labbskripten; dokumentera att testuppgifterna har olika fördelningar.",
   "op.repeat.table.1": "Håll fast",
   "op.repeat.table.2": "Logga / jämför",
   "op.repeat.table.3": "Modell och tokenizer",

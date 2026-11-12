@@ -89,13 +89,14 @@ The course's tool-loop visual is a separate application simulation. This Qwen te
 Save the following as `lab-load.py`. No requests/aiohttp package is required. Start with the small, bounded workload; do not point this at another person's service. It performs one warmup outside the measured interval, then 40 non-streaming calls. Each worker uses a 60-second socket timeout and makes no automatic retry. The warmup is deliberately excluded; check the one-request exercise succeeded first.
 
 ```python
-import concurrent.futures as cf, json, math, sys, time
+import concurrent.futures as cf, json, math, os, sys, time
 from urllib.request import Request, urlopen
 C, N = int(sys.argv[1]), 40
+MAX_TOKENS = int(os.environ.get("LAB_MAX_TOKENS", "64"))
 URL = "http://127.0.0.1:8000/v1/chat/completions"
 payload = json.dumps({"model":"Qwen/Qwen2.5-0.5B-Instruct",
     "messages":[{"role":"user","content":"2 + 3 = ?"}],
-    "max_tokens":64,"temperature":0,"stream":False}).encode()
+    "max_tokens":MAX_TOKENS,"temperature":0,"stream":False}).encode()
 def one(_):
     start = time.perf_counter()
     try:
@@ -103,9 +104,9 @@ def one(_):
         with urlopen(req, timeout=60) as r: data = json.load(r)
         tokens = int(data["usage"]["completion_tokens"])
         answer = data["choices"][0]["message"]["content"]
-        return time.perf_counter()-start, tokens, answer, None
+        return time.perf_counter()-start, tokens, answer, None, data["choices"][0]["finish_reason"]
     except Exception as e:
-        return time.perf_counter()-start, 0, None, type(e).__name__
+        return time.perf_counter()-start, 0, None, type(e).__name__, None
 one(0)
 start = time.perf_counter()
 with cf.ThreadPoolExecutor(max_workers=C) as pool:
@@ -114,7 +115,8 @@ wall = time.perf_counter()-start
 ok = sorted(r[0] for r in rows if r[3] is None)
 def pct(q): return ok[math.ceil(q*len(ok))-1] if ok else None
 print(json.dumps({"concurrency":C,"requests":N,"seconds":wall,
-    "success":len(ok),"errors":N-len(ok),
+    "success":len(ok),"errors":N-len(ok),"max_tokens":MAX_TOKENS,
+    "truncated":sum(r[4]=="length" for r in rows),
     "mean_s":sum(ok)/len(ok) if ok else None,
     "p50_s":pct(.50),"p95_s":pct(.95),"p99_s":pct(.99),
     "successful_output_tokens_s":sum(r[1] for r in rows)/wall,
@@ -136,7 +138,7 @@ Use a positive integer concurrency; only 1, 4 and 8 are needed. Increase the sam
 
 - The latency clock starts **inside the worker immediately before constructing/sending HTTP**. Waiting in the local ThreadPoolExecutor's task queue is excluded. Server queueing is included.
 - This is a **closed-loop**, bounded-thread driver: a worker sends the next request only after the previous one returns. It is not a fixed-arrival-rate overload benchmark and can understate tails seen by independent arrivals. Do not infer arbitrary arrival-rate capacity from it.
-- Every attempted request is represented in `results` as `[elapsed_seconds, successful_completion_tokens, answer, error_type]`. Errors have zero successful tokens. No retries are hidden. Review all errors and raw answers; a parsing error also counts as failure. A malformed or absent usage object is not estimated as success.
+- Every attempted request is represented in `results` as `[elapsed_seconds, successful_completion_tokens, answer, error_type, finish_reason]`. Errors have zero successful tokens. No retries are hidden. Review all errors and raw answers; a parsing error also counts as failure. A malformed or absent usage object is not estimated as success.
 - The mean and nearest-rank percentiles include **successful requests only**, so report the success/error counts beside them. Otherwise a configuration dropping slow requests can look deceptively fast. Record error types/statuses and timeout policy in a serious benchmark.
 - Aggregate throughput is **successful completion tokens divided by total measured wall time**, including time spent on failed requests. It is not the mean of per-request token rates and not input-plus-output tokens/s.
 - **40 requests are insufficient for a stable p99**: nearest-rank p99 is the maximum at this size. Repeat at least three times, then use larger representative samples to estimate tails and uncertainty. Do not combine unlike runs into a single percentile without describing how.
@@ -164,20 +166,22 @@ Create `tasks.json` containing these **visible teaching fixtures**. They are smo
 ]
 ```
 
-Save this as `lab-quality.py`. It makes the same local text requests and preserves the raw answer, finish reason and token usage. Exact comparison intentionally penalizes extra text; the JSON fixture also checks that count is an integer (not a float or boolean). This fixture-specific check is not a general JSON Schema validator. Change the rubric only on development data, not after viewing your final test.
+Save this as `lab-quality.py`. It uses the same model and shared `LAB_MAX_TOKENS` setting as the load client and preserves the raw answer, finish reason and token usage. Its argument is the requested client concurrency. A six-case fixture can have at most six requests in flight; use a larger frozen representative suite to evaluate quality under a higher sustained load. Exact comparison intentionally penalizes extra text; the JSON fixture also checks that count is an integer (not a float or boolean). This fixture-specific check is not a general JSON Schema validator. Change the rubric only on development data, not after viewing your final test.
 
 ```python
-import json
+import concurrent.futures as cf, json, os, sys
 from urllib.request import Request, urlopen
 
 with open("tasks.json", encoding="utf-8") as f:
     tasks = json.load(f)
-records = []
-for task in tasks:
+C = int(sys.argv[1]) if len(sys.argv) > 1 else 1
+MAX_TOKENS = int(os.environ.get("LAB_MAX_TOKENS", "64"))
+assert C > 0 and MAX_TOKENS > 0
+def grade(task):
     payload = json.dumps({
         "model": "Qwen/Qwen2.5-0.5B-Instruct",
         "messages": [{"role": "user", "content": task["prompt"]}],
-        "temperature": 0, "max_tokens": 64, "stream": False
+        "temperature": 0, "max_tokens": MAX_TOKENS, "stream": False
     }).encode()
     try:
         req = Request("http://127.0.0.1:8000/v1/chat/completions", payload,
@@ -193,20 +197,26 @@ for task in tasks:
                 passed = passed and isinstance(value, dict) and type(value.get("count")) is int
         except (ValueError, TypeError):
             passed = False
-        records.append({"id": task["id"], "passed": passed, "answer": answer,
-                        "finish_reason": choice["finish_reason"], "usage": data["usage"]})
+        return {"id": task["id"], "passed": passed, "answer": answer,
+                "finish_reason": choice["finish_reason"], "usage": data["usage"]}
     except Exception as e:
-        records.append({"id": task["id"], "passed": False, "error": type(e).__name__})
-print(json.dumps({"correct": sum(r["passed"] for r in records),
+        return {"id": task["id"], "passed": False, "error": type(e).__name__}
+with cf.ThreadPoolExecutor(max_workers=C) as pool:
+    records = list(pool.map(grade, tasks))
+print(json.dumps({"requested_concurrency": C, "max_inflight": min(C, len(tasks)),
+                  "max_tokens": MAX_TOKENS, "correct": sum(r["passed"] for r in records),
                   "total": len(tasks), "results": records}, ensure_ascii=False, indent=2))
 ```
 
 ```sh
 python -c 'import hashlib,pathlib; print(hashlib.sha256(pathlib.Path("tasks.json").read_bytes()).hexdigest())' > tasks-sha256.txt
-python lab-quality.py > quality-baseline.json
+export LAB_MAX_TOKENS=64
+python lab-quality.py 1 > quality-baseline.json
+python lab-load.py 4 > run-c4.json
+python lab-quality.py 4 > quality-c4.json
 ```
 
-Run baseline load and quality checks, then change **one** item (for example concurrency, max_tokens or cache settings) and repeat both. Do not call truncation a speedup with equal quality: inspect finish_reason and answer completeness. Smaller max_tokens also changes workload, so label that comparison honestly. Quantization is a separate candidate: use a compatible, appropriately licensed quantized checkpoint/engine configuration, record weight and KV precision independently, and reevaluate rare/numerical/schema/long-context cases. This lab supplies no verified INT4 startup recipe.
+Run baseline load and quality checks, then change **one** item (for example concurrency, `LAB_MAX_TOKENS` or cache settings) and repeat both. Use the same token limit in the shared environment and pass the selected client concurrency to both scripts. These quality tasks differ from the repeated load prompt: record their prompt/length distribution and achieved concurrency rather than claiming identical batching. For a sustained-load quality claim, grade representative responses collected under that load. Do not call truncation a speedup with equal quality: inspect finish_reason and answer completeness. Smaller max_tokens also changes workload, so label that comparison honestly. Quantization is a separate candidate: use a compatible, appropriately licensed quantized checkpoint/engine configuration, record weight and KV precision independently, and reevaluate rare/numerical/schema/long-context cases. This lab supplies no verified INT4 startup recipe.
 
 Use the same cases in pairs and list newly broken answers as well as fixes. Record the quality floor and latency/cost budget **before** testing. Loss/perplexity can supplement task scoring, but the non-streaming chat recipe does not compute teacher-forced perplexity; never derive it from sampled answer text or an arbitrary confidence claim.
 

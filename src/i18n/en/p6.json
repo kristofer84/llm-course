@@ -74,7 +74,7 @@
  "p6.testa-dig-sjalv.2": "Mixtral 8x7B has 46.7 B parameters. How much GPU memory do the weights need in bf16, and how much does each token compute?",
  "p6.testa-dig-sjalv.3": "About 93 GB for the weights, because all experts have to be in memory. The compute per token matches a dense model of about 13 B.",
  "p6.testa-dig-sjalv.4": "Why does MoE give less benefit with large batches than with small ones?",
- "p6.testa-dig-sjalv.5": "With small batches only the weights of the chosen experts are read. With large batches the tokens together pick almost all the experts, so all the weights get read anyway.",
+ "p6.testa-dig-sjalv.5": "A larger batch can activate more experts across its tokens, reducing the advantage in weight traffic. Each token still uses its routed subset; the outcome depends on routing, kernels and hardware.",
  "p6.testa-dig-sjalv.6": "Which attention variant gives the smallest KV cache: GQA with 8 KV heads or MLA?",
  "p6.testa-dig-sjalv.7": "MLA: 576 numbers per token and layer, versus 2 · 8 · 128 = 2048 for GQA-8 with d_h 128.",
  "p6.testa-dig-sjalv.8": "What does an image cost in a LLaVA-1.5-like model, counted in tokens?",

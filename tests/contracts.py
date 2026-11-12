@@ -78,4 +78,27 @@ for key, value in sv.items():
 assert "Astra" not in page
 assert "p5.kontext             .20" not in page
 assert re.search(r'<meta name="course-revision" content="[0-9a-f]{12}">', page)
-print("OK: bilingual line structure, provenance, retired references")
+# Detail exercises are assessments too: their prerequisites must precede them.
+for index, section in enumerate(re.findall(r'<section class="slide".*?</section>', page, re.S)):
+    for depth, raw in re.findall(r'data-detail-level="([123])" data-prerequisites=\'([^\']+)\'', section):
+        for title in json.loads(raw):
+            assert course['slideLevels'][title] <= int(depth), title
+            assert course['lessonPositions'][title] <= index, (title, index)
+    if '<ol class="keys">' in section:
+        depths = re.findall(r'<li data-detail-level="([123])"', section)
+        assert '1' in depths, f'No core summary at slide {index + 1}'
+
+# Copied capstone clients are complete Python, and slide/document copies agree.
+import ast
+import html
+lab = (ROOT / 'docs/INFERENCE-LAB.md').read_text()
+clients = re.findall(r'```python\n(.*?)\n```', lab, re.S)
+for client in clients:
+    ast.parse(client)
+load_client = clients[0]
+slide_client = re.search(r'<pre class="code"><code>(import concurrent\.futures.*?)</code></pre>',
+                         (ROOT / 'src/operations-lab.html').read_text(), re.S)[1]
+assert html.unescape(slide_client).strip() == load_client.strip()
+assert 'finish_reason' in load_client and 'LAB_MAX_TOKENS' in load_client
+assert all('LAB_MAX_TOKENS' in client for client in clients)
+print("OK: bilingual line structure, detail prerequisites, provenance, capstone clients")

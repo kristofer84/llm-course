@@ -133,6 +133,7 @@ for index, module in enumerate(MODS):
 ORDER[3].append('@quiz:blocks')
 ORDER[11].insert(ORDER[11].index('Slutprov'), '@sum')
 SUMMARY_REQUIRES = json.load(open('summary-requirements.json', encoding='utf-8'))
+EXERCISE_REQUIRES = json.load(open('exercise-requirements.json', encoding='utf-8'))
 # Additions declare first-use insertion points in the original module sequence.
 ADDITIONS = [json.load(open(path, encoding='utf-8')) for path in sorted(glob.glob('*-manifest.json'))]
 for additions in ADDITIONS:
@@ -272,8 +273,19 @@ for i, lst in enumerate(ORDER):
                          % (lvl, i, t, title_key(t)), sec, count=1)
             if slug(t) in LEADS and 'class="plain"' not in sec and 'class="lead"' not in sec:
                 sec = sec.replace('</h2>', '</h2>\n  <p class="plain" data-i18n="lead.%s"></p>' % slug(t), 1)
+            def annotate_exercise(match):
+                key = match[1]
+                required = EXERCISE_REQUIRES.get(key)
+                if not required or any(title not in LEVELS for title in required):
+                    raise SystemExit('Missing exercise prerequisite metadata: %s' % key)
+                depth = max(LEVELS[title] for title in required)
+                return ("""<details class="q" data-detail-level="%d" data-prerequisites='%s'><summary data-i18n="%s">"""
+                        % (depth, json.dumps(required, ensure_ascii=False), key))
+            sec = re.sub(r'<details class="q"><summary data-i18n="([^"]+)">', annotate_exercise, sec)
             if t in QUIZMAP:
-                sec = sec.replace('</h2>', '</h2>\n  <div class="quiz" data-quiz="%s"></div>\n  <h3 data-i18n="build.calc"></h3>' % QUIZMAP[t], 1)
+                depths = [int(value) for value in re.findall(r'<details class="q" data-detail-level="([123])"', sec)]
+                minimum = min(depths) if depths else 1
+                sec = sec.replace('</h2>', '</h2>\n  <div class="quiz" data-quiz="%s"></div>\n  <h3 data-detail-level="%d" data-i18n="build.calc"></h3>' % (QUIZMAP[t], minimum), 1)
             out.append(sec)
 
 print('unused:', set(secs) - used)
@@ -313,7 +325,7 @@ full = '\n'.join(parts)
 inputs = sorted(set(SOURCE_FILES + [j for j in SCRIPTS if os.path.exists(j)] +
                     glob.glob('*-manifest.json') + glob.glob('i18n/*/*.json') +
                     ['build.py', 'leads.py', 'p1.html', 'p9.html', 'i18n/engine.js',
-                     'vendor/i18next.min.js', 'summary-requirements.json', 'quiz-legacy.json']))
+                     'vendor/i18next.min.js', 'summary-requirements.json', 'exercise-requirements.json', 'quiz-legacy.json']))
 fingerprint = hashlib.sha256()
 for path in inputs:
     fingerprint.update(path.encode())

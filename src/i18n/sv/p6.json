@@ -74,7 +74,7 @@
  "p6.testa-dig-sjalv.2": "Mixtral 8x7B har 46,7 B parametrar. Hur mycket GPU-minne behöver vikterna i bf16, och hur mycket räknar varje token?",
  "p6.testa-dig-sjalv.3": "Ungefär 93 GB för vikterna, eftersom alla experter måste finnas i minnet. Beräkningen per token motsvarar en tät modell på cirka 13 B.",
  "p6.testa-dig-sjalv.4": "Varför ger MoE mindre fördel vid stora batchar än vid små?",
- "p6.testa-dig-sjalv.5": "Vid små batchar läses bara de valda experternas vikter. Vid stora batchar väljer tokens tillsammans nästan alla experter, så alla vikter läses ändå.",
+ "p6.testa-dig-sjalv.5": "En större batch kan aktivera fler experter över sina tokens och minska fördelen i vikttrafik. Varje token använder fortfarande sin routade delmängd; utfallet beror på routing, kärnor och hårdvara.",
  "p6.testa-dig-sjalv.6": "Vilken attention-variant ger minst KV-cache: GQA med 8 KV heads eller MLA?",
  "p6.testa-dig-sjalv.7": "MLA: 576 tal per token och lager, mot 2 · 8 · 128 = 2048 för GQA-8 med d_h 128.",
  "p6.testa-dig-sjalv.8": "Vad kostar en bild i en LLaVA-1.5-liknande modell, räknat i tokens?",

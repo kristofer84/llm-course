@@ -104,13 +104,14 @@ curl --fail --max-time 60 http://127.0.0.1:8000/v1/chat/completions \
 
 <section class="slide" data-title="Labben: samtidig belastning" data-level="2"><div class="si">
 <h2 data-i18n="op.load.title"></h2>
-<p data-i18n="op.load.lead"></p><pre class="code"><code>import concurrent.futures as cf, json, math, sys, time
+<p data-i18n="op.load.lead"></p><pre class="code"><code>import concurrent.futures as cf, json, math, os, sys, time
 from urllib.request import Request, urlopen
 C, N = int(sys.argv[1]), 40
+MAX_TOKENS = int(os.environ.get("LAB_MAX_TOKENS", "64"))
 URL = "http://127.0.0.1:8000/v1/chat/completions"
 payload = json.dumps({"model":"Qwen/Qwen2.5-0.5B-Instruct",
     "messages":[{"role":"user","content":"2 + 3 = ?"}],
-    "max_tokens":64,"temperature":0,"stream":False}).encode()
+    "max_tokens":MAX_TOKENS,"temperature":0,"stream":False}).encode()
 def one(_):
     start = time.perf_counter()
     try:
@@ -118,9 +119,9 @@ def one(_):
         with urlopen(req, timeout=60) as r: data = json.load(r)
         tokens = int(data["usage"]["completion_tokens"])
         answer = data["choices"][0]["message"]["content"]
-        return time.perf_counter()-start, tokens, answer, None
+        return time.perf_counter()-start, tokens, answer, None, data["choices"][0]["finish_reason"]
     except Exception as e:
-        return time.perf_counter()-start, 0, None, type(e).__name__
+        return time.perf_counter()-start, 0, None, type(e).__name__, None
 one(0)
 start = time.perf_counter()
 with cf.ThreadPoolExecutor(max_workers=C) as pool:
@@ -129,7 +130,8 @@ wall = time.perf_counter()-start
 ok = sorted(r[0] for r in rows if r[3] is None)
 def pct(q): return ok[math.ceil(q*len(ok))-1] if ok else None
 print(json.dumps({"concurrency":C,"requests":N,"seconds":wall,
-    "success":len(ok),"errors":N-len(ok),
+    "success":len(ok),"errors":N-len(ok),"max_tokens":MAX_TOKENS,
+    "truncated":sum(r[4]=="length" for r in rows),
     "mean_s":sum(ok)/len(ok) if ok else None,
     "p50_s":pct(.50),"p95_s":pct(.95),"p99_s":pct(.99),
     "successful_output_tokens_s":sum(r[1] for r in rows)/wall,

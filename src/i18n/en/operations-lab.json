@@ -146,7 +146,7 @@
   "op.observe.table.10": "Server metrics and traces: queue pressure, cache use, preemption and errors. Check actual version and metric units.",
   "op.observe.note": "vLLM 0.11.0 V1 includes time_to_first_token_seconds, inter_token_latency_seconds and kv_cache_usage_perc with the vllm: prefix. Histograms have _bucket/_sum/_count. Verify what your server exposes; a histogram quantile is not raw data or client latency.",
   "op.observe.title": "Lab: measure the right latency",
-  "op.repeat.lead": "Freeze a small task file before changing settings: arithmetic, extraction, JSON/schema, evidence support and refusal when evidence is missing. Save every answer and grade against the same references. The load script’s single prompt is a smoke check, not this quality evaluation.",
+  "op.repeat.lead": "Freeze a small task file before changing settings: arithmetic, extraction, JSON/schema, evidence support and refusal when evidence is missing. Save every answer and grade against the same references. The load script’s single prompt is a smoke check, not this quality evaluation. Use the same LAB_MAX_TOKENS setting and selected client concurrency in both lab scripts; record their different task distributions.",
   "op.repeat.table.1": "Keep fixed",
   "op.repeat.table.2": "Record / compare",
   "op.repeat.table.3": "Model and tokenizer",

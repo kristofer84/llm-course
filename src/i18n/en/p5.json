@@ -66,7 +66,7 @@
  "p5.testa-dig-sjalv-inferens.6": "What does a long system prompt affect most: TTFT or ITL?",
  "p5.testa-dig-sjalv-inferens.7": "Mainly TTFT, since it has to be prefilled. ITL also rises slightly because every decode step reads more cached positions. A prefix-cache hit can avoid the shared prefix’s prefill work; queueing and the uncached suffix still contribute to TTFT.",
  "p5.testa-dig-sjalv-inferens.8": "Why do int4 weights help decode more than prefill?",
- "p5.testa-dig-sjalv-inferens.9": "Decode is memory-bound, so four times fewer bytes gives almost four times faster weight reads. Prefill only becomes compute-bound with long prompts, once each byte read has been used enough times (a ratio of about 300 operations per byte). A short prompt therefore benefits from int4 as well. With long prompts int4 helps only indirectly, since weight-only int4 still computes in bf16 after unpacking.",
+ "p5.testa-dig-sjalv-inferens.9": "Weight-only int4 reduces the weight bytes by about 4 compared with bf16. That can help bandwidth-bound decode, but KV reads, unpacking, kernels and batching limit the latency gain. Long-prompt prefill often spends more time on arithmetic. Neither phase has a universal speedup guarantee.",
  "p5.prefill-och-decode.arialabel": "Prefill: many rows against the same weights. Decode: one row against the same weights.",
  "p5.kv-cache-steg-for-steg.arialabel": "Animation of the KV cache growing one column per decode step",
  "p5.ett-decode-steg-med-shapes.arialabel": "Query compared against every position in the cache",

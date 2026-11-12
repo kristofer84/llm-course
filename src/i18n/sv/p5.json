@@ -66,7 +66,7 @@
  "p5.testa-dig-sjalv-inferens.6": "Vad påverkar en lång systemprompt mest: TTFT eller ITL?",
  "p5.testa-dig-sjalv-inferens.7": "Framför allt TTFT, eftersom den ska prefillas. ITL ökar också något eftersom varje decode-steg läser fler cachade positioner. En träff i prefix-cachen kan undvika prefill-arbetet för det delade prefixet; kötid och den ej cachade fortsättningen bidrar fortfarande till TTFT.",
  "p5.testa-dig-sjalv-inferens.8": "Varför hjälper int4-vikter decode mer än prefill?",
- "p5.testa-dig-sjalv-inferens.9": "Decode är memory-bound, så fyra gånger färre bytes ger nästan fyra gånger snabbare viktläsning. Prefill blir compute-bound först vid långa prompter, när varje läst byte hunnit användas tillräckligt många gånger (kvoten cirka 300 operationer per byte). En kort prompt vinner därför också på int4. Vid långa prompter hjälper int4 bara indirekt, eftersom weight-only int4 fortfarande räknar i bf16 efter uppackning.",
+ "p5.testa-dig-sjalv-inferens.9": "Viktbaserad int4 minskar antalet viktbyte med ungefär 4 jämfört med bf16. Det kan hjälpa bandbreddsbegränsad decode, men KV-läsningar, uppackning, kärnor och batching begränsar latensvinsten. Prefill med långa promptar lägger ofta mer tid på beräkning. Ingen fas har en allmän garanti om hastighetsökning.",
  "p5.prefill-och-decode.arialabel": "Prefill: många rader mot samma vikter. Decode: en rad mot samma vikter.",
  "p5.kv-cache-steg-for-steg.arialabel": "Animering av KV-cachen som växer en kolumn per decode-steg",
  "p5.ett-decode-steg-med-shapes.arialabel": "Query jämförs mot alla positioner i cachen",
