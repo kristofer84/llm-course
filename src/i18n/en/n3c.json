@@ -3,7 +3,7 @@
  "n3c.uppgiften-fran-vektorer-till.2": "After module 2 we have one vector per token, <span class=\"sh a\">x [T, 4096]</span>. Here we simplify to one row per <b>word</b>. The word “{{example_preposition}}” does not yet know its context.",
  "n3c.uppgiften-fran-vektorer-till.3": "To guess the next token, the last position needs to know everything relevant about the whole text: who does what, where, and what usually comes next.",
  "n3c.uppgiften-fran-vektorer-till.4": "That is the job of the rest of the model: <b>fill every token’s vector with context</b>, step by step, until the last one is enough to predict what follows.",
- "n3c.uppgiften-fran-vektorer-till.5": "The thing that does the job is called a <b>transformer</b>. The next slides explain the term, then how it is built.",
+ "n3c.uppgiften-fran-vektorer-till.5": "The thing that does the job is called a <b>transformer</b>: a stack of identical blocks that read and write the same vector per token. The next slides explain the term, then how it is built.",
  "n3c.uppgiften-fran-vektorer-till.6": "After the embedding",
  "n3c.uppgiften-fran-vektorer-till.7": "After all blocks",
  "n3c.uppgiften-fran-vektorer-till.8": "The illustration uses whole words, with separate rows for articles, not the real BPE boundaries from module 2. The labels describe roughly what the vectors can carry. In the model it is just numbers, and the content is not that neatly separated.",
