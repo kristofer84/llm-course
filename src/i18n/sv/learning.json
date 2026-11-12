@@ -1,0 +1,14 @@
+{
+ "learning.level.expert": "Expert",
+ "learning.quiz.empty": "Det här kunskapstestet har inga frågor på det valda djupet. Förkunskaperna finns på en djupare nivå.",
+ "learning.viewed": "Visat {{seen}} / {{n}} bilder",
+ "learning.mastery": "Kunskapstest: {{ok}} / {{n}} rätt",
+ "learning.diagram": "Förstorad figur",
+ "learning.close": "Stäng",
+ "learning.expand": "Förstora figur",
+ "learning.copy": "Kopiera text",
+ "learning.copied": "Kopierat",
+ "learning.copy.failed": "Urklipp är inte tillgängligt; markera texten för att kopiera den.",
+ "learning.definitions": "Definitioner:",
+ "learning.define": "Förklara {{term}}"
+}

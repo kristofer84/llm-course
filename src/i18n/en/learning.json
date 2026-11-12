@@ -1,0 +1,14 @@
+{
+ "learning.level.expert": "Expert",
+ "learning.quiz.empty": "This checkpoint has no questions at the selected depth. Its prerequisites are available at a deeper level.",
+ "learning.viewed": "Viewed {{seen}} / {{n}} slides",
+ "learning.mastery": "Checkpoint: {{ok}} / {{n}} correct",
+ "learning.diagram": "Expanded diagram",
+ "learning.close": "Close",
+ "learning.expand": "Expand diagram",
+ "learning.copy": "Copy text",
+ "learning.copied": "Copied",
+ "learning.copy.failed": "Clipboard unavailable; select the text to copy it.",
+ "learning.definitions": "Definitions:",
+ "learning.define": "Define {{term}}"
+}
