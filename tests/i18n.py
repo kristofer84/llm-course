@@ -4,7 +4,8 @@ Build first: (cd src && python3 build.py), then python3 tests/i18n.py.
 Every shipped locale is rendered slide by slide with interactive controls.
 Check catalog coverage, translated keyed DOM, document metadata, switch order,
 locale numbers, glossary collation, browser detection and persisted/hash-safe
-switching. Swedish sample tokens are deliberate data (en/data.json), not leaks.
+switching. Locale-native scenario packs are checked independently; there is no
+Swedish-example allowlist in English or German.
 German shares umlauts with Swedish, so runtime leak checks compare catalog
 values rather than treating German letters as evidence of Swedish.
 """
@@ -50,14 +51,6 @@ def load_catalog(locale="en"):
             continue
         cat.update(json.loads(f.read_text(encoding="utf-8")))
     return cat
-
-
-def identity_values():
-    path = I18N / "en" / "data.json"
-    if not path.exists():
-        return set()
-    d = json.loads(path.read_text(encoding="utf-8"))
-    return {k for k, v in d.items() if k == v}
 
 
 def coverage(sv, target, locale):
@@ -137,7 +130,7 @@ async def render_pass(browser, lang, max_clicks=8):
         slides.append(title.strip())
     if lang != 'sv':
         missing = await page.evaluate('L.missing')
-        ident = identity_values()
+        ident = set()
         source_values, target_values = set(load_catalog('sv').values()), set(load_catalog(lang).values())
         english_values = set(load_catalog('en').values())
         # German shares umlauts with Swedish: letter heuristics alone are invalid.
@@ -154,7 +147,7 @@ async def main():
         print(f"FAIL missing build: {HTML}")
         return 1
     catalogs = {locale: load_catalog(locale) for locale in LOCALES}
-    sv_cat, ident = catalogs['sv'], identity_values()
+    sv_cat, ident = catalogs['sv'], set()
     for locale in LOCALES[1:]:
         coverage(sv_cat, catalogs[locale], locale)
 

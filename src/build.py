@@ -32,6 +32,10 @@ for lf in sorted(glob.glob('i18n/*/*.json')):
     catalog.update(data)
 SV = CAT.get('sv', {})
 LANGS = ['sv'] + (['en'] if 'en' in CAT else []) + sorted(l for l in CAT if l not in ('sv', 'en'))
+EXAMPLES = {os.path.basename(path)[:-5]: json.load(open(path, encoding='utf-8'))
+            for path in sorted(glob.glob('examples/*.json'))}
+if any(locale not in EXAMPLES for locale in LANGS):
+    raise SystemExit('Each language requires its own localized example pack')
 
 
 def s(key):
@@ -311,9 +315,10 @@ course = dict(quizForModule=quiz_for_module, slideLevels=LEVELS,
 parts = [open('p1.html', encoding='utf-8').read(), '\n'.join(out), open('p9.html', encoding='utf-8').read(),
          '<script>window.COURSE=%s;</script>\n' % json.dumps(course, ensure_ascii=False),
          '<script>window.I18N_DATA=%s;</script>' % json.dumps(CAT, ensure_ascii=False),
+         '<script>window.EXAMPLE_DATA=%s;</script>' % json.dumps(EXAMPLES, ensure_ascii=False),
          '<script>\n' + open('vendor/i18next.min.js', encoding='utf-8').read() + '\n</script>',
          open('i18n/engine.js', encoding='utf-8').read()]
-SCRIPTS = ['j0.js', 'jd.js', 'quiz-groups.js', 'learning.js', 'a11y.js', 'j1b.js', 'j2b.js', 'j3.js',
+SCRIPTS = ['j0.js', 'examples.js', 'jd.js', 'quiz-groups.js', 'learning.js', 'a11y.js', 'j1b.js', 'j2b.js', 'j3.js',
            'j4.js', 'j5.js', 'j6.js', 'j7.js', 'j8.js', 'foundations.js',
            'training-lab.js', 'operations-lab.js', 'course-ui.js', 'jz.js']
 for j in SCRIPTS:
@@ -330,7 +335,7 @@ for guide in GUIDES:
 # A content fingerprint is reproducible and avoids a self-referential Git SHA
 # in a committed generated artifact. It is useful when diagnosing stale caches.
 inputs = sorted(set(SOURCE_FILES + [j for j in SCRIPTS if os.path.exists(j)] +
-                    glob.glob('*-manifest.json') + glob.glob('i18n/*/*.json') + ['../docs/' + guide for guide in GUIDES] +
+                    glob.glob('*-manifest.json') + glob.glob('i18n/*/*.json') + glob.glob('examples/*.json') + ['../docs/' + guide for guide in GUIDES] +
                     ['build.py', 'leads.py', 'p1.html', 'p9.html', 'i18n/engine.js',
                      'vendor/i18next.min.js', 'summary-requirements.json', 'exercise-requirements.json', 'quiz-legacy.json']))
 fingerprint = hashlib.sha256()
@@ -352,13 +357,14 @@ def fill(page, sv):
             raise SystemExit('build: no Swedish text for %r' % key)
         val = sv[key]
         raw = el.attrs.get('data-i18n-vars')
+        vs = dict(EXAMPLES['sv']['vars'])
         if raw:
-            vs = json.loads(raw)
-            for k, v in vs.items():
-                v = str(v)
-                if v.startswith('#') and v[1:] in sv:
-                    v = sv[v[1:]]
-                val = val.replace('{{%s}}' % k, v)
+            vs.update(json.loads(raw))
+        for k, v in vs.items():
+            v = str(v)
+            if v.startswith('#') and v[1:] in sv:
+                v = sv[v[1:]]
+            val = val.replace('{{%s}}' % k, v)
         edits.append((el.inner_start, el.inner_end, val))
     for el in [n for n in _walk(root) if any(a.startswith('data-i18n-') and a != 'data-i18n-vars' for a in n.attrs)]:
         for a in [a for a in el.attrs if a.startswith('data-i18n-') and a != 'data-i18n-vars']:
@@ -367,8 +373,17 @@ def fill(page, sv):
             if key not in sv:
                 raise SystemExit('build: no Swedish text for %r' % key)
             tag = page[el.start:el.inner_start]
+            attr_value = sv[key]
+            attr_vars = dict(EXAMPLES['sv']['vars'])
+            if el.attrs.get('data-i18n-vars'):
+                attr_vars.update(json.loads(el.attrs['data-i18n-vars']))
+            for name, value in attr_vars.items():
+                value = str(value)
+                if value.startswith('#') and value[1:] in sv:
+                    value = sv[value[1:]]
+                attr_value = attr_value.replace('{{%s}}' % name, value)
             tag2 = re.sub(r'(\s%s=)(["\'])([^"\']*)\3' % re.escape(attr),
-                          lambda mm, v=sv[key]: mm.group(1) + mm.group(2) + v + mm.group(2),
+                          lambda mm, v=attr_value: mm.group(1) + mm.group(2) + v + mm.group(2),
                           tag, count=1, flags=re.S)
             edits.append((el.start, el.inner_start, tag2))
             break

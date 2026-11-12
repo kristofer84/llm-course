@@ -8,8 +8,8 @@ For every other locale this verifies:
   * the inline markup is identical (same tags, same attributes, same order)
   * every {{placeholder}} survives
   * code tokens (identifiers, shapes like [T, 4096], numbers) are preserved
-  * a translation equal to the Swedish text is only allowed for real data
-    (sample tokens listed in src/i18n/en/data.json)
+  * shared technical notation may remain identical; examples live in separately
+    validated locale-specific scenario packs, not Swedish identity catalogs
 
 Usage:
     python3 tools/check_i18n.py                # everything
@@ -70,14 +70,6 @@ def code_tokens(value):
     return out
 
 
-def identity_values():
-    path = os.path.join(CATALOG, "en", "data.json")
-    if not os.path.exists(path):
-        return set()
-    d = json.load(open(path, encoding="utf-8"))
-    return {k for k, v in d.items() if k == v}
-
-
 def referenced_keys():
     """Keys the page actually uses: data-i18n attributes plus key-shaped
     strings in the scripts (quiz data refers to keys directly)."""
@@ -98,7 +90,7 @@ def main():
     locales = sorted(d for d in os.listdir(CATALOG)
                      if os.path.isdir(os.path.join(CATALOG, d))
                      and d not in (SRC, "source", "edit") and not d.startswith("."))
-    ident = identity_values()
+    ident = set()
     used = referenced_keys()
     failures, warnings = [], []
 
@@ -191,7 +183,7 @@ def main():
     # Swedish literals left inside the JavaScript, outside the catalogs
     blocks = re.findall(r"<script>(.*?)</script>", page, re.S)
     js = "\n".join(b for b in blocks
-                   if "I18N_DATA" not in b and "window.COURSE" not in b and "i18next" not in b)
+                   if "I18N_DATA" not in b and "window.COURSE" not in b and "window.EXAMPLE_DATA" not in b and "i18next" not in b)
     leftovers = [m for m in re.findall(r"'([^'\\\n]{6,})'", js)
                  if re.search(r"[ÅÄÖåäö]", m) and m not in ident]
     for lit in leftovers[:20]:

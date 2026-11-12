@@ -1,6 +1,6 @@
 {
  "n3.attention-raknat-for-hand.1": "Attention räknat för hand",
- "n3.attention-raknat-for-hand.2": "Ett head, tre tokens och två dimensioner i stället för 128. Vi räknar vad ”den” hämtar från ”Katten”, ”satt” och sig själv. Varje tal nedan är uträknat, inget är påhittat.",
+ "n3.attention-raknat-for-hand.2": "En head, tre rader i en leksaksvokabulär och två dimensioner i stället för 128. Vi räknar ut vad queryn märkt ”{{example_pronoun}}” hämtar från ”{{example_subject}}”, ”{{example_verb}}” och sig själv. Indata är handvalda, inte uppmätta modellaktiveringar eller en komplett verkligt tokeniserad mening; aritmetiken räknas ut exakt.",
  "n3.attention-raknat-for-hand.3": "Föregående",
  "n3.attention-raknat-for-hand.4": "Nästa steg",
  "n3.forward-pass-som-kod.1": "Hela forward pass som kod",

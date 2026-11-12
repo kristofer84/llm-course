@@ -776,7 +776,7 @@
    ],
    "in_noun": [
     {
-     "text": " sofa",
+     "text": " shade",
      "p": 0.3,
      "next": "tail"
     },
@@ -901,8 +901,15 @@
      "next": "tail"
     },
     {
-     "text": " time",
+     "text": " the",
      "p": 0.03,
+     "next": "time_noun"
+    }
+   ],
+   "time_noun": [
+    {
+     "text": " time",
+     "p": 1,
      "next": "tail"
     }
    ],

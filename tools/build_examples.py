@@ -118,7 +118,7 @@ def markov(locale, words):
              'food':[' mat',' fisk',' frukost',' middag'],'meow':[' högt',' och','.',' igen'],
              'time':[' dagen',' natten',' eftermiddagen',' tiden'],'and':' och','cause':' eftersom','was':' var','tired':' trött'},
       'en': {'initial':['The',' cat'],'verbs':[' sat',' slept',' ate',' meowed'],'sat':[' on',' in',' quietly',' beside'],
-             'places':[' mat',' sofa',' floor',' table'],'inside':[' sofa',' sun',' window',' basket'],
+             'places':[' mat',' sofa',' floor',' table'],'inside':[' shade',' sun',' window',' basket'],
              'slept':[' in',' on',' all',' well'],'ate':[' its',' slowly',' fish',' food'],
              'food':[' food',' fish',' breakfast',' dinner'],'meow':[' loudly',' and','.',' again'],
              'time':[' day',' night',' afternoon',' time'],'and':' and','cause':' because','was':' was','tired':' tired'},
@@ -145,7 +145,11 @@ def markov(locale, words):
     add('ate',surface['ate'],[.33,.22,.18,.12],['food','tail','tail','tail'])
     add('food',surface['food'],[.45,.30,.15,.05],['tail']*4)
     add('meowed',surface['meow'],[.40,.20,.20,.10],['tail','subject','end','tail'])
-    add('time',surface['time'],[.62,.25,.08,.03],['tail']*4)
+    if locale == 'en':
+        add('time',surface['time'][:3] + [' the'],[.62,.25,.08,.03],['tail']*3 + ['time_noun'])
+        add('time_noun',[' time'],[1],['tail'])
+    else:
+        add('time',surface['time'],[.62,.25,.08,.03],['tail']*4)
     add('tail',['.',surface['and'],surface['cause']],[.6,.2,.1],['end','subject','denn' if locale=='de' else 'pronoun'])
     if locale=='de':
         add('denn',[' denn'],[1],['pronoun'])
