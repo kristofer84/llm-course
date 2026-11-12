@@ -10,5 +10,5 @@
  "n0b.vad-ar-en-sprakmodell.9": "Modellens gissningar för nästa ord:",
  "n0b.vad-ar-en-sprakmodell.10": "Låt modellen välja",
  "n0b.vad-ar-en-sprakmodell.11": "Börja om",
- "n0b.vad-ar-en-sprakmodell.12": "Det här är en handskriven grammatikkarta med hela ord och skiljetecken, inte en riktig modell eller BPE-tokenisering. Sannolikheterna är påhittade; ej visade alternativ står för resten. Resten av kursen förklarar hur en riktig modell räknar fram sina sannolikheter."
+ "n0b.vad-ar-en-sprakmodell.12": "Det här är en handskriven grammatikkarta med hela ord och skiljetecken, inte en riktig modell eller en riktig ordindelning. Sannolikheterna (chansen för varje möjligt nästa ord) är påhittade; ej visade alternativ står för resten. Resten av kursen förklarar hur en riktig modell räknar fram sina sannolikheter."
 }

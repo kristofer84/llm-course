@@ -10,5 +10,5 @@
  "n0b.vad-ar-en-sprakmodell.9": "The model’s guesses for the next word:",
  "n0b.vad-ar-en-sprakmodell.10": "Let the model choose",
  "n0b.vad-ar-en-sprakmodell.11": "Start over",
- "n0b.vad-ar-en-sprakmodell.12": "This is a hand-written grammar graph of whole words and punctuation, not a real model or BPE tokenization. The probabilities are made up; unshown options account for the remainder. The rest of the course explains how a real model computes its probabilities."
+ "n0b.vad-ar-en-sprakmodell.12": "This is a hand-written grammar graph of whole words and punctuation, not a real model or real word splitting. The probabilities (the chance of each possible next word) are made up; unshown options account for the remainder. The rest of the course explains how a real model computes its probabilities."
 }
