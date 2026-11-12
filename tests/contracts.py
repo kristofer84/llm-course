@@ -28,6 +28,20 @@ LEARNING_DATA
 STUDY_DATA
 assert.equal(containsGlossaryTerm('endpoints','DPO'),false);
 assert.equal(containsGlossaryTerm('dpo loss','DPO'),true);
+const deckLevels=DECK_LEVELS,deckModules=DECK_MODULES;
+for(const depth of [1,2,3]){
+  const included=deckLevels.flatMap((level,index)=>level<=depth?[index]:[]);
+  included.forEach((index,ordinal)=>{
+    const progress=navigationProgress(index,deckLevels,deckModules,depth);
+    assert.equal(progress.position,ordinal+1);assert.equal(progress.total,included.length);
+    progress.segments.forEach((segment,module)=>{
+      assert.equal(segment.total,included.filter(i=>deckModules[i]===module).length);
+      assert.equal(segment.through,included.filter(i=>i<=index&&deckModules[i]===module).length);
+    });
+  });
+  deckLevels.forEach((level,index)=>{if(level>depth)assert.equal(navigationProgress(index,deckLevels,deckModules,depth).position,0);});
+}
+assert.equal(navigationProgress(0,[3],[0],1).total,0);
 const all=Object.values(QUIZ).flat();
 assert.equal(new Set(all.map(q=>q.q)).size,all.length,'Question ids must be unique');
 for(const [bank,questions] of Object.entries(QUIZ)){
@@ -72,6 +86,9 @@ node = node.replace("COURSE_DATA", json.dumps(course)).replace("QUIZ_DATA", data
     "LEARNING_DATA", (ROOT / "src/learning.js").read_text()).replace(
     "STUDY_DATA", (ROOT / "src/course-ui.js").read_text())
 node = node.replace("RNG_DATA", re.search(r"function rng[^\n]+", (ROOT / "src/j0.js").read_text())[0])
+slide_tags = re.findall(r'<section class="slide"[^>]*>', page)
+node = node.replace('DECK_LEVELS', json.dumps([int(re.search(r'data-level="(\d+)"', tag)[1]) for tag in slide_tags]))
+node = node.replace('DECK_MODULES', json.dumps([int(re.search(r'data-mod="(\d+)"', tag)[1]) for tag in slide_tags]))
 result = subprocess.run(["node", "-e", node], capture_output=True, text=True)
 print(result.stdout, end="")
 assert result.returncode == 0, result.stderr[:5000]

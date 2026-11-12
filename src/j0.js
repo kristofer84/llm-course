@@ -86,8 +86,13 @@ function show(i){
   i=Math.max(0,Math.min(slides.length-1,i|0));
   slides[cur].classList.remove('active');cur=i;slides[i].classList.add('active');slides[i].scrollTop=0;
   const m=modOf[i];$('modname').textContent=m?L.t('j0.15',{n:m,name:L.t(MODS[m])}):L.t(MODS[0]);const lb=$('lvl');lb.textContent=LVN[LV[i]];lb.className='lvb l'+LV[i];
-  $('cnt').textContent=(i+1)+' / '+slides.length;
-  [...prog.children].forEach((d,k)=>{const f=firstOf[k];const n=modOf.filter(x=>x===k).length;let w=0;if(i>=f+n)w=100;else if(i>=f)w=(i-f+1)/n*100;d.firstChild.style.width=w+'%';});
+  const progress=navigationProgress(i,LV,modOf,store.maxlv),counter=$('cnt');
+  counter.textContent=(progress.position||'—')+' / '+progress.total;
+  const counterLabel=L.t(progress.position?'learning.slide.position':'learning.slide.excluded',progress);
+  counter.setAttribute('aria-label',counterLabel);counter.title=counterLabel;
+  [...prog.children].forEach((d,k)=>{const segment=progress.segments[k];
+    const width=segment&&segment.total?segment.through/segment.total*100:0;
+    d.firstChild.style.width=width+'%';});
   store.seen[titles[i]]=1;if(i>0&&!slides[i].querySelector('#modgrid'))store.last=titles[i];save();
   tocLinks.forEach((a,k)=>{a.classList.toggle('cur',k===i);a.classList.toggle('seen',!!store.seen[titles[k]]);a.style.opacity=LV[k]>store.maxlv?'.45':'';});
   if(slides[i].querySelector('#modgrid'))renderMap();

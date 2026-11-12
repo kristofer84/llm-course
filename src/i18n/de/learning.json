@@ -31,5 +31,7 @@
  "mod.6.goal.4": "Vortraining (Pretraining), SFT, Präferenzlernen und Anpassung mit niedrigem Rang unterscheiden",
  "learning.lab.quality": "Qualitätstestdaten und Bewertungsclient kopieren",
  "learning.lab.quality.note": "Speichere den ersten Block als tasks.json und den zweiten als lab-quality.py. Das sind sichtbare Testdaten für Lernzwecke, kein unabhängiger, separat zurückgehaltener Test. Nutze dieselben LAB_MAX_TOKENS und dieselbe angeforderte Parallelität wie beim Lastclient; die maximale Zahl gleichzeitiger Qualitätsanfragen ist durch die Anzahl der Aufgaben begrenzt. Bewahre Antworten und Beendigungsgründe auf und bewerte repräsentative Antworten unter tatsächlicher Dauerlast, bevor du gleiche Qualität behauptest.",
- "learning.lab.download": "Vollständige Laboranleitung herunterladen (Englisch; offline enthalten)"
+ "learning.lab.download": "Vollständige Laboranleitung herunterladen (Englisch; offline enthalten)",
+ "learning.slide.position": "Folie {{position}} von {{total}} auf der gewählten Stufe",
+ "learning.slide.excluded": "Diese Folie liegt außerhalb der gewählten Stufe ({{total}} enthaltene Folien)."
 }

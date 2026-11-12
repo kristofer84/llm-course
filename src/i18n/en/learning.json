@@ -31,5 +31,7 @@
  "mod.6.goal.4": "distinguish pretraining, SFT, preference learning and low-rank adaptation",
  "learning.lab.quality": "Copy the quality fixtures and scoring client",
  "learning.lab.quality.note": "Save the first block as tasks.json and the second as lab-quality.py. These are visible teaching fixtures, not an independent held-out test. Use the same LAB_MAX_TOKENS and requested concurrency as the load client; the maximum simultaneous quality requests is limited by the number of tasks. Preserve answers and finish reasons, and evaluate representative responses under actual sustained load before claiming equal quality.",
- "learning.lab.download": "Download the full lab guide (English; included offline)"
+ "learning.lab.download": "Download the full lab guide (English; included offline)",
+ "learning.slide.position": "Slide {{position}} of {{total}} at the selected level",
+ "learning.slide.excluded": "This slide is outside the selected level ({{total}} included slides)."
 }
