@@ -1,5 +1,5 @@
 {
-  "op.queue.lead": "<b>Kapazität ist begrenzt.</b> Eine Warteschlange fängt kurze Lastspitzen ab, keine unbegrenzte Last. Die Zulassungssteuerung begrenzt aktive Arbeit und Warteschlangenlänge; Ratenlimits begrenzen die Ankunftsrate pro Mandant.",
+  "op.queue.lead": "<b>Kapazität ist begrenzt.</b> Eine Warteschlange fängt kurze Lastspitzen ab, keine unbegrenzte Last. Die Zulassungssteuerung begrenzt aktive Arbeit und Warteschlangenlänge; Ratenlimits begrenzen die Ankunftsrate pro Mandant (ein abgegrenzter Kunde oder eine Organisation mit eigenem Kontingent).",
   "op.queue.arrivals": "Ankünfte pro Klick (1–8)",
   "op.queue.enqueue": "Anfragen hinzufügen",
   "op.queue.tick": "Nächster Zeitschritt",
@@ -17,7 +17,7 @@
   "op.resilience.table.5": "Replikat verschwindet",
   "op.resilience.table.6": "Bereitschafts- und Zustandsprüfungen, laufende Arbeit vor dem Stoppen abschließen lassen; ein Stream kann bereits Teilausgaben geliefert haben.",
   "op.resilience.table.7": "Unklar, ob eine Aktion ausgeführt wurde",
-  "op.resilience.table.8": "Wiederholte Generierung kann andere Antworten liefern. Nebenwirkungen benötigen einen Idempotenzschlüssel und dauerhafte Deduplizierung im Tool.",
+  "op.resilience.table.8": "Wiederholte Generierung kann andere Antworten liefern. Nebenwirkungen (Aktionen, die etwas außerhalb des Modells ändern) benötigen einen Idempotenzschlüssel und dauerhafte Deduplizierung im Tool.",
   "op.resilience.table.9": "Mehrere Mandanten",
   "op.resilience.table.10": "Separate Kontingente, Berechtigungen und Protokollierungsrichtlinien; Cache und Tool-Zugriff isolieren, störende Nachbarn vermeiden.",
   "op.resilience.boundary": "Ein Modell oder Prompt ist keine Sicherheitsgrenze. Authentifizierung, Autorisierung und Kostenkontingente liegen außerhalb des Modells. Gehe nicht davon aus, dass beliebiges Teilen privater Präfixe zwischen Mandanten sicher ist.",

@@ -1,5 +1,5 @@
 {
-  "op.queue.lead": "<b>Kapacitet är ändlig.</b> En kö jämnar ut korta toppar, inte obegränsad belastning. Antagning begränsar samtidiga jobb och kölängd; rate limits begränsar ankomsttakten per tenant.",
+  "op.queue.lead": "<b>Kapacitet är ändlig.</b> En kö jämnar ut korta toppar, inte obegränsad belastning. Antagning begränsar samtidiga jobb och kölängd; rate limits begränsar ankomsttakten per tenant (en avgränsad kund eller organisation med egen kvot).",
   "op.queue.arrivals": "Ankomster per klick (1–8)",
   "op.queue.enqueue": "Skicka ankomster",
   "op.queue.tick": "Nästa tidssteg",
@@ -17,7 +17,7 @@
   "op.resilience.table.5": "Replica försvinner",
   "op.resilience.table.6": "Readiness och health checks, dränera före stopp; stream kan redan ha levererat delvis svar.",
   "op.resilience.table.7": "Osäkert om åtgärden utfördes",
-  "op.resilience.table.8": "Retry av generering kan ge nytt svar. Side effects behöver idempotency key och varaktig deduplicering i verktyget.",
+  "op.resilience.table.8": "Retry av generering kan ge nytt svar. Side effects (åtgärder som ändrar något utanför modellen) behöver idempotency key och varaktig deduplicering i verktyget.",
   "op.resilience.table.9": "Flera tenants",
   "op.resilience.table.10": "Separata kvoter, behörigheter och loggpolicyer; isolera cache och verktygsåtkomst, undvik noisy neighbors.",
   "op.resilience.boundary": "En modell eller prompt är inte en säkerhetsgräns. Autentisering, auktorisering och kostnadskvoter ligger utanför modellen. Lita inte på godtycklig delning av privata prefix mellan tenants.",
