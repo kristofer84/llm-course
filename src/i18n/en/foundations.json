@@ -68,7 +68,7 @@
   "fd.state.intro": "A weight is a stored setting that the model learns. An activation is a value it calculates for the current input. This tiny model has one weight w and predicts y = x × w. Changing the input and changing the weight are different actions.",
   "fd.state.work": "prediction = input × stored weight\ny = x × w\nBefore training: x = 2, w = 1 → y = 2",
   "fd.state.inference": "During inference, the model uses the weight it already has. Move the test-input slider: x and the prediction y change, but w stays fixed. Moving this slider is not training and does not change the learning rate.",
-  "fd.state.training": "During training, the button compares predictions with three fixed examples: 1 → 2, 2 → 4 and 3 → 6. It adjusts the same weight to reduce their mean loss. Each click performs one update using all three examples—not just the input shown by the slider.",
+  "fd.state.training": "During training, the button compares predictions with three fixed examples: 1 → 2, 2 → 4 and 3 → 6. It adjusts the same weight to reduce their mean loss. Each click performs one update using all three examples—not just the input shown by the slider. Loss is a numerical score for prediction mistakes; a lower value is better on these examples.",
   "fd.state.cache": "This is a constructed one-weight model, not a full LLM. Fixed weights also do not mean a stateless inference server: KV caches, random state and running requests can still change.",
   "fd.state.mode": "Phase",
   "fd.state.optinfer": "2. Inference — use the weight",
@@ -243,5 +243,6 @@
   "fd.state.modelLine": "Model: y = xw",
   "fd.state.referenceLine": "Teaching reference: y* = 2x",
   "fd.state.probeKnown": "This input is one of the fixed training examples.",
-  "fd.state.probeNew": "This input was not a training example. The simple linear rule is constructed; success here does not prove real-model generalization."
+  "fd.state.probeNew": "This input was not a training example. The simple linear rule is constructed; success here does not prove real-model generalization.",
+  "fd.state.rounded": "Displayed values are rounded; calculations use full precision."
 }

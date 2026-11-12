@@ -18,6 +18,12 @@ def check_state(state, weight, steps, input_value=2):
     assert math.isclose(state['trainingLoss'], 7/3*(weight-2)**2, abs_tol=1e-12)
 
 
+async def check_readouts(page, weight, input_value):
+    expected = await page.evaluate("pairs=>pairs.map(([value,digits])=>L.num(value,digits))", [[input_value,1],[weight,4],[weight*input_value,3]])
+    actual = [await page.locator('#fd-state-'+name+'-value').inner_text() for name in ('input','weight','prediction')]
+    assert actual == expected, (actual,expected)
+
+
 async def main():
     async with async_playwright() as playwright:
         browser = await playwright.chromium.launch()
@@ -44,6 +50,7 @@ async def main():
             await page.keyboard.press('Enter')
             first_weight = 22/15
             check_state(await snapshot(page),first_weight,1)
+            await check_readouts(page,first_weight,2)
             assert '→' in await page.locator('#fd-state-change').inner_text()
             assert await page.locator('#fd-state-progress').evaluate('e=>e.value') == 1
             # Freezing does not reset or automatically perfect the learned weight.
@@ -75,6 +82,7 @@ async def main():
                 previous_loss = state['trainingLoss']
             assert await page.locator('#fd-state-update').is_disabled()
             assert await page.locator('#fd-state-progress').evaluate('e=>[e.value,e.max]') == [8,8]
+            assert await page.locator('#fd-state-hint').inner_text() == await page.evaluate("L.t('fd.state.done')")
             final_weight = 2-(8/15)**8
             await page.locator('#fd-state-update').evaluate("e=>e.dispatchEvent(new Event('click',{bubbles:true}))")
             check_state(await snapshot(page),final_weight,8)
@@ -83,6 +91,7 @@ async def main():
             await page.locator('#fd-state-x').evaluate("e=>{e.value=5;e.dispatchEvent(new Event('input',{bubbles:true}));}")
             state = await snapshot(page)
             check_state(state,final_weight,8,5)
+            await check_readouts(page,final_weight,5)
             assert state['prediction'] < state['reference'] and state['trainingLoss'] > 0
             await page.screenshot(path=shot(locale+'_guided-inference.png'))
             # Reset is a real restart, not merely clearing a displayed score.

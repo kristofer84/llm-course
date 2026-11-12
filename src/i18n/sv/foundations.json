@@ -68,7 +68,7 @@
   "fd.state.intro": "En vikt är en lagrad inställning som modellen lär sig. En aktivering är ett värde som den beräknar för aktuell indata. Den här minimodellen har en enda vikt w och förutsäger y = x × w. Att ändra indata och att ändra vikten är olika saker.",
   "fd.state.work": "förutsägelse = indata × lagrad vikt\ny = x × w\nFöre träning: x = 2, w = 1 → y = 2",
   "fd.state.inference": "Vid inferens använder modellen den vikt den redan har. Dra i reglaget för testvärdet: x och förutsägelsen y ändras, men w ligger fast. Att dra i reglaget är inte träning och ändrar inte inlärningshastigheten.",
-  "fd.state.training": "Vid träning jämför knappen förutsägelserna med tre fasta exempel: 1 → 2, 2 → 4 och 3 → 6. Den justerar samma vikt för att minska deras genomsnittliga förlust. Varje klick gör en uppdatering med alla tre exemplen – inte bara det indatavärde som reglaget visar.",
+  "fd.state.training": "Vid träning jämför knappen förutsägelserna med tre fasta exempel: 1 → 2, 2 → 4 och 3 → 6. Den justerar samma vikt för att minska deras genomsnittliga förlust. Varje klick gör en uppdatering med alla tre exemplen – inte bara det indatavärde som reglaget visar. Förlust är ett tal som sammanfattar förutsägelsefelen; ett lägre värde är bättre på de här exemplen.",
   "fd.state.cache": "Det här är en konstruerad modell med en enda vikt, inte en fullständig LLM. Fasta vikter betyder inte heller att inferensservern saknar tillstånd: KV-cache, slumptillstånd och pågående förfrågningar kan fortfarande ändras.",
   "fd.state.mode": "Fas",
   "fd.state.optinfer": "2. Inferens — använd vikten",
@@ -243,5 +243,6 @@
   "title.paus-bredd-fore-mlp": "Paus: bredd före MLP",
   "title.gpu-manga-arbetare": "GPU: många arbetare",
   "title.byte-flop-och-flaskhalsar": "Byte, FLOP och flaskhalsar",
-  "title.vanta-svara-gruppera": "Vänta, svara, gruppera"
+  "title.vanta-svara-gruppera": "Vänta, svara, gruppera",
+  "fd.state.rounded": "Visade värden är avrundade; beräkningarna använder full precision."
 }

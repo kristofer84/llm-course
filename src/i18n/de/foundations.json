@@ -68,7 +68,7 @@
   "fd.state.intro": "Ein Gewicht ist eine gespeicherte Einstellung, die das Modell lernt. Eine Aktivierung ist ein Wert, den es für die aktuelle Eingabe berechnet. Dieses winzige Modell hat ein einziges Gewicht w und sagt y = x × w voraus. Die Eingabe zu ändern und das Gewicht zu ändern sind verschiedene Dinge.",
   "fd.state.work": "Vorhersage = Eingabe × gespeichertes Gewicht\ny = x × w\nVor dem Training: x = 2, w = 1 → y = 2",
   "fd.state.inference": "Bei der Inferenz nutzt das Modell das Gewicht, das es bereits hat. Bewege den Regler für die Testeingabe: x und die Vorhersage y ändern sich, aber w bleibt fest. Den Regler zu bewegen ist kein Training und ändert nicht die Lernrate.",
-  "fd.state.training": "Beim Training vergleicht die Schaltfläche die Vorhersagen mit drei festen Beispielen: 1 → 2, 2 → 4 und 3 → 6. Sie passt dasselbe Gewicht an, um ihren mittleren Loss zu verringern. Jeder Klick führt ein Update mit allen drei Beispielen aus – nicht nur mit der Eingabe, die der Regler anzeigt.",
+  "fd.state.training": "Beim Training vergleicht die Schaltfläche die Vorhersagen mit drei festen Beispielen: 1 → 2, 2 → 4 und 3 → 6. Sie passt dasselbe Gewicht an, um ihren mittleren Loss zu verringern. Jeder Klick führt ein Update mit allen drei Beispielen aus – nicht nur mit der Eingabe, die der Regler anzeigt. Der Loss ist eine Zahl, die Vorhersagefehler zusammenfasst; ein kleinerer Wert ist bei diesen Beispielen besser.",
   "fd.state.cache": "Das ist ein konstruiertes Modell mit nur einem Gewicht, kein vollständiges LLM. Feste Gewichte bedeuten auch keinen zustandslosen Inferenzserver: KV-Cache, Zufallszustand und laufende Anfragen können sich weiterhin ändern.",
   "fd.state.mode": "Phase",
   "fd.state.optinfer": "2. Inferenz — Gewicht nutzen",
@@ -243,5 +243,6 @@
   "title.paus-bredd-fore-mlp": "Pause: Breite vor dem MLP",
   "title.gpu-manga-arbetare": "GPU: viele Arbeitskräfte",
   "title.byte-flop-och-flaskhalsar": "Bytes, FLOP und Engpässe",
-  "title.vanta-svara-gruppera": "Warten, antworten, bündeln"
+  "title.vanta-svara-gruppera": "Warten, antworten, bündeln",
+  "fd.state.rounded": "Die Anzeige ist gerundet; intern wird mit voller Präzision gerechnet."
 }

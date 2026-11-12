@@ -140,7 +140,7 @@ function stateDemoUpdate(weight){
       $('fd-state-weight-value').textContent=nf(weight,4);
       $('fd-state-prediction-value').textContent=nf(prediction,3);
       $('fd-state-target').textContent=L.t('fd.state.target',{target:nf(reference,2)});
-      $('fd-state-hint').textContent=L.t(training?'fd.state.trainingHint':'fd.state.inferenceHint',{limit:STATE_DEMO.limit});
+      $('fd-state-hint').textContent=L.t(training?(steps>=STATE_DEMO.limit?'fd.state.done':'fd.state.trainingHint'):'fd.state.inferenceHint',{limit:STATE_DEMO.limit});
       Object.assign(svg.dataset,{weight:String(weight),input:String(x),prediction:String(prediction),reference:String(reference),
         steps:String(steps),trainingLoss:String(batch.loss),mode:mode.value});
       const rows=$('fd-state-rows');clear(rows);
@@ -154,7 +154,7 @@ function stateDemoUpdate(weight){
       [2,4,6,8,10].forEach(value=>{line(svg,50,Y(value),520,Y(value),'lnf');txt(svg,42,Y(value)+4,nf(value,0),'s','end');});
       line(svg,50,195,520,195,'ln');line(svg,50,65,50,195,'ln');
       for(let value=0;value<=5;value++)txt(svg,X(value),212,nf(value,0),'s','middle');
-      label(svg,285,235,'fd.state.input');txt(svg,35,61,'y','m','middle');
+      label(svg,285,235,'fd.state.input');txt(svg,18,61,'y','m','middle');
       const targetLine=line(svg,X(0),Y(0),X(5),Y(10),'ln');targetLine.style.stroke='var(--w)';targetLine.setAttribute('stroke-dasharray','5 4');
       const modelLine=line(svg,X(0),Y(0),X(5),Y(stateDemoPrediction(weight,5)),'ln');modelLine.style.stroke='var(--tok)';modelLine.setAttribute('stroke-width','3');
       STATE_DEMO.examples.forEach(example=>{
