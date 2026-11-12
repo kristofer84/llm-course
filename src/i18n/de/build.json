@@ -357,5 +357,7 @@
  "title.multi-lora-manga-modeller-pa": "Multi-LoRA: viele Modelle auf einer GPU",
  "title.attention-sinks-och-lokal": "Attention-Senken und lokale Attention",
  "title.disaggregerad-prefill-och": "Getrenntes Prefill und Decode",
- "title.testa-dig-sjalv-2": "Teste dich: Modellvarianten"
+ "title.testa-dig-sjalv-2": "Teste dich: Modellvarianten",
+ "title.vad-attention-kostar": "Was Attention kostet",
+ "mod.4.key.8": "Mit kausaler Maske gibt es n(n+1)/2 Paare statt n², und Softmax überspringt nichts. FlashAttention, GQA und PagedAttention sparen Speicher; nur lokale Fenster, Auswahl und lineare Modelle berechnen weniger Paare."
 }

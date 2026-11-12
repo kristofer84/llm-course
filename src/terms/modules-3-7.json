@@ -245,7 +245,7 @@
      "Multi-Query Attention"
     ]
    },
-   "introduced": "GQA: delade KV heads",
+   "introduced": "Vad attention kostar",
    "note": "Multi-query attention: all query heads share one K/V pair; the extreme GQA variant in the table."
   },
   {
@@ -306,7 +306,7 @@
      "vorbefüllen"
     ]
    },
-   "introduced": "Spåra tensorerna genom modellen",
+   "introduced": "Vad attention kostar",
    "note": "The whole prompt in one pass; first clause on 'Spåra tensorerna genom modellen', explained on 'Prefill och decode'."
   },
   {
@@ -330,7 +330,7 @@
      "Dekodierung"
     ]
    },
-   "introduced": "Spåra tensorerna genom modellen",
+   "introduced": "Vad attention kostar",
    "note": "One token at a time using the cache; first clause on 'Spåra tensorerna genom modellen', explained on 'Prefill och decode'."
   },
   {

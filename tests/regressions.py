@@ -94,6 +94,22 @@ async def run():
                 assert 0 < inside/(inside+outside) < 1, 'share must be a real fraction, never 100%'
             assert await page.locator('#st-out').inner_text()
 
+            # Attention cost: computed pairs and matrix memory follow the formulas.
+            await reveal(page, '#ac-n')
+            for index, expected_n in ((0, 1024), (3, 8192), (7, 131072)):
+                await page.locator('#ac-n').evaluate("(e,i)=>{e.value=i;e.dispatchEvent(new Event('input',{bubbles:true}))}", index)
+                for causal in (True, False):
+                    await page.locator('#ac-causal').set_checked(causal)
+                    data = await page.locator('#ac-svg').evaluate("e=>({...e.dataset})")
+                    n = int(data['n'])
+                    assert n == expected_n, (lang, data)
+                    pairs = n*(n+1)//2 if causal else n*n
+                    assert int(data['pairs']) == pairs, (lang, causal, data)
+                    assert int(data['total']) == pairs*32*32, (lang, causal, data)
+                    assert int(data['matrix']) == 2*n*n, (lang, data)
+                    assert 'NaN' not in await page.locator('#ac-out').inner_text()
+            await page.locator('#ac-causal').set_checked(True)
+
             # Expanded diagrams move rather than clone, preserving controls and unique ids.
             expand = page.locator(".slide.active .viz-actions button").first
             await expand.click()
