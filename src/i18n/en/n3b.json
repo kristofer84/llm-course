@@ -37,7 +37,7 @@
  "n3b.mlp-n-som-detektorer.2": "Every neuron in the MLP is a column in W_gate and a row in W_down. The column in W_gate is a <b>pattern</b>. The dot product with the token’s vector determines how well the vector matches the pattern.",
  "n3b.mlp-n-som-detektorer.3": "gate = h · W_gate[:, n]        how well does h match?\na    = SiLU(gate) · up          let through if yes\nut  += a · W_down[n, :]         write the neuron’s direction",
  "n3b.mlp-n-som-detektorer.4": "So a neuron that fires writes its own direction into the stream. With 14,336 neurons per layer and 32 layers, there is room for a very large number of such rules.",
- "n3b.mlp-n-som-detektorer.5": "Turn features of the token’s vector on and off on the right, and see which neurons light up.",
+ "n3b.mlp-n-som-detektorer.5": "Turn features of the demonstration’s token vector on and off, and see which neurons light up.",
  "n3b.mlp-n-som-detektorer.6": "A simplified picture. Real neurons rarely have a clean human meaning; most respond to mixtures of many patterns, and one concept is often spread over many neurons (superposition).",
  "n3b.mlp-n-som-detektorer.7": "Features in the vector for “den” after attention:",
  "n3b.lager-for-lager.1": "Layer by layer: how the answer emerges",

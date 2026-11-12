@@ -39,10 +39,11 @@
 (function kvPlain(){
   const svg=$('kc-svg');
   function draw(){const n=+$('kc-n').value;$('kc-nv').textContent=String(n);clear(svg);const x0=40,w=460/n,Y=v=>210-v/n*170;
-    line(svg,x0,210,500,210,'lnf');txt(svg,x0,18,L.t('j7.6'),'s');
+    // Count positions whose K/V are computed, not all attention operations.
+    line(svg,x0,210,500,210,'lnf');txt(svg,x0,18,L.t('n6b.kv-cache-i-klartext.positions'),'s');
     for(let k=1;k<=n;k++){const x=x0+(k-1)*w;S('rect',{x:x+w*0.1,y:Y(k),width:w*0.4,height:210-Y(k),fill:'var(--ink2)',style:'opacity:.35'},svg);S('rect',{x:x+w*0.5,y:Y(1),width:w*0.4,height:210-Y(1),fill:'var(--tok)'},svg);}
-    txt(svg,x0,232,L.t('j7.12',{n:1}),'s');txt(svg,500,232,L.t('j7.12',{n:n}),'s','end');
+    txt(svg,x0,232,L.t('n6b.kv-cache-i-klartext.step',{n:1}),'s');txt(svg,500,232,L.t('n6b.kv-cache-i-klartext.step',{n:n}),'s','end');
     S('rect',{x:300,y:30,width:12,height:12,fill:'var(--ink2)',style:'opacity:.35'},svg);txt(svg,318,41,L.t('j7.13'),'s');S('rect',{x:300,y:50,width:12,height:12,fill:'var(--tok)'},svg);txt(svg,318,61,L.t('j7.14'),'s');
-    const a=n*(n+1)/2;$('kc-out').innerHTML=L.t('j7.7',{n:n,a:L.num(a,0)});}
+    const a=n*(n+1)/2;$('kc-out').innerHTML=L.t('n6b.kv-cache-i-klartext.totals',{n:n,a:L.num(a,0)});}
   $('kc-n').addEventListener('input',draw);draw();
 })();
