@@ -129,6 +129,7 @@ QUIZMAP = {'Testa dig själv: tokens': 'm2', 'Testa dig själv: transformerblock
 # Stable catalog identities are independent of displayed module numbers.
 for index, module in enumerate(MODS):
     module['id'] = str(index)
+    module['time'] = {1: 35, 4: 60, 6: 40, 7: 55, 10: 15}.get(index, module['time'])
 ORDER[3].append('@quiz:blocks')
 ORDER[11].insert(ORDER[11].index('Slutprov'), '@sum')
 SUMMARY_REQUIRES = json.load(open('summary-requirements.json', encoding='utf-8'))
@@ -147,7 +148,7 @@ ORDER[9] = ORDER[9][:split_at] + ['@sum', '@quiz:scheduling']
 MODS[9]['summary_keys'] = ['mod.9.key.%d' % n for n in (1, 2, 3, 4)]
 MODS[9]['time'] = 35
 ORDER.insert(10, execution)
-MODS.insert(10, dict(id='serving', time=50, hl=[], engine=True,
+MODS.insert(10, dict(id='serving', time=65, hl=[], engine=True,
                     summary_keys=['mod.serving.key.1', 'mod.9.key.5', 'mod.9.key.6']))
 for additions in ADDITIONS:
     for module in additions.get('new_modules', []):

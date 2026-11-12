@@ -37,7 +37,7 @@
  "n3c.shapen-andras-aldrig.4": "<b>Blocks can be stacked.</b> What comes out of one block fits straight into the next.",
  "n3c.shapen-andras-aldrig.5": "<b>Contributions can be added.</b> x + contribution requires that both have the same shape.",
  "n3c.shapen-andras-aldrig.6": "<b>The stream can be read anywhere.</b> After any block it is the same kind of vector, which interpretation methods make use of.",
- "n3c.shapen-andras-aldrig.7": "Only in the <b>LM head</b>, the model’s last matrix, does it change form: from 4096 numbers per row to 128,256, one number per token in the vocabulary. More on that in module 4.",
+ "n3c.shapen-andras-aldrig.7": "Only in the <b>LM head</b>, the model’s last matrix, does it change form: from 4096 numbers per row to 128,256, one number per token in the vocabulary. More on that in the logits lesson.",
  "n3c.shapen-andras-aldrig.8": "Previous",
  "n3c.shapen-andras-aldrig.9": "Next step",
  "n3c.normalisering-varfor-och-var.1": "Normalization: why and where",

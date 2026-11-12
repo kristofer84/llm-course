@@ -104,7 +104,7 @@
  "p2.testa-dig-sjalv-tokens.2": "Why is a Swedish answer often slower to generate than an English one with the same content?",
  "p2.testa-dig-sjalv-tokens.3": "Swedish is split into more tokens per word, and every output token needs its own forward pass through the whole model.",
  "p2.testa-dig-sjalv-tokens.4": "What shape does the embedding output have for a batch of 4 prompts of 100 tokens in Llama-3-8B?",
- "p2.testa-dig-sjalv-tokens.5": "[4, 100, 4096]. (In practice vLLM flattens the batch to [400, 4096], more on that in module 8.)",
+ "p2.testa-dig-sjalv-tokens.5": "[4, 100, 4096]. (In practice vLLM flattens the batch to [400, 4096], more on that in the model-runner lesson.)",
  "p2.testa-dig-sjalv-tokens.6": "What happens if you send a prompt without a chat template to an instruction-tuned model?",
  "p2.testa-dig-sjalv-tokens.7": "The model sees text in a format it was never trained to respond to. It often continues the text instead of answering, or never stops in time because it never sees an assistant header.",
  "p2.fran-prompt-till-token.arialabel": "Pipeline: prompt, tokenizer, embedding, transformer block, LM head, sampler, and a loop back in with the new token",

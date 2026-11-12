@@ -133,7 +133,7 @@
  "p7.flaggorna-och-vad-de-styr.25": "Draft model, n-gram, EAGLE or MTP, and the number of proposals k.",
  "p7.flaggorna-och-vad-de-styr.26": "--enforce-eager",
  "p7.flaggorna-och-vad-de-styr.27": "Turns off CUDA graphs. For troubleshooting, costs performance.",
- "p7.flaggorna-och-vad-de-styr.28": "At startup vLLM logs how many tokens the KV cache holds and how many requests of the max length can run at the same time. It’s the calculator from module 6, worked out for real.",
+ "p7.flaggorna-och-vad-de-styr.28": "At startup vLLM logs how many tokens the KV cache holds and how many requests of the max length can run at the same time. It uses the capacity-planning arithmetic; actual capacity depends on the engine, configuration and hardware.",
  "p7.hela-flodet.1": "The whole flow, from HTTP to token",
  "p7.hela-flodet.2": "Previous",
  "p7.hela-flodet.3": "Next step",

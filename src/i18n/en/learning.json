@@ -27,5 +27,6 @@
  "mod.11.key.2": "A cache avoids recomputing earlier K/V, but attention still reads a growing context.",
  "mod.11.key.3": "A useful system needs both quality checks and workload measurements; seeing a slide is not evidence of mastering it.",
  "mod.4.key.6": "Attention mixes information from available token positions using input-dependent weights.",
- "mod.4.key.7": "The MLP transforms each token separately; its output must fit the residual stream before addition."
+ "mod.4.key.7": "The MLP transforms each token separately; its output must fit the residual stream before addition.",
+ "mod.6.goal.4": "distinguish pretraining, SFT, preference learning and low-rank adaptation"
 }

@@ -50,8 +50,24 @@ const tocLinks=[];
   f.addEventListener('input',()=>{const q=f.value.trim().toLowerCase();const vis=MODS.map(()=>false);
     tocLinks.forEach((a,i)=>{const ok=!q||a.textContent.toLowerCase().indexOf(q)>=0;a.style.display=ok?'':'none';if(ok)vis[modOf[i]]=true;});
     heads.forEach((h,m)=>{if(h)h.style.display=vis[m]?'':'none';});});})();
-function closeAll(){toc.classList.remove('open');gloss.classList.remove('open');scrim.classList.remove('open');$('tocbtn').setAttribute('aria-expanded','false');$('glossbtn').setAttribute('aria-expanded','false');}
-function openDrawer(el,btn){const was=el.classList.contains('open');closeAll();if(!was){el.classList.add('open');scrim.classList.add('open');btn.setAttribute('aria-expanded','true');const i=el.querySelector('input');if(i&&window.innerWidth>860)i.focus();}}
+let drawerTrigger=null;
+function closeAll(restore=true){
+  const trigger=drawerTrigger;drawerTrigger=null;
+  [toc,gloss].forEach(el=>{el.classList.remove('open');el.inert=true;el.setAttribute('aria-hidden','true');});
+  document.querySelectorAll('.topbar,.botbar,#deck').forEach(el=>{el.inert=false;});
+  scrim.classList.remove('open');$('tocbtn').setAttribute('aria-expanded','false');$('glossbtn').setAttribute('aria-expanded','false');
+  if(restore&&trigger&&trigger.isConnected)trigger.focus({preventScroll:true});
+}
+function openDrawer(el,btn,trigger=btn){
+  const was=el.classList.contains('open');closeAll(false);
+  if(!was){
+    drawerTrigger=trigger;el.inert=false;el.setAttribute('aria-hidden','false');el.classList.add('open');
+    document.querySelectorAll('.topbar,.botbar,#deck').forEach(node=>{node.inert=true;});
+    scrim.classList.add('open');btn.setAttribute('aria-expanded','true');
+    const first=window.innerWidth>860?el.querySelector('input'):el.querySelector('button');
+    (first||el).focus({preventScroll:true});
+  }else if(trigger)trigger.focus({preventScroll:true});
+}
 $('tocbtn').addEventListener('click',()=>openDrawer(toc,$('tocbtn')));
 $('glossbtn').addEventListener('click',()=>openDrawer(gloss,$('glossbtn')));
 scrim.addEventListener('click',closeAll);
@@ -83,6 +99,16 @@ $('prevbtn').addEventListener('click',()=>step(-1));
 $('nextbtn').addEventListener('click',()=>step(1));
 document.addEventListener('keydown',e=>{
   const tg=e.target.tagName;if(e.defaultPrevented)return;if(e.key==='Escape'){closeAll();return;}
+  const drawer=[toc,gloss].find(el=>el.classList.contains('open'));
+  if(drawer){
+    if(e.key==='Tab'){
+      const focusable=[...drawer.querySelectorAll('button,input,a[href],[tabindex="0"]')].filter(el=>!el.disabled&&el.getClientRects().length);
+      const first=focusable[0],last=focusable[focusable.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+      else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+    }
+    return;
+  }
   if(e.target.closest('[role="button"],dialog,[contenteditable="true"]'))return;
   if(tg==='INPUT'||tg==='SELECT'||tg==='TEXTAREA'||e.metaKey||e.ctrlKey||e.altKey)return;
   if(e.key==='ArrowRight'||e.key==='PageDown'){e.preventDefault();step(1);}

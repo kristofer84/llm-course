@@ -37,7 +37,7 @@
  "n3c.shapen-andras-aldrig.4": "<b>Block kan staplas.</b> Det som kommer ut ur ett block passar rakt in i nästa.",
  "n3c.shapen-andras-aldrig.5": "<b>Bidrag kan adderas.</b> x + bidrag kräver att båda har samma shape.",
  "n3c.shapen-andras-aldrig.6": "<b>Strömmen kan läsas var som helst.</b> Efter vilket block som helst är det samma sorts vektor, vilket tolkningsmetoder utnyttjar.",
- "n3c.shapen-andras-aldrig.7": "Först i <b>LM head</b>, modellens sista matris, byter den form: från 4096 tal per rad till 128 256, ett tal per token i vokabulären. Mer om det i modul 4.",
+ "n3c.shapen-andras-aldrig.7": "Först i <b>LM head</b>, modellens sista matris, byter den form: från 4096 tal per rad till 128 256, ett tal per token i vokabulären. Mer om det i lektionen om logits.",
  "n3c.shapen-andras-aldrig.8": "Föregående",
  "n3c.shapen-andras-aldrig.9": "Nästa steg",
  "n3c.normalisering-varfor-och-var.1": "Normalisering: varför och var",

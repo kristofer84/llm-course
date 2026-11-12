@@ -1,6 +1,6 @@
 {
  "n8.starta-servern-och-las.1": "Starta servern och läs loggen",
- "n8.starta-servern-och-las.2": "Bland startloggarna finns tre rader som sammanfattar modul 6:",
+ "n8.starta-servern-och-las.2": "Tre illustrativa startrader sammanfattar cachekapacitet och samtidighet (ett beräknat exempel, inte en fångad körning):",
  "n8.starta-servern-och-las.3": "Siffrorna är ett räkneexempel för en GPU med 80 GB. Dina värden beror på GPU, modell, version och flaggor.",
  "n8.starta-servern-och-las.4": "<b>Available KV cache memory</b>: det som blev över efter vikter, aktiveringar och overhead. Hela den ytan görs om till block.",
  "n8.starta-servern-och-las.5": "<b>GPU KV cache size</b>: samma yta i tokens. Här 47,5 GiB ÷ 128 KiB per token.",

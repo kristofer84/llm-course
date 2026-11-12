@@ -23,7 +23,7 @@
  "p4.den-autoregressiva-loopen.4": "en stoppsträng matchar i den detokeniserade texten",
  "p4.den-autoregressiva-loopen.5": "<span class=\"mk\">max_tokens</span> för förfrågan är nådd",
  "p4.den-autoregressiva-loopen.6": "sekvensen når modellens <span class=\"mk\">max_model_len</span>",
- "p4.den-autoregressiva-loopen.7": "Utan KV-cache skulle varje varv räkna om hela sekvensen. Med cache räknas bara den nya positionen, men varje varv måste ändå läsa alla vikter. Det är grunden till allt i modul 6.",
+ "p4.den-autoregressiva-loopen.7": "Utan KV-cache skulle varje varv räkna om hela sekvensen. Med cache räknas bara den nya positionen, men varje varv måste ändå läsa alla vikter. Det är grunden till lektionerna om inference och KV-cache.",
  "p4.den-autoregressiva-loopen.8": "Greedy (temperature 0) är inte garanterat deterministiskt i en server. Olika batchstorlekar kan ge olika ordning på flyttalsoperationer, och små skillnader kan vända en jämn argmax.",
  "p4.den-autoregressiva-loopen.9": "Prompt + svar hittills",
  "p4.den-autoregressiva-loopen.10": "Forward pass (32 lager)",

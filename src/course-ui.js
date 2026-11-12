@@ -6,8 +6,8 @@ async function copyCourseText(value){
   try{ok=document.execCommand('copy');}catch(e){}
   field.remove();if(previous&&previous.focus)previous.focus();return ok;
 }
-function showDefinition(term){
-  closeAll();openDrawer(gloss,$('glossbtn'));
+function showDefinition(term,trigger){
+  closeAll(false);openDrawer(gloss,$('glossbtn'),trigger);
   const search=$('gloss-search');search.value=term;search.dispatchEvent(new Event('input'));search.focus();
 }
 function initStudyTools(){
@@ -34,6 +34,6 @@ function initStudyTools(){
     const text=slide.textContent.toLocaleLowerCase(L.lang),matches=terms.filter(t=>text.includes(t.toLocaleLowerCase(L.lang))).slice(0,4);
     if(!matches.length)return;
     const box=H('div','context-glossary',null,slide.querySelector('.si'));H('span',null,L.t('learning.definitions'),box);
-    matches.sort((a,b)=>a.localeCompare(b,L.lang)).forEach(term=>{const button=H('button','btn study-tool',term,box);button.setAttribute('aria-label',L.t('learning.define',{term}));button.addEventListener('click',()=>showDefinition(term));});
+    matches.sort((a,b)=>a.localeCompare(b,L.lang)).forEach(term=>{const button=H('button','btn study-tool',term,box);button.setAttribute('aria-label',L.t('learning.define',{term}));button.addEventListener('click',()=>showDefinition(term,button));});
   });
 }

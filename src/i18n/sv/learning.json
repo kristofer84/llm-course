@@ -27,5 +27,6 @@
  "mod.11.key.2": "En cache undviker att beräkna tidigare K/V igen, men attention läser fortfarande en växande kontext.",
  "mod.11.key.3": "Ett användbart system behöver både kvalitetskontroller och arbetslastmätningar; att ha sett en bild visar inte att man behärskar den.",
  "mod.4.key.6": "Attention blandar information från tillgängliga tokenpositioner med vikter som beror på indata.",
- "mod.4.key.7": "MLP:n omvandlar varje token separat; utdata måste passa residual stream före addition."
+ "mod.4.key.7": "MLP:n omvandlar varje token separat; utdata måste passa residual stream före addition.",
+ "mod.6.goal.4": "skilja förträning, SFT, preferensinlärning och lågrangsanpassning"
 }

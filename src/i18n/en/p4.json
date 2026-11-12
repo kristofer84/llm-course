@@ -23,7 +23,7 @@
  "p4.den-autoregressiva-loopen.4": "a stop string matches the detokenized text",
  "p4.den-autoregressiva-loopen.5": "<span class=\"mk\">max_tokens</span> for the request is reached",
  "p4.den-autoregressiva-loopen.6": "the sequence reaches the model’s <span class=\"mk\">max_model_len</span>",
- "p4.den-autoregressiva-loopen.7": "Without a KV cache, every pass would recompute the whole sequence. With the cache, only the new position is computed, but every pass still has to read all the weights. That is the basis for everything in module 6.",
+ "p4.den-autoregressiva-loopen.7": "Without a KV cache, every pass would recompute the whole sequence. With the cache, only the new position is computed, but every pass still has to read all the weights. That is the basis for the inference and KV-cache lessons.",
  "p4.den-autoregressiva-loopen.8": "Greedy (temperature 0) is not guaranteed to be deterministic on a server. Different batch sizes can order floating-point operations differently, and small differences can flip a close argmax.",
  "p4.den-autoregressiva-loopen.9": "Prompt + response so far",
  "p4.den-autoregressiva-loopen.10": "Forward pass (32 layers)",

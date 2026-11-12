@@ -60,8 +60,6 @@ Live retrieval of the release and tagged sources was used for the version claims
 4. Check a small deterministic prompt both with and without cache reuse under matching precision/settings. Allow numerical rounding differences rather than claiming bitwise reproducibility. Quantized KV is a separate approximation.
 5. Test concurrency, memory pressure, preemption and any connector/adapter features actually needed. Record observed latency and failures separately from the theoretical examples. None of these steps is reported as completed here.
 
-### Main integration notes
+### Keeping the examples current
 
-- README/PLAN and the final artifact are maintained by the integrating agent. Link this reference scope there and rebuild only in the main integration worktree; these corrections do not edit the built artifact.
-- The KV chart uses three new bilingual `n6b.kv-cache-i-klartext.*` labels so its axes/output no longer call K/V position counts “words” or total work. The old, now-unused `j7.6`, `j7.7`, and `j7.12` keys remain stable.
-- The separate GPU-kitchen output strings `j7.4` and `j7.5` still say “words per second” in their own catalogs, outside this edit ownership. They should say “tokens per second” when those catalogs are integrated; they were not silently modified here.
+Update the reference release, source links, CLI examples, metrics, and explanatory caveats together. Re-run the website checks separately from GPU/server validation. The optional [inference lab](INFERENCE-LAB.md) records the environment and measurements needed for an actual hardware check; its instructions are not a report that such a check was performed here.

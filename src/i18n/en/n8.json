@@ -1,6 +1,6 @@
 {
  "n8.starta-servern-och-las.1": "Start the server and read the log",
- "n8.starta-servern-och-las.2": "Among the startup logs there are three lines that sum up module 6:",
+ "n8.starta-servern-och-las.2": "Three illustrative startup lines summarize cache capacity and concurrency (a computed example, not a captured run):",
  "n8.starta-servern-och-las.3": "The numbers are a worked example for a GPU with 80 GB. Your values depend on GPU, model, version and flags.",
  "n8.starta-servern-och-las.4": "<b>Available KV cache memory</b>: what was left after weights, activations and overhead. That whole area is turned into blocks.",
  "n8.starta-servern-och-las.5": "<b>GPU KV cache size</b>: the same area in tokens. Here 47.5 GiB ÷ 128 KiB per token.",

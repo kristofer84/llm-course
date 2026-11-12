@@ -257,10 +257,10 @@ def status(strict=False):
     untracked = sorted(k for k in sv if k not in state and (en.get(k) or "").strip())
     print("keys: %d  untranslated: %d  English behind Swedish: %d  untracked: %d"
           % (len(sv), len(missing), len(behind), len(untracked)))
-    for label, keys in (("untranslated", missing), ("behind", behind)):
+    for label, keys in (("untranslated", missing), ("behind", behind), ("untracked", untracked)):
         for k in keys[:25]:
             print("   %-12s %s" % (label, k))
-    if strict and (missing or behind):
+    if strict and (missing or behind or untracked):
         return 1
     return 0
 
@@ -269,6 +269,8 @@ def mark(groups=None):
     """Declare the current English values reviewed against the current Swedish
     text — for bulk edits that updated both languages in one go."""
     sv, en, state = catalogs(SRC), catalogs(BASE), load_state()
+    if not groups:
+        state = {k: v for k, v in state.items() if k in sv}
     n = 0
     for k, v in sv.items():
         if groups and group_of(k) not in groups:
@@ -284,7 +286,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("command", choices=("dump", "apply", "status", "check", "mark"))
     ap.add_argument("--group", action="append", help="limit to this group (repeatable)")
-    ap.add_argument("--strict", action="store_true", help="status: non-zero exit if English is behind")
+    ap.add_argument("--strict", action="store_true", help="status: fail on missing, behind, or unreviewed translations")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args()
     groups = set(args.group) if args.group else None

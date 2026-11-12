@@ -133,7 +133,7 @@
  "p7.flaggorna-och-vad-de-styr.25": "Draft-modell, n-gram, EAGLE eller MTP, och antal förslag k.",
  "p7.flaggorna-och-vad-de-styr.26": "--enforce-eager",
  "p7.flaggorna-och-vad-de-styr.27": "Stänger av CUDA graphs. För felsökning, kostar prestanda.",
- "p7.flaggorna-och-vad-de-styr.28": "Vid start loggar vLLM hur många tokens KV-cachen rymmer och hur många requests av max längd som kan köras samtidigt. Det är kalkylatorn från modul 6, räknad på riktigt.",
+ "p7.flaggorna-och-vad-de-styr.28": "Vid start loggar vLLM hur många tokens KV-cachen rymmer och hur många requests av max längd som kan köras samtidigt. Samma kapacitetsberäkning används; den faktiska kapaciteten beror på motorn, konfigurationen och hårdvaran.",
  "p7.hela-flodet.1": "Hela flödet, från HTTP till token",
  "p7.hela-flodet.2": "Föregående",
  "p7.hela-flodet.3": "Nästa steg",

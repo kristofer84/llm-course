@@ -1,7 +1,7 @@
 """Sequential bilingual checks replacing the old numbered debug/screenshot scripts."""
 import asyncio
 from playwright.async_api import async_playwright
-from _common import HTML, prepare
+from _common import HTML, prepare, shot
 
 
 async def reveal(page, selector):
@@ -69,10 +69,39 @@ async def run():
             await block.locator("button").click()
             assert await page.evaluate("Boolean(window.__courseCopied)")
             assert await block.locator("[role=status]").inner_text()
-            # New simulations must all initialize and have output or an accessible SVG.
+            # Exercise every newly added simulation at control boundaries, not just its opener.
             for prefix in ("fd-", "ql-", "trn-", "op-"):
-                roots = await page.locator(f'.slide:has([id^="{prefix}"])').count()
-                print(lang, prefix, "slides", roots)
+                indices = await page.evaluate("prefix => [...document.querySelectorAll('.slide')].flatMap((s,i)=>s.querySelector('[id^=\"'+prefix+'\"]')?[i]:[])", prefix)
+                assert indices, f"No integrated simulations: {prefix}"
+                for number, index in enumerate(indices):
+                    await page.evaluate("i=>{location.hash='#s'+(i+1)}", index)
+                    await page.wait_for_timeout(25)
+                    controls = page.locator('.slide.active button:not(.study-tool),.slide.active input,.slide.active select,.slide.active summary')
+                    for control in await controls.all():
+                        if not await control.is_visible() or not await control.is_enabled():
+                            continue
+                        await control.evaluate("""e=>{
+                          if(e.tagName==='INPUT'){
+                            if(e.type==='checkbox')e.checked=!e.checked;
+                            else e.value=e.max||e.value;
+                            e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));
+                          }else if(e.tagName==='SELECT'){
+                            e.selectedIndex=e.options.length-1;e.dispatchEvent(new Event('change',{bubbles:true}));
+                          }else e.click();
+                        }""")
+                    text = await page.locator('.slide.active').inner_text()
+                    assert 'NaN' not in text and 'Infinity' not in text, (prefix, index, text)
+                    assert await page.locator('.slide.active svg.viz').count() > 0 or await page.locator('.slide.active pre').count() > 0
+                    if number == 0:
+                        await page.screenshot(path=shot(f'{lang}_{prefix}first.png'))
+                print(lang, prefix, "simulations checked", len(indices))
+            await page.set_viewport_size({"width": 360, "height": 800})
+            count = await page.locator('.slide').count()
+            for index in range(count):
+                await page.evaluate("i=>{location.hash='#s'+(i+1)}", index)
+                await page.wait_for_timeout(15)
+                width = await page.evaluate('document.documentElement.scrollWidth')
+                assert width <= 361, (lang, index + 1, width)
             assert not errors, errors
             await page.close()
         await browser.close()
