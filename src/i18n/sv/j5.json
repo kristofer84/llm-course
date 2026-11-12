@@ -37,7 +37,7 @@
  "j5.36": "alla ser alla",
  "j5.37": "Parametrar",
  "j5.38": "Minne i bf16",
- "j5.39": "andel av parametrarna i blocken",
+ "j5.39": "Parametrar: blocken mot tabellerna",
  "j5.40": "Token-ids",
  "j5.41": "Efter block 1",
  "j5.42": "Efter block 2",
@@ -52,5 +52,10 @@
  "j5.task.subjectArticle": "bestämd artikel",
  "j5.task.placeArticle": "bestämd artikel",
  "j5.task.subjectLink": "bestämmer subjektet ”{{example_subject}}”",
- "j5.task.placeLink": "bestämmer platsordet ”{{example_place}}”"
+ "j5.task.placeLink": "bestämmer platsordet ”{{example_place}}”",
+ "j5.50": "Blocken: {{n}} × {{each}} B = {{p}} B",
+ "j5.51": "Utanför blocken: embedding {{emb}} B + LM head {{head}} B = {{p}} B",
+ "j5.52": "De två tokentabellerna har samma storlek oavsett L, så blockens andel stiger men når aldrig 100 %.",
+ "j5.53": "i blocken",
+ "j5.54": "utanför blocken"
 }

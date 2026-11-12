@@ -51,9 +51,10 @@
  "n3c.normalisering-varfor-och-var.9": "Post-norm",
  "n3c.normalisering-varfor-och-var.10": "Kurvan är en illustration. Att strömmens storlek växer med djupet i pre-norm-modeller stämmer i stort, men exakta värden varierar mellan modeller.",
  "n3c.transformer-och-decoder-only.arialabel": "Originalets encoder och decoder jämfört med decoder-only",
- "n3c.ett-block-staplat-32-ganger.arialabel": "Staplade block med parameterräkning",
+ "n3c.ett-block-staplat-32-ganger.arialabel": "Staplade block. Stapeln visar hur de totala parametrarna fördelas mellan de L blocken och de två fasta tabellerna embedding och LM head.",
  "n3c.shapen-andras-aldrig.arialabel": "Tensorns shape i varje steg genom modellen",
  "n3c.normalisering-varfor-och-var.arialabel": "Var normaliseringen sitter",
  "n3c.normalisering-varfor-och-var.arialabel-2": "Storleken på strömmen och på det blocken läser, genom 32 block",
- "n3c.ett-block-staplat-32-ganger.20": "Antal block L"
+ "n3c.ett-block-staplat-32-ganger.20": "Antal block L",
+ "n3c.ett-block-staplat-32-ganger.21": "Var parametrarna sitter: varje block innehåller cirka 0,218 B, så 32 block ger 6,98 B. Utanför stapeln finns bara två tabeller – embedding (0,525 B) och LM head (0,525 B). Tillsammans blir det 8,03 B, varav ungefär 87 % ligger i blocken. Andelen stiger med L men når aldrig 100 %, eftersom tabellerna behåller sin storlek oavsett hur många block du staplar. Varje extra block ger dessutom mindre än det förra: de första rundorna etablerar de grova sambanden, de senare finjusterar dem."
 }

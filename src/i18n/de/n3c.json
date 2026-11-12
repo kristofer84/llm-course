@@ -51,9 +51,10 @@
  "n3c.normalisering-varfor-och-var.9": "Post-Norm",
  "n3c.normalisering-varfor-och-var.10": "Die Kurve dient der Veranschaulichung. Die Größe des Streams wächst in Pre-Norm-Modellen im Großen und Ganzen mit der Tiefe, aber die genauen Werte unterscheiden sich zwischen Modellen.",
  "n3c.transformer-och-decoder-only.arialabel": "Encoder und Decoder des Originals im Vergleich zu Decoder-only",
- "n3c.ett-block-staplat-32-ganger.arialabel": "Gestapelte Blöcke mit Parameteranzahl",
+ "n3c.ett-block-staplat-32-ganger.arialabel": "Gestapelte Blöcke. Der Balken zeigt, wie sich die Gesamtparameter auf die L Blöcke und die beiden festen Tabellen Embedding und LM-Head verteilen.",
  "n3c.shapen-andras-aldrig.arialabel": "Die Tensorform bei jedem Schritt durch das Modell",
  "n3c.normalisering-varfor-och-var.arialabel": "Wo die Normalisierung sitzt",
  "n3c.normalisering-varfor-och-var.arialabel-2": "Die Größe des Streams und dessen, was die Blöcke lesen, über 32 Blöcke hinweg",
- "n3c.ett-block-staplat-32-ganger.20": "Anzahl der Blöcke L"
+ "n3c.ett-block-staplat-32-ganger.20": "Anzahl der Blöcke L",
+ "n3c.ett-block-staplat-32-ganger.21": "Wo die Parameter liegen: Jeder Block enthält etwa 0,218 B, 32 Blöcke ergeben also 6,98 B. Außerhalb des Stapels stehen nur zwei Tabellen – Embedding (0,525 B) und LM-Head (0,525 B). Zusammen sind das 8,03 B, davon etwa 87 % in den Blöcken. Der Anteil steigt mit L, erreicht aber nie 100 %, weil die Tabellen ihre Größe behalten, egal wie viele Blöcke du stapelst. Jeder zusätzliche Block bringt außerdem weniger als der vorige: Die ersten Runden etablieren die groben Zusammenhänge, die späteren feilen daran."
 }

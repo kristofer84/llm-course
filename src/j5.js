@@ -40,15 +40,30 @@
       if(h>=14){txt(svg,61,y+h/2+4,L.t('attn'),'s','middle').setAttribute('style','font-size:10px');txt(svg,129,y+h/2+4,L.t('MLP'),'s','middle').setAttribute('style','font-size:10px');}}
     const yb=top+nL*(h+2)+8;rect(svg,30,yb,130,26,'bw',6);txt(svg,95,yb+17,L.t('p3.hela-modellen-i-en-bild.20'),'s','middle');
     txt(svg,170,top+8,L.t('block 1'),'s');if(nL>1)txt(svg,170,top+(nL-1)*(h+2)+h/2+4,L.t('block {{n}}',{n:nL}),'s');
-    const P=1.05+nL*0.218;const x0=230;
+    // Each block holds ~0.218 B weights; embedding and LM head (0.525 B each)
+    // sit outside the stack and do not grow with L.
+    const per=0.218,emb=0.525,head=0.525,outside=emb+head,inBlocks=per*nL,P=outside+inBlocks;const x0=230;
     const rows=[[L.t('j5.37'),nf(P,2)+' B'],[L.t('j5.38'),'≈ '+nf(P*2,1)+' GB'],[L.t('j5.12'),'≈ '+nf(P*2,1)+' GFLOP'],[L.t('j5.13'),String(nL)]];
-    rows.forEach(([a,b],i)=>{txt(svg,x0,60+i*34,a,'s');txt(svg,x0+300,60+i*34,b,'m','end');line(svg,x0,68+i*34,x0+300,68+i*34,'lnf');});
-    const W=Math.min(300,nL*0.218/(1.05+32*0.218)*300);txt(svg,x0,214,L.t('j5.39'),'s');rect(svg,x0,222,300,14,'bg',3);rect(svg,x0,222,nL*0.218/P*300,14,'bw',3);txt(svg,x0+300,250,nf(nL*0.218/P*100,0)+' %','m','end');
+    rows.forEach(([a,b],i)=>{txt(svg,x0,56+i*30,a,'s');txt(svg,x0+300,56+i*30,b,'m','end');line(svg,x0,64+i*30,x0+300,64+i*30,'lnf');});
+    txt(svg,x0,196,L.t('j5.39'),'s');
+    const total=300,blockW=inBlocks/P*total;
+    rect(svg,x0,222,total,18,'bg',3);
+    rect(svg,x0,222,blockW,18,'bw',3);
+    rect(svg,x0+blockW,222,total-blockW,18,'',3).setAttribute('style','fill:var(--ink2);opacity:.35');
+    // Percentages above the bar, one at each end, so narrow segments stay readable.
+    txt(svg,x0,216,nf(inBlocks/P*100,0)+' %','s').setAttribute('style','font-size:10.5px;font-weight:600');
+    txt(svg,x0+total,216,nf(outside/P*100,0)+' %','s','end').setAttribute('style','font-size:10.5px;fill:var(--ink2)');
+    S('rect',{x:x0,y:252,width:9,height:9,rx:2,fill:'var(--w)'},svg);
+    txt(svg,x0+14,260,L.t('j5.53'),'s').setAttribute('style','font-size:10.5px');
+    S('rect',{x:x0+110,y:252,width:9,height:9,rx:2,fill:'var(--ink2)',style:'opacity:.35'},svg);
+    txt(svg,x0+124,260,L.t('j5.54'),'s').setAttribute('style','font-size:10.5px');
+    svg.dataset.blocks=String(nL);svg.dataset.total=String(P);svg.dataset.inside=String(inBlocks);svg.dataset.outside=String(outside);
     let m;if(nL===1)m=L.t('j5.14');
     else if(nL<8)m=L.t('j5.15');
     else if(nL<24)m=L.t('j5.16');
     else m=L.t('j5.17',{n:nL});
-    $('st-out').textContent=m;}
+    $('st-out').innerHTML=m+'<br><span style="font-size:13px">'+L.t('j5.50',{n:nL,each:nf(per,3),p:nf(inBlocks,2)})
+      +' · '+L.t('j5.51',{emb:nf(emb,3),head:nf(head,3),p:nf(outside,2)})+' — '+L.t('j5.52')+'</span>';}
   $('st-l').addEventListener('input',draw);draw();
 })();
 (function shapes(){
