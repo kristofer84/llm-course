@@ -57,7 +57,7 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
       for(let j=0;j<DO;j++){cell(wx+j*c,wy+i*c,W[i][j],'var(--w)','var(--neg)');txt(svg,wx+j*c+19,wy+i*c+24,L.num(W[i][j],1),'m','middle').setAttribute('style','font-size:11px');}}
     txt(svg,wx-22,wy+DI*c/2+4,'@','b','middle');
     for(let j=0;j<DO;j++){const r=cell(wx+j*c,wy+DI*c+14,y[j]/my,'var(--a)','var(--neg)');txt(svg,wx+j*c+19,wy+DI*c+38,L.num(y[j],1),'m','middle').setAttribute('style','font-size:11px');
-      const hit=S('rect',{x:wx+j*c-2,y:wy+DI*c+12,width:c,height:c,fill:'transparent',style:'cursor:pointer'},svg);hit.addEventListener('click',()=>{sel=j;draw();});}
+      const hit=S('rect',{x:wx+j*c-2,y:wy+DI*c+12,width:c,height:c,fill:'transparent',style:'cursor:pointer','data-a11y-control':'mv-output-'+j},svg);activateControl(hit,L.t('a11y.output',{index:j}),()=>{sel=j;draw();},j===sel);}
     S('rect',{x:wx+sel*c-3,y:wy-3,width:c+2,height:DI*c+2,rx:5,class:'hl'},svg);S('rect',{x:xx-3,y:wy-3,width:c+2,height:DI*c+2,rx:5,class:'hl'},svg);S('rect',{x:wx+sel*c-3,y:wy+DI*c+11,width:c+2,height:c+2,rx:5,class:'hl'},svg);
     $('mv-out').innerHTML='y['+sel+'] = x · W[:, '+sel+'] = '+x.map((v,i)=>L.num(v,1)+'·'+(W[i][sel]<0?'(−'+L.num(-W[i][sel],1)+')':L.num(W[i][sel],1))).join(' + ')+' ≈ <b>'+L.num(y[sel],2)+'</b>';}
   $('mv-rand').addEventListener('click',()=>{seed++;mk();draw();});mk();draw();

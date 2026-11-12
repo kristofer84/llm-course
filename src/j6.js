@@ -10,8 +10,8 @@
   const svg=$('lb-svg');let i=0;
   function draw(){clear(svg);S('line',{x1:60,y1:14,x2:60,y2:458,stroke:'var(--a)','stroke-width':6,style:'opacity:.45'},svg);txt(svg,60,10,L.t('x in'),'s','middle');
     txt(svg,30,240,L.t('j6.19'),'s','middle').setAttribute('transform','rotate(-90 30 240)');
-    st.forEach((s,k)=>{const y=24+k*72;const add=s[1]===L.t('j6.56');const on=k===i;const g=S('g',{style:'cursor:pointer'},svg);g.addEventListener('click',()=>{i=k;draw();});
-      const head=L.t('{{n}}. {{title}}',{n:k+1,title:L.t(s[0])});
+    st.forEach((s,k)=>{const y=24+k*72;const add=s[1]===L.t('j6.56');const on=k===i;const g=S('g',{style:'cursor:pointer','data-a11y-control':'lb-step-'+k},svg);
+      const head=L.t('{{n}}. {{title}}',{n:k+1,title:L.t(s[0])});activateControl(g,head,()=>{i=k;draw();},on);
       if(add){S('circle',{cx:60,cy:y+26,r:14,class:'box',style:on?'stroke:var(--tok);stroke-width:3':''},g);txt(g,60,y+31,'+','b','middle');txt(g,90,y+31,head,on?'b':'s');}
       else{line(g,66,y+26,104,y+26,'ln',true);S('rect',{x:106,y:y+4,width:400,height:44,rx:8,class:k===1||k===4?'bw':'bg',style:on?'stroke:var(--tok);stroke-width:3':''},g);
         txt(g,122,y+23,head,on?'b':'');txt(g,122,y+40,L.t(s[1]),'m tw').setAttribute('style','font-size:11px');
