@@ -21,7 +21,7 @@
  "p5.kv-cache-steg-for-steg.7": "Neu starten",
  "p5.ett-decode-steg-med-shapes.1": "Ein Decode-Schritt mit Tensorformen",
  "p5.ett-decode-steg-med-shapes.2": "x_new               [1, 4096]   position p\nq, k, v = qkv_proj  [1, 4096], [1, 1024], [1, 1024]\n→ heads             q [32, 1, 128]  k,v [8, 1, 128]\nRoPE(q, k, pos=p)\n\nwrite k, v → cache  K_cache [8, p+1, 128]\n                    V_cache [8, p+1, 128]\n\nS = q Kᵀ / √128     [32, 1, p+1]\nP = softmax(S)      [32, 1, p+1]\nO = P V             [32, 1, 128] → [1, 4096]\nout = O @ Wo        [1, 4096]",
- "p5.ett-decode-steg-med-shapes.3": "Bei Decode ist keine kausale Maske nötig: Das neue Token steht am Ende und darf alles sehen.",
+ "p5.ett-decode-steg-med-shapes.3": "Separates Shape-Beispiel mit 12 gecachten Positionen, nicht der obige Prompt. Eine einzelne letzte Query beim Decode braucht keine kausale Maske: Sie darf alle gültigen früheren Positionen und sich selbst sehen.",
  "p5.ett-decode-steg-med-shapes.4": "Die Arbeit eines Decode-Schritts besteht aus zwei völlig unterschiedlichen Teilen:",
  "p5.ett-decode-steg-med-shapes.5": "<b>Matrixmultiplikationen mit Gewichten</b> (qkv, o, gate/up, down): gleiche Kosten unabhängig von der Kontextlänge. Sie werden von allen Sequenzen eines Batches gemeinsam genutzt.",
  "p5.ett-decode-steg-med-shapes.6": "<b>Attention über den Cache</b>: Liest p+1 Keys und Values. Der Aufwand wächst linear mit dem Kontext und ist für jede Sequenz individuell, lässt sich also nicht teilen.",

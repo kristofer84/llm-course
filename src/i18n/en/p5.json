@@ -21,7 +21,7 @@
  "p5.kv-cache-steg-for-steg.7": "Start over",
  "p5.ett-decode-steg-med-shapes.1": "One decode step, with shapes",
  "p5.ett-decode-steg-med-shapes.2": "x_new               [1, 4096]   position p\nq, k, v = qkv_proj  [1, 4096], [1, 1024], [1, 1024]\n→ heads             q [32, 1, 128]  k,v [8, 1, 128]\nRoPE(q, k, pos=p)\n\nwrite k, v → cache  K_cache [8, p+1, 128]\n                    V_cache [8, p+1, 128]\n\nS = q Kᵀ / √128     [32, 1, p+1]\nP = softmax(S)      [32, 1, p+1]\nO = P V             [32, 1, 128] → [1, 4096]\nout = O @ Wo        [1, 4096]",
- "p5.ett-decode-steg-med-shapes.3": "No causal mask is needed in decode: the new token is last and gets to see everything.",
+ "p5.ett-decode-steg-med-shapes.3": "Separate shape example with 12 cached positions, not the prompt above. A single final query in decode needs no causal mask: it can see all valid earlier positions and itself.",
  "p5.ett-decode-steg-med-shapes.4": "The work in a decode step consists of two completely different parts:",
  "p5.ett-decode-steg-med-shapes.5": "<b>Matmuls against weights</b> (qkv, o, gate/up, down): the same cost regardless of context length. Shared across all sequences in a batch.",
  "p5.ett-decode-steg-med-shapes.6": "<b>Attention against the cache</b>: reads p+1 keys and values. Grows linearly with the context and is unique per sequence, so it cannot be shared.",

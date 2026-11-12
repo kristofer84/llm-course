@@ -31,7 +31,7 @@
  "n6.vad-ligger-i-gpu-minnet.30": "GPU KV cache size: … tokens",
  "n6.vad-ligger-i-gpu-minnet.31": "Die Zahlen für Aktivierungen und Zusatzaufwand sind Näherungswerte und variieren.",
  "n6.kv-cachen-pa-riktigt-en.1": "Der KV-Cache in echt: ein Minimodell",
- "n6.kv-cachen-pa-riktigt-en.2": "Hier läuft ein echter Transformer in deinem Browser: 2 Schichten, 2 Heads, d = 16, mit Attention, kausaler Maske, RMSNorm und MLP. Die Gewichte sind zufällig, daher ist der Text unsinnig. Die Mechanik ist jedoch echt.",
+ "n6.kv-cachen-pa-riktigt-en.2": "Dieser separate Mini-Transformer hat 2 Schichten, 2 Heads, d = 16, Attention, eine kausale Maske, RMSNorm und ein MLP. Sein eigenes Wortvokabular ist nicht Llamas BPE. Der Prompt hat {{example_mini_prompt_T}} Positionen; die Maximallänge ist {{example_mini_max_T}}. Zufällige Gewichte erzeugen unsinnigen Text, die Mechanik ist jedoch echt.",
  "n6.kv-cachen-pa-riktigt-en.3": "Jeder Schritt wird auf zwei Arten berechnet:",
  "n6.kv-cachen-pa-riktigt-en.4": "<b>Ohne Cache</b>: Die gesamte Sequenz wird erneut von Anfang an verarbeitet.",
  "n6.kv-cachen-pa-riktigt-en.5": "<b>Mit Cache</b>: Nur das neue Token wird verarbeitet, K und V für den Rest werden gelesen.",

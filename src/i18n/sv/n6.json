@@ -31,7 +31,7 @@
  "n6.vad-ligger-i-gpu-minnet.30": "GPU KV cache size: … tokens",
  "n6.vad-ligger-i-gpu-minnet.31": "Siffrorna för aktiveringar och overhead är ungefärliga och varierar.",
  "n6.kv-cachen-pa-riktigt-en.1": "KV-cachen på riktigt: en minimodell",
- "n6.kv-cachen-pa-riktigt-en.2": "Här körs en riktig transformer i din webbläsare: 2 lager, 2 heads, d = 16, med attention, causal mask, RMSNorm och MLP. Vikterna är slumpade, så texten blir nonsens. Mekaniken är däremot äkta.",
+ "n6.kv-cachen-pa-riktigt-en.2": "Här körs en separat minitransformer: 2 lager, 2 heads, d = 16, med attention, causal mask, RMSNorm och MLP. Dess egen ordvokabulär är inte Llamas BPE. Prompten har {{example_mini_prompt_T}} positioner; maxlängden är {{example_mini_max_T}}. Vikterna är slumpade, så texten blir nonsens. Mekaniken är däremot äkta.",
  "n6.kv-cachen-pa-riktigt-en.3": "Varje steg räknas på två sätt:",
  "n6.kv-cachen-pa-riktigt-en.4": "<b>Utan cache</b>: hela sekvensen körs om från början.",
  "n6.kv-cachen-pa-riktigt-en.5": "<b>Med cache</b>: bara den nya token körs, K och V för resten läses.",
