@@ -95,14 +95,14 @@ COLLECT = r"""
 
 COUNT = r"""
 () => document.querySelectorAll(
-  '.slide.active button, .slide.active input[type=range], .slide.active input[type=checkbox], ' +
+  '.slide.active button:not(.study-tool), .slide.active input[type=range], .slide.active input[type=checkbox], ' +
   '.slide.active select, .slide.active summary'
 ).length
 """
 
 CLICK = r"""
 (j) => {
-  const sel = '.slide.active button, .slide.active input[type=range], ' +
+  const sel = '.slide.active button:not(.study-tool), .slide.active input[type=range], ' +
               '.slide.active input[type=checkbox], .slide.active select, .slide.active summary';
   const el = [...document.querySelectorAll(sel)][j];
   if (!el) return false;

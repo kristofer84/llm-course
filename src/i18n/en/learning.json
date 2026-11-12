@@ -12,8 +12,6 @@
  "learning.definitions": "Definitions:",
  "learning.define": "Define {{term}}",
  "learning.vllm.reference": "Documentation reference: vLLM v0.11.0 (V1). Examples and source paths are release-specific; this course does not claim GPU-tested compatibility.",
- "title.quiz.3": "Check your understanding: the block",
- "mod.3.quizname": "the block and residual stream",
  "mod.serving.name": "vLLM: execution and operation",
  "mod.serving.desc": "From a scheduled batch to generated tokens, reliable requests and measured service quality.",
  "mod.serving.lead": "Scheduling makes a batch. Execution computes its outputs; operation keeps the service useful under real traffic.",
@@ -28,5 +26,6 @@
  "mod.11.key.1": "Model behaviour comes from learned weights; activations carry the current sequence through shared computations.",
  "mod.11.key.2": "A cache avoids recomputing earlier K/V, but attention still reads a growing context.",
  "mod.11.key.3": "A useful system needs both quality checks and workload measurements; seeing a slide is not evidence of mastering it.",
- "title.summary.11": "Summary: putting it together"
+ "mod.4.key.6": "Attention mixes information from available token positions using input-dependent weights.",
+ "mod.4.key.7": "The MLP transforms each token separately; its output must fit the residual stream before addition."
 }

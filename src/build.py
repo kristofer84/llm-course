@@ -24,7 +24,11 @@ for lf in sorted(glob.glob('i18n/*/*.json')):
     if not isinstance(data, dict):
         print('i18n: skipping', lf)
         continue
-    CAT.setdefault(loc, {}).update(data)
+    catalog = CAT.setdefault(loc, {})
+    duplicate = set(catalog).intersection(data)
+    if duplicate:
+        raise SystemExit('Duplicate catalog keys in %s: %s' % (lf, sorted(duplicate)))
+    catalog.update(data)
 SV = CAT.get('sv', {})
 LANGS = ['sv'] + sorted(l for l in CAT if l != 'sv')
 
@@ -68,6 +72,8 @@ secs = {}
 for fn in SOURCE_FILES:
     text = open(fn, encoding='utf-8').read()
     for m in re.finditer(r'<section class="slide"[^>]*data-title="([^"]+)"[^>]*>.*?</section>', text, re.S):
+        if m.group(1) in secs:
+            raise SystemExit('Duplicate source slide title: %s' % m.group(1))
         secs[m.group(1)] = m.group(0)
 
 # MODS keeps structure only: prose comes from the catalog (i18n/sv/build.json).
@@ -276,7 +282,11 @@ for section in out:
     quiz = re.search(r'data-quiz="([^"]+)"', section)
     if mod and quiz:
         quiz_for_module[int(mod[1])] = quiz[1]
+lesson_positions = {re.search(r'data-title="([^"]+)"', section)[1]: index for index, section in enumerate(out)}
+quiz_positions = {re.search(r'data-quiz="([^"]+)"', section)[1]: index
+                  for index, section in enumerate(out) if 'data-quiz=' in section}
 course = dict(quizForModule=quiz_for_module, slideLevels=LEVELS,
+              lessonPositions=lesson_positions, quizPositions=quiz_positions,
               legacyQuiz=json.load(open('quiz-legacy.json', encoding='utf-8')),
               mods=['mod.' + m['id'] + '.name' for m in MODS],
               desc=['mod.' + m['id'] + '.desc' for m in MODS],

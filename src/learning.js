@@ -5,6 +5,8 @@ function migrateQuizAnswers(){
   const legacy=window.COURSE.legacyQuiz||{};
   Object.entries(legacy).forEach(([bank,questions])=>questions.forEach((q,i)=>{
     const old=(store.quiz[bank]||[])[i];
+    // This question changed subject (reasoning -> SFT), so old credit is not evidence.
+    if(q.q==='jd.m5.4.q')return;
     if(Number.isInteger(old)&&q.o[old]&&store.answers[q.q]==null)store.answers[q.q]=q.o[old];
   }));
   store.quizSchema=3;save();
@@ -46,7 +48,7 @@ function initQuiz(el){
   const reset=H('button','btn',L.t('j0.9'),scoreBox);
   reset.addEventListener('click',()=>{qs.forEach(q=>delete store.answers[q.q]);save();initQuiz(el);});
   function score(){const ok=qs.filter(questionCorrect).length,done=qs.filter(questionAnswered).length;
-    scoreLabel.textContent=L.t('j0.16',{ok,n:qs.length})+(done<qs.length?' '+L.t('j0.17',{left:qs.length-done}):' '+L.t(ok===qs.length?'j0.10':'j0.11'));
+    scoreLabel.innerHTML=L.t('j0.16',{ok,n:qs.length})+(done<qs.length?' '+L.t('j0.17',{left:qs.length-done}):' '+L.t(ok===qs.length?'j0.10':'j0.11'));
   }
   if(!qs.length)H('p','note',L.t('learning.quiz.empty'),el);
   qs.forEach((q,i)=>{

@@ -22,6 +22,7 @@ node = r"""
 const assert=require('node:assert/strict');
 const window={COURSE:COURSE_DATA};let store={quiz:{},answers:{},maxlv:1};const save=()=>{};
 const L={t:x=>x};
+RNG_DATA
 QUIZ_DATA
 LEARNING_DATA
 const all=Object.values(QUIZ).flat();
@@ -38,6 +39,7 @@ for(const [bank,questions] of Object.entries(QUIZ)){
     q.requires.forEach(t=>{
       assert.ok(Object.hasOwn(window.COURSE.slideLevels,t),`Missing lesson ${t} (${q.q})`);
       assert.ok(window.COURSE.slideLevels[t]<=q.level,`Question precedes enabled lesson: ${q.q}`);
+      assert.ok(window.COURSE.lessonPositions[t]<window.COURSE.quizPositions[bank],`Lesson after checkpoint: ${q.q} -> ${t}`);
     });
     const order=questionOrder(bank,q,i,questions.length);assert.equal(new Set(order).size,4);
     slots[order.indexOf(q.a)]++;
@@ -51,6 +53,7 @@ for(const [bank,questions] of Object.entries(QUIZ)){
   }
 }
 for(const [module,bank] of Object.entries(window.COURSE.quizForModule))assert.ok(QUIZ[bank],`Bad module mapping ${module}`);
+assert.equal(Object.keys(window.COURSE.quizForModule).length,window.COURSE.mods.length-1,'Every numbered module needs a checkpoint');
 // Legacy index answers migrate to durable keys, even after bank reorganisation.
 const [bank,legacy]=Object.entries(window.COURSE.legacyQuiz)[0];
 store={quiz:{[bank]:[1]},answers:{},maxlv:1};migrateQuizAnswers();
@@ -60,7 +63,10 @@ console.log(`OK: ${all.length} questions, ${Object.keys(QUIZ).length} banks; lev
 """
 node = node.replace("COURSE_DATA", json.dumps(course)).replace("QUIZ_DATA", data).replace(
     "LEARNING_DATA", (ROOT / "src/learning.js").read_text())
-subprocess.run(["node", "-e", node], check=True)
+node = node.replace("RNG_DATA", re.search(r"function rng[^\n]+", (ROOT / "src/j0.js").read_text())[0])
+result = subprocess.run(["node", "-e", node], capture_output=True, text=True)
+print(result.stdout, end="")
+assert result.returncode == 0, result.stderr[:5000]
 
 # Formula/code translations must preserve visual line structure permanently.
 sv, en = {}, {}

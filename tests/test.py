@@ -27,7 +27,8 @@ async def main():
         # quiz click
         await pg.evaluate('document.querySelector(".quiz .opt").click()')
         print('quiz score:',await pg.evaluate('document.querySelector(".qscore").innerText'))
-        print('errors:',errs); print(n); 
+        print('errors:',errs); print(n)
+        assert not errs, errs
         open(shot('titles.txt'),'w').write('\n'.join(f'{i+1} {t}' for i,t in enumerate(titles)))
         await b.close()
 shots_dir()
