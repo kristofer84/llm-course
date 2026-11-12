@@ -51,9 +51,10 @@
  "n3c.normalisering-varfor-och-var.9": "Post-norm",
  "n3c.normalisering-varfor-och-var.10": "The curve is an illustration. The stream’s size does grow with depth in pre-norm models, broadly speaking, but exact values vary between models.",
  "n3c.transformer-och-decoder-only.arialabel": "The original’s encoder and decoder compared with decoder-only",
- "n3c.ett-block-staplat-32-ganger.arialabel": "Stacked blocks with a parameter count",
+ "n3c.ett-block-staplat-32-ganger.arialabel": "Stacked blocks. The bar shows how the total parameters split between the L blocks and the two fixed tables, embedding and LM head.",
  "n3c.shapen-andras-aldrig.arialabel": "The tensor’s shape at each step through the model",
  "n3c.normalisering-varfor-och-var.arialabel": "Where the normalization sits",
  "n3c.normalisering-varfor-och-var.arialabel-2": "The size of the stream and of what the blocks read, through 32 blocks",
- "n3c.ett-block-staplat-32-ganger.20": "Number of blocks L"
+ "n3c.ett-block-staplat-32-ganger.20": "Number of blocks L",
+ "n3c.ett-block-staplat-32-ganger.21": "Where the parameters sit: each block holds about 0.218 B, so 32 blocks give 6.98 B. Outside the stack there are only two tables — embedding (0.525 B) and LM head (0.525 B). That is 8.03 B in total, with about 87 % in the blocks. The share rises with L but never reaches 100 %, because the two tables keep their size however many blocks you stack. Each extra block also buys less than the one before: the first rounds establish the broad connections, later ones refine them."
 }

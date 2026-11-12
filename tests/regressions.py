@@ -82,6 +82,18 @@ async def run():
             assert await page.locator("#ab-out").inner_text() != before
             assert await page.locator("#st-svg").inner_html() == original
             assert not await page.evaluate("() => {const ids=[...document.querySelectorAll('[id]')].map(e=>e.id);return ids.length!==new Set(ids).size;}")
+            # The block-stack parameter split must add up and grow with L only
+            # inside the blocks; the two token tables never change size.
+            await reveal(page, '#st-l')
+            for count in (1, 8, 32):
+                await page.locator('#st-l').evaluate("(e,n)=>{e.value=n;e.dispatchEvent(new Event('input',{bubbles:true}))}", count)
+                data = await page.locator('#st-svg').evaluate("e=>({...e.dataset})")
+                inside, outside, total = (float(data[key]) for key in ('inside', 'outside', 'total'))
+                assert abs(inside - .218*count) < 1e-9 and abs(outside - 1.05) < 1e-9, (lang, count, data)
+                assert abs(inside + outside - total) < 1e-9, (lang, count, data)
+                assert 0 < inside/(inside+outside) < 1, 'share must be a real fraction, never 100%'
+            assert await page.locator('#st-out').inner_text()
+
             # Expanded diagrams move rather than clone, preserving controls and unique ids.
             expand = page.locator(".slide.active .viz-actions button").first
             await expand.click()

@@ -37,7 +37,7 @@
  "j5.36": "all see all",
  "j5.37": "Parameters",
  "j5.38": "Memory in bf16",
- "j5.39": "share of the parameters in the blocks",
+ "j5.39": "Parameter split: blocks vs. tables",
  "j5.40": "Token IDs",
  "j5.41": "After block 1",
  "j5.42": "After block 2",
@@ -52,5 +52,10 @@
  "j5.task.subjectArticle": "definite article",
  "j5.task.placeArticle": "definite article",
  "j5.task.subjectLink": "determines the subject “{{example_subject}}”",
- "j5.task.placeLink": "determines the location noun “{{example_place}}”"
+ "j5.task.placeLink": "determines the location noun “{{example_place}}”",
+ "j5.50": "Blocks: {{n}} × {{each}} B = {{p}} B",
+ "j5.51": "Outside the blocks: embedding {{emb}} B + LM head {{head}} B = {{p}} B",
+ "j5.52": "The two token tables stay the same size, so the block share rises with L but never reaches 100 %.",
+ "j5.53": "in the blocks",
+ "j5.54": "outside"
 }

@@ -37,7 +37,7 @@
  "j5.36": "alle sehen alle",
  "j5.37": "Parameter",
  "j5.38": "Speicher in bf16",
- "j5.39": "Anteil der Parameter in den Blöcken",
+ "j5.39": "Parameter: Blöcke gegen Tabellen",
  "j5.40": "Token-IDs",
  "j5.41": "Nach Block 1",
  "j5.42": "Nach Block 2",
@@ -52,5 +52,10 @@
  "j5.task.subjectArticle": "bestimmter Artikel, Nominativ, feminin",
  "j5.task.placeArticle": "bestimmter Artikel, Dativ, feminin",
  "j5.task.subjectLink": "bestimmt das Subjekt „{{example_subject}}“",
- "j5.task.placeLink": "bestimmt das Ortsnomen „{{example_place}}“"
+ "j5.task.placeLink": "bestimmt das Ortsnomen „{{example_place}}“",
+ "j5.50": "Blöcke: {{n}} × {{each}} B = {{p}} B",
+ "j5.51": "Außerhalb der Blöcke: Embedding {{emb}} B + LM-Head {{head}} B = {{p}} B",
+ "j5.52": "Die beiden Token-Tabellen bleiben gleich groß, daher steigt der Blockanteil mit L, erreicht aber nie 100 %.",
+ "j5.53": "in den Blöcken",
+ "j5.54": "außerhalb"
 }
