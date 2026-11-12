@@ -6,11 +6,13 @@ const vm=require('node:vm');
 const root=path.resolve(__dirname,'..');
 const vendor=fs.readFileSync(path.join(root,'src/vendor/i18next.min.js'),'utf8');
 const engine=fs.readFileSync(path.join(root,'src/i18n/engine.js'),'utf8').replace(/<\/?script>/g,'');
+const examples=Object.fromEntries(['sv','en','de'].map(locale=>[locale,JSON.parse(fs.readFileSync(path.join(root,'src/examples',locale+'.json'),'utf8'))]));
 function start({query='',saved=null,languages=['en-US'],language='en-US'}={}){
   const state=new Map(saved?[['llm-kurs-lang',saved]]:[]);
   let replacement=null;
   const context=vm.createContext({console,Intl,URL,setTimeout,clearTimeout,
-    I18N_DATA:{sv:{'test.term':'Svenska'},de:{'test.term':'Deutsch'},en:{'test.term':'English'}},
+    I18N_DATA:{sv:{'test.term':'Svenska'},de:{'test.term':'Deutsch','test.example':'{{example_prompt}} | {{example_prompt_T}}'},en:{'test.term':'English'}},
+    EXAMPLE_DATA:examples,
     navigator:{languages,language},
     localStorage:{getItem:k=>state.get(k)||null,setItem:(k,v)=>state.set(k,v)},
     document:{getElementById:()=>null,documentElement:{lang:'sv'}},
@@ -43,6 +45,9 @@ for(const [options,expected] of cases){
 const german=start({query:'?lang=de&theme=dark'});
 assert.equal(german.L.t('test.term'),'Deutsch');
 assert.equal(german.L.num(1234.5,1),'1.234,5');
+assert.equal(german.L.t('test.example'),'Die Katze saß auf der | 8');
+assert.equal(german.L.t('test.example',{example_prompt:'Override'}),'Override | 8');
+assert.equal(examples.de.vars.example_prompt,'Die Katze saß auf der');
 german.L.setLang('en');
 assert.equal(german.state.get('llm-kurs-lang'),'en');
 const switched=new URL(german.replacement());

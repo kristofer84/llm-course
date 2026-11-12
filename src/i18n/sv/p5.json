@@ -21,7 +21,7 @@
  "p5.kv-cache-steg-for-steg.7": "Börja om",
  "p5.ett-decode-steg-med-shapes.1": "Ett decode-steg med shapes",
  "p5.ett-decode-steg-med-shapes.2": "x_new               [1, 4096]   position p\nq, k, v = qkv_proj  [1, 4096], [1, 1024], [1, 1024]\n→ heads             q [32, 1, 128]  k,v [8, 1, 128]\nRoPE(q, k, pos=p)\n\nskriv k, v i cache  K_cache [8, p+1, 128]\n                    V_cache [8, p+1, 128]\n\nS = q Kᵀ / √128     [32, 1, p+1]\nP = softmax(S)      [32, 1, p+1]\nO = P V             [32, 1, 128] → [1, 4096]\nout = O @ Wo        [1, 4096]",
- "p5.ett-decode-steg-med-shapes.3": "Ingen causal mask behövs i decode: den nya tokenen är sist och får se allt.",
+ "p5.ett-decode-steg-med-shapes.3": "Separat shape-exempel med 12 cachade positioner, inte prompten ovan. Ingen causal mask behövs för en ensam sista query i decode: den får se alla giltiga tidigare positioner och sig själv.",
  "p5.ett-decode-steg-med-shapes.4": "Arbetet i ett decode-steg består av två helt olika delar:",
  "p5.ett-decode-steg-med-shapes.5": "<b>Matmuls mot vikter</b> (qkv, o, gate/up, down): samma kostnad oavsett kontextlängd. Delas mellan alla sekvenser i en batch.",
  "p5.ett-decode-steg-med-shapes.6": "<b>Attention mot cachen</b>: läser p+1 keys och values. Växer linjärt med kontexten och är unik per sekvens, så den kan inte delas.",

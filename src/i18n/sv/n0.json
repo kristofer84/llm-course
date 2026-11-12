@@ -7,5 +7,5 @@
  "n0.kursens-karta.6": "Varje slide har en nivå: <span class=\"lvb l1\">Grund</span> förutsätter inga förkunskaper, <span class=\"lvb l2\">Fördjupning</span> visar formler och shapes, <span class=\"lvb l3\">Expert</span> går in i kod och drift. Är du ny: välj grundspåret och läs hela kursen, gå sedan igenom den igen med fördjupning. Bläddringen hoppar över slides över vald nivå.",
  "n0.kursens-karta.7": "Varje modul har mål, sammanfattning och kunskapstest; den sista modulen pekar också vidare till fördjupning. Din progress och dina quizresultat sparas i den här webbläsaren. Tangenter: <span class=\"kbd\">←</span> <span class=\"kbd\">→</span> bläddra, <span class=\"kbd\">T</span> innehåll, <span class=\"kbd\">O</span> ordlista.",
  "n0.ett-exempel-hela-vagen.1": "Ett exempel hela vägen",
- "n0.ett-exempel-hela-vagen.2": "Hela kursen på en slide. Följ texten ”Katten satt på” genom modellen tills den blivit en token längre. Varje steg fördjupas i en egen modul."
+ "n0.ett-exempel-hela-vagen.2": "Hela kursen på en slide. Följ texten ”{{example_prompt}}” genom modellen tills den blivit en token längre. Varje steg fördjupas i en egen modul."
 }

@@ -1,9 +1,10 @@
 /* ================= M1 ================= */
 (function bpe(){
-  const steps=[null,['t','t'],['k','a'],['ka','tt'],['u','n'],['un','g'],['a','r']];
+  // Character-pair illustration, not the verified byte-level Llama tokenizer.
+  const steps=[null,...EX.bpe.merges];
   let toks,i;const box=$('bpe-chips'),out=$('bpe-out');
   function render(nt){clear(box);toks.forEach(t=>{const c=document.createElement('span');c.className='chip t'+(t===nt?' new':'');c.textContent=t;box.appendChild(c);});}
-  function reset(){toks='kattungar'.split('');i=0;render();out.innerHTML=L.t('j1b.36');}
+  function reset(){toks=Array.from(EX.bpe.word);i=0;render();out.innerHTML=L.t('j1b.36');}
   $('bpe-next').addEventListener('click',()=>{
     if(i>=steps.length-1){out.innerHTML=L.t('j1b.1',{n:toks.length});return;}
     i++;const p=steps[i];const o=[];for(let j=0;j<toks.length;j++){if(j<toks.length-1&&toks[j]===p[0]&&toks[j+1]===p[1]){o.push(p[0]+p[1]);j++;}else o.push(toks[j]);}toks=o;
@@ -11,12 +12,20 @@
   $('bpe-reset').addEventListener('click',reset);reset();
 })();
 (function emb(){
-  const g=$('emb-rows');const toks=['<|begin_of_text|>','K','atten',' satt',' på'];const rows=[13,3,7,5,10];
-  for(let r=0;r<15;r++){const used=rows.indexOf(r)>=0;rect(g,260,20+r*20,200,17,used?'bw':'bg',2);}
-  toks.forEach((t,i)=>{const y=40+i*55;rect(g,10,y,150,30,'bt',6);txt(g,85,y+20,t,'m','middle');
-    const ry=20+rows[i]*20+8;line(g,160,y+15,256,ry,'ln',true);
-    const oy=90+i*28;rect(g,540,oy,170,22,'ba',3);line(g,460,ry,536,oy+11,'lnf',false);txt(g,532,oy+15,'x['+i+']','s','end');});
-  txt(g,360,336,L.t('j1b.38'),'s','middle');
+  const g=$('emb-rows'),{pieces:toks,ids}=EX.tokenizer.prompt;
+  // Display only selected real rows, compressed vertically rather than at fake IDs.
+  const rows=[...new Set(ids)].sort((a,b)=>a-b),rowY=id=>44+rows.indexOf(id)*42;
+  const height=90+Math.max(toks.length,rows.length)*42,svg=g.ownerSVGElement;
+  exampleSvg(svg,740,height,740);
+  // Keep the existing localized column headings, aligned above the new rows.
+  const headings=svg.querySelectorAll('text[data-i18n]');
+  [85,360,645].forEach((x,i)=>{headings[i].setAttribute('x',x);headings[i].setAttribute('y',22);});
+  rows.forEach(id=>{const y=rowY(id);rect(g,260,y,200,28,'bw',3);txt(g,360,y+19,String(id),'m','middle');});
+  toks.forEach((t,i)=>{const y=44+i*42;rect(g,10,y,150,30,'bt',6);
+    txt(g,85,y+20,t,'m','middle').setAttribute('style','white-space:pre;font-size:12px');
+    const ry=rowY(ids[i])+14;line(g,160,y+15,256,ry,'ln',true);
+    rect(g,560,y+4,170,22,'ba',3);line(g,460,ry,556,y+15,'lnf',false);txt(g,552,y+19,'x['+i+']','s','end');});
+  txt(g,370,height-15,L.t('j1b.38',{n:rows.length}),'s','middle');
 })();
 
 /* ================= M2 ================= */
@@ -65,10 +74,13 @@
   mI.addEventListener('input',draw);nI.addEventListener('input',draw);draw();
 })();
 (function attn(){
-  const svg=$('att-svg');const T=['<bos>','Katten','satt','på','mattan','eftersom','den'];const n=T.length;const R=rng(7);
-  const S0=T.map((_,i)=>T.map((_,j)=>{if(j>i)return null;let v=R()*2.4-1.2;if(j===0)v+=1.2;if(j===i)v+=0.6;if(i===6&&j===1)v=3.4;if(i===3&&j===2)v+=1.5;if(i===4&&j===3)v+=1.8;return v;}));
+  const svg=$('att-svg'),T=EX.scene.attention,roles=EX.scene.attentionRoles;
+  const n=T.length,R=rng(7);
+  // Synthetic word-level scores: these are not Llama token boundaries or measured weights.
+  const S0=T.map((_,i)=>T.map((_,j)=>{if(j>i)return null;let v=R()*2.4-1.2;if(j===0)v+=1.2;if(j===i)v+=0.6;if(i===roles.pronoun&&j===roles.subject)v=3.4;if(i===roles.preposition&&j===roles.verb)v+=1.5;if(i===roles.place&&j===roles.preposition)v+=1.8;return v;}));
   const P=S0.map(r=>{const ok=r.filter(v=>v!=null);const mx=Math.max(...ok);const ex=r.map(v=>v==null?0:Math.exp(v-mx));const s=ex.reduce((a,b)=>a+b,0);return ex.map(e=>e/s);});
-  let mode='raw',sel=6;const cs=44,x0=120,y0=90;
+  let mode='raw',sel=roles.pronoun;const cs=48,x0=Math.max(120,...T.map(t=>t.length*8+18)),y0=105;
+  const width=x0+n*cs+30;exampleSvg(svg,width,y0+n*cs+20,width);
   function draw(){clear(svg);
     T.forEach((t,i)=>{txt(svg,x0-8,y0+i*cs+cs/2+4,t,'m','end');const tt=txt(svg,x0+i*cs+cs/2,y0-8,t,'m');tt.setAttribute('transform','rotate(-40 '+(x0+i*cs+cs/2)+' '+(y0-8)+')');});
     txt(svg,x0-8,y0-50,'query ↓  key →','s','end');
@@ -80,24 +92,24 @@
     S('rect',{x:x0-3,y:y0+sel*cs-2,width:n*cs+2,height:cs+2,rx:4,class:'hl'},svg);
     for(let i=0;i<n;i++){const r=S('rect',{x:20,y:y0+i*cs,width:x0+n*cs-20,height:cs-2,fill:'transparent',style:'cursor:pointer','data-a11y-control':'att-row-'+i},svg);activateControl(r,L.t('a11y.query',{n:i+1,token:T[i]}),()=>{sel=i;draw();},i===sel);}
     const row=P[sel];let best=0;row.forEach((p,j)=>{if(p>row[best])best=j;});
-    $('att-out').innerHTML=L.t(sel?L.t('j1b.42'):L.t('j1b.43'),{t:T[sel],n:sel+1})+' '+(sel<n-1?L.t('j1b.7')+' ':'')+L.t('j1b.8',{t:T[best],p:nf(row[best],2)});}
+    $('att-out').innerHTML=L.t(sel?'j1b.42':'j1b.43',{t:T[sel],n:sel+1})+' '+(sel<n-1?L.t('j1b.7')+' ':'')+L.t('j1b.8',{t:T[best],p:nf(row[best],2)});}
   $('att-raw').addEventListener('click',()=>{mode='raw';$('att-raw').classList.add('on');$('att-soft').classList.remove('on');draw();});
   $('att-soft').addEventListener('click',()=>{mode='soft';$('att-soft').classList.add('on');$('att-raw').classList.remove('on');draw();});
   draw();
 })();
 (function pv(){
-  const svg=$('pv-svg');const toks=['Katten','satt','på','mattan','eftersom','den','var',L.t('j1b.9')];
-  const W=[{0:1},{0:.7,1:.3},{1:.5,2:.3,0:.2},{2:.55,3:.25,1:.1,0:.1},{1:.35,4:.3,3:.15,0:.2},{0:.62,3:.18,5:.12,4:.08},{5:.55,6:.25,0:.2},{0:.45,5:.3,6:.15,7:.1}];
-  const notes={0:L.t('j1b.10'),5:L.t('j1b.11'),7:L.t('j1b.12')};
-  let q=5;const X=i=>45+i*84,BY=150,BH=34;
+  const svg=$('pv-svg'),toks=EX.scene.tokens,W=EX.scene.valueWeights,roles=EX.scene.roles;
+  const notes={0:L.t('j1b.10'),[roles.subject]:L.t('j1b.60'),[roles.pronoun]:L.t('j1b.11'),[roles.adjective]:L.t('j1b.12')};
+  let q=roles.pronoun;const X=i=>45+i*84,BY=60+toks.length*12,BH=34;
+  const width=toks.length*84+8;exampleSvg(svg,width,BY+150,width);
   function draw(){clear(svg);const w=W[q];
-    Object.keys(w).forEach(k=>{k=+k;if(k===q)return;const v=w[k];const x1=X(q),x2=X(k),h=22+Math.abs(q-k)*12;
+    w.forEach((v,k)=>{if(k===q||v<=0)return;const x1=X(q),x2=X(k),h=22+Math.abs(q-k)*12;
       S('path',{d:'M'+x1+' '+(BY-2)+' Q'+((x1+x2)/2)+' '+(BY-2-h*2)+' '+x2+' '+(BY-2),fill:'none',stroke:'var(--a)','stroke-width':(1+v*9).toFixed(1),'stroke-linecap':'round',style:'opacity:'+(0.3+0.7*v).toFixed(2)},svg);});
     toks.forEach((t,i)=>{const masked=i>q;const g=S('g',{style:'cursor:pointer;opacity:'+(masked?.35:1),'data-a11y-control':'pv-token-'+i},svg);
       rect(g,X(i)-37,BY,74,BH,i===q?'ba':'box',6);txt(g,X(i),BY+BH/2+5,t,i===q?'b':'','middle').setAttribute('style','font-size:13px');
       activateControl(g,L.t('a11y.query',{n:i+1,token:t}),()=>{q=i;draw();},i===q);
-      const v=w[i]||0;if(!masked){S('rect',{x:X(i)-14,y:270-v*60,width:28,height:Math.max(1,v*60),rx:3,fill:'var(--a)',style:'opacity:'+(0.25+0.75*v).toFixed(2)},svg);txt(svg,X(i),292,Math.round(v*100)+' %','s','middle');}
-      else txt(svg,X(i),292,L.t('j1b.44'),'s','middle');});
+      const v=w[i]||0;if(!masked){S('rect',{x:X(i)-14,y:BY+120-v*60,width:28,height:Math.max(1,v*60),rx:3,fill:'var(--a)',style:'opacity:'+(0.25+0.75*v).toFixed(2)},svg);txt(svg,X(i),BY+142,Math.round(v*100)+' %','s','middle');}
+      else txt(svg,X(i),BY+142,L.t('j1b.44'),'s','middle');});
     $('pv-out').innerHTML=(notes[q]||L.t('j1b.13',{t:toks[q]}))+' '+L.t('j1b.14',{t:toks[q]});}
   draw();
 })();
@@ -124,7 +136,8 @@
 })();
 (function tracer(){
   const list=$('tr-list'),det=$('tr-detail');let mode='prefill',i=0;
-  function steps(){const P=mode==='prefill';const T=P?7:1,c=12;const B='1, '+T;
+  // Independent tensor-shape exercise: T=7 is not the localized example prompt.
+  function steps(){const P=mode==='prefill';const T=P?7:1;const B='1, '+T;
     return [
       [L.t('j1b.47'),P?'ids [1, 7]':'ids [1, 1]',P?L.t('j1b.48'):L.t('j1b.16')],
       ['Embedding','x = E[ids]   →   x ['+B+', 4096]',L.t('j1b.17')],

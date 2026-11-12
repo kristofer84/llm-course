@@ -1,0 +1,1088 @@
+{
+ "schema": 1,
+ "locale": "de",
+ "source": {
+  "model": "Meta-Llama-3-8B",
+  "officialRevision": "8cde5ca8380496c9a6cc7ef3a8b46a0372a1d920",
+  "officialGitBlob": "b197f72effb9d5ed16ee0f5663e11e4cfac2ba62",
+  "mirror": "NousResearch/Meta-Llama-3-8B",
+  "mirrorRevision": "315b20096dc791d381d514deb5f8bd9c8d6d3061",
+  "sha256": "e134af98b985517b4f068e3755ae90d4e9cd2d45d328325dc503f1c6b2d06cc7",
+  "bytes": 9085698,
+  "library": "tokenizers==0.22.2"
+ },
+ "words": {
+  "subject": "Katze",
+  "subjectPhrase": "Die Katze",
+  "noun": "Katze",
+  "verb": "saß",
+  "verbLemma": "sitzen",
+  "preposition": "auf",
+  "place": "Matte",
+  "conjunction": "denn",
+  "pronoun": "sie",
+  "copula": "war",
+  "adjective": "müde",
+  "countryFrance": "Frankreich",
+  "countryGermany": "Deutschland",
+  "capital": "Hauptstadt"
+ },
+ "bpe": {
+  "word": "Kätzchen",
+  "merges": [
+   [
+    "K",
+    "ä"
+   ],
+   [
+    "Kä",
+    "t"
+   ],
+   [
+    "c",
+    "h"
+   ],
+   [
+    "ch",
+    "e"
+   ],
+   [
+    "che",
+    "n"
+   ]
+  ],
+  "initial": [
+   "K",
+   "ä",
+   "t",
+   "z",
+   "c",
+   "h",
+   "e",
+   "n"
+  ],
+  "final": [
+   "Kät",
+   "z",
+   "chen"
+  ],
+  "charCount": 8,
+  "byteCount": 9
+ },
+ "tokenizer": {
+  "prompt": {
+   "text": "Die Katze saß auf der",
+   "ids": [
+    128000,
+    18674,
+    17816,
+    3059,
+    829,
+    8156,
+    7367,
+    2761
+   ],
+   "pieces": [
+    "<|begin_of_text|>",
+    "Die",
+    " Kat",
+    "ze",
+    " sa",
+    "ß",
+    " auf",
+    " der"
+   ],
+   "count": 8
+  },
+  "sentence": {
+   "text": "Die Katze saß auf der Matte",
+   "ids": [
+    18674,
+    17816,
+    3059,
+    829,
+    8156,
+    7367,
+    2761,
+    65182
+   ],
+   "pieces": [
+    "Die",
+    " Kat",
+    "ze",
+    " sa",
+    "ß",
+    " auf",
+    " der",
+    " Matte"
+   ],
+   "count": 8
+  },
+  "numbers": {
+   "text": "1234567",
+   "ids": [
+    4513,
+    10961,
+    22
+   ],
+   "pieces": [
+    "123",
+    "456",
+    "7"
+   ],
+   "count": 3
+  },
+  "vocabSize": 128256,
+  "bosId": 128000
+ },
+ "sampling": {
+  "prefix": "Die Katze saß auf der",
+  "candidates": [
+   " Matte",
+   " Bank",
+   " Couch",
+   " Seite",
+   " W",
+   " Er"
+  ],
+  "wholeContinuations": [
+   " Matte",
+   " Bank",
+   " Couch",
+   " Seite",
+   " Wiese",
+   " Erde"
+  ],
+  "logits": [
+   5.1,
+   4.3,
+   4.0,
+   3.2,
+   1.5,
+   0.2
+  ],
+  "ids": [
+   65182,
+   8715,
+   62228,
+   48504,
+   468,
+   9939
+  ]
+ },
+ "walkthrough": {
+  "prompt": {
+   "text": "Die Katze saß auf der",
+   "ids": [
+    128000,
+    18674,
+    17816,
+    3059,
+    829,
+    8156,
+    7367,
+    2761
+   ],
+   "pieces": [
+    "<|begin_of_text|>",
+    "Die",
+    " Kat",
+    "ze",
+    " sa",
+    "ß",
+    " auf",
+    " der"
+   ],
+   "count": 8
+  },
+  "candidates": [
+   " Matte",
+   " Bank",
+   " Couch",
+   " Seite",
+   " W"
+  ],
+  "logits": [
+   5.1,
+   4.3,
+   4.0,
+   3.2,
+   1.5
+  ],
+  "chosen": " Matte"
+ },
+ "training": {
+  "inputs": [
+   "<|begin_of_text|>",
+   "Die",
+   " Kat",
+   "ze",
+   " sa",
+   "ß",
+   " auf",
+   " der",
+   " Matte"
+  ],
+  "targets": [
+   "Die",
+   " Kat",
+   "ze",
+   " sa",
+   "ß",
+   " auf",
+   " der",
+   " Matte",
+   "."
+  ],
+  "highlight": 7
+ },
+ "cache": {
+  "text": "Die Katze saß auf der Matte und schlief gut.",
+  "ids": [
+   128000,
+   18674,
+   17816,
+   3059,
+   829,
+   8156,
+   7367,
+   2761,
+   65182,
+   2073,
+   72517,
+   4843,
+   18340,
+   13
+  ],
+  "pieces": [
+   "<|begin_of_text|>",
+   "Die",
+   " Kat",
+   "ze",
+   " sa",
+   "ß",
+   " auf",
+   " der",
+   " Matte",
+   " und",
+   " schl",
+   "ief",
+   " gut",
+   "."
+  ],
+  "count": 14,
+  "promptLength": 8
+ },
+ "speculative": {
+  "prefix": {
+   "text": "Die Katze saß",
+   "ids": [
+    128000,
+    18674,
+    17816,
+    3059,
+    829,
+    8156
+   ],
+   "pieces": [
+    "<|begin_of_text|>",
+    "Die",
+    " Kat",
+    "ze",
+    " sa",
+    "ß"
+   ],
+   "count": 6
+  },
+  "draft": [
+   " auf",
+   " der",
+   " Matte",
+   " und",
+   " schl",
+   "ief"
+  ],
+  "target": [
+   " auf",
+   " der",
+   " Matte",
+   ",",
+   " denn"
+  ],
+  "accepted": 3,
+  "replacement": ",",
+  "committed": [
+   " auf",
+   " der",
+   " Matte",
+   ","
+  ]
+ },
+ "scene": {
+  "tokens": [
+   "Die",
+   "Katze",
+   "saß",
+   "auf",
+   "der",
+   "Matte",
+   ",",
+   "denn",
+   "sie",
+   "war",
+   "müde"
+  ],
+  "roles": {
+   "subject": 1,
+   "verb": 2,
+   "preposition": 3,
+   "place": 5,
+   "conjunction": 7,
+   "pronoun": 8,
+   "copula": 9,
+   "adjective": 10
+  },
+  "context": [
+   "Die",
+   "Katze",
+   "saß",
+   "auf",
+   "der",
+   "Matte",
+   ",",
+   "denn",
+   "sie"
+  ],
+  "contextRoles": {
+   "subject": 1,
+   "verb": 2,
+   "preposition": 3,
+   "place": 5,
+   "conjunction": 7,
+   "pronoun": 8
+  },
+  "attention": [
+   "<bos>",
+   "Die",
+   "Katze",
+   "saß",
+   "auf",
+   "der",
+   "Matte",
+   ",",
+   "denn",
+   "sie"
+  ],
+  "attentionRoles": {
+   "subject": 2,
+   "verb": 3,
+   "preposition": 4,
+   "place": 6,
+   "conjunction": 8,
+   "pronoun": 9
+  },
+  "valueWeights": [
+   [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    1,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.7,
+    0.3,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.2,
+    0.5,
+    0.3,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.6,
+    0.4,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.1,
+    0.1,
+    0.55,
+    0.0,
+    0.25,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.6,
+    0.4,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.2,
+    0.35,
+    0.0,
+    0.0,
+    0.15,
+    0.0,
+    0.3,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.62,
+    0.0,
+    0.0,
+    0.0,
+    0.18,
+    0.0,
+    0.08,
+    0.12,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.2,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.55,
+    0.25,
+    0.0
+   ],
+   [
+    0.0,
+    0.45,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.3,
+    0.15,
+    0.1
+   ]
+  ],
+  "lensPrompt": "Die Katze saß auf der Matte, denn sie war",
+  "fullText": "Die Katze saß auf der Matte, denn sie war müde"
+ },
+ "workedAttention": {
+  "tokens": [
+   "Katze",
+   "saß",
+   "sie"
+  ],
+  "keys": [
+   [
+    2,
+    0
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    1
+   ]
+  ],
+  "values": [
+   [
+    1,
+    0
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    0.5,
+    0.5
+   ]
+  ],
+  "query": [
+   1.5,
+   0.5
+  ]
+ },
+ "weightInputs": [
+  "Katze",
+  "Steuer",
+  "7×8"
+ ],
+ "mini": {
+  "vocab": [
+   "Die",
+   "Katze",
+   "saß",
+   "auf",
+   "der",
+   "Matte",
+   "und",
+   "schlief",
+   "ein",
+   "Hund",
+   ".",
+   "sie",
+   "war",
+   "müde"
+  ],
+  "promptIds": [
+   0,
+   1,
+   2,
+   3,
+   4
+  ],
+  "maxLength": 12
+ },
+ "detectors": [
+  [
+   "schlief",
+   "ruhte",
+   "lag"
+  ],
+  [
+   "Schnurrhaare",
+   "Kätzchen",
+   "schnurrte"
+  ],
+  [
+   "Kaffee",
+   "Arbeit",
+   "Schlafmangel"
+  ],
+  [
+   "sie",
+   "ihnen",
+   "alle"
+  ],
+  [
+   "self",
+   "return",
+   "("
+  ],
+  [
+   "nicht",
+   "nie",
+   "kein"
+  ]
+ ],
+ "lens": [
+  [
+   [
+    " war",
+    0.16
+   ],
+   [
+    " ist",
+    0.08
+   ],
+   [
+    ",",
+    0.06
+   ],
+   [
+    " nicht",
+    0.05
+   ],
+   [
+    " eine",
+    0.04
+   ]
+  ],
+  [
+   [
+    " nicht",
+    0.12
+   ],
+   [
+    " so",
+    0.1
+   ],
+   [
+    " eine",
+    0.08
+   ],
+   [
+    " sehr",
+    0.06
+   ],
+   [
+    " müde",
+    0.04
+   ]
+  ],
+  [
+   [
+    " müde",
+    0.18
+   ],
+   [
+    " hungrig",
+    0.09
+   ],
+   [
+    " nicht",
+    0.08
+   ],
+   [
+    " so",
+    0.07
+   ],
+   [
+    " schläfrig",
+    0.05
+   ]
+  ],
+  [
+   [
+    " müde",
+    0.34
+   ],
+   [
+    " schläfrig",
+    0.14
+   ],
+   [
+    " hungrig",
+    0.1
+   ],
+   [
+    " faul",
+    0.06
+   ],
+   [
+    " so",
+    0.04
+   ]
+  ],
+  [
+   [
+    " müde",
+    0.46
+   ],
+   [
+    " schläfrig",
+    0.12
+   ],
+   [
+    " hungrig",
+    0.09
+   ],
+   [
+    " faul",
+    0.05
+   ],
+   [
+    " satt",
+    0.03
+   ]
+  ]
+ ],
+ "lm": {
+  "initial": [
+   "Die",
+   " Katze"
+  ],
+  "start": "subject",
+  "states": {
+   "subject": [
+    {
+     "text": " saß",
+     "p": 0.38,
+     "next": "sat"
+    },
+    {
+     "text": " schlief",
+     "p": 0.24,
+     "next": "slept"
+    },
+    {
+     "text": " aß",
+     "p": 0.14,
+     "next": "ate"
+    },
+    {
+     "text": " miaute",
+     "p": 0.08,
+     "next": "meowed"
+    }
+   ],
+   "sat": [
+    {
+     "text": " auf",
+     "p": 0.52,
+     "next": "on"
+    },
+    {
+     "text": " in",
+     "p": 0.21,
+     "next": "in"
+    },
+    {
+     "text": " still",
+     "p": 0.12,
+     "next": "tail"
+    },
+    {
+     "text": " neben",
+     "p": 0.06,
+     "next": "on"
+    }
+   ],
+   "on": [
+    {
+     "text": " der",
+     "p": 1,
+     "next": "on_noun"
+    }
+   ],
+   "in": [
+    {
+     "text": " der",
+     "p": 1,
+     "next": "in_noun"
+    }
+   ],
+   "on_noun": [
+    {
+     "text": " Matte",
+     "p": 0.41,
+     "next": "tail"
+    },
+    {
+     "text": " Bank",
+     "p": 0.22,
+     "next": "tail"
+    },
+    {
+     "text": " Couch",
+     "p": 0.17,
+     "next": "tail"
+    },
+    {
+     "text": " Seite",
+     "p": 0.1,
+     "next": "tail"
+    }
+   ],
+   "in_noun": [
+    {
+     "text": " Sonne",
+     "p": 0.3,
+     "next": "tail"
+    },
+    {
+     "text": " Küche",
+     "p": 0.28,
+     "next": "tail"
+    },
+    {
+     "text": " Wohnung",
+     "p": 0.2,
+     "next": "tail"
+    },
+    {
+     "text": " Hütte",
+     "p": 0.12,
+     "next": "tail"
+    }
+   ],
+   "slept": [
+    {
+     "text": " in",
+     "p": 0.35,
+     "next": "in"
+    },
+    {
+     "text": " auf",
+     "p": 0.28,
+     "next": "on"
+    },
+    {
+     "text": " lange",
+     "p": 0.18,
+     "next": "tail"
+    },
+    {
+     "text": " gut",
+     "p": 0.11,
+     "next": "tail"
+    }
+   ],
+   "ate": [
+    {
+     "text": " ihr",
+     "p": 0.33,
+     "next": "food"
+    },
+    {
+     "text": " langsam",
+     "p": 0.22,
+     "next": "tail"
+    },
+    {
+     "text": " Fisch",
+     "p": 0.18,
+     "next": "tail"
+    },
+    {
+     "text": " Futter",
+     "p": 0.12,
+     "next": "tail"
+    }
+   ],
+   "food": [
+    {
+     "text": " Futter",
+     "p": 0.45,
+     "next": "tail"
+    },
+    {
+     "text": " Frühstück",
+     "p": 0.3,
+     "next": "tail"
+    },
+    {
+     "text": " Abendessen",
+     "p": 0.15,
+     "next": "tail"
+    },
+    {
+     "text": " Essen",
+     "p": 0.05,
+     "next": "tail"
+    }
+   ],
+   "meowed": [
+    {
+     "text": " laut",
+     "p": 0.4,
+     "next": "tail"
+    },
+    {
+     "text": " und",
+     "p": 0.2,
+     "next": "subject"
+    },
+    {
+     "text": ".",
+     "p": 0.2,
+     "next": "end"
+    },
+    {
+     "text": " erneut",
+     "p": 0.1,
+     "next": "tail"
+    }
+   ],
+   "time": [
+    {
+     "text": " lange",
+     "p": 0.62,
+     "next": "tail"
+    },
+    {
+     "text": " nachts",
+     "p": 0.25,
+     "next": "tail"
+    },
+    {
+     "text": " tagsüber",
+     "p": 0.08,
+     "next": "tail"
+    },
+    {
+     "text": " kurz",
+     "p": 0.03,
+     "next": "tail"
+    }
+   ],
+   "tail": [
+    {
+     "text": ".",
+     "p": 0.6,
+     "next": "end"
+    },
+    {
+     "text": " und",
+     "p": 0.2,
+     "next": "subject"
+    },
+    {
+     "text": ",",
+     "p": 0.1,
+     "next": "denn"
+    }
+   ],
+   "denn": [
+    {
+     "text": " denn",
+     "p": 1,
+     "next": "pronoun"
+    }
+   ],
+   "pronoun": [
+    {
+     "text": " sie",
+     "p": 0.95,
+     "next": "copula"
+    }
+   ],
+   "copula": [
+    {
+     "text": " war",
+     "p": 0.95,
+     "next": "adjective"
+    }
+   ],
+   "adjective": [
+    {
+     "text": " müde",
+     "p": 0.8,
+     "next": "tail"
+    }
+   ]
+  },
+  "maxUnits": 18
+ },
+ "vars": {
+  "example_prompt": "Die Katze saß auf der",
+  "example_sentence": "Die Katze saß auf der Matte",
+  "example_full_sentence": "Die Katze saß auf der Matte, denn sie war müde",
+  "example_after_one": "Die Katze saß auf der Matte",
+  "example_subject": "Katze",
+  "example_subject_phrase": "Die Katze",
+  "example_verb": "saß",
+  "example_preposition": "auf",
+  "example_place": "Matte",
+  "example_conjunction": "denn",
+  "example_pronoun": "sie",
+  "example_copula": "war",
+  "example_adjective": "müde",
+  "example_lens_prompt": "Die Katze saß auf der Matte, denn sie war",
+  "example_sampled_token": "Matte",
+  "example_prompt_T": 8,
+  "example_prompt_chars": 21,
+  "example_prompt_ids": "[128000, 18674, 17816, 3059, 829, 8156, 7367, 2761]",
+  "example_prompt_positions": "0, 1, 2, 3, 4, 5, 6, 7",
+  "example_prompt_shape": "[8, 4096]",
+  "example_prompt_id_shape": "[1, 8]",
+  "example_bpe_word": "Kätzchen",
+  "example_bpe_chars": 8,
+  "example_bpe_bytes": 9,
+  "example_bpe_steps": 5,
+  "example_bpe_final_count": 3,
+  "example_bpe_final": "Kät | z | chen",
+  "example_bpe_first": "Kät",
+  "example_mini_prompt_T": 5,
+  "example_mini_max_T": 12,
+  "example_spec_draft_T": 6,
+  "example_spec_verify_T": 7,
+  "example_spec_accepted_T": 3,
+  "example_spec_committed_T": 4,
+  "example_spec_mismatch": "und",
+  "example_spec_replacement": ",",
+  "example_spec_output": "Die Katze saß auf der Matte,",
+  "example_packed_T": 10,
+  "example_packed_prefill_T": 8,
+  "example_packed_starts": "[0, 8, 9, 10]",
+  "example_packed_logits": "[7, 8, 9]",
+  "example_word_context_T": 9,
+  "example_word_full_T": 11,
+  "example_attention_T": 10,
+  "example_weight_a": "Katze",
+  "example_weight_b": "Steuer",
+  "example_primary_chips": "<span class=\"chip t\">Die</span><span class=\"chip t\"> Kat</span><span class=\"chip t\">ze</span><span class=\"chip t\"> sa</span><span class=\"chip t\">ß</span><span class=\"chip t\"> auf</span><span class=\"chip t\"> der</span><span class=\"chip t\"> Matte</span>",
+  "example_primary_count": 8,
+  "example_secondary_chips": "<span class=\"chip t\">The</span><span class=\"chip t\"> cat</span><span class=\"chip t\"> sat</span><span class=\"chip t\"> on</span><span class=\"chip t\"> the</span><span class=\"chip t\"> mat</span>",
+  "example_secondary_count": 6
+ },
+ "comparison": {
+  "locale": "en",
+  "snapshot": {
+   "text": "The cat sat on the mat",
+   "ids": [
+    791,
+    8415,
+    7731,
+    389,
+    279,
+    5634
+   ],
+   "pieces": [
+    "The",
+    " cat",
+    " sat",
+    " on",
+    " the",
+    " mat"
+   ],
+   "count": 6
+  }
+ }
+}

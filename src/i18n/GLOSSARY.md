@@ -78,13 +78,17 @@ Never use `mark` simply to hide an untranslated change.
 2. **Preserve inline markup exactly:** tags, attributes, order, and count. Translate only the words.
    This includes `<b>`, `<i>`, `<span class="sh a">`, `<br>` and links.
 3. **Preserve `{{placeholders}}`** and interpolation meaning in every language.
-4. **Do not translate code/data:** identifiers, matrix shapes, model names, flags, file paths,
-   executable examples and CLI logs remain verbatim. Explanatory prose around them is translated.
+4. **Preserve executable code/identifiers:** model names, flags, file paths and CLI logs remain
+   verbatim. Explanatory prose is translated. Teaching sample data is localized through scenario
+   packs, not by editing individual display strings or program identifiers.
 5. **Preserve numeric meaning and units.** German prose uses decimal commas; version numbers and
    code/formula literals do not change. English billion is German Milliarde, trillion is Billion.
    GB/GiB, KiB/KB and FLOP/FLOP/s are different quantities.
-6. **Keep Swedish sample tokens Swedish.** `Katten`, `satt`, `på`, `mattan`, `den` and `trött` are model
-   data, not leftover interface text. Identity examples in `en/data.json` and `de/data.json` match.
+6. **Keep examples coherent within their locale.** `src/examples/{sv,en,de}.json` supplies native
+   prompts, word-level semantic roles, verified tokenizer pieces/IDs, candidates and grammar graphs.
+   Templates use `{{example_*}}` variables. Counts, shifted targets, caches, speculative matches and
+   layouts can differ by locale; model architectural constants cannot. Reproduce packs with
+   `tools/build_examples.py` and run the example contracts. Old Swedish identity catalogs are removed.
 7. **Keep formula/code line structure and alignment.** Whitespace in `.eq` blocks is visual layout,
    not normalization noise. The contracts check multiline parity for every target language.
 8. **Preserve technical qualifications.** Translation must not turn illustrative calculations,
@@ -100,7 +104,7 @@ For a new slide, register its Swedish identifier in the sequence or insertion ma
 explicit depth and title/prose keys, and update relevant prerequisite metadata, summaries and quizzes.
 See `README.md` for the curriculum contracts.
 
-For another language, create the catalog directory with matching keys and identity data, translate,
-review and `mark --lang <locale>`. The switch and supported-browser detection are extensible; browser
+For another language, create the catalog directory with matching keys and a coherent localized
+scenario pack, translate, review and `mark --lang <locale>`. The switch and supported-browser detection are extensible; browser
 and static suites discover shipped locales. Add language-specific number/terminology checks where
 needed. The single-file build must remain fully offline.

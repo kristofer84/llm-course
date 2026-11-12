@@ -47,6 +47,7 @@
   }
 
   var lng = detect();
+  var EXAMPLE_VARS = ((window.EXAMPLE_DATA || {})[lng] || {}).vars || {};
   var resources = {};
   AVAIL.forEach(function (l) { resources[l] = { translation: DATA[l] || {} }; });
   i18next.init({
@@ -68,7 +69,8 @@
     key = String(key);
     var s = i18next.t(key);
     if (s === key && lng !== SRC && !VALUES[key]) { if (missing.indexOf(key) < 0) missing.push(key); }
-    if (vars) for (var k in vars) {
+    vars = Object.assign({}, EXAMPLE_VARS, vars || {});
+    for (var k in vars) {
       var v = vars[k];
       if (typeof v === "string" && v.charAt(0) === "#") v = t(v.slice(1));   // value is itself a key
       s = s.split("{{" + k + "}}").join(v);

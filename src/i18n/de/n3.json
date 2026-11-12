@@ -1,6 +1,6 @@
 {
  "n3.attention-raknat-for-hand.1": "Attention von Hand ausgerechnet",
- "n3.attention-raknat-for-hand.2": "Ein Head, drei Token und zwei Dimensionen statt 128. Wir rechnen aus, was „den“ von „Katten“, „satt“ und sich selbst abruft. Jede Zahl unten ist berechnet, nichts ist erfunden.",
+ "n3.attention-raknat-for-hand.2": "Ein Head, drei Zeilen eines Spielzeugvokabulars und zwei Dimensionen statt 128. Wir berechnen, was die mit „{{example_pronoun}}“ bezeichnete Query aus „{{example_subject}}“, „{{example_verb}}“ und sich selbst holt. Die Eingaben sind von Hand gewählt, keine gemessenen Modellaktivierungen oder vollständig echt tokenisierte Sätze; die Arithmetik wird exakt berechnet.",
  "n3.attention-raknat-for-hand.3": "Zurück",
  "n3.attention-raknat-for-hand.4": "Nächster Schritt",
  "n3.forward-pass-som-kod.1": "Der ganze Vorwärtsdurchlauf als Code",

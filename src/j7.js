@@ -1,20 +1,21 @@
 /* ================= v6: beginner slides ================= */
 (function lmDemo(){
-  const D={'Katten':[[' satt',0.38],[' sov',0.24],[' åt',0.14],[' jamade',0.08]],' satt':[[' på',0.52],[' i',0.21],[' still',0.12],[' vid',0.06]],' sov':[[' i',0.35],[' på',0.28],[' hela',0.18],[' gott',0.11]],' åt':[[' sin',0.33],[' upp',0.22],[' fisk',0.18],[' mat',0.12]],' jamade':[[' högt',0.4],[' och',0.2],['.',0.2],[' igen',0.1]],
-    ' på':[[' mattan',0.41],[' soffan',0.22],[' golvet',0.17],[' bordet',0.1]],' i':[[' soffan',0.3],[' solen',0.28],[' fönstret',0.2],[' korgen',0.12]],' hela':[[' dagen',0.62],[' natten',0.25],[' eftermiddagen',0.08],[' tiden',0.03]],' sin':[[' mat',0.45],[' fisk',0.3],[' frukost',0.15],[' middag',0.05]],
-    ' och':[[' sov',0.3],[' tittade',0.25],[' åt',0.2],[' jamade',0.1]],' tittade':[[' ut',0.45],[' på',0.3],[' sig',0.12],[' upp',0.08]],' ut':[[' genom',0.4],['.',0.35],[' över',0.15],[' i',0.05]],' genom':[[' fönstret',0.82],[' dörren',0.1],[' rummet',0.04],[' gardinen',0.02]]};
-  const END=[['.',0.55],[' och',0.25],[' hela',0.1],[' länge',0.05]];let txtA;
-  function opts(){const l=txtA[txtA.length-1];if(l==='.')return null;return D[l]||END;}
-  function add(w){txtA.push(w);draw();}
-  function draw(){const t=$('lm-text');clear(t);txtA.forEach((w,i)=>H('span','chip '+(i===txtA.length-1&&i>0?'new':'t'),w,t));
+  // A localized grammar-state graph of words/punctuation, NOT BPE or inference.
+  const graph=EX.lm;const limit=Math.min(18,graph.maxUnits);let txtA,state;
+  function opts(){return txtA.length<limit && state!=='end'?graph.states[state]:null;}
+  function add(choice){const op=opts();if(!op||!op.includes(choice))return;txtA.push(choice.text);state=choice.next;draw();}
+  function reset(){txtA=graph.initial.slice();state=graph.start;draw();}
+  function draw(){const t=$('lm-text');clear(t);txtA.forEach((w,i)=>H('span','chip '+(i===txtA.length-1&&i>=graph.initial.length?'new':'t'),w,t));
     const o=$('lm-opts');clear(o);const op=opts();
-    if(!op||txtA.length>=14){H('p',null,L.t('j7.1'),o).style.color='var(--ink2)';$('lm-auto').disabled=true;return;}
+    if(!op||!op.length){H('p',null,L.t(state==='end'?'j7.1':'j7.lm.limit',{n:limit}),o).style.color='var(--ink2)';$('lm-auto').disabled=true;return;}
     $('lm-auto').disabled=false;
-    op.forEach(([w,p])=>{const b=H('button','btn',null,o);b.style.cssText='display:grid;grid-template-columns:110px 1fr 56px;gap:10px;align-items:center;width:100%;margin:5px 0;text-align:left';
+    op.forEach(choice=>{const {text:w,p}=choice;const b=H('button','btn',null,o);b.style.cssText='display:grid;grid-template-columns:minmax(70px,110px) 1fr 56px;gap:10px;align-items:center;width:100%;margin:5px 0;text-align:left';
       H('span',null,w,b).style.fontFamily='var(--mono)';const tr=H('span',null,null,b);tr.style.cssText='height:16px;background:var(--soft);border-radius:3px;display:block';const f=H('span',null,null,tr);f.style.cssText='display:block;height:100%;border-radius:3px;background:var(--tok);width:'+(p*100)+'%';
-      H('span',null,L.t('j7.8',{p:Math.round(p*100)}),b).style.fontFamily='var(--mono)';b.addEventListener('click',()=>add(w));});}
-  $('lm-auto').addEventListener('click',()=>{const op=opts();if(op)add(op[0][0]);});
-  $('lm-reset').addEventListener('click',()=>{txtA=['Katten'];draw();});txtA=['Katten'];draw();
+      H('span',null,L.t('j7.8',{p:Math.round(p*100)}),b).style.fontFamily='var(--mono)';b.addEventListener('click',()=>add(choice));});
+    const unshown=Math.max(0,1-op.reduce((sum,choice)=>sum+choice.p,0));
+    H('p',null,L.t('j7.lm.mass',{p:Math.round(unshown*100)}),o).style.cssText='font-size:12px;color:var(--ink2)';}
+  $('lm-auto').addEventListener('click',()=>{const op=opts();if(op&&op.length)add(op[0]);});
+  $('lm-reset').addEventListener('click',reset);reset();
 })();
 (function gpuKitchen(){
   const svg=$('gp-svg');let n=1;

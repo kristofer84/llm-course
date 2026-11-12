@@ -1,24 +1,24 @@
 /* ================= v2: new interactives ================= */
-function heatRow(parent,label,vals,color,bold){const l=H('span',null,label,parent);l.style.cssText='font-family:var(--mono);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'+(bold?'font-weight:600;color:var(--a)':'color:var(--ink2)');
+function heatRow(parent,label,vals,color,bold){const l=H('span',null,label,parent);l.style.cssText='font-family:var(--mono);font-size:12px;white-space:pre;overflow:hidden;text-overflow:ellipsis;'+(bold?'font-weight:600;color:var(--a)':'color:var(--ink2)');
   vals.forEach(v=>{const c=H('i',null,null,parent);c.style.background=v>=0?color:'var(--neg)';c.style.opacity=(0.1+Math.min(1,Math.abs(v))*0.9).toFixed(2);});}
 function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent);r.style.cssText='display:grid;grid-template-columns:90px 1fr 70px;gap:8px;align-items:center;margin:4px 0;font-size:14px'+(dim?';opacity:.4':'');
-  const a=H('span',null,label,r);a.style.cssText='font-family:var(--mono);text-align:right';const t=H('div',null,null,r);t.style.cssText='background:var(--soft);border-radius:3px;height:18px';
+  const a=H('span',null,label,r);a.style.cssText='font-family:var(--mono);text-align:right;white-space:pre';const t=H('div',null,null,r);t.style.cssText='background:var(--soft);border-radius:3px;height:18px';
   const f=H('div',null,null,t);f.style.cssText='height:100%;border-radius:3px;background:'+color+';width:'+Math.max(0.5,frac*100)+'%';const v=H('span',null,text,r);v.style.cssText='font-family:var(--mono);font-size:13px';}
 (function example(){
   const box=$('ex-stages'),view=$('ex-view'),tx=$('ex-text');let cur=0;
-  const cand=[' mattan',' golvet',' soffan',' bordet',' taket'],lg=[5.1,4.3,4.0,3.2,1.5];const ex=lg.map(v=>Math.exp(v-5.1)),es=ex.reduce((a,b)=>a+b,0),pr=ex.map(v=>v/es);
-  const tk=['<bos>','K','atten',' satt',' på'];
-  function chips(arr,cls,nw){const d=H('div','chips',null,view);arr.forEach((t,i)=>H('span','chip '+(nw!=null&&i===nw?'new':cls),t,d));}
-  function heat(seed,hi){const d=H('div','heat',null,view);d.style.gridTemplateColumns='70px repeat(20,1fr)';const R=rng(seed);tk.forEach((t,i)=>heatRow(d,t,Array.from({length:20},()=>R()*2-1),'var(--a)',i===hi));}
+  const {candidates:cand,logits:lg,chosen,prompt}=EX.walkthrough;const ex=lg.map(v=>Math.exp(v-Math.max(...lg))),es=ex.reduce((a,b)=>a+b,0),pr=ex.map(v=>v/es);
+  const tk=prompt.pieces;
+  function chips(arr,cls,nw){const d=H('div','chips',null,view);arr.forEach((t,i)=>{const c=H('span','chip '+(nw!=null&&i===nw?'new':cls),t,d);c.style.whiteSpace='pre';});}
+  function heat(seed,hi){const scroll=H('div','scroll-x',null,view),d=H('div','heat',null,scroll);d.style.cssText='grid-template-columns:170px repeat(20,12px);min-width:450px';const R=rng(seed);tk.forEach((t,i)=>heatRow(d,t,Array.from({length:20},()=>R()*2-1),'var(--a)',i===hi));}
   function cap(t){const p=H('p',null,t,view);p.style.cssText='font-family:var(--mono);font-size:13px;color:var(--ink2);margin:10px 0 0';}
   const st=[
    [L.t('build.stage.0'),2,L.t('j3.1'),()=>{chips([L.t('j3.2')],'');cap(L.t('j3.3'));}],
    [L.t('build.stage.1'),2,L.t('j3.4'),()=>{chips(tk,'t');cap(L.t('j3.48'));}],
    [L.t('Embedding'),2,L.t('j3.5'),()=>{heat(11,-1);cap(L.t('j3.49'));}],
-   [L.t('j3.50'),3,L.t('j3.6'),()=>{heat(29,4);cap(L.t('j3.7'));}],
-   [L.t('Logits'),5,L.t('j3.8'),()=>{cand.forEach((c,i)=>hbar(view,c,lg[i]/5.5,L.num(lg[i],1),'var(--a)'));cap(L.t('j3.9'));}],
-   [L.t('Sampling'),5,L.t('j3.10'),()=>{cand.forEach((c,i)=>hbar(view,c,pr[i],L.num(pr[i]*100,0)+' %','var(--tok)',i>0));cap(L.t('j3.11'));}],
-   [L.t('j3.12'),7,L.t('j3.13'),()=>{chips(tk.concat([' mattan']),'t',5);cap(L.t('j3.14'));}]];
+   [L.t('j3.50'),3,L.t('j3.6'),()=>{heat(29,tk.length-1);cap(L.t('j3.7'));}],
+   [L.t('Logits'),5,L.t('j3.8'),()=>{cand.forEach((c,i)=>hbar(view,c,lg[i]/(Math.max(...lg)*1.08),L.num(lg[i],1),'var(--a)'));cap(L.t('j3.9'));}],
+   [L.t('Sampling'),5,L.t('j3.10'),()=>{cand.forEach((c,i)=>hbar(view,c,pr[i],L.num(pr[i]*100,0)+' %','var(--tok)',c!==chosen));cap(L.t('j3.11'));}],
+   [L.t('j3.12'),7,L.t('j3.13'),()=>{chips(tk.concat([chosen]),'t',tk.length);cap(L.t('j3.14'));}]];
   function draw(){
     if(!st.length)return;
     // clicks can land on buttons from an earlier render (same tick, detached nodes),
@@ -88,7 +88,7 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
   $('sm-c').addEventListener('input',draw);$('sm-s').addEventListener('input',draw);draw();
 })();
 (function wact(){
-  const svg=$('wa-svg');let mode='dense',tok=0;const routes=[[[0,2],[1,3],[0,1]],[[0,3],[2,3],[1,2]],[[1,2],[0,2],[3,0]]];const names=['katt','skatt','7×8'];
+  const svg=$('wa-svg');let mode='dense',tok=0;const routes=[[[0,2],[1,3],[0,1]],[[0,3],[2,3],[1,2]],[[1,2],[0,2],[3,0]]];const names=EX.weightInputs;
   function draw(){clear(svg);txt(svg,224,22,mode==='moe'?L.t('j3.51'):L.t('j3.52'),'b','middle');txt(svg,468,22,L.t('j3.53'),'b','middle');
     for(let lw=0;lw<3;lw++){const y=40+lw*94;txt(svg,10,y+38,L.t('j3.54',{n:lw+1}),'s');const wr=rng(1000+lw*97);
       for(let e=0;e<4;e++){const bx=82+e*72;const on=mode==='dense'||routes[tok][lw].indexOf(e)>=0;
@@ -103,7 +103,7 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
   document.querySelectorAll('[data-wat]').forEach(b=>b.addEventListener('click',()=>{tok=+b.dataset.wat;document.querySelectorAll('[data-wat]').forEach(x=>x.classList.toggle('on',x===b));draw();}));draw();
 })();
 (function byhand(){
-  const T=['Katten','satt','den'],k=[[2,0],[0,1],[1,1]],v=[[1,0],[0,1],[0.5,0.5]],q=[1.5,0.5];
+  const {tokens:T,keys:k,values:v,query:q}=EX.workedAttention;
   const s=k.map(r=>r[0]*q[0]+r[1]*q[1]),sd=s.map(x=>x/Math.SQRT2),ex=sd.map(Math.exp),su=ex.reduce((a,b)=>a+b,0),p=ex.map(x=>x/su),pv=v.map((r,i)=>[r[0]*p[i],r[1]*p[i]]),out=[pv.reduce((a,r)=>a+r[0],0),pv.reduce((a,r)=>a+r[1],0)];
   const f2=x=>{const r=String(Math.round(x*100)/100);return L.num(x,(r.split('.')[1]||'').length);};const vec=a=>'['+a.map(f2).join('; ')+']';let st=0;
   const steps=[
@@ -121,7 +121,7 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
   $('ah-next').addEventListener('click',()=>{if(st<steps.length-1){st++;draw();}});$('ah-prev').addEventListener('click',()=>{if(st>0){st--;draw();}});draw();
 })();
 (function mini(){
-  const V=['katten','satt','på','mattan','och','sov','en','hund','.','den','var',L.t('j3.38')],d=16,NH=2,dh=8,NL=2,dff=32;const R=rng(20261);
+  const {vocab:V,promptIds,maxLength}=EX.mini,P=promptIds.length,d=16,NH=2,dh=8,NL=2,dff=32;const R=rng(20261);
   const M=(r,c,s)=>Array.from({length:r},()=>Array.from({length:c},()=>(R()*2-1)*s));
   const E=M(V.length,d,1),U=M(d,V.length,0.9);const Ls=Array.from({length:NL},()=>({q:M(d,d,.6),k:M(d,d,.6),v:M(d,d,.6),o:M(d,d,.5),a:M(d,dff,.5),b:M(dff,d,.5)}));
   const mv=(x,W)=>{const o=new Array(W[0].length).fill(0);for(let i=0;i<x.length;i++){const xi=x[i],w=W[i];for(let j=0;j<o.length;j++)o[j]+=xi*w[j];}return o;};
@@ -140,16 +140,16 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
   let seq,cache,pending,log,SR;
   function compare(newIds,start,label){const c=run(newIds,start,cache);const f=run(seq,0,newCache());let dm=0;c.logits.forEach((v,i)=>{dm=Math.max(dm,Math.abs(v-f.logits[i]));});
     log.push([label,V[seq[seq.length-1]],f.rows,c.rows,dm]);pending=c.logits;}
-  function reset(){seq=[0,1,2];cache=newCache();log=[];SR=rng(99);compare(seq,0,L.t('p5.latensmatt.3'));draw();}
-  function step(){if(seq.length>=10)return;const mx=Math.max(...pending);const e=pending.map(v=>Math.exp((v-mx)*1.5));const su=e.reduce((a,b)=>a+b,0);let r=SR()*su,id=0;for(;id<e.length;id++){r-=e[id];if(r<=0)break;}id=Math.min(id,e.length-1);
-    seq.push(id);compare([id],seq.length-1,L.t('decode {{n}}',{n:seq.length-3}));draw();}
-  function draw(){const sq=$('mm-seq');clear(sq);seq.forEach((id,i)=>H('span','chip '+(i<3?'t':(i===seq.length-1?'new':'ok')),V[id],sq));
+  function reset(){seq=promptIds.slice();cache=newCache();log=[];SR=rng(99);compare(seq,0,L.t('p5.latensmatt.3'));draw();}
+  function step(){if(seq.length>=maxLength)return;const mx=Math.max(...pending);const e=pending.map(v=>Math.exp((v-mx)*1.5));const su=e.reduce((a,b)=>a+b,0);let r=SR()*su,id=0;for(;id<e.length;id++){r-=e[id];if(r<=0)break;}id=Math.min(id,e.length-1);
+    seq.push(id);compare([id],seq.length-1,L.t('decode {{n}}',{n:seq.length-P}));draw();}
+  function draw(){const sq=$('mm-seq');clear(sq);seq.forEach((id,i)=>H('span','chip '+(i<P?'t':(i===seq.length-1?'new':'ok')),V[id],sq));
     let h='<tr><th>'+L.t('j3.60')+'</th><th>'+L.t('j3.61')+'</th><th>'+L.t('j3.62')+'</th><th>'+L.t('j3.63')+'</th><th>'+L.t('max |Δ logit|')+'</th></tr>';let a=0,b=0;
     log.forEach(r=>{a+=r[2];b+=r[3];h+='<tr><th>'+r[0]+'</th><td>'+r[1]+'</td><td>'+r[2]+'</td><td class="hi">'+r[3]+'</td><td>'+(r[4]===0?'0':r[4].toExponential(1))+'</td></tr>';});
     h+='<tr><th>'+L.t('j3.64')+'</th><td></td><td>'+a+'</td><td class="hi">'+b+'</td><td></td></tr>';$('mm-tbl').innerHTML=h;
-    const ht=$('mm-heat');clear(ht);cache[0].K.forEach((k,p)=>heatRow(ht,p+' '+V[seq[p]],k.slice(0,8).map(x=>x/2.5),'var(--kv)',p===seq.length-1&&p>2));
-    $('mm-out').innerHTML=seq.length>=10?L.t('j3.39',{a:a,b:b}):L.t('j3.40');
-    $('mm-step').disabled=seq.length>=10;}
+    const ht=$('mm-heat');clear(ht);cache[0].K.forEach((k,p)=>heatRow(ht,p+' '+V[seq[p]],k.slice(0,8).map(x=>x/2.5),'var(--kv)',p===seq.length-1&&p>=P));
+    $('mm-out').innerHTML=seq.length>=maxLength?L.t('j3.39',{a:a,b:b}):L.t('j3.40');
+    $('mm-step').disabled=seq.length>=maxLength;}
   $('mm-step').addEventListener('click',step);$('mm-reset').addEventListener('click',reset);reset();
 })();
 (function capacity(){

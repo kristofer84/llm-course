@@ -110,7 +110,7 @@ document.addEventListener('keydown',e=>{
     }
     return;
   }
-  if(e.target.closest('[role="button"],dialog,[contenteditable="true"]'))return;
+  if(e.target.closest('[role="button"],dialog,.example-scroll,[contenteditable="true"]'))return;
   if(tg==='INPUT'||tg==='SELECT'||tg==='TEXTAREA'||e.metaKey||e.ctrlKey||e.altKey)return;
   if(e.key==='ArrowRight'||e.key==='PageDown'){e.preventDefault();step(1);}
   else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();step(-1);}

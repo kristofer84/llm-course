@@ -12,5 +12,7 @@
  "j7.11": "KV-cache",
  "j7.12": "ord {{n}}",
  "j7.13": "utan cache",
- "j7.14": "med cache"
+ "j7.14": "med cache",
+ "j7.lm.mass": "Övriga, ej visade alternativ: {{p}} %. Sannolikheterna ovan är inte omnormaliserade.",
+ "j7.lm.limit": "Demonstrationen stannar vid {{n}} ord eller skiljetecken. Börja om för att prova en annan gren."
 }

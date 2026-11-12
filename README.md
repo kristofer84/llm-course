@@ -63,8 +63,9 @@ reproducible source-content fingerprint for diagnosing stale copies.
 - Sources contain stable explicit keys, such as `<p data-i18n="p3.rmsnorm.2"></p>`.
 - `src/i18n/sv/*.json`, `src/i18n/en/*.json` and `src/i18n/de/*.json` are external source catalogs.
   The build fills Swedish for static readability; JavaScript applies the selected translation.
-- `src/i18n/en/data.json` identifies deliberate Swedish sample data such as `katt`, `satt`, and
-  `mattan`. Those tokens remain unchanged in every language; the German identity catalog matches.
+- Teaching examples are locale-native scenario data in `src/examples/{sv,en,de}.json`, not Swedish
+  text reused in translations. English uses “The cat sat on the mat”; German uses “Die Katze saß
+  auf der Matte”. Counts, grammatical roles and layouts adapt to each scenario.
 
 Use keyed bilingual Markdown rather than editing catalog JSON by hand:
 
@@ -91,6 +92,24 @@ To add a language, supply a catalog directory with the same keys and rebuild; th
 is generated from the available locales. New languages require their own language-specific review
 and acceptance testing.
 
+## Localized example data
+
+`tools/build_examples.py` generates the committed packs from a pinned Llama 3 tokenizer artifact.
+The downloaded public mirror is byte-identical to the official tokenizer Git blob. Normal builds
+and browsers use only the small snapshots, not the tokenizer library/file, model weights, network,
+or inference. See [`docs/LOCALIZED-EXAMPLES.md`](docs/LOCALIZED-EXAMPLES.md) for provenance and reproduction.
+
+Verified BPE prompt lengths including BOS are **6 / 6 / 8** for Swedish / English / German. Leading
+spaces, actual IDs and subword pieces are preserved; a next token need not finish a word. Separate
+word-level attention scenes and character-merge animations are explicitly synthetic. German uses
+“denn sie war müde” rather than incorrect subordinate-clause word order. The random miniature
+transformer uses a locale vocabulary while verifying cached/full logits within that locale.
+
+Translation templates use `{{example_*}}` variables supplied by the selected pack in both runtime
+rendering and static Swedish fill. Modify scenario data through the generator and validate all
+coupled roles/counts, not by replacing a few visible words. Architectural model dimensions do not
+change. Long sequences remain readable in horizontally scrollable, keyboard-operable diagrams.
+
 ## Curriculum and assessment contracts
 
 `src/build.py` contains the shared sequence. `*-manifest.json` files integrate new lessons at
@@ -116,6 +135,8 @@ python3 tools/check_i18n.py          # catalogs, markup, placeholders, numeric p
 python3 tools/content.py status --all --strict
 python3 tests/content_editor.py      # isolated per-language editing/provenance and no-edit round trips
 node tests/locales.js               # locale precedence, regional detection, German formatting
+python3 tests/examples.py            # offline tokenizer/data/merge/role/shift/grammar contracts
+python3 tests/example_interactions.py # native examples, dynamic lengths, cached logits, no old SV data
 python3 tests/contracts.py           # Node: prerequisites/order, module mapping, balance, migration,
                                     # and bilingual formula/code line structure
 python3 tests/smoke.py               # slide navigation, layout, browser errors, controls
@@ -149,6 +170,7 @@ and acceptance notes are in [`docs/GERMAN.md`](docs/GERMAN.md).
 | `src/operations-lab.*` | evaluation, tools, operation, and practical lab |
 | `src/j0.js`, `src/learning.js`, `src/quiz-groups.js` | navigation, persistence, assessment and depth |
 | `src/a11y.js`, `src/course-ui.js` | accessible diagram controls and study tools |
+| `src/examples.js`, `src/examples/*.json` | locale-native scenario packs and responsive diagram helper |
 | `src/j1b.js` … `src/j8.js` | original interactive visualizations |
 | `src/jd.js`, `src/jz.js` | original quiz/glossary data and initialization |
 | `src/i18n/` | translation engine, catalogs, and editing guide |

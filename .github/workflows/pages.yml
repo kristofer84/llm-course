@@ -43,6 +43,7 @@ jobs:
       - name: Curriculum, locale, editing, saved-answer and formula contracts
         run: |
           python3 tests/contracts.py
+          python3 tests/examples.py
           node tests/locales.js
           python3 tests/content_editor.py
 
@@ -57,6 +58,9 @@ jobs:
 
       - name: Multilingual depth, simulations and regression checks
         run: python3 tests/regressions.py
+
+      - name: Locale-native examples, token counts and generation invariants
+        run: python3 tests/example_interactions.py
 
       - name: Check translation coverage, markup and code blocks
         run: python3 tools/check_i18n.py

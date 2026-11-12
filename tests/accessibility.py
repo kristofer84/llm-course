@@ -98,9 +98,8 @@ async def check_target(page, lang, cat, root_id, output_id, count):
         # Reuse course translations, and explicitly check the two new labels
         # in both languages (the Swedish example token data stays unchanged).
         if root_id in ("att-svg", "pv-svg", "am-svg"):
-            tokens = ["<bos>", "Katten", "satt", "på", "mattan", "eftersom", "den"]
-            if root_id != "att-svg":
-                tokens = tokens[1:] + ["var", cat["j1b.9"]]
+            scene = await page.evaluate('window.COURSE_EXAMPLE.scene')
+            tokens = scene['attention'] if root_id == 'att-svg' else scene['tokens'] if root_id == 'pv-svg' else scene['context']
             assert label == translated(
                 cat, "a11y.query", n=selected_index + 1, token=tokens[selected_index]
             ), (lang, root_id, label)
@@ -148,8 +147,10 @@ async def main():
                     await page.goto(HTML.as_uri() + f"?lang={lang}", wait_until="domcontentloaded")
                     await expect(page.locator("html")).to_have_attribute("lang", lang)
                     cat = catalog(lang)
-                    for target in TARGETS:
-                        await check_target(page, lang, cat, *target)
+                    scene = await page.evaluate('window.COURSE_EXAMPLE.scene')
+                    counts = {'att-svg': len(scene['attention']), 'pv-svg': len(scene['tokens']), 'am-svg': len(scene['context'])}
+                    for root_id, output_id, count in TARGETS:
+                        await check_target(page, lang, cat, root_id, output_id, counts.get(root_id, count))
                     assert not errors, (lang, errors)
                 finally:
                     await page.close()

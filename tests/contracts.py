@@ -87,7 +87,11 @@ for locale, target in catalogs.items():
 for key, value in catalogs['sv'].items():
     for locale in LOCALES[1:]:
         assert value.count('\n') == catalogs[locale][key].count('\n'), f'Line structure differs: {locale}/{key}'
-assert json.loads((ROOT / 'src/i18n/en/data.json').read_text()) == json.loads((ROOT / 'src/i18n/de/data.json').read_text())
+compiled_examples = json.loads(re.search(r'window.EXAMPLE_DATA=(.*?);</script>', page, re.S)[1])
+for locale in LOCALES:
+    assert compiled_examples[locale] == json.loads((ROOT / 'src/examples' / (locale + '.json')).read_text())
+body_without_scripts = re.sub(r'<(script|style)[^>]*>.*?</\1>', '', page, flags=re.S)
+assert '{{example_' not in body_without_scripts, 'Static Swedish example interpolation is incomplete'
 assert "Astra" not in page
 assert "p5.kontext             .20" not in page
 assert re.search(r'<meta name="course-revision" content="[0-9a-f]{12}">', page)
