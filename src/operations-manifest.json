@@ -1,0 +1,91 @@
+{
+  "insertions": [
+    {
+      "module": 9,
+      "before": "vLLM i klartext",
+      "titles": [
+        "HTTP, JSON och streaming"
+      ]
+    },
+    {
+      "module": 9,
+      "before": "Hela flödet",
+      "titles": [
+        "Kö, antagning och avbrott",
+        "Robust drift och tenantgränser",
+        "Spårning, svanslatens och kostnad"
+      ]
+    }
+  ],
+  "new_modules": [
+    {
+      "id": "evaluation",
+      "before_module": "11",
+      "time": 25,
+      "hl": [
+        4,
+        5
+      ],
+      "titles": [
+        "@open",
+        "Loss och perplexitet i siffror",
+        "Benchmark och egna testmängder",
+        "Faktastöd och regressioner",
+        "Kvalitet efter kvantisering",
+        "@sum",
+        "@quiz:evaluation"
+      ]
+    },
+    {
+      "id": "applications",
+      "before_module": "11",
+      "time": 35,
+      "hl": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "engine": true,
+      "titles": [
+        "@open",
+        "Verktygsanrop är data",
+        "Verktygsloopen steg för steg",
+        "Säkra verktyg och obetrodda resultat",
+        "Labben: en liten lokal server",
+        "Labben: första anropet",
+        "Labben: samtidig belastning",
+        "Labben: mät rätt latens",
+        "Labben: jämför och dokumentera",
+        "@sum",
+        "@quiz:applications"
+      ]
+    }
+  ],
+  "summary_requires": {
+    "mod.evaluation.key.1": [
+      "Benchmark och egna testmängder"
+    ],
+    "mod.evaluation.key.2": [
+      "Faktastöd och regressioner"
+    ],
+    "mod.evaluation.key.3": [
+      "Loss och perplexitet i siffror",
+      "Kvalitet efter kvantisering"
+    ],
+    "mod.applications.key.1": [
+      "Verktygsanrop är data",
+      "Verktygsloopen steg för steg"
+    ],
+    "mod.applications.key.2": [
+      "Labben: en liten lokal server"
+    ],
+    "mod.applications.key.3": [
+      "Labben: första anropet",
+      "Labben: mät rätt latens",
+      "Labben: jämför och dokumentera"
+    ]
+  }
+}
