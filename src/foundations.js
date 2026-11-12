@@ -25,6 +25,25 @@ QUIZ.m6.push(
 );
 /* CONTRACT DATA END */
 
+/* STATE MODEL START */
+const STATE_DEMO=Object.freeze({rate:0.1,limit:8,examples:Object.freeze([
+  Object.freeze({x:1,target:2}),Object.freeze({x:2,target:4}),Object.freeze({x:3,target:6})
+])});
+function stateDemoPrediction(weight,input){return input*weight;}
+function stateDemoBatch(weight){
+  const rows=STATE_DEMO.examples.map(({x,target})=>{
+    const prediction=stateDemoPrediction(weight,x),error=prediction-target;
+    return{x,target,prediction,error,loss:error*error/2};
+  });
+  return{weight,rows,loss:rows.reduce((sum,row)=>sum+row.loss,0)/rows.length,
+    gradient:rows.reduce((sum,row)=>sum+row.x*row.error,0)/rows.length};
+}
+function stateDemoUpdate(weight){
+  const before=stateDemoBatch(weight),delta=-STATE_DEMO.rate*before.gradient;
+  return{before,after:stateDemoBatch(weight+delta),delta,rate:STATE_DEMO.rate};
+}
+/* STATE MODEL END */
+
 /* Native controls stay outside SVG redraws, preserving focus and keyboard behavior. */
 (function foundations(){
   function grid(svg,x,y,rows,cols,size,cls,values){
@@ -108,25 +127,62 @@ QUIZ.m6.push(
   (function state(){
     const svg=$('fd-state-svg');if(!svg)return;
     const xi=$('fd-state-x'),mode=$('fd-state-mode'),update=$('fd-state-update'),out=$('fd-state-out');
-    let w=1,steps=0;
+    const test=$('fd-state-test'),progress=$('fd-state-progress');
+    let weight=1,steps=0,last=null;
+    progress.max=STATE_DEMO.limit;
     function draw(){
-      clear(svg);const x=+xi.value,y=x*w,target=2*x,loss=(y-target)**2/2;
-      update.disabled=mode.value!=='training';
-      ['fd.state.input','fd.state.weight','fd.state.activation'].forEach((key,i)=>{
-        const xx=20+i*185;
-        rect(svg,xx,70,150,80,i===1?'bw':'ba',6);
-        label(svg,xx+75,48,key);
-        txt(svg,xx+75,118,nf([x,w,y][i],2),'m','middle');
-        if(i<2)line(svg,xx+153,110,xx+180,110,'ln',true);
+      const training=mode.value==='training';if(training)xi.value='2';
+      const x=+xi.value,prediction=stateDemoPrediction(weight,x),reference=2*x,batch=stateDemoBatch(weight);
+      xi.disabled=training;update.disabled=!training||steps>=STATE_DEMO.limit;test.hidden=!training;
+      $('fd-state-training').hidden=!training;
+      $('fd-state-xv').textContent=nf(x,1);progress.value=steps;
+      $('fd-state-input-value').textContent=nf(x,1);
+      $('fd-state-weight-value').textContent=nf(weight,4);
+      $('fd-state-prediction-value').textContent=nf(prediction,3);
+      $('fd-state-target').textContent=L.t('fd.state.target',{target:nf(reference,2)});
+      $('fd-state-hint').textContent=L.t(training?(steps>=STATE_DEMO.limit?'fd.state.done':'fd.state.trainingHint'):'fd.state.inferenceHint',{limit:STATE_DEMO.limit});
+      Object.assign(svg.dataset,{weight:String(weight),input:String(x),prediction:String(prediction),reference:String(reference),
+        steps:String(steps),trainingLoss:String(batch.loss),mode:mode.value});
+      const rows=$('fd-state-rows');clear(rows);
+      batch.rows.forEach(row=>{const tr=H('tr',null,null,rows);
+        [row.x,row.target,row.prediction].forEach((value,i)=>H('td','n',nf(value,i===2?3:0),tr));});
+      clear(svg);
+      const modelLegend=line(svg,22,20,42,20,'ln');modelLegend.style.stroke='var(--tok)';modelLegend.setAttribute('stroke-width','3');label(svg,143,25,'fd.state.modelLine');
+      const refLegend=line(svg,280,20,300,20,'ln');refLegend.style.stroke='var(--w)';refLegend.setAttribute('stroke-dasharray','4 3');
+      label(svg,416,25,'fd.state.referenceLine');
+      const X=value=>50+value/5*470,Y=value=>195-value/10*130;
+      [2,4,6,8,10].forEach(value=>{line(svg,50,Y(value),520,Y(value),'lnf');txt(svg,42,Y(value)+4,nf(value,0),'s','end');});
+      line(svg,50,195,520,195,'ln');line(svg,50,65,50,195,'ln');
+      for(let value=0;value<=5;value++)txt(svg,X(value),212,nf(value,0),'s','middle');
+      label(svg,285,235,'fd.state.input');txt(svg,18,61,'y','m','middle');
+      const targetLine=line(svg,X(0),Y(0),X(5),Y(10),'ln');targetLine.style.stroke='var(--w)';targetLine.setAttribute('stroke-dasharray','5 4');
+      const modelLine=line(svg,X(0),Y(0),X(5),Y(stateDemoPrediction(weight,5)),'ln');modelLine.style.stroke='var(--tok)';modelLine.setAttribute('stroke-width','3');
+      STATE_DEMO.examples.forEach(example=>{
+        const y=stateDemoPrediction(weight,example.x);
+        if(training){const error=line(svg,X(example.x),Y(example.target),X(example.x),Y(y),'lnf');error.style.stroke='var(--neg)';}
+        S('circle',{cx:X(example.x),cy:Y(example.target),r:5,fill:'var(--surface)',stroke:'var(--w)','stroke-width':2,opacity:training?1:.35},svg);
+        S('circle',{cx:X(example.x),cy:Y(y),r:5,fill:'var(--tok)',opacity:training?1:.35},svg);
       });
-      label(svg,465,190,'fd.state.target',{target:nf(target,2)});
-      out.textContent=L.t('fd.state.out',{w:nf(w,3),y:nf(y,3),target:nf(target,0),loss:nf(loss,4),steps});
+      if(!training){
+        line(svg,X(x),195,X(x),Y(reference),'lnf').setAttribute('stroke-dasharray','3 3');
+        S('circle',{cx:X(x),cy:Y(reference),r:7,fill:'var(--surface)',stroke:'var(--w)','stroke-width':2},svg);
+        S('circle',{cx:X(x),cy:Y(prediction),r:7,fill:'var(--a)'},svg);
+      }
+      out.textContent=training?L.t('fd.state.trainingOut',{steps,limit:STATE_DEMO.limit,w:nf(weight,4),loss:nf(batch.loss,6)})
+        +(steps>=STATE_DEMO.limit?' '+L.t('fd.state.done'):'')
+        :L.t('fd.state.out',{x:nf(x,1),y:nf(prediction,3),target:nf(reference,3),error:nf(prediction-reference,4),w:nf(weight,4)});
+      $('fd-state-change').textContent=last?L.t('fd.state.lastChange',{beforeW:nf(last.before.weight,4),afterW:nf(last.after.weight,4),
+        beforeLoss:nf(last.before.loss,6),afterLoss:nf(last.after.loss,6)}):L.t('fd.state.noTraining');
+      $('fd-state-math-last').textContent=last?L.t('fd.state.mathLast',{gradient:nf(last.before.gradient,4),rate:nf(last.rate,1),delta:nf(last.delta,4)}):L.t('fd.state.noTraining');
+      const probe=$('fd-state-probe');probe.hidden=training;
+      probe.textContent=L.t(STATE_DEMO.examples.some(example=>example.x===x)?'fd.state.probeKnown':'fd.state.probeNew');
     }
     update.addEventListener('click',()=>{
-      if(mode.value!=='training')return;
-      const x=+xi.value;w-=0.1*x*(x*w-2*x);steps++;draw();
+      if(mode.value!=='training'||steps>=STATE_DEMO.limit)return;
+      last=stateDemoUpdate(weight);weight=last.after.weight;steps++;draw();
     });
-    $('fd-state-reset').addEventListener('click',()=>{w=1;steps=0;draw();});
+    test.addEventListener('click',()=>{mode.value='inference';draw();});
+    $('fd-state-reset').addEventListener('click',()=>{weight=1;steps=0;last=null;mode.value='training';xi.value='2';draw();});
     xi.addEventListener('input',draw);mode.addEventListener('change',draw);draw();
   })();
 

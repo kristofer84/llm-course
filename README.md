@@ -27,7 +27,9 @@ The interactive experiments are **small explanatory models**, not performance pr
 particular GPU. The core architecture/memory reference is Llama 3 8B. Other checkpoints and
 hypothetical examples are labeled separately. vLLM **v0.11.0 V1 is a documentation/source
 reference**, not a latest-release recommendation or a claim of GPU-tested compatibility.
-See [technical references](docs/REFERENCES.md),
+The introductory weights/activations demo uses guided fixed-data training, then a frozen-weight
+input test. Its slider selects an input, not a learning rate; each training step and reset is verified.
+See [the demo contract](docs/INFERENCE-DEMO.md), [technical references](docs/REFERENCES.md),
 [training and quantization notes](docs/TRAINING-QUANTIZATION.md), and the
 [optional inference lab](docs/INFERENCE-LAB.md).
 
@@ -137,6 +139,8 @@ python3 tools/check_i18n.py          # catalogs, markup, placeholders, numeric p
 python3 tools/content.py status --all --strict
 python3 tests/content_editor.py      # isolated per-language editing/provenance and no-edit round trips
 node tests/locales.js               # locale precedence, regional detection, German formatting
+node tests/foundation_state.js      # guided model math, fixed data, probe independence
+python3 tests/inference_demo.py     # actual training/frozen-input/reset transitions in every locale
 python3 tests/examples.py            # offline tokenizer/data/merge/role/shift/grammar contracts
 python3 tests/example_interactions.py # native examples, dynamic lengths, cached logits, no old SV data
 python3 tests/contracts.py           # Node: prerequisites/order, module mapping, balance, migration,
