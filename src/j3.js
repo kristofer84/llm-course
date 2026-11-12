@@ -16,9 +16,9 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
    [L.t('build.stage.1'),2,L.t('j3.4'),()=>{chips(tk,'t');cap(L.t('j3.48'));}],
    [L.t('Embedding'),2,L.t('j3.5'),()=>{heat(11,-1);cap(L.t('j3.49'));}],
    [L.t('j3.50'),3,L.t('j3.6'),()=>{heat(29,4);cap(L.t('j3.7'));}],
-   [L.t('Logits'),4,L.t('j3.8'),()=>{cand.forEach((c,i)=>hbar(view,c,lg[i]/5.5,L.num(lg[i],1),'var(--a)'));cap(L.t('j3.9'));}],
-   [L.t('Sampling'),4,L.t('j3.10'),()=>{cand.forEach((c,i)=>hbar(view,c,pr[i],L.num(pr[i]*100,0)+' %','var(--tok)',i>0));cap(L.t('j3.11'));}],
-   [L.t('j3.12'),6,L.t('j3.13'),()=>{chips(tk.concat([' mattan']),'t',5);cap(L.t('j3.14'));}]];
+   [L.t('Logits'),5,L.t('j3.8'),()=>{cand.forEach((c,i)=>hbar(view,c,lg[i]/5.5,L.num(lg[i],1),'var(--a)'));cap(L.t('j3.9'));}],
+   [L.t('Sampling'),5,L.t('j3.10'),()=>{cand.forEach((c,i)=>hbar(view,c,pr[i],L.num(pr[i]*100,0)+' %','var(--tok)',i>0));cap(L.t('j3.11'));}],
+   [L.t('j3.12'),7,L.t('j3.13'),()=>{chips(tk.concat([' mattan']),'t',5);cap(L.t('j3.14'));}]];
   function draw(){
     if(!st.length)return;
     // clicks can land on buttons from an earlier render (same tick, detached nodes),
@@ -28,7 +28,8 @@ function hbar(parent,label,frac,text,color,dim){const r=H('div',null,null,parent
     clear(box);
     st.forEach((_,i)=>{const b=H('button','btn'+(i===cur?' on':''),L.t('{{n}}. {{title}}',{n:i+1,title:st[i][0]}),box);b.addEventListener('click',()=>{cur=i;draw();});});
     clear(view);s[3]();clear(tx);H('h3',null,L.t('{{n}}. {{title}}',{n:cur+1,title:s[0]}),tx).style.marginTop='0';H('p',null,s[2],tx);
-    const g=H('button','btn',L.t('j3.15',{n:s[1],mod:L.t(MODS[s[1]]||'')}),tx);g.dataset.gomod=s[1];
+    const target=window.COURSE.moduleNumbers[String(s[1])];
+    const g=H('button','btn',L.t('j3.15',{n:target,mod:L.t(MODS[target]||'')}),tx);g.dataset.gomod=target;
     if(cur<st.length-1){const n=H('button','btn',L.t('j3.16'),tx);n.style.marginLeft='8px';n.addEventListener('click',()=>{cur=Math.min(cur+1,st.length-1);draw();});}}
   draw();
 })();

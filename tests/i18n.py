@@ -143,6 +143,12 @@ async def render_pass(browser, lang, max_clicks=8):
             await page.wait_for_timeout(8)
             collect(await page.evaluate(COLLECT, ".slide.active"))
         slides.append(title.strip())
+    if lang == 'en':
+        missing = await page.evaluate('L.missing')
+        ident = identity_values()
+        suspicious = [value for value in missing if swedish(value) and value not in ident]
+        check(not suspicious, f'no unresolved Swedish runtime lookups ({suspicious[:5]})')
+        print(f'Runtime lookup diagnostics: {len(missing)} unresolved literal/key calls')
     await page.close()
     return seen, slides, errors
 

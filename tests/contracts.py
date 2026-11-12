@@ -21,10 +21,13 @@ for name in ("foundations.js", "training-lab.js", "operations-lab.js"):
 node = r"""
 const assert=require('node:assert/strict');
 const window={COURSE:COURSE_DATA};let store={quiz:{},answers:{},maxlv:1};const save=()=>{};
-const L={t:x=>x};
+const L={t:x=>x,lang:'en'};
 RNG_DATA
 QUIZ_DATA
 LEARNING_DATA
+STUDY_DATA
+assert.equal(containsGlossaryTerm('endpoints','DPO'),false);
+assert.equal(containsGlossaryTerm('dpo loss','DPO'),true);
 const all=Object.values(QUIZ).flat();
 assert.equal(new Set(all.map(q=>q.q)).size,all.length,'Question ids must be unique');
 for(const [bank,questions] of Object.entries(QUIZ)){
@@ -55,14 +58,19 @@ for(const [bank,questions] of Object.entries(QUIZ)){
 for(const [module,bank] of Object.entries(window.COURSE.quizForModule))assert.ok(QUIZ[bank],`Bad module mapping ${module}`);
 assert.equal(Object.keys(window.COURSE.quizForModule).length,window.COURSE.mods.length-1,'Every numbered module needs a checkpoint');
 // Legacy index answers migrate to durable keys, even after bank reorganisation.
-const [bank,legacy]=Object.entries(window.COURSE.legacyQuiz)[0];
-store={quiz:{[bank]:[1]},answers:{},maxlv:1};migrateQuizAnswers();
-assert.equal(store.answers[legacy[0].q],legacy[0].o[1]);
+store={quiz:{},answers:{},maxlv:1};
+for(const [bank,legacy] of Object.entries(window.COURSE.legacyQuiz))store.quiz[bank]=legacy.map((_,i)=>i%4);
+migrateQuizAnswers();
+for(const legacy of Object.values(window.COURSE.legacyQuiz))legacy.forEach((q,i)=>{
+  if(q.q==='jd.m5.4.q')assert.equal(store.answers[q.q],undefined);
+  else assert.equal(store.answers[q.q],q.o[i%4],`Lost legacy answer ${q.q}`);
+});
 migrateQuizAnswers();assert.equal(store.quizSchema,3);
 console.log(`OK: ${all.length} questions, ${Object.keys(QUIZ).length} banks; levels, balance, mapping, migration`);
 """
 node = node.replace("COURSE_DATA", json.dumps(course)).replace("QUIZ_DATA", data).replace(
-    "LEARNING_DATA", (ROOT / "src/learning.js").read_text())
+    "LEARNING_DATA", (ROOT / "src/learning.js").read_text()).replace(
+    "STUDY_DATA", (ROOT / "src/course-ui.js").read_text())
 node = node.replace("RNG_DATA", re.search(r"function rng[^\n]+", (ROOT / "src/j0.js").read_text())[0])
 result = subprocess.run(["node", "-e", node], capture_output=True, text=True)
 print(result.stdout, end="")

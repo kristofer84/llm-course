@@ -10,6 +10,10 @@ function showDefinition(term,trigger){
   closeAll(false);openDrawer(gloss,$('glossbtn'),trigger);
   const search=$('gloss-search');search.value=term;search.dispatchEvent(new Event('input'));search.focus();
 }
+function containsGlossaryTerm(text,term){
+  const escaped=term.toLocaleLowerCase(L.lang).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  return new RegExp('(^|[^\\p{L}\\p{N}_])'+escaped+'(?=$|[^\\p{L}\\p{N}_])','u').test(text);
+}
 function initStudyTools(){
   const dialog=H('dialog','diagram-dialog',null,document.body);
   const heading=H('h2',null,L.t('learning.diagram'),dialog);heading.id='diagram-dialog-title';dialog.setAttribute('aria-labelledby',heading.id);
@@ -17,7 +21,9 @@ function initStudyTools(){
   let expanded=null,placeholder=null,returnFocus=null;
   close.addEventListener('click',()=>dialog.close());
   dialog.addEventListener('close',()=>{if(expanded&&placeholder){placeholder.replaceWith(expanded);if(returnFocus)returnFocus.focus();}expanded=placeholder=returnFocus=null;});
-  document.querySelectorAll('.slide .panel svg.viz').forEach(svg=>{
+  document.querySelectorAll('.slide svg.viz').forEach(svg=>{
+    if(svg.closest('.opener'))return;
+    if(svg.parentElement.classList.contains('cols')){const holder=H('div','diagram-holder');svg.before(holder);holder.appendChild(svg);}
     const actions=H('div','viz-actions'),button=H('button','btn study-tool',L.t('learning.expand'),actions);svg.before(actions);
     button.addEventListener('click',()=>{
       expanded=svg;returnFocus=button;placeholder=document.createComment('expanded diagram');svg.replaceWith(placeholder);canvas.appendChild(svg);
@@ -31,7 +37,7 @@ function initStudyTools(){
   });
   const terms=[...new Set(GLOSS.map(([t])=>L.t(t)))].filter(t=>t.length>=3).sort((a,b)=>b.length-a.length);
   slides.forEach(slide=>{
-    const text=slide.textContent.toLocaleLowerCase(L.lang),matches=terms.filter(t=>text.includes(t.toLocaleLowerCase(L.lang))).slice(0,4);
+    const text=slide.textContent.toLocaleLowerCase(L.lang),matches=terms.filter(t=>containsGlossaryTerm(text,t)).slice(0,4);
     if(!matches.length)return;
     const box=H('div','context-glossary',null,slide.querySelector('.si'));H('span',null,L.t('learning.definitions'),box);
     matches.sort((a,b)=>a.localeCompare(b,L.lang)).forEach(term=>{const button=H('button','btn study-tool',term,box);button.setAttribute('aria-label',L.t('learning.define',{term}));button.addEventListener('click',()=>showDefinition(term,button));});

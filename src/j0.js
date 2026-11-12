@@ -24,8 +24,9 @@ function rect(p,x,y,w,h,cls,rx){return S('rect',{x,y,width:w,height:h,class:cls|
 
 /* ================= persistence ================= */
 const KEY='llm-kurs-v2';
-let store={seen:{},last:null,quiz:{}};
+let store={seen:{},last:null,quiz:{},answers:{}};
 try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&typeof s==='object')store=Object.assign(store,s);}catch(e){}
+for(const key of ['seen','quiz','answers'])if(!store[key]||typeof store[key]!=='object'||Array.isArray(store[key]))store[key]={};
 function save(){try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}}
 
 /* ================= deck engine ================= */
@@ -80,14 +81,14 @@ function renderMap(){const g=$('modgrid');if(!g)return;clear(g);
     const st=modStats(m);st.n=0;st.seen=0;slides.forEach((s,k)=>{if(modOf[k]===m&&LV[k]<=store.maxlv){st.n++;if(store.seen[titles[k]])st.seen++;}});const pb=H('div','pb',null,b);const sp=H('span',null,null,pb);sp.style.width=(st.seen/st.n*100)+'%';
     const qs=quizScore(window.COURSE.quizForModule[m]);let meta=L.t('learning.viewed',{seen:st.seen,n:st.n});if(qs&&qs.done)meta+='   '+L.t('learning.mastery',{ok:qs.ok,n:qs.n});H('div','meta',meta,b);
     b.addEventListener('click',()=>show(firstOf[m]));}
-  const r=$('resume');if(r){const li=store.last?titles.indexOf(store.last):-1;if(li>2){r.classList.add('on');$('resume-t').textContent=L.t(store.last);$('resume-b').onclick=()=>show(li);}else r.classList.remove('on');}}
+  const r=$('resume');if(r){const li=store.last?titles.indexOf(store.last):-1;if(li>2){r.classList.add('on');$('resume-t').textContent=L.t(slides[li].dataset.i18nTitle||store.last);$('resume-b').onclick=()=>show(li);}else r.classList.remove('on');}}
 function show(i){
   i=Math.max(0,Math.min(slides.length-1,i|0));
   slides[cur].classList.remove('active');cur=i;slides[i].classList.add('active');slides[i].scrollTop=0;
   const m=modOf[i];$('modname').textContent=m?L.t('j0.15',{n:m,name:L.t(MODS[m])}):L.t(MODS[0]);const lb=$('lvl');lb.textContent=LVN[LV[i]];lb.className='lvb l'+LV[i];
   $('cnt').textContent=(i+1)+' / '+slides.length;
   [...prog.children].forEach((d,k)=>{const f=firstOf[k];const n=modOf.filter(x=>x===k).length;let w=0;if(i>=f+n)w=100;else if(i>=f)w=(i-f+1)/n*100;d.firstChild.style.width=w+'%';});
-  store.seen[titles[i]]=1;if(i>0)store.last=titles[i];save();
+  store.seen[titles[i]]=1;if(i>0&&!slides[i].querySelector('#modgrid'))store.last=titles[i];save();
   tocLinks.forEach((a,k)=>{a.classList.toggle('cur',k===i);a.classList.toggle('seen',!!store.seen[titles[k]]);a.style.opacity=LV[k]>store.maxlv?'.45':'';});
   if(slides[i].querySelector('#modgrid'))renderMap();
   try{history.replaceState(null,'','#s'+(i+1));}catch(e){}

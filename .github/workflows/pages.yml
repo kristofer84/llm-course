@@ -59,7 +59,7 @@ jobs:
         run: python3 tools/check_i18n.py
 
       - name: Translation state (English behind Swedish?)
-        run: python3 tools/content.py status
+        run: python3 tools/content.py status --strict
 
       - name: Both languages render (no Swedish left in English mode)
         run: python3 tests/i18n.py

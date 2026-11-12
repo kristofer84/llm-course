@@ -299,6 +299,7 @@ lesson_positions = {re.search(r'data-title="([^"]+)"', section)[1]: index for in
 quiz_positions = {re.search(r'data-quiz="([^"]+)"', section)[1]: index
                   for index, section in enumerate(out) if 'data-quiz=' in section}
 course = dict(quizForModule=quiz_for_module, slideLevels=LEVELS,
+              moduleNumbers={m['id']: i for i, m in enumerate(MODS)},
               lessonPositions=lesson_positions, quizPositions=quiz_positions,
               legacyQuiz=json.load(open('quiz-legacy.json', encoding='utf-8')),
               mods=['mod.' + m['id'] + '.name' for m in MODS],

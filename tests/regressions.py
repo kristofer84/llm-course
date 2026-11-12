@@ -69,6 +69,19 @@ async def run():
             await block.locator("button").click()
             assert await page.evaluate("Boolean(window.__courseCopied)")
             assert await block.locator("[role=status]").inner_text()
+            # Stored answers/depth survive reload; resume uses translated lesson titles.
+            await reveal(page, '.quiz')
+            first_option = page.locator('.quiz .opt').first
+            chosen = await first_option.get_attribute('data-option')
+            await first_option.click()
+            await page.evaluate("""() => { const s=JSON.parse(localStorage.getItem('llm-kurs-v2'));
+              s.last='Vektorer och skalärprodukt'; localStorage.setItem('llm-kurs-v2',JSON.stringify(s)); }""")
+            await page.reload(wait_until='domcontentloaded')
+            await reveal(page, '#modgrid')
+            assert await page.locator('#pathsel button').nth(2).evaluate("e=>e.classList.contains('on')")
+            expected = await page.locator('.slide[data-title="Vektorer och skalärprodukt"] h2').inner_text()
+            assert await page.locator('#resume-t').inner_text() == expected
+            assert await page.locator('.quiz .opt[data-option="' + chosen + '"]').first.is_disabled()
             # Exercise every newly added simulation at control boundaries, not just its opener.
             for prefix in ("fd-", "ql-", "trn-", "op-"):
                 indices = await page.evaluate("prefix => [...document.querySelectorAll('.slide')].flatMap((s,i)=>s.querySelector('[id^=\"'+prefix+'\"]')?[i]:[])", prefix)
