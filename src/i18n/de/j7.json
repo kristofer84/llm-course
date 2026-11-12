@@ -1,0 +1,16 @@
+{
+ "j7.1": "Der Satz ist vollständig. Ein echtes Modell würde weitermachen, bis es ein Stopp-Token erzeugt.",
+ "j7.2": "Küche = Rechenleistung",
+ "j7.3": "Tür",
+ "j7.4": "<b>64 Nutzer</b>: Bei jedem Schritt werden 16 GB Gewichte plus ihr KV-Cache hereingetragen. Die Köche arbeiten nur etwa <b>{{util}}%</b> der Zeit. Ein Schritt dauert ungefähr {{t}} ms, also rund <b>{{per}} Token pro Sekunde</b> pro Nutzer und <b>{{tot}}</b> insgesamt. Dieselbe Tür, dieselben Gewichte, aber fast 50-mal so viel Nutzen pro Schritt.",
+ "j7.5": "<b>Ein Nutzer</b>: Bei jedem Schritt werden 16 GB Gewichte hereingetragen. Die Köche arbeiten nur etwa <b>{{util}}%</b> der Zeit. Ein Schritt dauert ungefähr {{t}} ms, also rund <b>{{per}} Token pro Sekunde</b> pro Nutzer und <b>{{tot}}</b> insgesamt.",
+ "j7.6": "verarbeitete Wörter pro neuem Wort",
+ "j7.7": "Um {{n}} Wörter zu schreiben, werden ohne Cache insgesamt <b>{{a}}</b> Wörter verarbeitet, mit Cache <b>{{n}}</b>. Der Unterschied wächst mit jedem Wort: Bei 1.000 Wörtern sind es 500.500 gegenüber 1.000.",
+ "j7.8": "{{p}}%",
+ "j7.9": "Vorratskammer = Speicher (VRAM)",
+ "j7.10": "Gewichte",
+ "j7.11": "KV-Cache",
+ "j7.12": "Wort {{n}}",
+ "j7.13": "ohne Cache",
+ "j7.14": "mit Cache"
+}
