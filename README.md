@@ -1,6 +1,6 @@
 # Inside an LLM — from prompt to token
 
-An interactive, bilingual course connecting **what a model computes** to **how a useful inference
+An interactive course in **Swedish, English and German** connecting **what a model computes** to **how a useful inference
 system runs**. Follow concrete tensor shapes, manipulate small examples, and reason about memory,
 latency, training, model quality, and tool-enabled applications.
 
@@ -33,7 +33,7 @@ See [technical references](docs/REFERENCES.md),
 
 ## Offline artifact and study tools
 
-`llm-kurs.html` contains the course, diagrams, JavaScript, both catalogs, and vendored i18next.
+`llm-kurs.html` contains the course, diagrams, JavaScript, all language catalogs, and vendored i18next.
 Download and open it locally: explanations and simulations require no network or GPU. Optional
 web fonts fall back to local fonts. External references, package/model downloads, and the real-server
 exercise require network access and suitable hardware; they are not prerequisites for the course.
@@ -57,13 +57,14 @@ reproducible source-content fingerprint for diagnosing stale copies.
 
 ## Languages and content editing
 
-- Runtime selection: `?lang=sv` / `?lang=en`, saved preference, then browser language; English is the
-  fallback for non-Swedish readers. Switching preserves the current slide hash.
+- Runtime selection: `?lang=sv` / `?lang=en` / `?lang=de`, saved preference, then the first supported
+  browser language (including regional forms such as `de-DE`/`de-AT`). English is the fallback for
+  unsupported languages. Switching preserves the current slide hash.
 - Sources contain stable explicit keys, such as `<p data-i18n="p3.rmsnorm.2"></p>`.
-- Both `src/i18n/sv/*.json` and `src/i18n/en/*.json` are external source catalogs. The build fills
-  Swedish for static readability; JavaScript applies the selected translation.
+- `src/i18n/sv/*.json`, `src/i18n/en/*.json` and `src/i18n/de/*.json` are external source catalogs.
+  The build fills Swedish for static readability; JavaScript applies the selected translation.
 - `src/i18n/en/data.json` identifies deliberate Swedish sample data such as `katt`, `satt`, and
-  `mattan`. Those tokens remain unchanged in English diagrams.
+  `mattan`. Those tokens remain unchanged in every language; the German identity catalog matches.
 
 Use keyed bilingual Markdown rather than editing catalog JSON by hand:
 
@@ -71,15 +72,18 @@ Use keyed bilingual Markdown rather than editing catalog JSON by hand:
 python3 tools/content.py dump
 $EDITOR src/i18n/edit/p3.md
 python3 tools/content.py apply
-python3 tools/content.py status --strict
+python3 tools/content.py status --all --strict
 (cd src && python3 build.py)
 python3 tools/check_i18n.py
 python3 tests/contracts.py
 ```
 
-`status --strict` rejects missing, behind, **and unreviewed/untracked** translations. For reviewed
-bulk edits that updated both languages outside `apply`, use `python3 tools/content.py mark` before
-checking status. Do not use `mark` to hide an untranslated change. Preserve inline markup,
+English remains the default editing target. Use `dump --lang de` / `apply --lang de` for German:
+its `SV|` / `DE|` files live in `src/i18n/edit/de/`, separate from English edits.
+
+`status --all --strict` rejects missing, behind, **and unreviewed/untracked** translations in every
+target. For reviewed bulk source/target edits outside `apply`, use `mark --lang de` (or default
+`mark` for English). Each language has independent provenance; marking German does not mark English. Do not use `mark` to hide an untranslated change. Preserve inline markup,
 placeholders, sample data, and formula/code line structure. Full rules are in
 [`src/i18n/GLOSSARY.md`](src/i18n/GLOSSARY.md).
 
@@ -109,15 +113,17 @@ new edition; language switching within an edition keeps its position.
 
 ```bash
 python3 tools/check_i18n.py          # catalogs, markup, placeholders, numeric preservation, IDs/text
-python3 tools/content.py status --strict
+python3 tools/content.py status --all --strict
+python3 tests/content_editor.py      # isolated per-language editing/provenance and no-edit round trips
+node tests/locales.js               # locale precedence, regional detection, German formatting
 python3 tests/contracts.py           # Node: prerequisites/order, module mapping, balance, migration,
                                     # and bilingual formula/code line structure
 python3 tests/smoke.py               # slide navigation, layout, browser errors, controls
 python3 tests/test.py                # every slide + screenshots; JS errors fail the run
-python3 tests/accessibility.py       # actual Tab/Enter/Space and redraw focus in both languages
+python3 tests/accessibility.py       # actual Tab/Enter/Space and redraw focus in every language
 python3 tests/regressions.py         # depth, simulations, ablation, burst-clicking, study tools,
-                                    # and 360px bilingual layout
-python3 tests/i18n.py                # bilingual rendering/interactions, switching, glossary order
+                                    # and 360px layout in every language
+python3 tests/i18n.py                # all-language rendering, switching, browser detection, glossary
 ```
 
 Static contracts require Node.js. Browser suites require `tests/requirements.txt` and
@@ -131,7 +137,8 @@ CUDA models, benchmark GPUs, or establish production compatibility of server exa
 
 GitHub Actions tests pull requests. Successful pushes to `main` build and deploy to Pages; a failed
 test blocks publication. The release check compares the published bytes with the final artifact.
-The full work list, assumptions, and completion evidence are in [`PLAN.md`](PLAN.md).
+The expansion work list and evidence are in [`PLAN.md`](PLAN.md). German localization conventions
+and acceptance notes are in [`docs/GERMAN.md`](docs/GERMAN.md).
 
 | Path | Purpose |
 |---|---|

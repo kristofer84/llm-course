@@ -219,7 +219,7 @@
   h+='<tr><td>block_table</td><td class="n" colspan="7">A: [3]   B: [7, 1, 9]   C: [4]</td></tr>';
   h+='<tr><td>logits_indices</td><td class="n" colspan="7">'+L.t('j2b.113')+'</td></tr>';
   t.innerHTML=h;})();
-(function smpl(){const g=$('smpl-g');const b=[['logits','[R, V]','ba'],['penalties','','box'],[L.t('j2b.114'),'mask','box'],['temperature','','box'],['top-k','top-p','box'],['sampling','','bt'],[L.t('j2b.115'),'[R]','bt']];
+(function smpl(){const g=$('smpl-g');const b=[['logits','[R, V]','ba'],['penalties','','box'],[L.t('j2b.114'),'mask','box'],['p4.sampling-temperature-top-k.16','','box'],['p4.sampling-temperature-top-k.18','p4.sampling-temperature-top-k.17','box'],['sampling','','bt'],[L.t('j2b.115'),'[R]','bt']];
   b.forEach(([a,c,cl],i)=>{const x=6+i*141;rect(g,x,40,120,56,cl,8);txt(g,x+60,c?64:73,L.t(a),'','middle');if(c)txt(g,x+60,82,L.t(c),'m','middle');if(i<b.length-1)line(g,x+120,68,x+139,68,'ln',true);});
   txt(g,6,124,L.t('j2b.116'),'s');})();
 (function tp(){const svg=$('tp-svg');txt(svg,145,14,L.t('GPU {{n}}',{n:0}),'b','middle');txt(svg,415,14,L.t('GPU {{n}}',{n:1}),'b','middle');

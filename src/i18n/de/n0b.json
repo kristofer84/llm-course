@@ -1,0 +1,14 @@
+{
+ "n0b.vad-ar-en-sprakmodell.1": "Was ist ein Sprachmodell?",
+ "n0b.vad-ar-en-sprakmodell.2": "Ein Sprachmodell tut nur eines: Es schätzt, welches Wort als Nächstes kommt. Das Prinzip ist dasselbe wie bei den Wortvorschlägen auf deinem Handy, nur sehr viel größer. Alles andere – Fragen beantworten, Code schreiben und Schlussfolgern – entsteht, indem diese Vorhersage immer wieder gemacht wird.",
+ "n0b.vad-ar-en-sprakmodell.3": "Das Wichtigste vorweg",
+ "n0b.vad-ar-en-sprakmodell.4": "<b>Es besteht aus Zahlen.</b> Ein Modell wie Llama-3-8B besteht aus etwa 8 Milliarden Zahlen, den <i>Gewichten</i> oder <i>Parametern</i>. Zusammen belegen sie 16 GB.",
+ "n0b.vad-ar-en-sprakmodell.5": "<b>Die Zahlen sind gelernt.</b> Das Modell hat riesige Textmengen gelesen und seine Zahlen so lange angepasst, bis es das nächste Wort gut vorhersagen konnte. Niemand hat die Regeln von Hand eingegeben.",
+ "n0b.vad-ar-en-sprakmodell.6": "<b>Es schlägt keine Antworten nach.</b> Darin steckt keine Faktendatenbank, nur Zahlen, die addiert werden. Das Wissen ist über die Zahlen verteilt.",
+ "n0b.vad-ar-en-sprakmodell.7": "<b>Es schreibt ein Wort nach dem anderen.</b> Jedes neue Wort wird an den Text angehängt. Dann läuft das Modell erneut, um das nächste vorherzusagen.",
+ "n0b.vad-ar-en-sprakmodell.8": "Probiere die Demo: Wähle das nächste Wort selbst oder lass das „Modell“ das wahrscheinlichste wählen.",
+ "n0b.vad-ar-en-sprakmodell.9": "Die Vorhersagen des Modells für das nächste Wort:",
+ "n0b.vad-ar-en-sprakmodell.10": "Modell wählen lassen",
+ "n0b.vad-ar-en-sprakmodell.11": "Neu starten",
+ "n0b.vad-ar-en-sprakmodell.12": "Die Wahrscheinlichkeiten sind erfunden, um das Prinzip zu zeigen. Der restliche Kurs erklärt, wie ein echtes Modell sie berechnet."
+}

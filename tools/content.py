@@ -1,34 +1,27 @@
 #!/usr/bin/env python3
-"""Edit the course text without touching HTML or the key structure.
+"""Edit keyed course prose in Swedish and a selected target language.
 
-The catalogs (``src/i18n/sv/*.json``, ``src/i18n/en/*.json``) are keyed, which
-makes them safe but unpleasant to read. This tool renders them as one Markdown
-file per group, in the order the course shows them, with the key on every
-block and Swedish and English side by side — a form that is easy for a person
-to read and cheap for a model to edit.
+Default target is English (--lang en); German uses --lang de. Existing English
+edit files stay in src/i18n/edit/<group>.md and provenance stays in
+.translation-state.json. Other targets use edit/<locale>/<group>.md and
+.translation-state.<locale>.json, so edits/review state never overwrite another
+language. Static lesson order is followed by runtime/quiz/glossary values.
 
-    python3 tools/content.py dump            # -> src/i18n/edit/<group>.md
-    $EDITOR src/i18n/edit/p3.md              # change the text
-    python3 tools/content.py apply           # back into the catalogs
-    (cd src && python3 build.py)             # rebuild
-    python3 tools/check_i18n.py              # verify
+    python3 tools/content.py dump --lang de
+    # edit SV| and DE| lines in src/i18n/edit/de/<group>.md
+    python3 tools/content.py apply --lang de
+    python3 tools/content.py status --all --strict
+    (cd src && python3 build.py)
+    python3 tools/check_i18n.py
 
-Block format (one per translatable element, in document order)::
+Each @@ key block contains one SV| / target-language line per original value
+line. Preserve inline markup, {{placeholders}}, numeric meaning and indentation.
+A block marked @@ key - new inserts a new key (source required, target optional).
+Catalog ownership is preserved even when a key prefix differs from its file.
 
-    @@ p3.rmsnorm.6            <- key; add "- new" to insert a paragraph
-    ## next: p3.attention-1-q-k-och-v   <- context, ignored on apply
-
-    SV| Division med RMS bevarar riktningen ...
-    EN| Division by the RMS preserves the direction ...
-
-Every ``SV|`` line is one line of the value; an empty ``SV|`` is a blank line
-inside a formula or log block. Inline markup (``<b>``, ``<span class="mk">``)
-and ``{{placeholders}}`` must be kept — ``tools/check_i18n.py`` enforces it.
-
-``apply`` also records, in ``src/i18n/.translation-state.json``, the Swedish
-text each English value was translated from. ``status`` lists the keys where
-Swedish has moved on since — the "translation is behind" list that a keyed
-catalog would otherwise keep quiet about.
+apply associates target text with its Swedish-source hash. status --strict
+rejects missing, behind, and unreviewed translations; --all checks every target.
+mark --lang <locale> records an explicitly reviewed source/target bulk edit.
 """
 
 import argparse
@@ -37,6 +30,7 @@ import json
 import os
 import re
 import sys
+from pathlib import Path
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 I18N = os.path.join(ROOT, "src", "i18n")
@@ -52,13 +46,33 @@ HEADER = """\
 """
 
 
+LANGUAGE_NAMES = {"en": "English", "de": "German", "sv": "Swedish"}
+
+
+def target_locales():
+    return sorted(name for name in os.listdir(I18N)
+                  if name not in (SRC, "edit", "source") and not name.startswith(".")
+                  and os.path.isdir(os.path.join(I18N, name)))
+
+
+def configure_locale(locale):
+    """Retain the English paths while keeping other languages' edits/state separate."""
+    global BASE, EDIT, STATE
+    if locale not in target_locales():
+        raise ValueError("No target catalog directory for %r" % locale)
+    BASE = locale
+    EDIT = os.path.join(I18N, "edit") if locale == "en" else os.path.join(I18N, "edit", locale)
+    suffix = "" if locale == "en" else "." + locale
+    STATE = os.path.join(I18N, ".translation-state%s.json" % suffix)
+
+
 def catalogs(locale):
     out = {}
     base = os.path.join(I18N, locale)
     for name in sorted(os.listdir(base)):
         if not name.endswith(".json") or name.startswith("_") or name == "data.json":
             continue
-        for k, v in json.load(open(os.path.join(base, name), encoding="utf-8")).items():
+        for k, v in json.loads(Path(base, name).read_text(encoding="utf-8")).items():
             out[k] = v
     return out
 
@@ -68,16 +82,28 @@ def group_of(key):
 
 
 def write_catalog(locale, key, value):
-    """Put one value back into the file that owns the key's group."""
-    name = "%s.json" % group_of(key)
-    path = os.path.join(I18N, locale, name)
+    """Preserve actual file ownership (mod/lead/title keys live in build.json)."""
+    directory = os.path.join(I18N, locale)
+    owners, group_owners = [], set()
+    for candidate in sorted(os.listdir(directory)):
+        if not candidate.endswith(".json") or candidate == "data.json" or candidate.startswith("_"):
+            continue
+        values = json.loads(Path(directory, candidate).read_text(encoding="utf-8"))
+        if key in values:
+            owners.append(candidate)
+        if any(group_of(existing) == group_of(key) for existing in values):
+            group_owners.add(candidate)
+    if len(owners) > 1:
+        raise ValueError("Duplicate catalog ownership for %s: %s" % (key, owners))
+    name = owners[0] if owners else next(iter(group_owners)) if len(group_owners) == 1 else "%s.json" % group_of(key)
+    path = os.path.join(directory, name)
     data = {}
     if os.path.exists(path):
-        data = json.load(open(path, encoding="utf-8"))
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
     if data.get(key) == value:
         return False
     data[key] = value
-    json.dump(data, open(path, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    Path(path).write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     return True
 
 
@@ -89,7 +115,7 @@ def order_from_page():
     sys.path.insert(0, os.path.join(ROOT, "tools"))
     import i18n_dom as D
 
-    src = open(page, encoding="utf-8").read()
+    src = Path(page).read_text(encoding="utf-8")
     root = D.parse(src)
     out = []
 
@@ -125,9 +151,17 @@ def dump(groups=None):
         if groups and g not in groups:
             continue
         buckets.setdefault(g, []).append((key, slide, tag))
+    # Quiz, glossary and live-diagram values have no static keyed DOM node.
+    # Keep them editable too, following the ordered lesson prose.
+    for key in sv:
+        g = group_of(key)
+        if key not in seen and (not groups or g in groups):
+            seen.add(key)
+            buckets.setdefault(g, []).append((key, "Runtime/catalog value", ""))
     for g, keys in sorted(buckets.items()):
         path = os.path.join(EDIT, "%s.md" % g)
-        lines = [HEADER, "# %s (%d blocks)\n" % (g, len(keys))]
+        header = HEADER.replace("EN|", BASE.upper() + "|").replace("English optional", LANGUAGE_NAMES.get(BASE, BASE) + " optional")
+        lines = [header, "# %s (%d blocks)\n" % (g, len(keys))]
         for key, slide, tag in keys:
             lines.append("@@ %s" % key)
             if slide:
@@ -136,10 +170,10 @@ def dump(groups=None):
             for line in (sv[key] or "").split("\n"):
                 lines.append("SV| " + line)
             for line in (en.get(key) or "").split("\n"):
-                lines.append("EN| " + line)
+                lines.append(BASE.upper() + "| " + line)
             lines.append("")
         os.makedirs(EDIT, exist_ok=True)
-        open(path, "w", encoding="utf-8").write("\n".join(lines) + "\n")
+        Path(path).write_text("\n".join(lines) + "\n", encoding="utf-8")
         print("%-6s %3d blocks -> %s" % (g, len(keys), os.path.relpath(path, ROOT)))
     missing = [k for k in sv if k not in seen]
     if missing and not groups:
@@ -149,7 +183,7 @@ def dump(groups=None):
 def parse_blocks(path):
     """[(key, tag, sv_lines, en_lines)] from one edit file."""
     blocks, cur = [], None
-    for raw in open(path, encoding="utf-8"):
+    for raw in Path(path).read_text(encoding="utf-8").splitlines(keepends=True):
         line = raw.rstrip("\n")
         if line.startswith("@@ "):
             head = line[3:].strip()
@@ -168,9 +202,13 @@ def parse_blocks(path):
         if line.startswith("SV|"):
             cur["sv"].append(line[4:] if line[3:4] == " " else line[3:])
             continue
-        if line.startswith("EN|"):
-            cur["en"].append(line[4:] if line[3:4] == " " else line[3:])
+        target_prefix = BASE.upper() + "|"
+        if line.startswith(target_prefix):
+            value = line[len(target_prefix):]
+            cur["en"].append(value[1:] if value.startswith(" ") else value)
             continue
+        if re.match(r"^[A-Z]{2,3}(?:-[A-Z0-9]+)?\|", line):
+            raise ValueError("Wrong language marker in %s: expected %s" % (path, target_prefix))
     for b in blocks:
         b["sv_text"] = "\n".join(b["sv"])
         b["en_text"] = "\n".join(b["en"])
@@ -183,12 +221,12 @@ def sha(value):
 
 def load_state():
     if os.path.exists(STATE):
-        return json.load(open(STATE, encoding="utf-8"))
+        return json.loads(Path(STATE).read_text(encoding="utf-8"))
     return {}
 
 
 def save_state(state):
-    json.dump(state, open(STATE, "w", encoding="utf-8"), ensure_ascii=False, indent=1, sort_keys=True)
+    Path(STATE).write_text(json.dumps(state, ensure_ascii=False, indent=1, sort_keys=True), encoding="utf-8")
 
 
 def apply(groups=None, quiet=False):
@@ -229,22 +267,22 @@ def apply(groups=None, quiet=False):
                     changed_en.append(key)
                 en[key] = b["en_text"]
                 state[key] = sha(sv[key])
-    # baseline: a key with an English value counts as translated from the
-    # Swedish text it has now, so only later Swedish edits show up as "behind"
+    # A reviewed target value is associated with the current Swedish text;
+    # later Swedish edits then show up as "behind" for this target language.
     for k, v in sv.items():
         if k not in state and k not in behind and (en.get(k) or "").strip():
             state[k] = sha(v)
     save_state(state)
     if not quiet:
-        print("Swedish changed: %d  English changed: %d  new: %d" % (len(changed_sv), len(changed_en), len(new_keys)))
+        print("Swedish changed: %d  %s changed: %d  new: %d" % (len(changed_sv), LANGUAGE_NAMES.get(BASE, BASE), len(changed_en), len(new_keys)))
         for k in changed_sv[:20]:
             print("   sv  ", k)
         for k in changed_en[:20]:
-            print("   en  ", k)
+            print("   %-3s " % BASE, k)
         for k in unknown[:10]:
             print("   ??  key not in the catalog (skipped):", k)
         if behind:
-            print("\n%d key(s) changed in Swedish but still carry the old English:" % len(behind))
+            print("\n%d key(s) changed in Swedish but still carry the old %s:" % (len(behind), LANGUAGE_NAMES.get(BASE, BASE)))
             for k in behind:
                 print("   ", k)
     return changed_sv, changed_en, behind
@@ -255,8 +293,8 @@ def status(strict=False):
     missing = sorted(k for k in sv if not (en.get(k) or "").strip())
     behind = sorted(k for k in sv if k in state and state[k] != sha(sv[k]) and (en.get(k) or "").strip())
     untracked = sorted(k for k in sv if k not in state and (en.get(k) or "").strip())
-    print("keys: %d  untranslated: %d  English behind Swedish: %d  untracked: %d"
-          % (len(sv), len(missing), len(behind), len(untracked)))
+    print("%s keys: %d  untranslated: %d  %s behind Swedish: %d  untracked: %d"
+          % (BASE, len(sv), len(missing), LANGUAGE_NAMES.get(BASE, BASE), len(behind), len(untracked)))
     for label, keys in (("untranslated", missing), ("behind", behind), ("untracked", untracked)):
         for k in keys[:25]:
             print("   %-12s %s" % (label, k))
@@ -266,7 +304,7 @@ def status(strict=False):
 
 
 def mark(groups=None):
-    """Declare the current English values reviewed against the current Swedish
+    """Declare the current target values reviewed against the current Swedish
     text — for bulk edits that updated both languages in one go."""
     sv, en, state = catalogs(SRC), catalogs(BASE), load_state()
     if not groups:
@@ -288,7 +326,21 @@ def main():
     ap.add_argument("--group", action="append", help="limit to this group (repeatable)")
     ap.add_argument("--strict", action="store_true", help="status: fail on missing, behind, or unreviewed translations")
     ap.add_argument("--quiet", action="store_true")
+    ap.add_argument("--lang", default="en", help="target language (default: en)")
+    ap.add_argument("--all", action="store_true", help="status/check: validate every target language")
     args = ap.parse_args()
+    if args.all:
+        if args.command not in ("status", "check"):
+            ap.error("--all is only supported for status/check")
+        failures = 0
+        for locale in target_locales():
+            configure_locale(locale)
+            failures += status(args.strict or args.command == "check")
+        return int(bool(failures))
+    try:
+        configure_locale(args.lang)
+    except ValueError as error:
+        ap.error(str(error))
     groups = set(args.group) if args.group else None
     if args.command == "dump":
         dump(groups)

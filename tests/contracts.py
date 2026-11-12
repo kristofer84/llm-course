@@ -77,12 +77,17 @@ print(result.stdout, end="")
 assert result.returncode == 0, result.stderr[:5000]
 
 # Formula/code translations must preserve visual line structure permanently.
-sv, en = {}, {}
-for locale, target in (("sv", sv), ("en", en)):
-    for path in (ROOT / "src/i18n" / locale).glob("*.json"):
-        target.update(json.loads(path.read_text()))
-for key, value in sv.items():
-    assert value.count("\n") == en[key].count("\n"), f"Line structure differs: {key}"
+from _common import LOCALES
+assert {'sv', 'en', 'de'}.issubset(LOCALES), 'All three advertised languages must ship'
+catalogs = {locale: {} for locale in LOCALES}
+for locale, target in catalogs.items():
+    for path in (ROOT / 'src/i18n' / locale).glob('*.json'):
+        if path.name != 'data.json' and not path.name.startswith('_'):
+            target.update(json.loads(path.read_text()))
+for key, value in catalogs['sv'].items():
+    for locale in LOCALES[1:]:
+        assert value.count('\n') == catalogs[locale][key].count('\n'), f'Line structure differs: {locale}/{key}'
+assert json.loads((ROOT / 'src/i18n/en/data.json').read_text()) == json.loads((ROOT / 'src/i18n/de/data.json').read_text())
 assert "Astra" not in page
 assert "p5.kontext             .20" not in page
 assert re.search(r'<meta name="course-revision" content="[0-9a-f]{12}">', page)
@@ -113,4 +118,4 @@ assert clients[1].strip() in html.unescape((ROOT / 'src/operations-lab.html').re
 import base64
 embedded = re.search(r'href="data:text/markdown;base64,([A-Za-z0-9+/=]+)" data-guide="INFERENCE-LAB.md"', page)
 assert embedded and base64.b64decode(embedded[1]).decode() == lab, 'Offline lab guide differs from documentation'
-print("OK: bilingual line structure, detail prerequisites, provenance, capstone clients")
+print("OK: multilingual line structure, detail prerequisites, provenance, capstone clients")

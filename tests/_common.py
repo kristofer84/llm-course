@@ -17,6 +17,10 @@ HTML = Path(os.environ.get("COURSE_HTML") or ROOT / "llm-kurs.html").resolve()
 SHOTS = Path(os.environ.get("COURSE_SHOTS") or ROOT / "shots").resolve()
 URL = HTML.as_uri() + "?lang=sv"          # tests assert Swedish content
 URL_EN = HTML.as_uri() + "?lang=en"
+CATALOG_ROOT = ROOT / 'src/i18n'
+EXTRA_LOCALES = sorted(p.name for p in CATALOG_ROOT.iterdir()
+                       if p.is_dir() and p.name not in ('sv', 'en', 'edit', 'source') and not p.name.startswith('.'))
+LOCALES = ('sv', 'en', *EXTRA_LOCALES)
 
 # Errors that come from the deliberately blocked Google Fonts request.
 IGNORED = ("ERR_FAILED", "Failed to load resource", "net::ERR_ABORTED")

@@ -1,77 +1,106 @@
-# Working with the text (sv → en)
+# Working with multilingual course text
 
-The course is one HTML file, but the text lives in catalogs, not in the markup:
+The course ships in one offline HTML file; its prose lives in stable-key catalogs:
 
 ```
-src/i18n/sv/<group>.json     {"key": "svensk text"}      <- source of truth
-src/i18n/en/<group>.json     {"key": "english text"}     <- translation
+src/i18n/sv/<group>.json     Swedish source of truth
+src/i18n/en/<group>.json     English
+src/i18n/de/<group>.json     German (informal du)
 ```
 
-The markup only carries the key: `<p data-i18n="p3.rmsnorm.2"></p>`. `build.py` writes the Swedish
-text into the page statically and the runtime swaps to English, so a missing translation shows
-Swedish — never an empty paragraph.
+Markup carries keys, not authored text: `<p data-i18n="p3.rmsnorm.2"></p>`. The build fills Swedish
+statically; the runtime selects Swedish, English or German. The selected language's glossary
+collation and number formatting are used. German terminology/style is documented in
+[`docs/GERMAN.md`](../../docs/GERMAN.md).
 
-Groups are named after the file the text came from: `p3` (module text), `n8` (newer module text),
-`build` (module names, goals, summaries, templates), `lead` (slide intros), `j6` (visualisation
-strings), `jd` (quiz + glossary data), `p1`/`p9` (chrome), `doc` meta keys inside `build`.
+## Editing
 
-## The editing loop
+English remains the default target; its existing commands and paths are unchanged:
 
 ```bash
-python3 tools/content.py dump         # src/i18n/edit/<group>.md - text in reading order, keys inline
-# edit the SV| / EN| lines in those files (person or agent)
-python3 tools/content.py apply        # back into the catalogs
-python3 tools/content.py status       # keys where Swedish moved but English did not
-python3 tools/content.py mark         # accept the current state after a bulk edit
-(cd src && python3 build.py) && python3 tools/check_i18n.py
+python3 tools/content.py dump
+# edit SV| / EN| in src/i18n/edit/<group>.md
+python3 tools/content.py apply
 ```
 
-`apply` is a no-op when nothing changed. A block looks like:
+Select German explicitly:
+
+```bash
+python3 tools/content.py dump --lang de
+# edit SV| / DE| in src/i18n/edit/de/<group>.md
+python3 tools/content.py apply --lang de
+python3 tools/content.py status --all --strict
+(cd src && python3 build.py)
+python3 tools/check_i18n.py
+```
+
+Each generated block retains the key and reading context:
 
 ```
 @@ p3.rmsnorm.6
 ## RMSNorm  [p]
 
 SV| Division med RMS bevarar riktningen och bestämmer storleken. ...
-EN| Division by the RMS preserves the direction and sets the size. ...
+DE| Die Division durch den RMS erhält die Richtung und bestimmt die Größe. ...
 ```
+
+Repeated `SV|` / `DE|` lines preserve value line breaks, including blank lines and indentation.
+`apply` without edits is a no-op for the catalogs. Wrong-language markers are rejected rather than
+silently clearing a translation. Runtime diagram labels, quiz/glossary entries and document metadata
+are included after the ordered static prose, so the editing surface covers every key.
+
+Catalog files retain ownership even when their names differ from key prefixes. For example,
+`mod.*`, `lead.*`, `title.*` and `doc.*` live in `build.json`; `fd.*` lives in `foundations.json`.
+The editor does not create duplicate `mod.json`/`fd.json` files when updating those keys.
+
+## Translation provenance
+
+Each target tracks which Swedish text it was reviewed against:
+
+- English: `src/i18n/.translation-state.json` (existing format/path retained).
+- German: `src/i18n/.translation-state.de.json`.
+- Other targets follow `.translation-state.<locale>.json`.
+
+```bash
+python3 tools/content.py status --lang de --strict
+python3 tools/content.py status --all --strict
+python3 tools/content.py mark --lang de     # only after reviewing a bulk source/German edit
+```
+
+Strict status rejects missing, behind and unreviewed entries. Editing Swedish can make **both**
+translations stale; reviewing/marking German does not mark English as reviewed, or vice versa.
+Never use `mark` simply to hide an untranslated change.
 
 ## Hard rules
 
-1. **Never rename or renumber a key.** Keys are stable identifiers (`p3.rmsnorm.6`); the point of
-   them is that editing the text does not orphan the translation. If a slide is deleted, delete its
-   keys; if content is added, use fresh ones.
-2. **Keep inline markup byte-identical** — `<b>`, `<i>`, `<code class="mk">`, `<span class="sh a">`,
-   `<br>`, `<a …>`: same tags, same attributes, same order, same count. Only the words change.
-3. **Keep `{{placeholders}}`** exactly as they are (`{{n}}`, `{{name}}`), same set, both languages.
-4. **Never translate code or data.** Identifiers, formulas, shapes (`[T, 4096]`), file paths, flags,
-   model names, API calls, CLI output stay verbatim. Inside `<pre class="log">` blocks translate
-   nothing — those blocks are not in the catalogs at all.
-5. **Numbers stay numbers.** Decimal comma in Swedish, point in English (`8,03 B` ↔ `8.03 B`);
-   thousands grouping may differ (`389 120` ↔ `389,120`). `check_i18n.py` compares digits only.
-6. **Swedish example words are data.** `katt`, `kattens`, `satt`, `på`, `mattan`, `månen` and the
-   sample prompts in `src/i18n/en/data.json` are identity mappings — same text in both languages.
-   They are not translation gaps.
-7. **`<div class="eq">` blocks keep their line structure.** Multi-line values are stored with `\n`;
-   in the Markdown dump each line is its own `SV|` / `EN|` line, and column alignment is part of
-   the value (they render with `white-space: pre`).
+1. **Keep keys stable.** Ordinary wording changes update values, not key names. New content uses
+   fresh keys. If a slide is deleted, remove its keys from every language.
+2. **Preserve inline markup exactly:** tags, attributes, order, and count. Translate only the words.
+   This includes `<b>`, `<i>`, `<span class="sh a">`, `<br>` and links.
+3. **Preserve `{{placeholders}}`** and interpolation meaning in every language.
+4. **Do not translate code/data:** identifiers, matrix shapes, model names, flags, file paths,
+   executable examples and CLI logs remain verbatim. Explanatory prose around them is translated.
+5. **Preserve numeric meaning and units.** German prose uses decimal commas; version numbers and
+   code/formula literals do not change. English billion is German Milliarde, trillion is Billion.
+   GB/GiB, KiB/KB and FLOP/FLOP/s are different quantities.
+6. **Keep Swedish sample tokens Swedish.** `Katten`, `satt`, `på`, `mattan`, `den` and `trött` are model
+   data, not leftover interface text. Identity examples in `en/data.json` and `de/data.json` match.
+7. **Keep formula/code line structure and alignment.** Whitespace in `.eq` blocks is visual layout,
+   not normalization noise. The contracts check multiline parity for every target language.
+8. **Preserve technical qualifications.** Translation must not turn illustrative calculations,
+   model-specific observations or documentation references into universal/measured claims.
 
-## Adding text
+## Adding content or a language
 
-*New paragraph on an existing slide* — add a block to the group's Markdown with a free key and the
-marker `- new`, fill in `SV|` and `EN|`, run `apply`, then put the empty element in the right place:
-`<p class="note" data-i18n="p3.rmsnorm.n7"></p>`.
+For a paragraph, add `@@ <fresh-key> - new` to an edit file, supply source and target text, apply,
+and insert the keyed element into the source HTML. Complete the other target languages before
+publication; CI checks all catalogs and their independent provenance.
 
-*New slide* — add a `<section class="slide" data-title="…">` with keyed elements (slug +
-`.1`, `.2`, …), register the `data-title` in `ORDER` in `src/build.py`, add the `title.<slug>` key,
-then dump/apply.
+For a new slide, register its Swedish identifier in the sequence or insertion manifest, provide its
+explicit depth and title/prose keys, and update relevant prerequisite metadata, summaries and quizzes.
+See `README.md` for the curriculum contracts.
 
-Both are caught by `check_i18n.py`: unused keys, keys without Swedish text, empty elements in the
-build, markup/placeholder/number drift.
-
-## Adding a language
-
-Create `src/i18n/de/` with the same file names, fill in what you can, rebuild. The switch button
-appears automatically, untranslated keys fall back to Swedish, and `content.py status` lists what is
-still missing. Then set `BASE` in `tools/content.py` if you want the side-by-side files to show that
-language instead of English.
+For another language, create the catalog directory with matching keys and identity data, translate,
+review and `mark --lang <locale>`. The switch and supported-browser detection are extensible; browser
+and static suites discover shipped locales. Add language-specific number/terminology checks where
+needed. The single-file build must remain fully offline.

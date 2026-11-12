@@ -22,17 +22,28 @@
   "use strict";
   var DATA = window.I18N_DATA || {};
   var SRC = "sv";
-  var AVAIL = [SRC].concat(Object.keys(DATA).filter(function (l) { return l !== SRC; }));
+  // Keep established switch positions stable; append further locales by code.
+  var AVAIL = [SRC].concat(DATA.en ? ['en'] : []).concat(
+    Object.keys(DATA).filter(function (l) { return l !== SRC && l !== 'en'; }).sort()
+  );
   var KEY = "llm-kurs-lang";
 
   function stored() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
   function param() { var m = /[?&]lang=([A-Za-z_-]+)/.exec(location.search); return m ? m[1].toLowerCase() : null; }
+  function supported(value) {
+    var candidate = String(value || '').toLowerCase().replace(/_/g, '-');
+    if (AVAIL.indexOf(candidate) >= 0) return candidate;
+    var base = candidate.split('-')[0];
+    return AVAIL.indexOf(base) >= 0 ? base : null;
+  }
   function detect() {
-    var q = param(); if (q && AVAIL.indexOf(q) >= 0) return q;
-    var s = stored(); if (s && AVAIL.indexOf(s) >= 0) return s;
-    var nav = (navigator.languages && navigator.languages[0]) || navigator.language || "";
-    if (/^sv/i.test(nav)) return "sv";
-    return AVAIL.indexOf("en") >= 0 ? "en" : SRC;   // fallback: English
+    var q = supported(param()); if (q) return q;
+    var s = supported(stored()); if (s) return s;
+    var preferences = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ''];
+    for (var i = 0; i < preferences.length; i++) {
+      var match = supported(preferences[i]); if (match) return match;
+    }
+    return AVAIL.indexOf('en') >= 0 ? 'en' : SRC;
   }
 
   var lng = detect();
@@ -133,6 +144,7 @@
 
   /* ---------- language switch ---------- */
   var NAMES = { sv: "SV", en: "EN", de: "DE", fr: "FR", es: "ES", fi: "FI", no: "NO", da: "DA" };
+  var LANGUAGE_NAMES = { sv: 'Svenska', en: 'English', de: 'Deutsch', fr: 'Français', es: 'Español', fi: 'Suomi', no: 'Norsk', da: 'Dansk' };
   function label(l) { return NAMES[l] || l.toUpperCase(); }
   function setLang(l) {
     if (AVAIL.indexOf(l) < 0) return;
@@ -149,7 +161,8 @@
       var b = document.createElement("button");
       b.className = "lg"; b.type = "button"; b.textContent = label(l);
       b.setAttribute("aria-pressed", String(l === lng));
-      b.title = l;
+      b.title = LANGUAGE_NAMES[l] || l;
+      b.setAttribute('aria-label', LANGUAGE_NAMES[l] || l);
       b.addEventListener("click", function () { if (l !== lng) setLang(l); });
       box.appendChild(b);
     });

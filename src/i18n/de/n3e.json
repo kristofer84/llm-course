@@ -1,0 +1,10 @@
+{
+ "n3e.vad-ett-lager-innehaller.1": "Was eine Schicht enthält: neun Teile",
+ "n3e.vad-ett-lager-innehaller.2": "Eine Schicht in Llama besteht aus nur neun Dingen: sieben großen Zahlentabellen (Gewichtsmatrizen) und zwei kleinen Listen. Alles andere in der Schicht ist feste Arithmetik ohne gelernte Zahlen. Klicke auf einen Teil, um ihn im Diagramm zu sehen.",
+ "n3e.sa-blir-det-8-miljarder.1": "So werden daraus 8 Milliarden Parameter",
+ "n3e.sa-blir-det-8-miljarder.2": "„8 Milliarden Parameter“ ist einfach die Anzahl aller Zahlen in allen Tabellen zusammen. Der größte Teil steckt in den neun Teilen mal 32 Schichten. Der Rest ist das Vokabular am Anfang (Embedding) und am Ende (LM-Head).",
+ "n3e.sa-blir-det-8-miljarder.3": "Zurück",
+ "n3e.sa-blir-det-8-miljarder.4": "Nächster Schritt",
+ "n3e.vad-ett-lager-innehaller.arialabel": "Die neun Gewichte der Schicht maßstabsgetreu dargestellt",
+ "n3e.sa-blir-det-8-miljarder.arialabel": "Die Parameter summieren sich Schritt für Schritt"
+}

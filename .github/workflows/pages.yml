@@ -40,8 +40,11 @@ jobs:
         working-directory: src
         run: python3 build.py
 
-      - name: Curriculum, saved-answer, quiz and formula contracts
-        run: python3 tests/contracts.py
+      - name: Curriculum, locale, editing, saved-answer and formula contracts
+        run: |
+          python3 tests/contracts.py
+          node tests/locales.js
+          python3 tests/content_editor.py
 
       - name: Smoke test (slides, overflow, JS errors, interactive controls)
         run: python3 tests/smoke.py
@@ -49,19 +52,19 @@ jobs:
       - name: Click through every slide and visualisation
         run: python3 tests/test.py
 
-      - name: Keyboard-operable diagrams in both languages
+      - name: Keyboard-operable diagrams in every language
         run: python3 tests/accessibility.py
 
-      - name: Bilingual depth, simulations and regression checks
+      - name: Multilingual depth, simulations and regression checks
         run: python3 tests/regressions.py
 
       - name: Check translation coverage, markup and code blocks
         run: python3 tools/check_i18n.py
 
-      - name: Translation state (English behind Swedish?)
-        run: python3 tools/content.py status --strict
+      - name: Translation provenance for every target language
+        run: python3 tools/content.py status --all --strict
 
-      - name: Both languages render (no Swedish left in English mode)
+      - name: Every language renders and switches correctly
         run: python3 tests/i18n.py
 
       - name: Upload screenshots

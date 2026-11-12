@@ -1,0 +1,22 @@
+{
+ "n6b.vad-ar-ett-grafikkort.1": "Was ist eine GPU, und warum ist Speicher wichtig?",
+ "n6b.vad-ar-ett-grafikkort.2": "Sprachmodelle laufen auf GPUs. Eine GPU hat Tausende kleiner Recheneinheiten, die gleichzeitig arbeiten, und einen eigenen schnellen Speicher. Für den Rest des Moduls reicht ein Bild: eine Küche mit sehr vielen Köchen, aber einer recht schmalen Tür zur Vorratskammer.",
+ "n6b.vad-ar-ett-grafikkort.3": "<b>Die Köche</b> sind die Rechenleistung. Eine moderne Rechenzentrumskarte wie die H100 erreicht etwa 990 TFLOPS in bf16, also ungefähr 500 Billionen Multiplikationen pro Sekunde, weil jede Multiplikation zusammen mit einer Addition gezählt wird (FMA).",
+ "n6b.vad-ar-ett-grafikkort.4": "<b>Die Vorratskammer</b> ist der GPU-Speicher (VRAM), zum Beispiel 80 GB. Dort liegen die Modellgewichte und der KV-Cache.",
+ "n6b.vad-ar-ett-grafikkort.5": "<b>Die Tür</b> ist die Speicherbandbreite, etwa 3,35 TB pro Sekunde. Jede Zutat, die die Köche verwenden, muss hindurchgetragen werden.",
+ "n6b.vad-ar-ett-grafikkort.6": "Wenn das dichte Referenzmodell ein Token generiert, <b>müssen etwa 16 GB Gewichte durch die Tür gelesen werden</b>, aber bei einem einzelnen Nutzer haben die Köche damit nur wenig Arbeit. Meist warten sie auf den Speicher. Das nennt man <i>speichergebunden</i> und erklärt, warum Batching und Quantisierung helfen. Ein Token ist ein Textstück, nicht unbedingt ein ganzes Wort.",
+ "n6b.vad-ar-ett-grafikkort.7": "Ein Nutzer",
+ "n6b.vad-ar-ett-grafikkort.8": "64 Nutzer",
+ "n6b.kv-cache-i-klartext.1": "KV-Cache einfach erklärt",
+ "n6b.kv-cache-i-klartext.2": "Ohne Cache verarbeitet das Modell bei jedem neuen Token die wachsende Sequenz erneut. Der KV-Cache speichert die Keys und Values früherer Tokens, sodass nur die Repräsentation der neuen Position durch die Schichten berechnet werden muss. Das neue Token muss weiterhin frühere Positionen lesen und mit ihnen verglichen werden.",
+ "n6b.kv-cache-i-klartext.3": "<span class=\"lb\">Was gespeichert wird</span>Für jedes frühere Token werden sein <b>Key</b> (das Etikett) und sein <b>Value</b> (der Inhalt) aus der Attention in jeder Schicht gespeichert. Daher der Name: K und V.",
+ "n6b.kv-cache-i-klartext.4": "<span class=\"lb\">Wie es genutzt wird</span>Für ein neues Token werden nur sein eigener Key, Value und seine Query berechnet. Die Query wird mit allen gespeicherten Keys verglichen, und die gespeicherten Values werden gemischt. Lesezugriffe und Attention-Arbeit wachsen daher mit dem Kontext.",
+ "n6b.kv-cache-i-klartext.5": "<span class=\"lb\">Ergebnis</span>Mathematisch dieselben Logits wie ohne Cache, abgesehen von Gleitkommarundung. Die Balken zählen Positionen, deren K/V berechnet werden: mit Cache nur die neue. Sie zeigen nicht alle Attention-Operationen oder die Gesamtlaufzeit.",
+ "n6b.kv-cache-i-klartext.6": "<span class=\"lb\">Der Preis</span>Im bf16-Cache des Referenzmodells kostet jedes Token 128 KiB. Ein Gespräch mit 8000 Tokens belegt etwa 1,05 GB, solange es läuft.",
+ "n6b.vad-ar-ett-grafikkort.arialabel": "Küche mit Köchen, Tür und Vorratskammer als Metapher für die GPU",
+ "n6b.kv-cache-i-klartext.arialabel": "Positionen, deren K/V pro Schritt mit und ohne Cache berechnet werden, nicht alle Attention-Operationen",
+ "n6b.kv-cache-i-klartext.9": "Tokens in der Sequenz",
+ "n6b.kv-cache-i-klartext.positions": "Positionen, deren K/V pro Schritt berechnet werden",
+ "n6b.kv-cache-i-klartext.step": "Schritt {{n}}",
+ "n6b.kv-cache-i-klartext.totals": "Über {{n}} Schritte mit wachsender Sequenz: Ohne Cache werden K/V für insgesamt <b>{{a}}</b> Positionen berechnet, mit Cache für <b>{{n}}</b>. Die Balken zählen nicht die Attention über gespeicherte Positionen; diese Arbeit wächst weiterhin mit dem Kontext."
+}
