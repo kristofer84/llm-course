@@ -40,7 +40,7 @@
  "p4.testa-dig-sjalv-logits.6": "Warum kann Temperatur 0 auf einem Server mit vielen Nutzern unterschiedliche Antworten auf dieselbe Frage liefern?",
  "p4.testa-dig-sjalv-logits.7": "Die Zusammensetzung des Batches beeinflusst die Kernel-Auswahl und die Reihenfolge der Summation. Gleitkommaaddition ist nicht assoziativ, daher können sich Logits in der letzten Dezimalstelle unterscheiden und einen knappen argmax kippen.",
  "p4.traning-next-token-loss.1": "Training: das nächste Token vorhersagen",
- "p4.traning-next-token-loss.2": "Beim Training ist das Ziel für jede Position einfach das nächste Token im Text. Eingaben und Ziele sind dieselbe Sequenz, um einen Schritt verschoben.",
+ "p4.traning-next-token-loss.2": "Beim Training ist das Ziel für jede Position einfach das nächste Token im Text; dieses Ziel heißt Next-Token-Loss. Eingaben und Ziele sind dieselbe Sequenz, um einen Schritt verschoben.",
  "p4.traning-next-token-loss.3": "logits  = model(ids)          [B, T, V]\ntargets = ids um einen Schritt verschoben  [B, T]\nloss    = −mean log softmax(logits)[target]",
  "p4.traning-next-token-loss.4": "Dank der kausalen Maske werden alle T Vorhersagen in <b>einem einzigen</b> Vorwärtsdurchlauf berechnet. Deshalb ist das Training über die Sequenz parallel, die Generierung dagegen seriell: Bei der Generierung existiert das nächste Token erst, wenn es gezogen wurde.",
  "p4.traning-next-token-loss.5": "input",

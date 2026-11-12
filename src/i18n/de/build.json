@@ -31,7 +31,7 @@
  "mod.1.key.5": "Gewichte sind fest und werden jedes Mal genutzt: Jede Gewichtsmatrix wird für jedes Token vollständig gelesen. Beim Embedding wird dagegen eine Zeile pro Token nachgeschlagen, wie Modul 2 zeigt. Aktivierungen werden pro Token berechnet und sind das, was du untersuchst.",
  "mod.2.name": "Text → Token",
  "mod.2.lead": "Das Modell rechnet nur mit Zahlen. Hier wird Text zu Token-IDs, und IDs werden zu Vektoren.",
- "mod.2.desc": "Tokenizer, BPE, Chatvorlage und Embedding.",
+ "mod.2.desc": "Tokenizer, BPE, Embedding und die Chatvorlage (die Regel, die Nachrichten und Rollen zu einer Zeichenkette macht).",
  "mod.2.goal.1": "erklären, warum Text in Teilwort-Token zerlegt wird",
  "mod.2.goal.2": "beschreiben, was eine Chatvorlage macht",
  "mod.2.goal.3": "die Tensorform vor und nach dem Embedding angeben",

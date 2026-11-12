@@ -31,7 +31,7 @@
  "mod.1.key.5": "Weights are fixed and used every time: every weight matrix is read in full for every token, but embedding is instead a lookup of one row per token, as module 2 shows. Activations are computed per token and are what you study.",
  "mod.2.name": "Text → tokens",
  "mod.2.lead": "The model only computes with numbers. Here text becomes token ids, and ids become vectors.",
- "mod.2.desc": "Tokenizer, BPE, chat template and embedding.",
+ "mod.2.desc": "Tokenizer, BPE, embedding and the chat template (the rule that turns messages and roles into one string).",
  "mod.2.goal.1": "explain why text is split into subword tokens",
  "mod.2.goal.2": "describe what a chat template does",
  "mod.2.goal.3": "state the shape before and after embedding",

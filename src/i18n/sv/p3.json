@@ -41,7 +41,7 @@
  "p3.attention-1-q-k-och-v.4": "<b>Query</b>: vad den här positionen letar efter",
  "p3.attention-1-q-k-och-v.5": "<b>Key</b>: vad den här positionen erbjuder",
  "p3.attention-1-q-k-och-v.6": "<b>Value</b>: vad den skickar vidare om den väljs",
- "p3.attention-1-q-k-och-v.7": "K och V är smalare än Q eftersom Llama-3-8B använder GQA: 8 KV heads mot 32 query heads.",
+ "p3.attention-1-q-k-och-v.7": "K och V är smalare än Q eftersom Llama-3-8B använder GQA (grouped-query attention, där flera query heads delar samma K/V-head): 8 KV heads mot 32 query heads.",
  "p3.attention-1-q-k-och-v.8": "vLLM slår ihop de tre matriserna till en enda <span class=\"mk\">qkv_proj</span> och delar resultatet efteråt. En stor matmul är snabbare än tre små.",
  "p3.attention-1-q-k-och-v.9": "h [T, 4096]",
  "p3.attention-1-q-k-och-v.10": "W_qkv [4096, 6144]",

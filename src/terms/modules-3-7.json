@@ -1,972 +1,972 @@
 {
-  "terms": [
-    {
-      "id": "transformer",
-      "spellings": {
-        "sv": [
-          "transformer",
-          "transformern",
-          "transformers"
-        ],
-        "en": [
-          "transformer",
-          "transformers"
-        ],
-        "de": [
-          "Transformer",
-          "Transformatoren",
-          "Transformer-Modell"
-        ]
-      },
-      "introduced": "Introduktion: Blocket och residual stream",
-      "note": "Model architecture: identical blocks stacked; first clause on 'Uppgiften: från vektorer till nästa token', explained on 'Transformer och decoder-only'."
-    },
-    {
-      "id": "decoder-only",
-      "spellings": {
-        "sv": [
-          "decoder-only",
-          "decoder only"
-        ],
-        "en": [
-          "decoder-only",
-          "decoder only"
-        ],
-        "de": [
-          "Decoder-only",
-          "Decoder-Only"
-        ]
-      },
-      "introduced": "Introduktion: Blocket och residual stream",
-      "note": "Left-to-right transformer that keeps only the decoder half; explained on 'Transformer och decoder-only'."
-    },
-    {
-      "id": "causal-mask",
-      "spellings": {
-        "sv": [
-          "causal mask",
-          "causala masken",
-          "causal masken"
-        ],
-        "en": [
-          "causal mask"
-        ],
-        "de": [
-          "Causal Mask",
-          "kausale Maske"
-        ]
-      },
-      "introduced": "Introduktion: Blocket och residual stream",
-      "note": "Mask that stops position i from seeing later positions; explained on 'Attention 4: scores och causal mask'."
-    },
-    {
-      "id": "gqa",
-      "spellings": {
-        "sv": [
-          "GQA",
-          "GQA:n"
-        ],
-        "en": [
-          "GQA",
-          "grouped-query attention"
-        ],
-        "de": [
-          "GQA",
-          "Grouped-Query Attention"
-        ]
-      },
-      "introduced": "Introduktion: Blocket och residual stream",
-      "note": "Grouped-query attention: query heads share KV heads; explained on 'GQA: delade KV heads'."
-    },
-    {
-      "id": "encoder",
-      "spellings": {
-        "sv": [
-          "encoder",
-          "encodern",
-          "encoders"
-        ],
-        "en": [
-          "encoder",
-          "encoders"
-        ],
-        "de": [
-          "Encoder",
-          "Encoder-Teil"
-        ]
-      },
-      "introduced": "Transformer och decoder-only",
-      "note": "The half that reads the whole source; kept out of decoder-only models."
-    },
-    {
-      "id": "residual-connection",
-      "spellings": {
-        "sv": [
-          "residual connection",
-          "residual connectionen",
-          "residualkoppling",
-          "residualkopplingen"
-        ],
-        "en": [
-          "residual connection"
-        ],
-        "de": [
-          "Residualverbindung",
-          "Residual Connection"
-        ]
-      },
-      "introduced": "Residual stream",
-      "note": "The additive skip path that gives the residual stream its name."
-    },
-    {
-      "id": "pre-norm",
-      "spellings": {
-        "sv": [
-          "pre-norm",
-          "pre-norm-modeller",
-          "prenorm"
-        ],
-        "en": [
-          "pre-norm",
-          "pre-norm models"
-        ],
-        "de": [
-          "Pre-Norm",
-          "Pre-Norm-Modelle"
-        ]
-      },
-      "introduced": "Normalisering: varför och var",
-      "note": "Normalize a copy before each block; the stream itself is left untouched."
-    },
-    {
-      "id": "post-norm",
-      "spellings": {
-        "sv": [
-          "post-norm",
-          "postnorm"
-        ],
-        "en": [
-          "post-norm"
-        ],
-        "de": [
-          "Post-Norm"
-        ]
-      },
-      "introduced": "Normalisering: varför och var",
-      "note": "Normalize the stream after each addition, as in the 2017 original."
-    },
-    {
-      "id": "rmsnorm",
-      "spellings": {
-        "sv": [
-          "RMSNorm",
-          "RMSNorm-sliden",
-          "RMSNormen"
-        ],
-        "en": [
-          "RMSNorm"
-        ],
-        "de": [
-          "RMSNorm"
-        ]
-      },
-      "introduced": "Normalisering: varför och var",
-      "note": "Scale each token vector to RMS 1, then multiply by a learned per-dimension weight; formula on 'RMSNorm'."
-    },
-    {
-      "id": "layernorm",
-      "spellings": {
-        "sv": [
-          "LayerNorm",
-          "LayerNormen"
-        ],
-        "en": [
-          "LayerNorm"
-        ],
-        "de": [
-          "LayerNorm"
-        ]
-      },
-      "introduced": "RMSNorm",
-      "note": "Normalization with mean subtraction and bias; RMSNorm is the simplified variant used here."
-    },
-    {
-      "id": "autoregressiv",
-      "spellings": {
-        "sv": [
-          "autoregressiv",
-          "autoregressiva",
-          "autoregressivt"
-        ],
-        "en": [
-          "autoregressive",
-          "auto-regressive"
-        ],
-        "de": [
-          "autoregressiv",
-          "autoregressive"
-        ]
-      },
-      "introduced": "Attention 4: scores och causal mask",
-      "note": "Each new token is conditioned only on itself and what has already been written."
-    },
-    {
-      "id": "mha",
-      "spellings": {
-        "sv": [
-          "MHA",
-          "Multi-Head Attention",
-          "multi-head attention"
-        ],
-        "en": [
-          "MHA",
-          "multi-head attention"
-        ],
-        "de": [
-          "MHA",
-          "Multi-Head Attention"
-        ]
-      },
-      "introduced": "GQA: delade KV heads",
-      "note": "Classic multi-head attention: every query head has its own K and V."
-    },
-    {
-      "id": "mqa",
-      "spellings": {
-        "sv": [
-          "MQA"
-        ],
-        "en": [
-          "MQA",
-          "multi-query attention"
-        ],
-        "de": [
-          "MQA",
-          "Multi-Query Attention"
-        ]
-      },
-      "introduced": "GQA: delade KV heads",
-      "note": "Multi-query attention: all query heads share one K/V pair; the extreme GQA variant in the table."
-    },
-    {
-      "id": "swiglu",
-      "spellings": {
-        "sv": [
-          "SwiGLU",
-          "SwiGLU:n"
-        ],
-        "en": [
-          "SwiGLU"
-        ],
-        "de": [
-          "SwiGLU"
-        ]
-      },
-      "introduced": "Paus: bredd före MLP",
-      "note": "Gated MLP with two expansions and a SiLU gate; formula on 'MLP med SwiGLU'."
-    },
-    {
-      "id": "logit-lens",
-      "spellings": {
-        "sv": [
-          "logit lens",
-          "logit-lens"
-        ],
-        "en": [
-          "logit lens",
-          "logit-lens"
-        ],
-        "de": [
-          "Logit Lens",
-          "Logit-Lens"
-        ]
-      },
-      "introduced": "Lager för lager",
-      "note": "Read the stream after any layer through the final norm and LM head to see the emerging guess."
-    },
-    {
-      "id": "prefill",
-      "spellings": {
-        "sv": [
-          "prefill",
-          "prefillen",
-          "prefillas",
-          "prefilla",
-          "prefill-arbetet",
-          "mini-prefill"
-        ],
-        "en": [
-          "prefill",
-          "prefills",
-          "prefill work"
-        ],
-        "de": [
-          "Prefill",
-          "Prefill-Phase",
-          "vorbefüllen"
-        ]
-      },
-      "introduced": "Spåra tensorerna genom modellen",
-      "note": "The whole prompt in one pass; first clause on 'Spåra tensorerna genom modellen', explained on 'Prefill och decode'."
-    },
-    {
-      "id": "decode",
-      "spellings": {
-        "sv": [
-          "decode",
-          "decoden",
-          "decode-steg",
-          "decode-steget",
-          "decode-stegen"
-        ],
-        "en": [
-          "decode",
-          "decode step",
-          "decoding"
-        ],
-        "de": [
-          "Decode",
-          "Decode-Schritt",
-          "Dekodierung"
-        ]
-      },
-      "introduced": "Spåra tensorerna genom modellen",
-      "note": "One token at a time using the cache; first clause on 'Spåra tensorerna genom modellen', explained on 'Prefill och decode'."
-    },
-    {
-      "id": "top-p",
-      "spellings": {
-        "sv": [
-          "top-p",
-          "top_p",
-          "nucleus",
-          "nucleus sampling"
-        ],
-        "en": [
-          "top-p",
-          "top_p",
-          "nucleus sampling"
-        ],
-        "de": [
-          "Top-p",
-          "Top-P",
-          "Nucleus-Sampling"
-        ]
-      },
-      "introduced": "Introduktion: Logits → text",
-      "note": "Adaptive nucleus cutoff: keep the smallest set whose probability sums to top_p; module goal preview, explained on 'Sampling: temperature, top-k, top-p'."
-    },
-    {
-      "id": "greedy",
-      "spellings": {
-        "sv": [
-          "greedy"
-        ],
-        "en": [
-          "greedy",
-          "greedy decoding"
-        ],
-        "de": [
-          "greedy",
-          "Greedy-Decoding"
-        ]
-      },
-      "introduced": "Sampling: temperature, top-k, top-p",
-      "note": "Temperature 0: always take the largest logit; not guaranteed deterministic on a server."
-    },
-    {
-      "id": "fortraning",
-      "spellings": {
-        "sv": [
-          "förträning",
-          "förträningen",
-          "pretraining",
-          "Pretraining",
-          "förtränar",
-          "förtränad"
-        ],
-        "en": [
-          "pretraining",
-          "pre-training"
-        ],
-        "de": [
-          "Vortraining",
-          "Pretraining"
-        ]
-      },
-      "introduced": "Introduktion: träning och anpassning",
-      "note": "Next-token training on a broad text distribution; contrasted with SFT on 'Förträning och SFT: olika data'."
-    },
-    {
-      "id": "sft",
-      "spellings": {
-        "sv": [
-          "SFT",
-          "supervised fine-tuning",
-          "Supervised fine-tuning"
-        ],
-        "en": [
-          "SFT",
-          "supervised fine-tuning"
-        ],
-        "de": [
-          "SFT",
-          "Supervised Fine-Tuning"
-        ]
-      },
-      "introduced": "Introduktion: träning och anpassning",
-      "note": "Supervised fine-tuning on demonstrations; same next-token loss, usually masked to the answer, detailed on 'Förträning och SFT: olika data'."
-    },
-    {
-      "id": "preferensinlarning",
-      "spellings": {
-        "sv": [
-          "preferensinlärning",
-          "preferensinlärningen",
-          "preferenslärning",
-          "preferenslärningen"
-        ],
-        "en": [
-          "preference learning"
-        ],
-        "de": [
-          "Präferenzlernen",
-          "Präferenz-Training"
-        ]
-      },
-      "introduced": "Introduktion: träning och anpassning",
-      "note": "Learning from comparisons rather than a gold answer; module goal preview, methods on 'Preferenser: RLHF och DPO'."
-    },
-    {
-      "id": "lora",
-      "spellings": {
-        "sv": [
-          "lågrangsanpassning",
-          "lågrangsanpassningen",
-          "LoRA",
-          "LoRA:n",
-          "LoRA-adaptrar",
-          "LoRA-adaptrarna"
-        ],
-        "en": [
-          "low-rank adaptation",
-          "LoRA"
-        ],
-        "de": [
-          "Low-Rank-Adaption",
-          "LoRA"
-        ]
-      },
-      "introduced": "Introduktion: träning och anpassning",
-      "note": "Frozen base plus small low-rank adapters A and B; Swedish paraphrase in the module goal, first clause on 'Gradienter och minne', full lesson on 'LoRA: frusen bas och låg rang'."
-    },
-    {
-      "id": "next-token-loss",
-      "spellings": {
-        "sv": [
-          "next-token loss",
-          "next-token-loss",
-          "next token loss",
-          "next-token-förlust"
-        ],
-        "en": [
-          "next-token loss",
-          "next-token cross-entropy"
-        ],
-        "de": [
-          "Next-Token-Loss",
-          "Next-Token-Verlust"
-        ]
-      },
-      "introduced": "Introduktion: träning och anpassning",
-      "note": "Predict the next token at every position; target is the input shifted one step, explained on 'Träning: next-token loss'."
-    },
-    {
-      "id": "qlora",
-      "spellings": {
-        "sv": [
-          "QLoRA",
-          "QLoRA:n"
-        ],
-        "en": [
-          "QLoRA"
-        ],
-        "de": [
-          "QLoRA"
-        ]
-      },
-      "introduced": "Gradienter och minne",
-      "note": "LoRA on top of a quantized frozen base; precision split on 'QLoRA: vad har vilken precision?'."
-    },
-    {
-      "id": "gradient",
-      "spellings": {
-        "sv": [
-          "gradient",
-          "gradienter",
-          "gradienten",
-          "gradienterna",
-          "gradientens"
-        ],
-        "en": [
-          "gradient",
-          "gradients"
-        ],
-        "de": [
-          "Gradient",
-          "Gradienten"
-        ]
-      },
-      "introduced": "Gradienter och minne",
-      "note": "Direction and size of the change for each learned number; same shape as the weight matrix."
-    },
-    {
-      "id": "backpropagation",
-      "spellings": {
-        "sv": [
-          "backpropagation",
-          "Backpropagation",
-          "bakåtpasset",
-          "bakåtpass",
-          "bakåtpassen"
-        ],
-        "en": [
-          "backpropagation",
-          "backward pass"
-        ],
-        "de": [
-          "Backpropagation",
-          "Rückwärtspass"
-        ]
-      },
-      "introduced": "Gradienter och minne",
-      "note": "Backward pass that produces one gradient per weight."
-    },
-    {
-      "id": "adamw",
-      "spellings": {
-        "sv": [
-          "AdamW",
-          "AdamW:s"
-        ],
-        "en": [
-          "AdamW"
-        ],
-        "de": [
-          "AdamW"
-        ]
-      },
-      "introduced": "Gradienter och minne",
-      "note": "Optimizer with first and second moment estimates and separate weight decay."
-    },
-    {
-      "id": "mixed-precision",
-      "spellings": {
-        "sv": [
-          "mixed-precision",
-          "mixed precision",
-          "mixed-precision-budget"
-        ],
-        "en": [
-          "mixed precision",
-          "mixed-precision"
-        ],
-        "de": [
-          "Mixed Precision",
-          "Mixed-Precision"
-        ]
-      },
-      "introduced": "Gradienter och minne",
-      "note": "Training budget mixing storage precisions, about 16 bytes per parameter here."
-    },
-    {
-      "id": "rlhf",
-      "spellings": {
-        "sv": [
-          "RLHF",
-          "RLHF-pipeline",
-          "RLHF-pipelinen"
-        ],
-        "en": [
-          "RLHF",
-          "RLHF pipeline"
-        ],
-        "de": [
-          "RLHF",
-          "RLHF-Pipeline"
-        ]
-      },
-      "introduced": "Från basmodell till assistent",
-      "note": "Learn a reward model from comparisons, then optimize a policy against it."
-    },
-    {
-      "id": "dpo",
-      "spellings": {
-        "sv": [
-          "DPO",
-          "DPO:n"
-        ],
-        "en": [
-          "DPO"
-        ],
-        "de": [
-          "DPO"
-        ]
-      },
-      "introduced": "Från basmodell till assistent",
-      "note": "Train directly on preferred/rejected pairs with a frozen reference policy."
-    },
-    {
-      "id": "latens",
-      "spellings": {
-        "sv": [
-          "latens",
-          "latensen",
-          "latensmått",
-          "latensmåtten",
-          "svanslatens"
-        ],
-        "en": [
-          "latency",
-          "latency metrics"
-        ],
-        "de": [
-          "Latenz",
-          "Latenzmetriken"
-        ]
-      },
-      "introduced": "Från basmodell till assistent",
-      "note": "Time to the answer; first clause on 'Från basmodell till assistent', metrics on 'Latensmått'."
-    },
-    {
-      "id": "sgd",
-      "spellings": {
-        "sv": [
-          "SGD",
-          "SGD-steg",
-          "SGD-steget"
-        ],
-        "en": [
-          "SGD",
-          "SGD step"
-        ],
-        "de": [
-          "SGD",
-          "SGD-Schritt"
-        ]
-      },
-      "introduced": "Träning: ett synligt viktsteg",
-      "note": "Plain gradient step w' = w - eta*g, shown on the toy parabola."
-    },
-    {
-      "id": "teacher-forcing",
-      "spellings": {
-        "sv": [
-          "teacher forcing",
-          "Teacher forcing"
-        ],
-        "en": [
-          "teacher forcing"
-        ],
-        "de": [
-          "Teacher Forcing"
-        ]
-      },
-      "introduced": "Förträning och SFT: olika data",
-      "note": "Each training position gets the actual earlier text, not the model's own guess."
-    },
-    {
-      "id": "adapter",
-      "spellings": {
-        "sv": [
-          "adapter",
-          "adaptrar",
-          "adaptern",
-          "adaptrarna",
-          "adapterträning",
-          "adapterrang"
-        ],
-        "en": [
-          "adapter",
-          "adapters",
-          "adapter training",
-          "adapter rank"
-        ],
-        "de": [
-          "Adapter",
-          "Adapter-Training",
-          "Adapter-Rang"
-        ]
-      },
-      "introduced": "Förträning och SFT: olika data",
-      "note": "Small trainable parameter set; full treatment on 'LoRA: frusen bas och låg rang'."
-    },
-    {
-      "id": "beloningsmodell",
-      "spellings": {
-        "sv": [
-          "belöningsmodell",
-          "belöningsmodellen",
-          "reward model"
-        ],
-        "en": [
-          "reward model"
-        ],
-        "de": [
-          "Belohnungsmodell",
-          "Reward-Modell"
-        ]
-      },
-      "introduced": "Från basmodell till assistent",
-      "note": "Learned from comparisons to score answers; first clause on 'Från basmodell till assistent', details on 'Preferenser: RLHF och DPO'."
-    },
-    {
-      "id": "kl-penalty",
-      "spellings": {
-        "sv": [
-          "KL-penalty",
-          "KL-penaltyn",
-          "KL-regulariserat",
-          "KL-regulariserad"
-        ],
-        "en": [
-          "KL penalty",
-          "KL regularization"
-        ],
-        "de": [
-          "KL-Penalty",
-          "KL-Regularisierung"
-        ]
-      },
-      "introduced": "Preferenser: RLHF och DPO",
-      "note": "Divergence term against a reference policy; strength depends on the recipe."
-    },
-    {
-      "id": "genomstromning",
-      "spellings": {
-        "sv": [
-          "genomströmning",
-          "genomströmningen",
-          "throughput",
-          "Throughput"
-        ],
-        "en": [
-          "throughput"
-        ],
-        "de": [
-          "Durchsatz"
-        ]
-      },
-      "introduced": "Introduktion: Inference och KV-cache",
-      "note": "Results per second across users; explained on 'Vänta, svara, gruppera' and 'Latensmått'."
-    },
-    {
-      "id": "bandbredd",
-      "spellings": {
-        "sv": [
-          "bandbredd",
-          "bandbredden",
-          "minnesbandbredd",
-          "minnesbandbredden"
-        ],
-        "en": [
-          "bandwidth",
-          "memory bandwidth"
-        ],
-        "de": [
-          "Bandbreite",
-          "Speicherbandbreite"
-        ]
-      },
-      "introduced": "Byte, FLOP och flaskhalsar",
-      "note": "Bytes per second; the door to the GPU pantry."
-    },
-    {
-      "id": "flop",
-      "spellings": {
-        "sv": [
-          "FLOP",
-          "FLOP/s",
-          "TFLOP",
-          "TFLOP/s",
-          "GFLOP",
-          "GFLOP/s"
-        ],
-        "en": [
-          "FLOP",
-          "FLOP/s",
-          "TFLOP/s",
-          "GFLOP"
-        ],
-        "de": [
-          "FLOP",
-          "FLOP/s",
-          "TFLOP/s",
-          "GFLOP"
-        ]
-      },
-      "introduced": "Byte, FLOP och flaskhalsar",
-      "note": "Arithmetic work; FLOP/s is the rate. 2 FLOP per multiply-add here."
-    },
-    {
-      "id": "kapacitet",
-      "spellings": {
-        "sv": [
-          "kapacitet",
-          "kapaciteten",
-          "kapacitetsplanering",
-          "kapacitetsplaneringen"
-        ],
-        "en": [
-          "capacity",
-          "capacity planning"
-        ],
-        "de": [
-          "Kapazität",
-          "Kapazitätsplanung"
-        ]
-      },
-      "introduced": "Byte, FLOP och flaskhalsar",
-      "note": "Bytes that fit; planning arithmetic on 'Kapacitetsplanering'."
-    },
-    {
-      "id": "vram",
-      "spellings": {
-        "sv": [
-          "VRAM"
-        ],
-        "en": [
-          "VRAM"
-        ],
-        "de": [
-          "VRAM"
-        ]
-      },
-      "introduced": "Vad är ett grafikkort?",
-      "note": "The GPU's own memory, where weights and the KV cache live."
-    },
-    {
-      "id": "memory-bound",
-      "spellings": {
-        "sv": [
-          "memory-bound",
-          "minnesbunden",
-          "minnesbundna"
-        ],
-        "en": [
-          "memory-bound",
-          "memory bound"
-        ],
-        "de": [
-          "Memory-bound",
-          "speichergebunden"
-        ]
-      },
-      "introduced": "Vad är ett grafikkort?",
-      "note": "Limited by bytes moved per step rather than arithmetic; decode with a small batch is the example."
-    },
-    {
-      "id": "compute-bound",
-      "spellings": {
-        "sv": [
-          "compute-bound",
-          "beräkningsbunden",
-          "beräkningsbundna"
-        ],
-        "en": [
-          "compute-bound",
-          "compute bound"
-        ],
-        "de": [
-          "Compute-bound",
-          "rechengebunden"
-        ]
-      },
-      "introduced": "Prefill och decode",
-      "note": "Limited by arithmetic rather than memory; prefill becomes compute-bound when T is large."
-    },
-    {
-      "id": "mla",
-      "spellings": {
-        "sv": [
-          "MLA"
-        ],
-        "en": [
-          "MLA",
-          "multi-head latent attention"
-        ],
-        "de": [
-          "MLA",
-          "Multi-Head Latent Attention"
-        ]
-      },
-      "introduced": "Hur stor blir KV-cachen?",
-      "note": "DeepSeek's compressed latent KV cache: 576 numbers per token and layer."
-    },
-    {
-      "id": "kv-pool",
-      "spellings": {
-        "sv": [
-          "KV-pool",
-          "KV-poolen",
-          "KV-poolens"
-        ],
-        "en": [
-          "KV pool",
-          "KV cache pool"
-        ],
-        "de": [
-          "KV-Pool",
-          "KV-Cache-Pool"
-        ]
-      },
-      "introduced": "Vad ligger i GPU-minnet?",
-      "note": "Preallocated block pool for all live sequences; the rest of GPU memory after weights."
-    },
-    {
-      "id": "ttft",
-      "spellings": {
-        "sv": [
-          "TTFT",
-          "time to first token",
-          "Time to first token"
-        ],
-        "en": [
-          "TTFT",
-          "time to first token"
-        ],
-        "de": [
-          "TTFT",
-          "Time to First Token",
-          "Zeit bis zum ersten Token"
-        ]
-      },
-      "introduced": "Latensmått",
-      "note": "Queue time plus prefill; grows with prompt length and other load."
-    },
-    {
-      "id": "itl",
-      "spellings": {
-        "sv": [
-          "ITL",
-          "TPOT",
-          "inter-token latency",
-          "time per output token"
-        ],
-        "en": [
-          "ITL",
-          "TPOT",
-          "inter-token latency",
-          "time per output token"
-        ],
-        "de": [
-          "ITL",
-          "TPOT",
-          "Inter-Token-Latenz"
-        ]
-      },
-      "introduced": "Latensmått",
-      "note": "Time per decode step, felt as writing speed; throughput trades against it."
-    }
-  ]
+ "terms": [
+  {
+   "id": "transformer",
+   "spellings": {
+    "sv": [
+     "transformer",
+     "transformern",
+     "transformers"
+    ],
+    "en": [
+     "transformer",
+     "transformers"
+    ],
+    "de": [
+     "Transformer",
+     "Transformatoren",
+     "Transformer-Modell"
+    ]
+   },
+   "introduced": "Uppgiften: från vektorer till nästa token",
+   "note": "Model architecture: identical blocks stacked; first clause on 'Uppgiften: från vektorer till nästa token', explained on 'Transformer och decoder-only'."
+  },
+  {
+   "id": "decoder-only",
+   "spellings": {
+    "sv": [
+     "decoder-only",
+     "decoder only"
+    ],
+    "en": [
+     "decoder-only",
+     "decoder only"
+    ],
+    "de": [
+     "Decoder-only",
+     "Decoder-Only"
+    ]
+   },
+   "introduced": "Transformer och decoder-only",
+   "note": "Left-to-right transformer that keeps only the decoder half; explained on 'Transformer och decoder-only'."
+  },
+  {
+   "id": "causal-mask",
+   "spellings": {
+    "sv": [
+     "causal mask",
+     "causala masken",
+     "causal masken"
+    ],
+    "en": [
+     "causal mask"
+    ],
+    "de": [
+     "Causal Mask",
+     "kausale Maske"
+    ]
+   },
+   "introduced": "Attention 4: scores och causal mask",
+   "note": "Mask that stops position i from seeing later positions; explained on 'Attention 4: scores och causal mask'."
+  },
+  {
+   "id": "gqa",
+   "spellings": {
+    "sv": [
+     "GQA",
+     "GQA:n"
+    ],
+    "en": [
+     "GQA",
+     "grouped-query attention"
+    ],
+    "de": [
+     "GQA",
+     "Grouped-Query Attention"
+    ]
+   },
+   "introduced": "GQA: delade KV heads",
+   "note": "Grouped-query attention: query heads share KV heads; explained on 'GQA: delade KV heads'."
+  },
+  {
+   "id": "encoder",
+   "spellings": {
+    "sv": [
+     "encoder",
+     "encodern",
+     "encoders"
+    ],
+    "en": [
+     "encoder",
+     "encoders"
+    ],
+    "de": [
+     "Encoder",
+     "Encoder-Teil"
+    ]
+   },
+   "introduced": "Transformer och decoder-only",
+   "note": "The half that reads the whole source; kept out of decoder-only models."
+  },
+  {
+   "id": "residual-connection",
+   "spellings": {
+    "sv": [
+     "residual connection",
+     "residual connectionen",
+     "residualkoppling",
+     "residualkopplingen"
+    ],
+    "en": [
+     "residual connection"
+    ],
+    "de": [
+     "Residualverbindung",
+     "Residual Connection"
+    ]
+   },
+   "introduced": "Residual stream",
+   "note": "The additive skip path that gives the residual stream its name."
+  },
+  {
+   "id": "pre-norm",
+   "spellings": {
+    "sv": [
+     "pre-norm",
+     "pre-norm-modeller",
+     "prenorm"
+    ],
+    "en": [
+     "pre-norm",
+     "pre-norm models"
+    ],
+    "de": [
+     "Pre-Norm",
+     "Pre-Norm-Modelle"
+    ]
+   },
+   "introduced": "Normalisering: varför och var",
+   "note": "Normalize a copy before each block; the stream itself is left untouched."
+  },
+  {
+   "id": "post-norm",
+   "spellings": {
+    "sv": [
+     "post-norm",
+     "postnorm"
+    ],
+    "en": [
+     "post-norm"
+    ],
+    "de": [
+     "Post-Norm"
+    ]
+   },
+   "introduced": "Normalisering: varför och var",
+   "note": "Normalize the stream after each addition, as in the 2017 original."
+  },
+  {
+   "id": "rmsnorm",
+   "spellings": {
+    "sv": [
+     "RMSNorm",
+     "RMSNorm-sliden",
+     "RMSNormen"
+    ],
+    "en": [
+     "RMSNorm"
+    ],
+    "de": [
+     "RMSNorm"
+    ]
+   },
+   "introduced": "Normalisering: varför och var",
+   "note": "Scale each token vector to RMS 1, then multiply by a learned per-dimension weight; formula on 'RMSNorm'."
+  },
+  {
+   "id": "layernorm",
+   "spellings": {
+    "sv": [
+     "LayerNorm",
+     "LayerNormen"
+    ],
+    "en": [
+     "LayerNorm"
+    ],
+    "de": [
+     "LayerNorm"
+    ]
+   },
+   "introduced": "RMSNorm",
+   "note": "Normalization with mean subtraction and bias; RMSNorm is the simplified variant used here."
+  },
+  {
+   "id": "autoregressiv",
+   "spellings": {
+    "sv": [
+     "autoregressiv",
+     "autoregressiva",
+     "autoregressivt"
+    ],
+    "en": [
+     "autoregressive",
+     "auto-regressive"
+    ],
+    "de": [
+     "autoregressiv",
+     "autoregressive"
+    ]
+   },
+   "introduced": "Attention 4: scores och causal mask",
+   "note": "Each new token is conditioned only on itself and what has already been written."
+  },
+  {
+   "id": "mha",
+   "spellings": {
+    "sv": [
+     "MHA",
+     "Multi-Head Attention",
+     "multi-head attention"
+    ],
+    "en": [
+     "MHA",
+     "multi-head attention"
+    ],
+    "de": [
+     "MHA",
+     "Multi-Head Attention"
+    ]
+   },
+   "introduced": "GQA: delade KV heads",
+   "note": "Classic multi-head attention: every query head has its own K and V."
+  },
+  {
+   "id": "mqa",
+   "spellings": {
+    "sv": [
+     "MQA"
+    ],
+    "en": [
+     "MQA",
+     "multi-query attention"
+    ],
+    "de": [
+     "MQA",
+     "Multi-Query Attention"
+    ]
+   },
+   "introduced": "GQA: delade KV heads",
+   "note": "Multi-query attention: all query heads share one K/V pair; the extreme GQA variant in the table."
+  },
+  {
+   "id": "swiglu",
+   "spellings": {
+    "sv": [
+     "SwiGLU",
+     "SwiGLU:n"
+    ],
+    "en": [
+     "SwiGLU"
+    ],
+    "de": [
+     "SwiGLU"
+    ]
+   },
+   "introduced": "Paus: bredd före MLP",
+   "note": "Gated MLP with two expansions and a SiLU gate; formula on 'MLP med SwiGLU'."
+  },
+  {
+   "id": "logit-lens",
+   "spellings": {
+    "sv": [
+     "logit lens",
+     "logit-lens"
+    ],
+    "en": [
+     "logit lens",
+     "logit-lens"
+    ],
+    "de": [
+     "Logit Lens",
+     "Logit-Lens"
+    ]
+   },
+   "introduced": "Lager för lager",
+   "note": "Read the stream after any layer through the final norm and LM head to see the emerging guess."
+  },
+  {
+   "id": "prefill",
+   "spellings": {
+    "sv": [
+     "prefill",
+     "prefillen",
+     "prefillas",
+     "prefilla",
+     "prefill-arbetet",
+     "mini-prefill"
+    ],
+    "en": [
+     "prefill",
+     "prefills",
+     "prefill work"
+    ],
+    "de": [
+     "Prefill",
+     "Prefill-Phase",
+     "vorbefüllen"
+    ]
+   },
+   "introduced": "Spåra tensorerna genom modellen",
+   "note": "The whole prompt in one pass; first clause on 'Spåra tensorerna genom modellen', explained on 'Prefill och decode'."
+  },
+  {
+   "id": "decode",
+   "spellings": {
+    "sv": [
+     "decode",
+     "decoden",
+     "decode-steg",
+     "decode-steget",
+     "decode-stegen"
+    ],
+    "en": [
+     "decode",
+     "decode step",
+     "decoding"
+    ],
+    "de": [
+     "Decode",
+     "Decode-Schritt",
+     "Dekodierung"
+    ]
+   },
+   "introduced": "Spåra tensorerna genom modellen",
+   "note": "One token at a time using the cache; first clause on 'Spåra tensorerna genom modellen', explained on 'Prefill och decode'."
+  },
+  {
+   "id": "top-p",
+   "spellings": {
+    "sv": [
+     "top-p",
+     "top_p",
+     "nucleus",
+     "nucleus sampling"
+    ],
+    "en": [
+     "top-p",
+     "top_p",
+     "nucleus sampling"
+    ],
+    "de": [
+     "Top-p",
+     "Top-P",
+     "Nucleus-Sampling"
+    ]
+   },
+   "introduced": "Sampling: temperature, top-k, top-p",
+   "note": "Adaptive nucleus cutoff: keep the smallest set whose probability sums to top_p; module goal preview, explained on 'Sampling: temperature, top-k, top-p'."
+  },
+  {
+   "id": "greedy",
+   "spellings": {
+    "sv": [
+     "greedy"
+    ],
+    "en": [
+     "greedy",
+     "greedy decoding"
+    ],
+    "de": [
+     "greedy",
+     "Greedy-Decoding"
+    ]
+   },
+   "introduced": "Sampling: temperature, top-k, top-p",
+   "note": "Temperature 0: always take the largest logit; not guaranteed deterministic on a server."
+  },
+  {
+   "id": "fortraning",
+   "spellings": {
+    "sv": [
+     "förträning",
+     "förträningen",
+     "pretraining",
+     "Pretraining",
+     "förtränar",
+     "förtränad"
+    ],
+    "en": [
+     "pretraining",
+     "pre-training"
+    ],
+    "de": [
+     "Vortraining",
+     "Pretraining"
+    ]
+   },
+   "introduced": "Förträning och SFT: olika data",
+   "note": "Next-token training on a broad text distribution; contrasted with SFT on 'Förträning och SFT: olika data'."
+  },
+  {
+   "id": "sft",
+   "spellings": {
+    "sv": [
+     "SFT",
+     "supervised fine-tuning",
+     "Supervised fine-tuning"
+    ],
+    "en": [
+     "SFT",
+     "supervised fine-tuning"
+    ],
+    "de": [
+     "SFT",
+     "Supervised Fine-Tuning"
+    ]
+   },
+   "introduced": "Förträning och SFT: olika data",
+   "note": "Supervised fine-tuning on demonstrations; same next-token loss, usually masked to the answer, detailed on 'Förträning och SFT: olika data'."
+  },
+  {
+   "id": "preferensinlarning",
+   "spellings": {
+    "sv": [
+     "preferensinlärning",
+     "preferensinlärningen",
+     "preferenslärning",
+     "preferenslärningen"
+    ],
+    "en": [
+     "preference learning"
+    ],
+    "de": [
+     "Präferenzlernen",
+     "Präferenz-Training"
+    ]
+   },
+   "introduced": "Preferenser: RLHF och DPO",
+   "note": "Learning from comparisons rather than a gold answer; module goal preview, methods on 'Preferenser: RLHF och DPO'."
+  },
+  {
+   "id": "lora",
+   "spellings": {
+    "sv": [
+     "lågrangsanpassning",
+     "lågrangsanpassningen",
+     "LoRA",
+     "LoRA:n",
+     "LoRA-adaptrar",
+     "LoRA-adaptrarna"
+    ],
+    "en": [
+     "low-rank adaptation",
+     "LoRA"
+    ],
+    "de": [
+     "Low-Rank-Adaption",
+     "LoRA"
+    ]
+   },
+   "introduced": "Gradienter och minne",
+   "note": "Frozen base plus small low-rank adapters A and B; Swedish paraphrase in the module goal, first clause on 'Gradienter och minne', full lesson on 'LoRA: frusen bas och låg rang'."
+  },
+  {
+   "id": "next-token-loss",
+   "spellings": {
+    "sv": [
+     "next-token loss",
+     "next-token-loss",
+     "next token loss",
+     "next-token-förlust"
+    ],
+    "en": [
+     "next-token loss",
+     "next-token cross-entropy"
+    ],
+    "de": [
+     "Next-Token-Loss",
+     "Next-Token-Verlust"
+    ]
+   },
+   "introduced": "Träning: next-token loss",
+   "note": "Predict the next token at every position; target is the input shifted one step, explained on 'Träning: next-token loss'."
+  },
+  {
+   "id": "qlora",
+   "spellings": {
+    "sv": [
+     "QLoRA",
+     "QLoRA:n"
+    ],
+    "en": [
+     "QLoRA"
+    ],
+    "de": [
+     "QLoRA"
+    ]
+   },
+   "introduced": "Gradienter och minne",
+   "note": "LoRA on top of a quantized frozen base; precision split on 'QLoRA: vad har vilken precision?'."
+  },
+  {
+   "id": "gradient",
+   "spellings": {
+    "sv": [
+     "gradient",
+     "gradienter",
+     "gradienten",
+     "gradienterna",
+     "gradientens"
+    ],
+    "en": [
+     "gradient",
+     "gradients"
+    ],
+    "de": [
+     "Gradient",
+     "Gradienten"
+    ]
+   },
+   "introduced": "Gradienter och minne",
+   "note": "Direction and size of the change for each learned number; same shape as the weight matrix."
+  },
+  {
+   "id": "backpropagation",
+   "spellings": {
+    "sv": [
+     "backpropagation",
+     "Backpropagation",
+     "bakåtpasset",
+     "bakåtpass",
+     "bakåtpassen"
+    ],
+    "en": [
+     "backpropagation",
+     "backward pass"
+    ],
+    "de": [
+     "Backpropagation",
+     "Rückwärtspass"
+    ]
+   },
+   "introduced": "Gradienter och minne",
+   "note": "Backward pass that produces one gradient per weight."
+  },
+  {
+   "id": "adamw",
+   "spellings": {
+    "sv": [
+     "AdamW",
+     "AdamW:s"
+    ],
+    "en": [
+     "AdamW"
+    ],
+    "de": [
+     "AdamW"
+    ]
+   },
+   "introduced": "Gradienter och minne",
+   "note": "Optimizer with first and second moment estimates and separate weight decay."
+  },
+  {
+   "id": "mixed-precision",
+   "spellings": {
+    "sv": [
+     "mixed-precision",
+     "mixed precision",
+     "mixed-precision-budget"
+    ],
+    "en": [
+     "mixed precision",
+     "mixed-precision"
+    ],
+    "de": [
+     "Mixed Precision",
+     "Mixed-Precision"
+    ]
+   },
+   "introduced": "Gradienter och minne",
+   "note": "Training budget mixing storage precisions, about 16 bytes per parameter here."
+  },
+  {
+   "id": "rlhf",
+   "spellings": {
+    "sv": [
+     "RLHF",
+     "RLHF-pipeline",
+     "RLHF-pipelinen"
+    ],
+    "en": [
+     "RLHF",
+     "RLHF pipeline"
+    ],
+    "de": [
+     "RLHF",
+     "RLHF-Pipeline"
+    ]
+   },
+   "introduced": "Från basmodell till assistent",
+   "note": "Learn a reward model from comparisons, then optimize a policy against it."
+  },
+  {
+   "id": "dpo",
+   "spellings": {
+    "sv": [
+     "DPO",
+     "DPO:n"
+    ],
+    "en": [
+     "DPO"
+    ],
+    "de": [
+     "DPO"
+    ]
+   },
+   "introduced": "Från basmodell till assistent",
+   "note": "Train directly on preferred/rejected pairs with a frozen reference policy."
+  },
+  {
+   "id": "latens",
+   "spellings": {
+    "sv": [
+     "latens",
+     "latensen",
+     "latensmått",
+     "latensmåtten",
+     "svanslatens"
+    ],
+    "en": [
+     "latency",
+     "latency metrics"
+    ],
+    "de": [
+     "Latenz",
+     "Latenzmetriken"
+    ]
+   },
+   "introduced": "Från basmodell till assistent",
+   "note": "Time to the answer; first clause on 'Från basmodell till assistent', metrics on 'Latensmått'."
+  },
+  {
+   "id": "sgd",
+   "spellings": {
+    "sv": [
+     "SGD",
+     "SGD-steg",
+     "SGD-steget"
+    ],
+    "en": [
+     "SGD",
+     "SGD step"
+    ],
+    "de": [
+     "SGD",
+     "SGD-Schritt"
+    ]
+   },
+   "introduced": "Träning: ett synligt viktsteg",
+   "note": "Plain gradient step w' = w - eta*g, shown on the toy parabola."
+  },
+  {
+   "id": "teacher-forcing",
+   "spellings": {
+    "sv": [
+     "teacher forcing",
+     "Teacher forcing"
+    ],
+    "en": [
+     "teacher forcing"
+    ],
+    "de": [
+     "Teacher Forcing"
+    ]
+   },
+   "introduced": "Förträning och SFT: olika data",
+   "note": "Each training position gets the actual earlier text, not the model's own guess."
+  },
+  {
+   "id": "adapter",
+   "spellings": {
+    "sv": [
+     "adapter",
+     "adaptrar",
+     "adaptern",
+     "adaptrarna",
+     "adapterträning",
+     "adapterrang"
+    ],
+    "en": [
+     "adapter",
+     "adapters",
+     "adapter training",
+     "adapter rank"
+    ],
+    "de": [
+     "Adapter",
+     "Adapter-Training",
+     "Adapter-Rang"
+    ]
+   },
+   "introduced": "Förträning och SFT: olika data",
+   "note": "Small trainable parameter set; full treatment on 'LoRA: frusen bas och låg rang'."
+  },
+  {
+   "id": "beloningsmodell",
+   "spellings": {
+    "sv": [
+     "belöningsmodell",
+     "belöningsmodellen",
+     "reward model"
+    ],
+    "en": [
+     "reward model"
+    ],
+    "de": [
+     "Belohnungsmodell",
+     "Reward-Modell"
+    ]
+   },
+   "introduced": "Från basmodell till assistent",
+   "note": "Learned from comparisons to score answers; first clause on 'Från basmodell till assistent', details on 'Preferenser: RLHF och DPO'."
+  },
+  {
+   "id": "kl-penalty",
+   "spellings": {
+    "sv": [
+     "KL-penalty",
+     "KL-penaltyn",
+     "KL-regulariserat",
+     "KL-regulariserad"
+    ],
+    "en": [
+     "KL penalty",
+     "KL regularization"
+    ],
+    "de": [
+     "KL-Penalty",
+     "KL-Regularisierung"
+    ]
+   },
+   "introduced": "Preferenser: RLHF och DPO",
+   "note": "Divergence term against a reference policy; strength depends on the recipe."
+  },
+  {
+   "id": "genomstromning",
+   "spellings": {
+    "sv": [
+     "genomströmning",
+     "genomströmningen",
+     "throughput",
+     "Throughput"
+    ],
+    "en": [
+     "throughput"
+    ],
+    "de": [
+     "Durchsatz"
+    ]
+   },
+   "introduced": "Varför batching räddar decode",
+   "note": "Results per second across users; explained on 'Vänta, svara, gruppera' and 'Latensmått'."
+  },
+  {
+   "id": "bandbredd",
+   "spellings": {
+    "sv": [
+     "bandbredd",
+     "bandbredden",
+     "minnesbandbredd",
+     "minnesbandbredden"
+    ],
+    "en": [
+     "bandwidth",
+     "memory bandwidth"
+    ],
+    "de": [
+     "Bandbreite",
+     "Speicherbandbreite"
+    ]
+   },
+   "introduced": "Byte, FLOP och flaskhalsar",
+   "note": "Bytes per second; the door to the GPU pantry."
+  },
+  {
+   "id": "flop",
+   "spellings": {
+    "sv": [
+     "FLOP",
+     "FLOP/s",
+     "TFLOP",
+     "TFLOP/s",
+     "GFLOP",
+     "GFLOP/s"
+    ],
+    "en": [
+     "FLOP",
+     "FLOP/s",
+     "TFLOP/s",
+     "GFLOP"
+    ],
+    "de": [
+     "FLOP",
+     "FLOP/s",
+     "TFLOP/s",
+     "GFLOP"
+    ]
+   },
+   "introduced": "Byte, FLOP och flaskhalsar",
+   "note": "Arithmetic work; FLOP/s is the rate. 2 FLOP per multiply-add here."
+  },
+  {
+   "id": "kapacitet",
+   "spellings": {
+    "sv": [
+     "kapacitet",
+     "kapaciteten",
+     "kapacitetsplanering",
+     "kapacitetsplaneringen"
+    ],
+    "en": [
+     "capacity",
+     "capacity planning"
+    ],
+    "de": [
+     "Kapazität",
+     "Kapazitätsplanung"
+    ]
+   },
+   "introduced": "Byte, FLOP och flaskhalsar",
+   "note": "Bytes that fit; planning arithmetic on 'Kapacitetsplanering'."
+  },
+  {
+   "id": "vram",
+   "spellings": {
+    "sv": [
+     "VRAM"
+    ],
+    "en": [
+     "VRAM"
+    ],
+    "de": [
+     "VRAM"
+    ]
+   },
+   "introduced": "Vad är ett grafikkort?",
+   "note": "The GPU's own memory, where weights and the KV cache live."
+  },
+  {
+   "id": "memory-bound",
+   "spellings": {
+    "sv": [
+     "memory-bound",
+     "minnesbunden",
+     "minnesbundna"
+    ],
+    "en": [
+     "memory-bound",
+     "memory bound"
+    ],
+    "de": [
+     "Memory-bound",
+     "speichergebunden"
+    ]
+   },
+   "introduced": "Vad är ett grafikkort?",
+   "note": "Limited by bytes moved per step rather than arithmetic; decode with a small batch is the example."
+  },
+  {
+   "id": "compute-bound",
+   "spellings": {
+    "sv": [
+     "compute-bound",
+     "beräkningsbunden",
+     "beräkningsbundna"
+    ],
+    "en": [
+     "compute-bound",
+     "compute bound"
+    ],
+    "de": [
+     "Compute-bound",
+     "rechengebunden"
+    ]
+   },
+   "introduced": "Prefill och decode",
+   "note": "Limited by arithmetic rather than memory; prefill becomes compute-bound when T is large."
+  },
+  {
+   "id": "mla",
+   "spellings": {
+    "sv": [
+     "MLA"
+    ],
+    "en": [
+     "MLA",
+     "multi-head latent attention"
+    ],
+    "de": [
+     "MLA",
+     "Multi-Head Latent Attention"
+    ]
+   },
+   "introduced": "Hur stor blir KV-cachen?",
+   "note": "DeepSeek's compressed latent KV cache: 576 numbers per token and layer."
+  },
+  {
+   "id": "kv-pool",
+   "spellings": {
+    "sv": [
+     "KV-pool",
+     "KV-poolen",
+     "KV-poolens"
+    ],
+    "en": [
+     "KV pool",
+     "KV cache pool"
+    ],
+    "de": [
+     "KV-Pool",
+     "KV-Cache-Pool"
+    ]
+   },
+   "introduced": "Vad ligger i GPU-minnet?",
+   "note": "Preallocated block pool for all live sequences; the rest of GPU memory after weights."
+  },
+  {
+   "id": "ttft",
+   "spellings": {
+    "sv": [
+     "TTFT",
+     "time to first token",
+     "Time to first token"
+    ],
+    "en": [
+     "TTFT",
+     "time to first token"
+    ],
+    "de": [
+     "TTFT",
+     "Time to First Token",
+     "Zeit bis zum ersten Token"
+    ]
+   },
+   "introduced": "Latensmått",
+   "note": "Queue time plus prefill; grows with prompt length and other load."
+  },
+  {
+   "id": "itl",
+   "spellings": {
+    "sv": [
+     "ITL",
+     "TPOT",
+     "inter-token latency",
+     "time per output token"
+    ],
+    "en": [
+     "ITL",
+     "TPOT",
+     "inter-token latency",
+     "time per output token"
+    ],
+    "de": [
+     "ITL",
+     "TPOT",
+     "Inter-Token-Latenz"
+    ]
+   },
+   "introduced": "Latensmått",
+   "note": "Time per decode step, felt as writing speed; throughput trades against it."
+  }
+ ]
 }

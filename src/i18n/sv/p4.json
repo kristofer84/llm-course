@@ -40,7 +40,7 @@
  "p4.testa-dig-sjalv-logits.6": "Varför kan temperature 0 ge olika svar på samma fråga i en server med många användare?",
  "p4.testa-dig-sjalv-logits.7": "Batchsammansättningen påverkar kernelval och summeringsordning. Flyttalsaddition är inte associativ, så logits kan skilja sig i sista decimalen och vända en jämn argmax.",
  "p4.traning-next-token-loss.1": "Träning: förutsäg nästa token",
- "p4.traning-next-token-loss.2": "Under träning är målet för varje position helt enkelt nästa token i texten. Inputs och targets är samma sekvens, förskjuten ett steg.",
+ "p4.traning-next-token-loss.2": "Under träning är målet för varje position helt enkelt nästa token i texten; måttet kallas next-token loss. Inputs och targets är samma sekvens, förskjuten ett steg.",
  "p4.traning-next-token-loss.3": "logits  = model(ids)          [B, T, V]\ntargets = ids skiftad ett steg  [B, T]\nloss    = −mean log softmax(logits)[target]",
  "p4.traning-next-token-loss.4": "Tack vare causal mask räknas alla T förutsägelser i <b>ett enda</b> forward pass. Det är därför träning är parallell över sekvensen medan generering är seriell: vid generering finns inte nästa token förrän den samplats.",
  "p4.traning-next-token-loss.5": "input",

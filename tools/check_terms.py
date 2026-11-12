@@ -61,6 +61,9 @@ def registry():
     return terms, errors
 
 
+PREVIEW = re.compile(r'^(Introduktion|Introduction):\s')
+
+
 def occurrences(text, aliases):
     for alias in aliases:
         pattern = r"(?<![\w])" + re.escape(alias) + r"(?![\w])"
@@ -91,13 +94,17 @@ def main():
             errors.append(f"{term['id']}: introduction slide not found: {title!r}")
             continue
         index = positions[title]
+        if PREVIEW.match(title):
+            errors.append(f"{term['id']}: introductions must be a lesson, not the module preview {title!r}")
         introduced_at[term["id"]] = index
         introduced.setdefault(index, []).append(term)
         if not occurrences(course[index][1], alias):
             errors.append(f"{term['id']}: introduction slide {index + 1} ({title}) never mentions it")
 
     first_use = {}
-    for index, (_title, text) in enumerate(course):
+    for index, (title, text) in enumerate(course):
+        if PREVIEW.match(title):
+            continue    # a module opener previews topics in its goals; it does not teach them
         for term in terms:
             if term["id"] in first_use:
                 continue

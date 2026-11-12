@@ -31,7 +31,7 @@
  "mod.1.key.5": "Vikter är fasta och används varje gång: varje viktmatris läses i sin helhet för varje token, men embedding är i stället ett uppslag av en rad per token, vilket modul 2 visar. Aktiveringar räknas fram per token och är det man studerar.",
  "mod.2.name": "Text → tokens",
  "mod.2.lead": "Modellen räknar bara med tal. Här blir text till token-ids, och ids till vektorer.",
- "mod.2.desc": "Tokenizer, BPE, chat template och embedding.",
+ "mod.2.desc": "Tokenizer, BPE, embedding och chat template (regeln som gör meddelanden och roller till en enda sträng).",
  "mod.2.goal.1": "förklara varför text delas i subword-tokens",
  "mod.2.goal.2": "beskriva vad en chat template gör",
  "mod.2.goal.3": "ange shape före och efter embedding",

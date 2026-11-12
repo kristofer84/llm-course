@@ -1,784 +1,784 @@
 {
-  "range": "modules 0-2 (Start, Grunderna, Text -> tokens)",
-  "terms": [
-    {
-      "id": "prompt",
-      "spellings": {
-        "sv": [
-          "prompt",
-          "prompten",
-          "prompter",
-          "prompterna"
-        ],
-        "en": [
-          "prompt",
-          "prompts"
-        ],
-        "de": [
-          "Prompt",
-          "Prompts"
-        ]
-      },
-      "introduced": "Från prompt till token",
-      "note": "the text you send into the model is called a prompt"
-    },
-    {
-      "id": "token",
-      "spellings": {
-        "sv": [
-          "token",
-          "tokens",
-          "tokenen",
-          "tokensen"
-        ],
-        "en": [
-          "token",
-          "tokens"
-        ],
-        "de": [
-          "Token",
-          "Tokens"
-        ]
-      },
-      "introduced": "Från prompt till token",
-      "note": "text is split into token pieces, each of which has an id"
-    },
-    {
-      "id": "tokenizer",
-      "spellings": {
-        "sv": [
-          "tokenizer",
-          "tokenizern",
-          "tokenizers"
-        ],
-        "en": [
-          "tokenizer",
-          "tokenizers"
-        ],
-        "de": [
-          "Tokenizer",
-          "Tokenizers"
-        ]
-      },
-      "introduced": "Från prompt till token",
-      "note": "the tokenizer is the component that splits text into tokens"
-    },
-    {
-      "id": "embedding",
-      "spellings": {
-        "sv": [
-          "embedding",
-          "embeddingen",
-          "embeddingar",
-          "embeddingarna",
-          "embedding-tabell",
-          "embedding-tabellen",
-          "embeddingstabellen"
-        ],
-        "en": [
-          "embedding",
-          "embeddings",
-          "embedding table"
-        ],
-        "de": [
-          "Embedding",
-          "Embeddings",
-          "Embedding-Tabelle"
-        ]
-      },
-      "introduced": "Från prompt till token",
-      "note": "embedding looks up a token id and returns a vector"
-    },
-    {
-      "id": "logits",
-      "spellings": {
-        "sv": [
-          "logit",
-          "logits",
-          "logiten",
-          "logiterna"
-        ],
-        "en": [
-          "logit",
-          "logits"
-        ],
-        "de": [
-          "Logit",
-          "Logits"
-        ]
-      },
-      "introduced": "Från prompt till token",
-      "note": "logits are the model's raw scores before they become probabilities"
-    },
-    {
-      "id": "vikter",
-      "spellings": {
-        "sv": [
-          "vikt",
-          "vikten",
-          "vikter",
-          "vikterna",
-          "vikternas"
-        ],
-        "en": [
-          "weight",
-          "weights"
-        ],
-        "de": [
-          "Gewicht",
-          "Gewichte",
-          "Gewichten"
-        ]
-      },
-      "introduced": "Från prompt till token",
-      "note": "weights are the model's stored, learned numbers"
-    },
-    {
-      "id": "aktiveringar",
-      "spellings": {
-        "sv": [
-          "aktivering",
-          "aktiveringen",
-          "aktiveringar",
-          "aktiveringarna"
-        ],
-        "en": [
-          "activation",
-          "activations"
-        ],
-        "de": [
-          "Aktivierung",
-          "Aktivierungen"
-        ]
-      },
-      "introduced": "Från prompt till token",
-      "note": "activations are the values computed for the current input token"
-    },
-    {
-      "id": "inference",
-      "spellings": {
-        "sv": [
-          "inference",
-          "inference-server",
-          "inference-servern",
-          "inferens",
-          "inferensen"
-        ],
-        "en": [
-          "inference",
-          "inference server",
-          "inference engine"
-        ],
-        "de": [
-          "Inferenz",
-          "Inferenzserver",
-          "Inferenz-Engine"
-        ]
-      },
-      "introduced": "Från prompt till token",
-      "note": "an inference server runs a finished model to produce answers"
-    },
-    {
-      "id": "sprakmodell",
-      "spellings": {
-        "sv": [
-          "språkmodell",
-          "språkmodellen",
-          "språkmodeller",
-          "språkmodellerna"
-        ],
-        "en": [
-          "language model",
-          "language models"
-        ],
-        "de": [
-          "Sprachmodell",
-          "Sprachmodelle",
-          "Sprachmodellen"
-        ]
-      },
-      "introduced": "Från prompt till token",
-      "note": "a language model repeatedly guesses which word comes next"
-    },
-    {
-      "id": "tensor",
-      "spellings": {
-        "sv": [
-          "tensor",
-          "tensorn",
-          "tensorer",
-          "tensorerna"
-        ],
-        "en": [
-          "tensor",
-          "tensors"
-        ],
-        "de": [
-          "Tensor",
-          "Tensoren"
-        ]
-      },
-      "introduced": "Från prompt till token",
-      "note": "a tensor is an ordered collection of numbers"
-    },
-    {
-      "id": "shape",
-      "spellings": {
-        "sv": [
-          "shape",
-          "shapes",
-          "shapen"
-        ],
-        "en": [
-          "shape",
-          "shapes"
-        ],
-        "de": [
-          "Form",
-          "Formen",
-          "Shape",
-          "Shapes"
-        ]
-      },
-      "introduced": "Från prompt till token",
-      "note": "a shape gives the number of places along each axis"
-    },
-    {
-      "id": "matrismultiplikation",
-      "spellings": {
-        "sv": [
-          "matrismultiplikation",
-          "matrismultiplikationen",
-          "matrismultiplikationer"
-        ],
-        "en": [
-          "matrix multiplication",
-          "matrix multiply",
-          "matmul"
-        ],
-        "de": [
-          "Matrixmultiplikation",
-          "Matrixmultiplikationen"
-        ]
-      },
-      "introduced": "Från prompt till token",
-      "note": "matrix multiplication pairs up lists, multiplies and sums them"
-    },
-    {
-      "id": "icke-linjaritet",
-      "spellings": {
-        "sv": [
-          "icke-linjäritet",
-          "icke-linjäriteten",
-          "olinjäritet"
-        ],
-        "en": [
-          "non-linearity",
-          "nonlinearity",
-          "non-linear"
-        ],
-        "de": [
-          "Nichtlinearität",
-          "Nicht-Linearität"
-        ]
-      },
-      "introduced": "Från prompt till token",
-      "note": "non-linearity is the switch between the matrix steps"
-    },
-    {
-      "id": "softmax",
-      "spellings": {
-        "sv": [
-          "softmax",
-          "softmaxen"
-        ],
-        "en": [
-          "softmax"
-        ],
-        "de": [
-          "Softmax"
-        ]
-      },
-      "introduced": "Från prompt till token",
-      "note": "softmax turns raw scores into probabilities that sum to one"
-    },
-    {
-      "id": "sannolikhet",
-      "spellings": {
-        "sv": [
-          "sannolikhet",
-          "sannolikheten",
-          "sannolikheter",
-          "sannolikheterna",
-          "sannolikhetsomvandlingen"
-        ],
-        "en": [
-          "probability",
-          "probabilities"
-        ],
-        "de": [
-          "Wahrscheinlichkeit",
-          "Wahrscheinlichkeiten"
-        ]
-      },
-      "introduced": "Vad är en språkmodell?",
-      "note": "a probability is the chance of one possible next word"
-    },
-    {
-      "id": "parametrar",
-      "spellings": {
-        "sv": [
-          "parameter",
-          "parametern",
-          "parametrar",
-          "parametrarna"
-        ],
-        "en": [
-          "parameter",
-          "parameters"
-        ],
-        "de": [
-          "Parameter",
-          "Parametern"
-        ]
-      },
-      "introduced": "Vad är en språkmodell?",
-      "note": "parameters are the model's stored numbers, the same as weights"
-    },
-    {
-      "id": "vektor",
-      "spellings": {
-        "sv": [
-          "vektor",
-          "vektorn",
-          "vektorer",
-          "vektorerna"
-        ],
-        "en": [
-          "vector",
-          "vectors"
-        ],
-        "de": [
-          "Vektor",
-          "Vektoren"
-        ]
-      },
-      "introduced": "Referensmodellen och notation",
-      "note": "a vector is a list of numbers; each row of a tensor is one"
-    },
-    {
-      "id": "kontext",
-      "spellings": {
-        "sv": [
-          "kontext",
-          "kontexten",
-          "kontexter",
-          "kontexterna",
-          "kontextfönster",
-          "kontextfönstret"
-        ],
-        "en": [
-          "context",
-          "contexts",
-          "context window"
-        ],
-        "de": [
-          "Kontext",
-          "Kontexte",
-          "Kontextfenster"
-        ]
-      },
-      "introduced": "Referensmodellen och notation",
-      "note": "context is how many tokens the model can see at once"
-    },
-    {
-      "id": "vokabular",
-      "spellings": {
-        "sv": [
-          "vokabulär",
-          "vokabulären",
-          "vokabulärer",
-          "vokabulärerna"
-        ],
-        "en": [
-          "vocabulary",
-          "vocab"
-        ],
-        "de": [
-          "Vokabular",
-          "Vokabulare"
-        ]
-      },
-      "introduced": "Referensmodellen och notation",
-      "note": "the vocabulary is the fixed set of possible token ids"
-    },
-    {
-      "id": "batch",
-      "spellings": {
-        "sv": [
-          "batch",
-          "batchen",
-          "batcher",
-          "batcherna"
-        ],
-        "en": [
-          "batch",
-          "batches"
-        ],
-        "de": [
-          "Batch",
-          "Batches"
-        ]
-      },
-      "introduced": "Referensmodellen och notation",
-      "note": "a batch is the number of sequences processed together"
-    },
-    {
-      "id": "stopptoken",
-      "spellings": {
-        "sv": [
-          "stopptoken",
-          "stopptokens",
-          "stopptokenet"
-        ],
-        "en": [
-          "stop token",
-          "stop tokens"
-        ],
-        "de": [
-          "Stopp-Token",
-          "Stopp-Tokens"
-        ]
-      },
-      "introduced": "Referensmodellen och notation",
-      "note": "a stop token marks the end of an answer"
-    },
-    {
-      "id": "skalar",
-      "spellings": {
-        "sv": [
-          "skalär",
-          "skalären",
-          "skalärer",
-          "skalärerna"
-        ],
-        "en": [
-          "scalar",
-          "scalars"
-        ],
-        "de": [
-          "Skalar",
-          "Skalare"
-        ]
-      },
-      "introduced": "Tal med form och axlar",
-      "note": "a scalar is a single number, with shape []"
-    },
-    {
-      "id": "matris",
-      "spellings": {
-        "sv": [
-          "matris",
-          "matrisen",
-          "matriser",
-          "matriserna"
-        ],
-        "en": [
-          "matrix",
-          "matrices"
-        ],
-        "de": [
-          "Matrix",
-          "Matrizen"
-        ]
-      },
-      "introduced": "Tal med form och axlar",
-      "note": "a matrix is a table with rows and columns"
-    },
-    {
-      "id": "skalarprodukt",
-      "spellings": {
-        "sv": [
-          "skalärprodukt",
-          "skalärprodukten",
-          "skalärprodukter",
-          "skalärprodukterna"
-        ],
-        "en": [
-          "dot product",
-          "dot products"
-        ],
-        "de": [
-          "Skalarprodukt",
-          "Skalarprodukte"
-        ]
-      },
-      "introduced": "Referensmodellen och notation",
-      "note": "the dot product multiplies matching entries and sums them"
-    },
-    {
-      "id": "viktad-summa",
-      "spellings": {
-        "sv": [
-          "viktad summa",
-          "viktade summan",
-          "viktade summor",
-          "viktade summorna"
-        ],
-        "en": [
-          "weighted sum",
-          "weighted sums"
-        ],
-        "de": [
-          "gewichtete Summe",
-          "gewichteten Summe"
-        ]
-      },
-      "introduced": "Viktad summa i små steg",
-      "note": "a weighted sum multiplies each value by its weight and adds them"
-    },
-    {
-      "id": "aktiveringsfunktion",
-      "spellings": {
-        "sv": [
-          "aktiveringsfunktion",
-          "aktiveringsfunktionen",
-          "aktiveringsfunktioner"
-        ],
-        "en": [
-          "activation function",
-          "activation functions"
-        ],
-        "de": [
-          "Aktivierungsfunktion",
-          "Aktivierungsfunktionen"
-        ]
-      },
-      "introduced": "Varför icke-linjäritet?",
-      "note": "an activation function breaks linearity between matrices; ReLU is the simplest"
-    },
-    {
-      "id": "relu",
-      "spellings": {
-        "sv": [
-          "ReLU"
-        ],
-        "en": [
-          "ReLU"
-        ],
-        "de": [
-          "ReLU"
-        ]
-      },
-      "introduced": "Varför icke-linjäritet?",
-      "note": "ReLU sends positive values through and turns negative values into 0"
-    },
-    {
-      "id": "forlust",
-      "spellings": {
-        "sv": [
-          "förlust",
-          "förlusten",
-          "förluster",
-          "förlusterna",
-          "förlustgradient",
-          "förlustgradienter",
-          "förlustgradienterna"
-        ],
-        "en": [
-          "loss",
-          "losses",
-          "loss gradient",
-          "loss gradients"
-        ],
-        "de": [
-          "Verlust",
-          "Verluste",
-          "Verlustfunktion"
-        ]
-      },
-      "introduced": "Vad ändras vid inferens?",
-      "note": "loss is a number that summarises how wrong the predictions are"
-    },
-    {
-      "id": "traning",
-      "spellings": {
-        "sv": [
-          "träning",
-          "träningen"
-        ],
-        "en": [
-          "training"
-        ],
-        "de": [
-          "Training",
-          "Trainings"
-        ]
-      },
-      "introduced": "Vad ändras vid inferens?",
-      "note": "training adjusts the weights to lower the loss on examples"
-    },
-    {
-      "id": "tat-modell",
-      "spellings": {
-        "sv": [
-          "tät modell",
-          "täta modellen",
-          "täta modeller",
-          "täta modellerna"
-        ],
-        "en": [
-          "dense model",
-          "dense models"
-        ],
-        "de": [
-          "dichtes Modell",
-          "dichte Modelle",
-          "dichten Modell"
-        ]
-      },
-      "introduced": "Vikter och aktiveringar",
-      "note": "in a dense model every weight matrix is used in full for every token"
-    },
-    {
-      "id": "bpe",
-      "spellings": {
-        "sv": [
-          "BPE",
-          "Byte Pair Encoding"
-        ],
-        "en": [
-          "BPE",
-          "Byte Pair Encoding"
-        ],
-        "de": [
-          "BPE",
-          "Byte Pair Encoding"
-        ]
-      },
-      "introduced": "Varför tokens?",
-      "note": "BPE learns frequent byte pairs and merges them into tokens"
-    },
-    {
-      "id": "subword",
-      "spellings": {
-        "sv": [
-          "subword",
-          "subword-token",
-          "subword-tokens",
-          "subwordtokens"
-        ],
-        "en": [
-          "subword",
-          "subword token",
-          "subword tokens"
-        ],
-        "de": [
-          "Teilwort",
-          "Teilwörter",
-          "Subword",
-          "Subwords"
-        ]
-      },
-      "introduced": "Ett exempel hela vägen",
-      "note": "subword tokens keep common words whole and split rare ones"
-    },
-    {
-      "id": "merge",
-      "spellings": {
-        "sv": [
-          "merge",
-          "merges",
-          "merge-ordning",
-          "mergeordning",
-          "merge-ordningen",
-          "mergeordningen"
-        ],
-        "en": [
-          "merge",
-          "merges",
-          "merge order"
-        ],
-        "de": [
-          "Merge",
-          "Merges",
-          "Merge-Reihenfolge"
-        ]
-      },
-      "introduced": "Varför tokens?",
-      "note": "a merge joins the most frequent pair into a new token"
-    },
-    {
-      "id": "tokenisering",
-      "spellings": {
-        "sv": [
-          "tokenisering",
-          "tokeniseringen",
-          "tokenisera",
-          "tokeniserar",
-          "tokeniserad",
-          "tokeniserade"
-        ],
-        "en": [
-          "tokenization",
-          "tokenize",
-          "tokenized"
-        ],
-        "de": [
-          "Tokenisierung",
-          "tokenisieren",
-          "tokenisiert"
-        ]
-      },
-      "introduced": "Varför tokens?",
-      "note": "tokenization splits text into pieces that each have an id"
-    },
-    {
-      "id": "chat-template",
-      "spellings": {
-        "sv": [
-          "chat template",
-          "chat templaten",
-          "chat templates",
-          "chat-template",
-          "chatmallen"
-        ],
-        "en": [
-          "chat template",
-          "chat templates"
-        ],
-        "de": [
-          "Chatvorlage",
-          "Chatvorlagen",
-          "Chat-Template",
-          "Chat-Templates"
-        ]
-      },
-      "introduced": "Referensmodellen och notation",
-      "note": "the chat template formats messages and roles into one string"
-    },
-    {
-      "id": "specialtoken",
-      "spellings": {
-        "sv": [
-          "specialtoken",
-          "specialtokens",
-          "specialtokenet",
-          "specialtokenen"
-        ],
-        "en": [
-          "special token",
-          "special tokens"
-        ],
-        "de": [
-          "spezielles Token",
-          "spezielle Token",
-          "Spezial-Token",
-          "Spezial-Tokens"
-        ]
-      },
-      "introduced": "Chat template och specialtokens",
-      "note": "special tokens mark roles and sequence boundaries"
-    }
-  ]
+ "range": "modules 0-2 (Start, Grunderna, Text -> tokens)",
+ "terms": [
+  {
+   "id": "prompt",
+   "spellings": {
+    "sv": [
+     "prompt",
+     "prompten",
+     "prompter",
+     "prompterna"
+    ],
+    "en": [
+     "prompt",
+     "prompts"
+    ],
+    "de": [
+     "Prompt",
+     "Prompts"
+    ]
+   },
+   "introduced": "Från prompt till token",
+   "note": "the text you send into the model is called a prompt"
+  },
+  {
+   "id": "token",
+   "spellings": {
+    "sv": [
+     "token",
+     "tokens",
+     "tokenen",
+     "tokensen"
+    ],
+    "en": [
+     "token",
+     "tokens"
+    ],
+    "de": [
+     "Token",
+     "Tokens"
+    ]
+   },
+   "introduced": "Från prompt till token",
+   "note": "text is split into token pieces, each of which has an id"
+  },
+  {
+   "id": "tokenizer",
+   "spellings": {
+    "sv": [
+     "tokenizer",
+     "tokenizern",
+     "tokenizers"
+    ],
+    "en": [
+     "tokenizer",
+     "tokenizers"
+    ],
+    "de": [
+     "Tokenizer",
+     "Tokenizers"
+    ]
+   },
+   "introduced": "Från prompt till token",
+   "note": "the tokenizer is the component that splits text into tokens"
+  },
+  {
+   "id": "embedding",
+   "spellings": {
+    "sv": [
+     "embedding",
+     "embeddingen",
+     "embeddingar",
+     "embeddingarna",
+     "embedding-tabell",
+     "embedding-tabellen",
+     "embeddingstabellen"
+    ],
+    "en": [
+     "embedding",
+     "embeddings",
+     "embedding table"
+    ],
+    "de": [
+     "Embedding",
+     "Embeddings",
+     "Embedding-Tabelle"
+    ]
+   },
+   "introduced": "Från prompt till token",
+   "note": "embedding looks up a token id and returns a vector"
+  },
+  {
+   "id": "logits",
+   "spellings": {
+    "sv": [
+     "logit",
+     "logits",
+     "logiten",
+     "logiterna"
+    ],
+    "en": [
+     "logit",
+     "logits"
+    ],
+    "de": [
+     "Logit",
+     "Logits"
+    ]
+   },
+   "introduced": "Från prompt till token",
+   "note": "logits are the model's raw scores before they become probabilities"
+  },
+  {
+   "id": "vikter",
+   "spellings": {
+    "sv": [
+     "vikt",
+     "vikten",
+     "vikter",
+     "vikterna",
+     "vikternas"
+    ],
+    "en": [
+     "weight",
+     "weights"
+    ],
+    "de": [
+     "Gewicht",
+     "Gewichte",
+     "Gewichten"
+    ]
+   },
+   "introduced": "Från prompt till token",
+   "note": "weights are the model's stored, learned numbers"
+  },
+  {
+   "id": "aktiveringar",
+   "spellings": {
+    "sv": [
+     "aktivering",
+     "aktiveringen",
+     "aktiveringar",
+     "aktiveringarna"
+    ],
+    "en": [
+     "activation",
+     "activations"
+    ],
+    "de": [
+     "Aktivierung",
+     "Aktivierungen"
+    ]
+   },
+   "introduced": "Från prompt till token",
+   "note": "activations are the values computed for the current input token"
+  },
+  {
+   "id": "inference",
+   "spellings": {
+    "sv": [
+     "inference",
+     "inference-server",
+     "inference-servern",
+     "inferens",
+     "inferensen"
+    ],
+    "en": [
+     "inference",
+     "inference server",
+     "inference engine"
+    ],
+    "de": [
+     "Inferenz",
+     "Inferenzserver",
+     "Inferenz-Engine"
+    ]
+   },
+   "introduced": "Från prompt till token",
+   "note": "an inference server runs a finished model to produce answers"
+  },
+  {
+   "id": "sprakmodell",
+   "spellings": {
+    "sv": [
+     "språkmodell",
+     "språkmodellen",
+     "språkmodeller",
+     "språkmodellerna"
+    ],
+    "en": [
+     "language model",
+     "language models"
+    ],
+    "de": [
+     "Sprachmodell",
+     "Sprachmodelle",
+     "Sprachmodellen"
+    ]
+   },
+   "introduced": "Från prompt till token",
+   "note": "a language model repeatedly guesses which word comes next"
+  },
+  {
+   "id": "tensor",
+   "spellings": {
+    "sv": [
+     "tensor",
+     "tensorn",
+     "tensorer",
+     "tensorerna"
+    ],
+    "en": [
+     "tensor",
+     "tensors"
+    ],
+    "de": [
+     "Tensor",
+     "Tensoren"
+    ]
+   },
+   "introduced": "Från prompt till token",
+   "note": "a tensor is an ordered collection of numbers"
+  },
+  {
+   "id": "shape",
+   "spellings": {
+    "sv": [
+     "shape",
+     "shapes",
+     "shapen"
+    ],
+    "en": [
+     "shape",
+     "shapes"
+    ],
+    "de": [
+     "Form",
+     "Formen",
+     "Shape",
+     "Shapes"
+    ]
+   },
+   "introduced": "Från prompt till token",
+   "note": "a shape gives the number of places along each axis"
+  },
+  {
+   "id": "matrismultiplikation",
+   "spellings": {
+    "sv": [
+     "matrismultiplikation",
+     "matrismultiplikationen",
+     "matrismultiplikationer"
+    ],
+    "en": [
+     "matrix multiplication",
+     "matrix multiply",
+     "matmul"
+    ],
+    "de": [
+     "Matrixmultiplikation",
+     "Matrixmultiplikationen"
+    ]
+   },
+   "introduced": "Från prompt till token",
+   "note": "matrix multiplication pairs up lists, multiplies and sums them"
+  },
+  {
+   "id": "icke-linjaritet",
+   "spellings": {
+    "sv": [
+     "icke-linjäritet",
+     "icke-linjäriteten",
+     "olinjäritet"
+    ],
+    "en": [
+     "non-linearity",
+     "nonlinearity",
+     "non-linear"
+    ],
+    "de": [
+     "Nichtlinearität",
+     "Nicht-Linearität"
+    ]
+   },
+   "introduced": "Från prompt till token",
+   "note": "non-linearity is the switch between the matrix steps"
+  },
+  {
+   "id": "softmax",
+   "spellings": {
+    "sv": [
+     "softmax",
+     "softmaxen"
+    ],
+    "en": [
+     "softmax"
+    ],
+    "de": [
+     "Softmax"
+    ]
+   },
+   "introduced": "Från prompt till token",
+   "note": "softmax turns raw scores into probabilities that sum to one"
+  },
+  {
+   "id": "sannolikhet",
+   "spellings": {
+    "sv": [
+     "sannolikhet",
+     "sannolikheten",
+     "sannolikheter",
+     "sannolikheterna",
+     "sannolikhetsomvandlingen"
+    ],
+    "en": [
+     "probability",
+     "probabilities"
+    ],
+    "de": [
+     "Wahrscheinlichkeit",
+     "Wahrscheinlichkeiten"
+    ]
+   },
+   "introduced": "Vad är en språkmodell?",
+   "note": "a probability is the chance of one possible next word"
+  },
+  {
+   "id": "parametrar",
+   "spellings": {
+    "sv": [
+     "parameter",
+     "parametern",
+     "parametrar",
+     "parametrarna"
+    ],
+    "en": [
+     "parameter",
+     "parameters"
+    ],
+    "de": [
+     "Parameter",
+     "Parametern"
+    ]
+   },
+   "introduced": "Vad är en språkmodell?",
+   "note": "parameters are the model's stored numbers, the same as weights"
+  },
+  {
+   "id": "vektor",
+   "spellings": {
+    "sv": [
+     "vektor",
+     "vektorn",
+     "vektorer",
+     "vektorerna"
+    ],
+    "en": [
+     "vector",
+     "vectors"
+    ],
+    "de": [
+     "Vektor",
+     "Vektoren"
+    ]
+   },
+   "introduced": "Referensmodellen och notation",
+   "note": "a vector is a list of numbers; each row of a tensor is one"
+  },
+  {
+   "id": "kontext",
+   "spellings": {
+    "sv": [
+     "kontext",
+     "kontexten",
+     "kontexter",
+     "kontexterna",
+     "kontextfönster",
+     "kontextfönstret"
+    ],
+    "en": [
+     "context",
+     "contexts",
+     "context window"
+    ],
+    "de": [
+     "Kontext",
+     "Kontexte",
+     "Kontextfenster"
+    ]
+   },
+   "introduced": "Referensmodellen och notation",
+   "note": "context is how many tokens the model can see at once"
+  },
+  {
+   "id": "vokabular",
+   "spellings": {
+    "sv": [
+     "vokabulär",
+     "vokabulären",
+     "vokabulärer",
+     "vokabulärerna"
+    ],
+    "en": [
+     "vocabulary",
+     "vocab"
+    ],
+    "de": [
+     "Vokabular",
+     "Vokabulare"
+    ]
+   },
+   "introduced": "Referensmodellen och notation",
+   "note": "the vocabulary is the fixed set of possible token ids"
+  },
+  {
+   "id": "batch",
+   "spellings": {
+    "sv": [
+     "batch",
+     "batchen",
+     "batcher",
+     "batcherna"
+    ],
+    "en": [
+     "batch",
+     "batches"
+    ],
+    "de": [
+     "Batch",
+     "Batches"
+    ]
+   },
+   "introduced": "Referensmodellen och notation",
+   "note": "a batch is the number of sequences processed together"
+  },
+  {
+   "id": "stopptoken",
+   "spellings": {
+    "sv": [
+     "stopptoken",
+     "stopptokens",
+     "stopptokenet"
+    ],
+    "en": [
+     "stop token",
+     "stop tokens"
+    ],
+    "de": [
+     "Stopp-Token",
+     "Stopp-Tokens"
+    ]
+   },
+   "introduced": "Referensmodellen och notation",
+   "note": "a stop token marks the end of an answer"
+  },
+  {
+   "id": "skalar",
+   "spellings": {
+    "sv": [
+     "skalär",
+     "skalären",
+     "skalärer",
+     "skalärerna"
+    ],
+    "en": [
+     "scalar",
+     "scalars"
+    ],
+    "de": [
+     "Skalar",
+     "Skalare"
+    ]
+   },
+   "introduced": "Tal med form och axlar",
+   "note": "a scalar is a single number, with shape []"
+  },
+  {
+   "id": "matris",
+   "spellings": {
+    "sv": [
+     "matris",
+     "matrisen",
+     "matriser",
+     "matriserna"
+    ],
+    "en": [
+     "matrix",
+     "matrices"
+    ],
+    "de": [
+     "Matrix",
+     "Matrizen"
+    ]
+   },
+   "introduced": "Tal med form och axlar",
+   "note": "a matrix is a table with rows and columns"
+  },
+  {
+   "id": "skalarprodukt",
+   "spellings": {
+    "sv": [
+     "skalärprodukt",
+     "skalärprodukten",
+     "skalärprodukter",
+     "skalärprodukterna"
+    ],
+    "en": [
+     "dot product",
+     "dot products"
+    ],
+    "de": [
+     "Skalarprodukt",
+     "Skalarprodukte"
+    ]
+   },
+   "introduced": "Referensmodellen och notation",
+   "note": "the dot product multiplies matching entries and sums them"
+  },
+  {
+   "id": "viktad-summa",
+   "spellings": {
+    "sv": [
+     "viktad summa",
+     "viktade summan",
+     "viktade summor",
+     "viktade summorna"
+    ],
+    "en": [
+     "weighted sum",
+     "weighted sums"
+    ],
+    "de": [
+     "gewichtete Summe",
+     "gewichteten Summe"
+    ]
+   },
+   "introduced": "Viktad summa i små steg",
+   "note": "a weighted sum multiplies each value by its weight and adds them"
+  },
+  {
+   "id": "aktiveringsfunktion",
+   "spellings": {
+    "sv": [
+     "aktiveringsfunktion",
+     "aktiveringsfunktionen",
+     "aktiveringsfunktioner"
+    ],
+    "en": [
+     "activation function",
+     "activation functions"
+    ],
+    "de": [
+     "Aktivierungsfunktion",
+     "Aktivierungsfunktionen"
+    ]
+   },
+   "introduced": "Varför icke-linjäritet?",
+   "note": "an activation function breaks linearity between matrices; ReLU is the simplest"
+  },
+  {
+   "id": "relu",
+   "spellings": {
+    "sv": [
+     "ReLU"
+    ],
+    "en": [
+     "ReLU"
+    ],
+    "de": [
+     "ReLU"
+    ]
+   },
+   "introduced": "Varför icke-linjäritet?",
+   "note": "ReLU sends positive values through and turns negative values into 0"
+  },
+  {
+   "id": "forlust",
+   "spellings": {
+    "sv": [
+     "förlust",
+     "förlusten",
+     "förluster",
+     "förlusterna",
+     "förlustgradient",
+     "förlustgradienter",
+     "förlustgradienterna"
+    ],
+    "en": [
+     "loss",
+     "losses",
+     "loss gradient",
+     "loss gradients"
+    ],
+    "de": [
+     "Verlust",
+     "Verluste",
+     "Verlustfunktion"
+    ]
+   },
+   "introduced": "Vad ändras vid inferens?",
+   "note": "loss is a number that summarises how wrong the predictions are"
+  },
+  {
+   "id": "traning",
+   "spellings": {
+    "sv": [
+     "träning",
+     "träningen"
+    ],
+    "en": [
+     "training"
+    ],
+    "de": [
+     "Training",
+     "Trainings"
+    ]
+   },
+   "introduced": "Vad ändras vid inferens?",
+   "note": "training adjusts the weights to lower the loss on examples"
+  },
+  {
+   "id": "tat-modell",
+   "spellings": {
+    "sv": [
+     "tät modell",
+     "täta modellen",
+     "täta modeller",
+     "täta modellerna"
+    ],
+    "en": [
+     "dense model",
+     "dense models"
+    ],
+    "de": [
+     "dichtes Modell",
+     "dichte Modelle",
+     "dichten Modell"
+    ]
+   },
+   "introduced": "Vikter och aktiveringar",
+   "note": "in a dense model every weight matrix is used in full for every token"
+  },
+  {
+   "id": "bpe",
+   "spellings": {
+    "sv": [
+     "BPE",
+     "Byte Pair Encoding"
+    ],
+    "en": [
+     "BPE",
+     "Byte Pair Encoding"
+    ],
+    "de": [
+     "BPE",
+     "Byte Pair Encoding"
+    ]
+   },
+   "introduced": "Varför tokens?",
+   "note": "BPE learns frequent byte pairs and merges them into tokens"
+  },
+  {
+   "id": "subword",
+   "spellings": {
+    "sv": [
+     "subword",
+     "subword-token",
+     "subword-tokens",
+     "subwordtokens"
+    ],
+    "en": [
+     "subword",
+     "subword token",
+     "subword tokens"
+    ],
+    "de": [
+     "Teilwort",
+     "Teilwörter",
+     "Subword",
+     "Subwords"
+    ]
+   },
+   "introduced": "Ett exempel hela vägen",
+   "note": "subword tokens keep common words whole and split rare ones"
+  },
+  {
+   "id": "merge",
+   "spellings": {
+    "sv": [
+     "merge",
+     "merges",
+     "merge-ordning",
+     "mergeordning",
+     "merge-ordningen",
+     "mergeordningen"
+    ],
+    "en": [
+     "merge",
+     "merges",
+     "merge order"
+    ],
+    "de": [
+     "Merge",
+     "Merges",
+     "Merge-Reihenfolge"
+    ]
+   },
+   "introduced": "Varför tokens?",
+   "note": "a merge joins the most frequent pair into a new token"
+  },
+  {
+   "id": "tokenisering",
+   "spellings": {
+    "sv": [
+     "tokenisering",
+     "tokeniseringen",
+     "tokenisera",
+     "tokeniserar",
+     "tokeniserad",
+     "tokeniserade"
+    ],
+    "en": [
+     "tokenization",
+     "tokenize",
+     "tokenized"
+    ],
+    "de": [
+     "Tokenisierung",
+     "tokenisieren",
+     "tokenisiert"
+    ]
+   },
+   "introduced": "Varför tokens?",
+   "note": "tokenization splits text into pieces that each have an id"
+  },
+  {
+   "id": "chat-template",
+   "spellings": {
+    "sv": [
+     "chat template",
+     "chat templaten",
+     "chat templates",
+     "chat-template",
+     "chatmallen"
+    ],
+    "en": [
+     "chat template",
+     "chat templates"
+    ],
+    "de": [
+     "Chatvorlage",
+     "Chatvorlagen",
+     "Chat-Template",
+     "Chat-Templates"
+    ]
+   },
+   "introduced": "Introduktion: Text → tokens",
+   "note": "previewed in the module overview: a rule that turns messages and roles into one string; details later"
+  },
+  {
+   "id": "specialtoken",
+   "spellings": {
+    "sv": [
+     "specialtoken",
+     "specialtokens",
+     "specialtokenet",
+     "specialtokenen"
+    ],
+    "en": [
+     "special token",
+     "special tokens"
+    ],
+    "de": [
+     "spezielles Token",
+     "spezielle Token",
+     "Spezial-Token",
+     "Spezial-Tokens"
+    ]
+   },
+   "introduced": "Chat template och specialtokens",
+   "note": "special tokens mark roles and sequence boundaries"
+  }
+ ]
 }
