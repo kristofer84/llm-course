@@ -33,7 +33,9 @@
 /* ================= M5 ================= */
 (function kvstep(){
   const svg=$('kv-svg');const {pieces:toks,promptLength:P}=EX.cache;let s=0,withC=0,without=0;
-  const x0=100,cw=Math.max(90,...toks.map(t=>t.length*8+20));
+  // BOS is a conventional shorthand here; full spelling/ID remain in snapshots.
+  const label=t=>t==='<|begin_of_text|>'?'BOS':t;
+  const x0=100,cw=Math.max(72,...toks.map(t=>label(t).length*8+20));
   exampleSvg(svg,x0+toks.length*cw,300,x0+toks.length*cw);
   function draw(){clear(svg);txt(svg,90,62,L.t('token'),'s','end');txt(svg,90,112,L.t('j2b.76'),'s','end');txt(svg,90,172,L.t('j2b.77'),'s','end');txt(svg,90,222,L.t('j2b.78'),'s','end');
     const filled=s===0?0:(s===1?P:P+s-1);const newFrom=s===1?0:filled-1;
@@ -41,7 +43,7 @@
       if(c<filled){const nw=s>0&&c>=newFrom;const st=nw?'stroke:var(--a);stroke-width:2.5':'';
         S('rect',{x,y:150,width:cw-6,height:34,rx:3,class:'bkv',style:st},svg);S('rect',{x,y:200,width:cw-6,height:34,rx:3,class:'bkv',style:st},svg);
         }
-      if(c<Math.max(filled,P)){rect(svg,x,45,cw-6,26,'bt',4);txt(svg,x+(cw-6)/2,63,toks[c],'m','middle').style.whiteSpace='pre';}}
+      if(c<Math.max(filled,P)){rect(svg,x,45,cw-6,26,'bt',4);const tokenLabel=txt(svg,x+(cw-6)/2,63,label(toks[c]),'m','middle');tokenLabel.style.whiteSpace='pre';tokenLabel.dataset.token=toks[c];}}
     if(s>0){const qc=filled-1;const qx=x0+qc*cw;rect(svg,qx,96,cw-6,26,'ba',4);txt(svg,qx+(cw-6)/2,114,'q','m','middle');
       for(let c=0;c<filled;c++)line(svg,qx+(cw-6)/2,122,x0+c*cw+(cw-6)/2,148,'lnf');}
     let msg;

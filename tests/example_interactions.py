@@ -11,9 +11,13 @@ async def no_old_examples(page, locale):
     if locale == 'sv':
         return
     bad = await page.evaluate(r"""() => [...document.querySelectorAll('.slide')].flatMap((slide,i)=>{
-      const text=slide.textContent+' '+[...slide.querySelectorAll('input,textarea')].map(e=>e.value).join(' ');
-      const old=text.match(/Katten|kattungar|mattan|eftersom|trött|huvudstad|Tyskland|kattensattpå/gi);
-      return old?[{slide:i+1,old:[...new Set(old)]}]:[];
+      const walker=document.createTreeWalker(slide,NodeFilter.SHOW_TEXT),texts=[];let node;
+      while((node=walker.nextNode()))texts.push(node.data);
+      texts.push(...[...slide.querySelectorAll('input,textarea')].map(e=>e.value));
+      // Joining unrelated nodes can turn “block” + “attention” into a false “katten”.
+      const pattern=/(?<![\p{L}\p{N}_])(?:Katten|kattungar|mattan|eftersom|trött|huvudstad|Tyskland|kattensattpå)(?![\p{L}\p{N}_])/giu;
+      const old=texts.flatMap(text=>text.match(pattern)||[]);
+      return old.length?[{slide:i+1,old:[...new Set(old)]}]:[];
     })""")
     assert not bad, (locale, bad)
     unresolved = await page.evaluate("() => [...document.querySelectorAll('.slide')].some(s=>s.textContent.includes('{{example_'))")
