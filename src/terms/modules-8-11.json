@@ -424,7 +424,7 @@
      "lokale Attention"
     ]
    },
-   "introduced": "Attention sinks och lokal attention",
+   "introduced": "Vad attention kostar",
    "note": "Each token sees only the latest w tokens; mixed local/global stacks vary the ratio."
   },
   {
@@ -599,7 +599,7 @@
      "PagedAttention"
     ]
    },
-   "introduced": "vLLM i klartext",
+   "introduced": "Vad attention kostar",
    "note": "KV cache in fixed blocks with a block table; mechanism on 'PagedAttention'."
   },
   {

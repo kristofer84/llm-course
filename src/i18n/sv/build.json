@@ -357,5 +357,7 @@
  "title.multi-lora-manga-modeller-pa": "Multi-LoRA: många modeller på en GPU",
  "title.attention-sinks-och-lokal": "Attention sinks och lokal attention",
  "title.disaggregerad-prefill-och": "Disaggregerad prefill och decode",
- "title.testa-dig-sjalv-2": "Testa dig själv: modellvarianter"
+ "title.testa-dig-sjalv-2": "Testa dig själv: modellvarianter",
+ "title.vad-attention-kostar": "Vad attention kostar",
+ "mod.4.key.8": "Med causal mask räknas n(n+1)/2 par i stället för n²; softmax hoppar inte över något. FlashAttention, GQA och PagedAttention sparar minne, men bara lokala fönster, urval och linjära modeller räknar färre par."
 }

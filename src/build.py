@@ -106,7 +106,7 @@ ORDER = [
      '32 lager i en modellfil', 'Två rader, ett lager', 'RMSNorm', '@sum'],
     ['@open', 'Attention och MLP: olika jobb', 'Attention i klartext',
      'Attention-formeln bit för bit', 'Attention 1: Q, K och V', 'Attention 2: dela upp i heads', 'Attention 3: RoPE',
-     'Attention 4: scores och causal mask', 'Attention 5: hämta values', 'Attention räknat för hand',
+     'Attention 4: scores och causal mask', 'Attention 5: hämta values', 'Vad attention kostar', 'Attention räknat för hand',
      'GQA: delade KV heads', 'MLP i klartext', 'MLP med SwiGLU', 'MLP:n som detektorer', 'Var parametrarna finns',
      'Lager för lager', 'Spåra tensorerna genom modellen', 'Forward pass som kod', '@sum', 'Testa dig själv: transformerblocket'],
     ['@open', 'LM head: från vektor till logits', 'Sampling: temperature, top-k, top-p', 'Den autoregressiva loopen', '@sum', 'Testa dig själv: logits'],
@@ -318,7 +318,7 @@ parts = [open('p1.html', encoding='utf-8').read(), '\n'.join(out), open('p9.html
          '<script>window.EXAMPLE_DATA=%s;</script>' % json.dumps(EXAMPLES, ensure_ascii=False),
          '<script>\n' + open('vendor/i18next.min.js', encoding='utf-8').read() + '\n</script>',
          open('i18n/engine.js', encoding='utf-8').read()]
-SCRIPTS = ['j0.js', 'examples.js', 'jd.js', 'quiz-groups.js', 'learning.js', 'a11y.js', 'j1b.js', 'j2b.js', 'j3.js',
+SCRIPTS = ['j0.js', 'examples.js', 'attention-cost.js', 'jd.js', 'quiz-groups.js', 'learning.js', 'a11y.js', 'j1b.js', 'j2b.js', 'j3.js',
            'j4.js', 'j5.js', 'j6.js', 'j7.js', 'j8.js', 'foundations.js',
            'training-lab.js', 'operations-lab.js', 'course-ui.js', 'jz.js']
 for j in SCRIPTS:

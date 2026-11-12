@@ -24,57 +24,57 @@ earlier, or if the introduction slide does not actually mention the term.
 | 40. RMSNorm | layernorm |
 | 47. Attention 1: Q, K och V | gqa |
 | 50. Attention 4: scores och causal mask | causal-mask, autoregressiv |
-| 54. GQA: delade KV heads | mha, mqa |
-| 55. Paus: bredd före MLP | swiglu |
-| 60. Lager för lager | logit-lens |
-| 61. Spåra tensorerna genom modellen | prefill, decode |
-| 67. Sampling: temperature, top-k, top-p | top-p, greedy |
-| 72. Träning: next-token loss | next-token-loss |
-| 73. Gradienter och minne | fortraning, lora, qlora, gradient, backpropagation, adamw, mixed-precision |
-| 74. Från basmodell till assistent | sft, preferensinlarning, rlhf, dpo, latens, beloningsmodell |
-| 75. Träning: ett synligt viktsteg | sgd |
-| 76. Förträning och SFT: olika data | teacher-forcing, adapter |
-| 77. Preferenser: RLHF och DPO | kl-penalty |
-| 79. QLoRA: vad har vilken precision? | kvantisering, avkvantisering |
-| 84. Byte, FLOP och flaskhalsar | bandbredd, flop, kapacitet |
-| 85. Vad är ett grafikkort? | vram, memory-bound |
-| 86. Prefill och decode | compute-bound |
-| 91. Hur stor blir KV-cachen? | mla |
-| 92. Vad ligger i GPU-minnet? | kv-pool |
-| 93. Vänta, svara, gruppera | genomstromning |
-| 95. Latensmått | ttft, itl |
-| 99. Modul: Kvantisering i praktiken | nollpunkt, klippning, gruppstorlek, utliggare |
-| 100. Kvantisering | skalfaktor, weight-only, w4a16 |
-| 101. Skala, nollpunkt och avrundning | symmetrisk-kvantisering |
-| 103. Kalibrering utan dataläckage | kalibrering, datalackage, ptq, qat |
-| 104. Vikter, aktiveringar och mätning | perplexitet |
-| 108. Tät modell eller MoE | aktiva-parametrar |
-| 110. MoE i inferens | expert-parallelism |
-| 111. Attention-varianter | sliding-window |
-| 112. Attention sinks och lokal attention | lokalt-fonster, attention-sinks |
-| 115. Multimodala modeller | multimodal, patch, vision-encoder |
-| 116. Andra arkitekturer | ssm, cross-attention, encoder-decoder |
-| 120. HTTP, JSON och streaming | http, sse, chunk, response |
-| 121. vLLM i klartext | paged-attention, continuous-batching, chunked-prefill, tensor-parallelism, block-table |
-| 122. vLLM: arkitekturen | frontend, enginecore, kv-block |
-| 123. En requests livscykel | preemption |
-| 127. Continuous batching | statisk-batching |
-| 129. Disaggregerad prefill och decode | disaggregering |
-| 133. Ett steg i model runner | cuda-graphs |
-| 134. Samplern och structured output | structured-output |
-| 135. Tensor parallelism | column-parallel, row-parallel, all-reduce |
-| 136. Pipeline, data och expert parallelism | pipeline-parallelism, data-parallelism |
-| 137. Speculative decoding | speculative-decoding, draft-modell, rejection-sampling |
-| 138. Multi-LoRA: många modeller på en GPU | multi-lora |
-| 143. Kö, antagning och avbrott | antagning, rate-limit, tenant |
-| 144. Robust drift och tenantgränser | noisy-neighbors, readiness, idempotency, side-effect |
-| 145. Spårning, svanslatens och kostnad | svanslatens |
-| 150. Riktningar i residual stream | riktning-i-residual-stream, linear-probe |
-| 151. Steering och ablation | steering, ablation, hook |
-| 155. Utvärdering | faktastod, regressionstest, last-test |
-| 157. Benchmark och egna testmängder | kontaminering |
-| 158. Faktastöd och regressioner | hallucination |
-| 159. Kvalitet efter kvantisering | kvalitetsgolv |
-| 162. Verktyg och inferenslabb | verktygsanrop |
-| 163. Verktygsanrop är data | orchestrator |
-| 165. Säkra verktyg och obetrodda resultat | prompt-injection, minsta-behorighet, allowlist |
+| 52. Vad attention kostar | mqa, prefill, decode, lokalt-fonster, paged-attention |
+| 55. GQA: delade KV heads | mha |
+| 56. Paus: bredd före MLP | swiglu |
+| 61. Lager för lager | logit-lens |
+| 68. Sampling: temperature, top-k, top-p | top-p, greedy |
+| 73. Träning: next-token loss | next-token-loss |
+| 74. Gradienter och minne | fortraning, lora, qlora, gradient, backpropagation, adamw, mixed-precision |
+| 75. Från basmodell till assistent | sft, preferensinlarning, rlhf, dpo, latens, beloningsmodell |
+| 76. Träning: ett synligt viktsteg | sgd |
+| 77. Förträning och SFT: olika data | teacher-forcing, adapter |
+| 78. Preferenser: RLHF och DPO | kl-penalty |
+| 80. QLoRA: vad har vilken precision? | kvantisering, avkvantisering |
+| 85. Byte, FLOP och flaskhalsar | bandbredd, flop, kapacitet |
+| 86. Vad är ett grafikkort? | vram, memory-bound |
+| 87. Prefill och decode | compute-bound |
+| 92. Hur stor blir KV-cachen? | mla |
+| 93. Vad ligger i GPU-minnet? | kv-pool |
+| 94. Vänta, svara, gruppera | genomstromning |
+| 96. Latensmått | ttft, itl |
+| 100. Modul: Kvantisering i praktiken | nollpunkt, klippning, gruppstorlek, utliggare |
+| 101. Kvantisering | skalfaktor, weight-only, w4a16 |
+| 102. Skala, nollpunkt och avrundning | symmetrisk-kvantisering |
+| 104. Kalibrering utan dataläckage | kalibrering, datalackage, ptq, qat |
+| 105. Vikter, aktiveringar och mätning | perplexitet |
+| 109. Tät modell eller MoE | aktiva-parametrar |
+| 111. MoE i inferens | expert-parallelism |
+| 112. Attention-varianter | sliding-window |
+| 113. Attention sinks och lokal attention | attention-sinks |
+| 116. Multimodala modeller | multimodal, patch, vision-encoder |
+| 117. Andra arkitekturer | ssm, cross-attention, encoder-decoder |
+| 121. HTTP, JSON och streaming | http, sse, chunk, response |
+| 122. vLLM i klartext | continuous-batching, chunked-prefill, tensor-parallelism, block-table |
+| 123. vLLM: arkitekturen | frontend, enginecore, kv-block |
+| 124. En requests livscykel | preemption |
+| 128. Continuous batching | statisk-batching |
+| 130. Disaggregerad prefill och decode | disaggregering |
+| 134. Ett steg i model runner | cuda-graphs |
+| 135. Samplern och structured output | structured-output |
+| 136. Tensor parallelism | column-parallel, row-parallel, all-reduce |
+| 137. Pipeline, data och expert parallelism | pipeline-parallelism, data-parallelism |
+| 138. Speculative decoding | speculative-decoding, draft-modell, rejection-sampling |
+| 139. Multi-LoRA: många modeller på en GPU | multi-lora |
+| 144. Kö, antagning och avbrott | antagning, rate-limit, tenant |
+| 145. Robust drift och tenantgränser | noisy-neighbors, readiness, idempotency, side-effect |
+| 146. Spårning, svanslatens och kostnad | svanslatens |
+| 151. Riktningar i residual stream | riktning-i-residual-stream, linear-probe |
+| 152. Steering och ablation | steering, ablation, hook |
+| 156. Utvärdering | faktastod, regressionstest, last-test |
+| 158. Benchmark och egna testmängder | kontaminering |
+| 159. Faktastöd och regressioner | hallucination |
+| 160. Kvalitet efter kvantisering | kvalitetsgolv |
+| 163. Verktyg och inferenslabb | verktygsanrop |
+| 164. Verktygsanrop är data | orchestrator |
+| 166. Säkra verktyg och obetrodda resultat | prompt-injection, minsta-behorighet, allowlist |
