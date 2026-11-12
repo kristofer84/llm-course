@@ -1,0 +1,983 @@
+{
+ "schema": 1,
+ "locale": "sv",
+ "source": {
+  "model": "Meta-Llama-3-8B",
+  "officialRevision": "8cde5ca8380496c9a6cc7ef3a8b46a0372a1d920",
+  "officialGitBlob": "b197f72effb9d5ed16ee0f5663e11e4cfac2ba62",
+  "mirror": "NousResearch/Meta-Llama-3-8B",
+  "mirrorRevision": "315b20096dc791d381d514deb5f8bd9c8d6d3061",
+  "sha256": "e134af98b985517b4f068e3755ae90d4e9cd2d45d328325dc503f1c6b2d06cc7",
+  "bytes": 9085698,
+  "library": "tokenizers==0.22.2"
+ },
+ "words": {
+  "subject": "Katten",
+  "subjectPhrase": "Katten",
+  "noun": "katt",
+  "verb": "satt",
+  "verbLemma": "sitta",
+  "preposition": "på",
+  "place": "mattan",
+  "conjunction": "eftersom",
+  "pronoun": "den",
+  "copula": "var",
+  "adjective": "trött",
+  "countryFrance": "Frankrike",
+  "countryGermany": "Tyskland",
+  "capital": "huvudstad"
+ },
+ "bpe": {
+  "word": "kattungar",
+  "merges": [
+   [
+    "t",
+    "t"
+   ],
+   [
+    "k",
+    "a"
+   ],
+   [
+    "ka",
+    "tt"
+   ],
+   [
+    "u",
+    "n"
+   ],
+   [
+    "un",
+    "g"
+   ],
+   [
+    "a",
+    "r"
+   ]
+  ],
+  "initial": [
+   "k",
+   "a",
+   "t",
+   "t",
+   "u",
+   "n",
+   "g",
+   "a",
+   "r"
+  ],
+  "final": [
+   "katt",
+   "ung",
+   "ar"
+  ],
+  "charCount": 9,
+  "byteCount": 9
+ },
+ "tokenizer": {
+  "prompt": {
+   "text": "Katten satt på",
+   "ids": [
+    128000,
+    42,
+    14795,
+    274,
+    1617,
+    9292
+   ],
+   "pieces": [
+    "<|begin_of_text|>",
+    "K",
+    "atten",
+    " s",
+    "att",
+    " på"
+   ],
+   "count": 6
+  },
+  "sentence": {
+   "text": "Katten satt på mattan",
+   "ids": [
+    42,
+    14795,
+    274,
+    1617,
+    9292,
+    27537,
+    276
+   ],
+   "pieces": [
+    "K",
+    "atten",
+    " s",
+    "att",
+    " på",
+    " matt",
+    "an"
+   ],
+   "count": 7
+  },
+  "numbers": {
+   "text": "1234567",
+   "ids": [
+    4513,
+    10961,
+    22
+   ],
+   "pieces": [
+    "123",
+    "456",
+    "7"
+   ],
+   "count": 3
+  },
+  "vocabSize": 128256,
+  "bosId": 128000
+ },
+ "sampling": {
+  "prefix": "Katten satt på",
+  "candidates": [
+   " matt",
+   " gol",
+   " so",
+   " bord",
+   " tak",
+   " må"
+  ],
+  "wholeContinuations": [
+   " mattan",
+   " golvet",
+   " soffan",
+   " bordet",
+   " taket",
+   " månen"
+  ],
+  "logits": [
+   5.1,
+   4.3,
+   4.0,
+   3.2,
+   1.5,
+   0.2
+  ],
+  "ids": [
+   27537,
+   45549,
+   779,
+   39002,
+   18608,
+   31333
+  ]
+ },
+ "walkthrough": {
+  "prompt": {
+   "text": "Katten satt på",
+   "ids": [
+    128000,
+    42,
+    14795,
+    274,
+    1617,
+    9292
+   ],
+   "pieces": [
+    "<|begin_of_text|>",
+    "K",
+    "atten",
+    " s",
+    "att",
+    " på"
+   ],
+   "count": 6
+  },
+  "candidates": [
+   " matt",
+   " gol",
+   " so",
+   " bord",
+   " tak"
+  ],
+  "logits": [
+   5.1,
+   4.3,
+   4.0,
+   3.2,
+   1.5
+  ],
+  "chosen": " matt"
+ },
+ "training": {
+  "inputs": [
+   "<|begin_of_text|>",
+   "K",
+   "atten",
+   " s",
+   "att",
+   " på",
+   " matt",
+   "an"
+  ],
+  "targets": [
+   "K",
+   "atten",
+   " s",
+   "att",
+   " på",
+   " matt",
+   "an",
+   "."
+  ],
+  "highlight": 5
+ },
+ "cache": {
+  "text": "Katten satt på mattan och sov gott.",
+  "ids": [
+   128000,
+   42,
+   14795,
+   274,
+   1617,
+   9292,
+   27537,
+   276,
+   12218,
+   779,
+   85,
+   342,
+   1751,
+   13
+  ],
+  "pieces": [
+   "<|begin_of_text|>",
+   "K",
+   "atten",
+   " s",
+   "att",
+   " på",
+   " matt",
+   "an",
+   " och",
+   " so",
+   "v",
+   " g",
+   "ott",
+   "."
+  ],
+  "count": 14,
+  "promptLength": 6
+ },
+ "speculative": {
+  "prefix": {
+   "text": "Katten satt",
+   "ids": [
+    128000,
+    42,
+    14795,
+    274,
+    1617
+   ],
+   "pieces": [
+    "<|begin_of_text|>",
+    "K",
+    "atten",
+    " s",
+    "att"
+   ],
+   "count": 5
+  },
+  "draft": [
+   " på",
+   " matt",
+   "an",
+   " och",
+   " so",
+   "v"
+  ],
+  "target": [
+   " på",
+   " matt",
+   "an",
+   " e",
+   "ft",
+   "ers",
+   "om"
+  ],
+  "accepted": 3,
+  "replacement": " e",
+  "committed": [
+   " på",
+   " matt",
+   "an",
+   " e"
+  ]
+ },
+ "scene": {
+  "tokens": [
+   "Katten",
+   "satt",
+   "på",
+   "mattan",
+   "eftersom",
+   "den",
+   "var",
+   "trött"
+  ],
+  "roles": {
+   "subject": 0,
+   "verb": 1,
+   "preposition": 2,
+   "place": 3,
+   "conjunction": 4,
+   "pronoun": 5,
+   "copula": 6,
+   "adjective": 7
+  },
+  "context": [
+   "Katten",
+   "satt",
+   "på",
+   "mattan",
+   "eftersom",
+   "den"
+  ],
+  "contextRoles": {
+   "subject": 0,
+   "verb": 1,
+   "preposition": 2,
+   "place": 3,
+   "conjunction": 4,
+   "pronoun": 5
+  },
+  "attention": [
+   "<bos>",
+   "Katten",
+   "satt",
+   "på",
+   "mattan",
+   "eftersom",
+   "den"
+  ],
+  "attentionRoles": {
+   "subject": 1,
+   "verb": 2,
+   "preposition": 3,
+   "place": 4,
+   "conjunction": 5,
+   "pronoun": 6
+  },
+  "valueWeights": [
+   [
+    1,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.7,
+    0.3,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.2,
+    0.5,
+    0.3,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.1,
+    0.1,
+    0.55,
+    0.25,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.2,
+    0.35,
+    0.0,
+    0.15,
+    0.3,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.62,
+    0.0,
+    0.0,
+    0.18,
+    0.08,
+    0.12,
+    0.0,
+    0.0
+   ],
+   [
+    0.2,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.55,
+    0.25,
+    0.0
+   ],
+   [
+    0.45,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.3,
+    0.15,
+    0.1
+   ]
+  ],
+  "lensPrompt": "Katten satt på mattan eftersom den var",
+  "fullText": "Katten satt på mattan eftersom den var trött"
+ },
+ "workedAttention": {
+  "tokens": [
+   "Katten",
+   "satt",
+   "den"
+  ],
+  "keys": [
+   [
+    2,
+    0
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    1
+   ]
+  ],
+  "values": [
+   [
+    1,
+    0
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    0.5,
+    0.5
+   ]
+  ],
+  "query": [
+   1.5,
+   0.5
+  ]
+ },
+ "weightInputs": [
+  "katt",
+  "skatt",
+  "7×8"
+ ],
+ "mini": {
+  "vocab": [
+   "katten",
+   "satt",
+   "på",
+   "mattan",
+   "och",
+   "sov",
+   "en",
+   "hund",
+   ".",
+   "den",
+   "var",
+   "trött"
+  ],
+  "promptIds": [
+   0,
+   1,
+   2
+  ],
+  "maxLength": 10
+ },
+ "detectors": [
+  [
+   "sov",
+   "vilade",
+   "låg"
+  ],
+  [
+   "morrhår",
+   "kisse",
+   "spann"
+  ],
+  [
+   "kaffe",
+   "jobbet",
+   "sömnbrist"
+  ],
+  [
+   "de",
+   "dem",
+   "alla"
+  ],
+  [
+   "self",
+   "return",
+   "("
+  ],
+  [
+   "inte",
+   "aldrig",
+   "ingen"
+  ]
+ ],
+ "lens": [
+  [
+   [
+    " var",
+    0.16
+   ],
+   [
+    " är",
+    0.08
+   ],
+   [
+    ",",
+    0.06
+   ],
+   [
+    " inte",
+    0.05
+   ],
+   [
+    " en",
+    0.04
+   ]
+  ],
+  [
+   [
+    " inte",
+    0.12
+   ],
+   [
+    " så",
+    0.1
+   ],
+   [
+    " en",
+    0.08
+   ],
+   [
+    " väldigt",
+    0.06
+   ],
+   [
+    " trött",
+    0.04
+   ]
+  ],
+  [
+   [
+    " trött",
+    0.18
+   ],
+   [
+    " hungrig",
+    0.09
+   ],
+   [
+    " inte",
+    0.08
+   ],
+   [
+    " så",
+    0.07
+   ],
+   [
+    " sömnig",
+    0.05
+   ]
+  ],
+  [
+   [
+    " trött",
+    0.34
+   ],
+   [
+    " sömnig",
+    0.14
+   ],
+   [
+    " hungrig",
+    0.1
+   ],
+   [
+    " lat",
+    0.06
+   ],
+   [
+    " så",
+    0.04
+   ]
+  ],
+  [
+   [
+    " trött",
+    0.46
+   ],
+   [
+    " sömnig",
+    0.12
+   ],
+   [
+    " hungrig",
+    0.09
+   ],
+   [
+    " lat",
+    0.05
+   ],
+   [
+    " mätt",
+    0.03
+   ]
+  ]
+ ],
+ "lm": {
+  "initial": [
+   "Katten"
+  ],
+  "start": "subject",
+  "states": {
+   "subject": [
+    {
+     "text": " satt",
+     "p": 0.38,
+     "next": "sat"
+    },
+    {
+     "text": " sov",
+     "p": 0.24,
+     "next": "slept"
+    },
+    {
+     "text": " åt",
+     "p": 0.14,
+     "next": "ate"
+    },
+    {
+     "text": " jamade",
+     "p": 0.08,
+     "next": "meowed"
+    }
+   ],
+   "sat": [
+    {
+     "text": " på",
+     "p": 0.52,
+     "next": "on"
+    },
+    {
+     "text": " i",
+     "p": 0.21,
+     "next": "in"
+    },
+    {
+     "text": " still",
+     "p": 0.12,
+     "next": "tail"
+    },
+    {
+     "text": " vid",
+     "p": 0.06,
+     "next": "on"
+    }
+   ],
+   "on": [
+    {
+     "text": " mattan",
+     "p": 0.41,
+     "next": "tail"
+    },
+    {
+     "text": " soffan",
+     "p": 0.22,
+     "next": "tail"
+    },
+    {
+     "text": " golvet",
+     "p": 0.17,
+     "next": "tail"
+    },
+    {
+     "text": " bordet",
+     "p": 0.1,
+     "next": "tail"
+    }
+   ],
+   "in": [
+    {
+     "text": " soffan",
+     "p": 0.3,
+     "next": "tail"
+    },
+    {
+     "text": " solen",
+     "p": 0.28,
+     "next": "tail"
+    },
+    {
+     "text": " fönstret",
+     "p": 0.2,
+     "next": "tail"
+    },
+    {
+     "text": " korgen",
+     "p": 0.12,
+     "next": "tail"
+    }
+   ],
+   "slept": [
+    {
+     "text": " i",
+     "p": 0.35,
+     "next": "in"
+    },
+    {
+     "text": " på",
+     "p": 0.28,
+     "next": "on"
+    },
+    {
+     "text": " hela",
+     "p": 0.18,
+     "next": "time"
+    },
+    {
+     "text": " gott",
+     "p": 0.11,
+     "next": "tail"
+    }
+   ],
+   "ate": [
+    {
+     "text": " sin",
+     "p": 0.33,
+     "next": "food"
+    },
+    {
+     "text": " långsamt",
+     "p": 0.22,
+     "next": "tail"
+    },
+    {
+     "text": " fisk",
+     "p": 0.18,
+     "next": "tail"
+    },
+    {
+     "text": " mat",
+     "p": 0.12,
+     "next": "tail"
+    }
+   ],
+   "food": [
+    {
+     "text": " mat",
+     "p": 0.45,
+     "next": "tail"
+    },
+    {
+     "text": " fisk",
+     "p": 0.3,
+     "next": "tail"
+    },
+    {
+     "text": " frukost",
+     "p": 0.15,
+     "next": "tail"
+    },
+    {
+     "text": " middag",
+     "p": 0.05,
+     "next": "tail"
+    }
+   ],
+   "meowed": [
+    {
+     "text": " högt",
+     "p": 0.4,
+     "next": "tail"
+    },
+    {
+     "text": " och",
+     "p": 0.2,
+     "next": "subject"
+    },
+    {
+     "text": ".",
+     "p": 0.2,
+     "next": "end"
+    },
+    {
+     "text": " igen",
+     "p": 0.1,
+     "next": "tail"
+    }
+   ],
+   "time": [
+    {
+     "text": " dagen",
+     "p": 0.62,
+     "next": "tail"
+    },
+    {
+     "text": " natten",
+     "p": 0.25,
+     "next": "tail"
+    },
+    {
+     "text": " eftermiddagen",
+     "p": 0.08,
+     "next": "tail"
+    },
+    {
+     "text": " tiden",
+     "p": 0.03,
+     "next": "tail"
+    }
+   ],
+   "tail": [
+    {
+     "text": ".",
+     "p": 0.6,
+     "next": "end"
+    },
+    {
+     "text": " och",
+     "p": 0.2,
+     "next": "subject"
+    },
+    {
+     "text": " eftersom",
+     "p": 0.1,
+     "next": "pronoun"
+    }
+   ],
+   "pronoun": [
+    {
+     "text": " den",
+     "p": 0.95,
+     "next": "copula"
+    }
+   ],
+   "copula": [
+    {
+     "text": " var",
+     "p": 0.95,
+     "next": "adjective"
+    }
+   ],
+   "adjective": [
+    {
+     "text": " trött",
+     "p": 0.8,
+     "next": "tail"
+    }
+   ]
+  },
+  "maxUnits": 18
+ },
+ "vars": {
+  "example_prompt": "Katten satt på",
+  "example_sentence": "Katten satt på mattan",
+  "example_full_sentence": "Katten satt på mattan eftersom den var trött",
+  "example_after_one": "Katten satt på matt",
+  "example_subject": "Katten",
+  "example_subject_phrase": "Katten",
+  "example_verb": "satt",
+  "example_preposition": "på",
+  "example_place": "mattan",
+  "example_conjunction": "eftersom",
+  "example_pronoun": "den",
+  "example_copula": "var",
+  "example_adjective": "trött",
+  "example_lens_prompt": "Katten satt på mattan eftersom den var",
+  "example_sampled_token": "matt",
+  "example_prompt_T": 6,
+  "example_prompt_chars": 14,
+  "example_prompt_ids": "[128000, 42, 14795, 274, 1617, 9292]",
+  "example_prompt_positions": "0, 1, 2, 3, 4, 5",
+  "example_prompt_shape": "[6, 4096]",
+  "example_prompt_id_shape": "[1, 6]",
+  "example_bpe_word": "kattungar",
+  "example_bpe_chars": 9,
+  "example_bpe_bytes": 9,
+  "example_bpe_steps": 6,
+  "example_bpe_final_count": 3,
+  "example_bpe_final": "katt | ung | ar",
+  "example_bpe_first": "katt",
+  "example_mini_prompt_T": 3,
+  "example_mini_max_T": 10,
+  "example_spec_draft_T": 6,
+  "example_spec_verify_T": 7,
+  "example_spec_accepted_T": 3,
+  "example_spec_committed_T": 4,
+  "example_spec_mismatch": "och",
+  "example_spec_replacement": "e",
+  "example_spec_output": "Katten satt på mattan e",
+  "example_packed_T": 8,
+  "example_packed_prefill_T": 6,
+  "example_packed_starts": "[0, 6, 7, 8]",
+  "example_packed_logits": "[5, 6, 7]",
+  "example_word_context_T": 6,
+  "example_word_full_T": 8,
+  "example_attention_T": 7,
+  "example_weight_a": "katt",
+  "example_weight_b": "skatt",
+  "example_primary_chips": "<span class=\"chip t\">K</span><span class=\"chip t\">atten</span><span class=\"chip t\"> s</span><span class=\"chip t\">att</span><span class=\"chip t\"> på</span><span class=\"chip t\"> matt</span><span class=\"chip t\">an</span>",
+  "example_primary_count": 7,
+  "example_secondary_chips": "<span class=\"chip t\">The</span><span class=\"chip t\"> cat</span><span class=\"chip t\"> sat</span><span class=\"chip t\"> on</span><span class=\"chip t\"> the</span><span class=\"chip t\"> mat</span>",
+  "example_secondary_count": 6
+ },
+ "comparison": {
+  "locale": "en",
+  "snapshot": {
+   "text": "The cat sat on the mat",
+   "ids": [
+    791,
+    8415,
+    7731,
+    389,
+    279,
+    5634
+   ],
+   "pieces": [
+    "The",
+    " cat",
+    " sat",
+    " on",
+    " the",
+    " mat"
+   ],
+   "count": 6
+  }
+ }
+}

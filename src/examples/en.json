@@ -1,0 +1,1029 @@
+{
+ "schema": 1,
+ "locale": "en",
+ "source": {
+  "model": "Meta-Llama-3-8B",
+  "officialRevision": "8cde5ca8380496c9a6cc7ef3a8b46a0372a1d920",
+  "officialGitBlob": "b197f72effb9d5ed16ee0f5663e11e4cfac2ba62",
+  "mirror": "NousResearch/Meta-Llama-3-8B",
+  "mirrorRevision": "315b20096dc791d381d514deb5f8bd9c8d6d3061",
+  "sha256": "e134af98b985517b4f068e3755ae90d4e9cd2d45d328325dc503f1c6b2d06cc7",
+  "bytes": 9085698,
+  "library": "tokenizers==0.22.2"
+ },
+ "words": {
+  "subject": "cat",
+  "subjectPhrase": "The cat",
+  "noun": "cat",
+  "verb": "sat",
+  "verbLemma": "sit",
+  "preposition": "on",
+  "place": "mat",
+  "conjunction": "because",
+  "pronoun": "it",
+  "copula": "was",
+  "adjective": "tired",
+  "countryFrance": "France",
+  "countryGermany": "Germany",
+  "capital": "capital"
+ },
+ "bpe": {
+  "word": "kittens",
+  "merges": [
+   [
+    "k",
+    "i"
+   ],
+   [
+    "ki",
+    "t"
+   ],
+   [
+    "t",
+    "e"
+   ],
+   [
+    "te",
+    "n"
+   ],
+   [
+    "ten",
+    "s"
+   ]
+  ],
+  "initial": [
+   "k",
+   "i",
+   "t",
+   "t",
+   "e",
+   "n",
+   "s"
+  ],
+  "final": [
+   "kit",
+   "tens"
+  ],
+  "charCount": 7,
+  "byteCount": 7
+ },
+ "tokenizer": {
+  "prompt": {
+   "text": "The cat sat on the",
+   "ids": [
+    128000,
+    791,
+    8415,
+    7731,
+    389,
+    279
+   ],
+   "pieces": [
+    "<|begin_of_text|>",
+    "The",
+    " cat",
+    " sat",
+    " on",
+    " the"
+   ],
+   "count": 6
+  },
+  "sentence": {
+   "text": "The cat sat on the mat",
+   "ids": [
+    791,
+    8415,
+    7731,
+    389,
+    279,
+    5634
+   ],
+   "pieces": [
+    "The",
+    " cat",
+    " sat",
+    " on",
+    " the",
+    " mat"
+   ],
+   "count": 6
+  },
+  "numbers": {
+   "text": "1234567",
+   "ids": [
+    4513,
+    10961,
+    22
+   ],
+   "pieces": [
+    "123",
+    "456",
+    "7"
+   ],
+   "count": 3
+  },
+  "vocabSize": 128256,
+  "bosId": 128000
+ },
+ "sampling": {
+  "prefix": "The cat sat on the",
+  "candidates": [
+   " mat",
+   " floor",
+   " sofa",
+   " table",
+   " roof",
+   " moon"
+  ],
+  "wholeContinuations": [
+   " mat",
+   " floor",
+   " sofa",
+   " table",
+   " roof",
+   " moon"
+  ],
+  "logits": [
+   5.1,
+   4.3,
+   4.0,
+   3.2,
+   1.5,
+   0.2
+  ],
+  "ids": [
+   5634,
+   6558,
+   32169,
+   2007,
+   15485,
+   18266
+  ]
+ },
+ "walkthrough": {
+  "prompt": {
+   "text": "The cat sat on the",
+   "ids": [
+    128000,
+    791,
+    8415,
+    7731,
+    389,
+    279
+   ],
+   "pieces": [
+    "<|begin_of_text|>",
+    "The",
+    " cat",
+    " sat",
+    " on",
+    " the"
+   ],
+   "count": 6
+  },
+  "candidates": [
+   " mat",
+   " floor",
+   " sofa",
+   " table",
+   " roof"
+  ],
+  "logits": [
+   5.1,
+   4.3,
+   4.0,
+   3.2,
+   1.5
+  ],
+  "chosen": " mat"
+ },
+ "training": {
+  "inputs": [
+   "<|begin_of_text|>",
+   "The",
+   " cat",
+   " sat",
+   " on",
+   " the",
+   " mat"
+  ],
+  "targets": [
+   "The",
+   " cat",
+   " sat",
+   " on",
+   " the",
+   " mat",
+   "."
+  ],
+  "highlight": 5
+ },
+ "cache": {
+  "text": "The cat sat on the mat and slept well.",
+  "ids": [
+   128000,
+   791,
+   8415,
+   7731,
+   389,
+   279,
+   5634,
+   323,
+   46498,
+   1664,
+   13
+  ],
+  "pieces": [
+   "<|begin_of_text|>",
+   "The",
+   " cat",
+   " sat",
+   " on",
+   " the",
+   " mat",
+   " and",
+   " slept",
+   " well",
+   "."
+  ],
+  "count": 11,
+  "promptLength": 6
+ },
+ "speculative": {
+  "prefix": {
+   "text": "The cat sat",
+   "ids": [
+    128000,
+    791,
+    8415,
+    7731
+   ],
+   "pieces": [
+    "<|begin_of_text|>",
+    "The",
+    " cat",
+    " sat"
+   ],
+   "count": 4
+  },
+  "draft": [
+   " on",
+   " the",
+   " mat",
+   " and",
+   " slept"
+  ],
+  "target": [
+   " on",
+   " the",
+   " mat",
+   " because"
+  ],
+  "accepted": 3,
+  "replacement": " because",
+  "committed": [
+   " on",
+   " the",
+   " mat",
+   " because"
+  ]
+ },
+ "scene": {
+  "tokens": [
+   "The",
+   "cat",
+   "sat",
+   "on",
+   "the",
+   "mat",
+   "because",
+   "it",
+   "was",
+   "tired"
+  ],
+  "roles": {
+   "subject": 1,
+   "verb": 2,
+   "preposition": 3,
+   "place": 5,
+   "conjunction": 6,
+   "pronoun": 7,
+   "copula": 8,
+   "adjective": 9
+  },
+  "context": [
+   "The",
+   "cat",
+   "sat",
+   "on",
+   "the",
+   "mat",
+   "because",
+   "it"
+  ],
+  "contextRoles": {
+   "subject": 1,
+   "verb": 2,
+   "preposition": 3,
+   "place": 5,
+   "conjunction": 6,
+   "pronoun": 7
+  },
+  "attention": [
+   "<bos>",
+   "The",
+   "cat",
+   "sat",
+   "on",
+   "the",
+   "mat",
+   "because",
+   "it"
+  ],
+  "attentionRoles": {
+   "subject": 2,
+   "verb": 3,
+   "preposition": 4,
+   "place": 6,
+   "conjunction": 7,
+   "pronoun": 8
+  },
+  "valueWeights": [
+   [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    1,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.7,
+    0.3,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.2,
+    0.5,
+    0.3,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    0.0,
+    0.6,
+    0.4,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.1,
+    0.1,
+    0.55,
+    0.0,
+    0.25,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.2,
+    0.35,
+    0.0,
+    0.0,
+    0.15,
+    0.3,
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.62,
+    0.0,
+    0.0,
+    0.0,
+    0.18,
+    0.08,
+    0.12,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.2,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.55,
+    0.25,
+    0.0
+   ],
+   [
+    0.0,
+    0.45,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.3,
+    0.15,
+    0.1
+   ]
+  ],
+  "lensPrompt": "The cat sat on the mat because it was",
+  "fullText": "The cat sat on the mat because it was tired"
+ },
+ "workedAttention": {
+  "tokens": [
+   "cat",
+   "sat",
+   "it"
+  ],
+  "keys": [
+   [
+    2,
+    0
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    1,
+    1
+   ]
+  ],
+  "values": [
+   [
+    1,
+    0
+   ],
+   [
+    0,
+    1
+   ],
+   [
+    0.5,
+    0.5
+   ]
+  ],
+  "query": [
+   1.5,
+   0.5
+  ]
+ },
+ "weightInputs": [
+  "cat",
+  "tax",
+  "7×8"
+ ],
+ "mini": {
+  "vocab": [
+   "The",
+   "cat",
+   "sat",
+   "on",
+   "the",
+   "mat",
+   "and",
+   "slept",
+   "a",
+   "dog",
+   ".",
+   "it",
+   "was",
+   "tired"
+  ],
+  "promptIds": [
+   0,
+   1,
+   2,
+   3,
+   4
+  ],
+  "maxLength": 12
+ },
+ "detectors": [
+  [
+   "slept",
+   "rested",
+   "lay"
+  ],
+  [
+   "whiskers",
+   "kitty",
+   "purred"
+  ],
+  [
+   "coffee",
+   "work",
+   "sleep deprivation"
+  ],
+  [
+   "they",
+   "them",
+   "all"
+  ],
+  [
+   "self",
+   "return",
+   "("
+  ],
+  [
+   "not",
+   "never",
+   "none"
+  ]
+ ],
+ "lens": [
+  [
+   [
+    " was",
+    0.16
+   ],
+   [
+    " is",
+    0.08
+   ],
+   [
+    ",",
+    0.06
+   ],
+   [
+    " not",
+    0.05
+   ],
+   [
+    " a",
+    0.04
+   ]
+  ],
+  [
+   [
+    " not",
+    0.12
+   ],
+   [
+    " so",
+    0.1
+   ],
+   [
+    " a",
+    0.08
+   ],
+   [
+    " very",
+    0.06
+   ],
+   [
+    " tired",
+    0.04
+   ]
+  ],
+  [
+   [
+    " tired",
+    0.18
+   ],
+   [
+    " hungry",
+    0.09
+   ],
+   [
+    " not",
+    0.08
+   ],
+   [
+    " so",
+    0.07
+   ],
+   [
+    " sleepy",
+    0.05
+   ]
+  ],
+  [
+   [
+    " tired",
+    0.34
+   ],
+   [
+    " sleepy",
+    0.14
+   ],
+   [
+    " hungry",
+    0.1
+   ],
+   [
+    " lazy",
+    0.06
+   ],
+   [
+    " so",
+    0.04
+   ]
+  ],
+  [
+   [
+    " tired",
+    0.46
+   ],
+   [
+    " sleepy",
+    0.12
+   ],
+   [
+    " hungry",
+    0.09
+   ],
+   [
+    " lazy",
+    0.05
+   ],
+   [
+    " full",
+    0.03
+   ]
+  ]
+ ],
+ "lm": {
+  "initial": [
+   "The",
+   " cat"
+  ],
+  "start": "subject",
+  "states": {
+   "subject": [
+    {
+     "text": " sat",
+     "p": 0.38,
+     "next": "sat"
+    },
+    {
+     "text": " slept",
+     "p": 0.24,
+     "next": "slept"
+    },
+    {
+     "text": " ate",
+     "p": 0.14,
+     "next": "ate"
+    },
+    {
+     "text": " meowed",
+     "p": 0.08,
+     "next": "meowed"
+    }
+   ],
+   "sat": [
+    {
+     "text": " on",
+     "p": 0.52,
+     "next": "on"
+    },
+    {
+     "text": " in",
+     "p": 0.21,
+     "next": "in"
+    },
+    {
+     "text": " quietly",
+     "p": 0.12,
+     "next": "tail"
+    },
+    {
+     "text": " beside",
+     "p": 0.06,
+     "next": "on"
+    }
+   ],
+   "on": [
+    {
+     "text": " the",
+     "p": 1,
+     "next": "on_noun"
+    }
+   ],
+   "in": [
+    {
+     "text": " the",
+     "p": 1,
+     "next": "in_noun"
+    }
+   ],
+   "on_noun": [
+    {
+     "text": " mat",
+     "p": 0.41,
+     "next": "tail"
+    },
+    {
+     "text": " sofa",
+     "p": 0.22,
+     "next": "tail"
+    },
+    {
+     "text": " floor",
+     "p": 0.17,
+     "next": "tail"
+    },
+    {
+     "text": " table",
+     "p": 0.1,
+     "next": "tail"
+    }
+   ],
+   "in_noun": [
+    {
+     "text": " sofa",
+     "p": 0.3,
+     "next": "tail"
+    },
+    {
+     "text": " sun",
+     "p": 0.28,
+     "next": "tail"
+    },
+    {
+     "text": " window",
+     "p": 0.2,
+     "next": "tail"
+    },
+    {
+     "text": " basket",
+     "p": 0.12,
+     "next": "tail"
+    }
+   ],
+   "slept": [
+    {
+     "text": " in",
+     "p": 0.35,
+     "next": "in"
+    },
+    {
+     "text": " on",
+     "p": 0.28,
+     "next": "on"
+    },
+    {
+     "text": " all",
+     "p": 0.18,
+     "next": "time"
+    },
+    {
+     "text": " well",
+     "p": 0.11,
+     "next": "tail"
+    }
+   ],
+   "ate": [
+    {
+     "text": " its",
+     "p": 0.33,
+     "next": "food"
+    },
+    {
+     "text": " slowly",
+     "p": 0.22,
+     "next": "tail"
+    },
+    {
+     "text": " fish",
+     "p": 0.18,
+     "next": "tail"
+    },
+    {
+     "text": " food",
+     "p": 0.12,
+     "next": "tail"
+    }
+   ],
+   "food": [
+    {
+     "text": " food",
+     "p": 0.45,
+     "next": "tail"
+    },
+    {
+     "text": " fish",
+     "p": 0.3,
+     "next": "tail"
+    },
+    {
+     "text": " breakfast",
+     "p": 0.15,
+     "next": "tail"
+    },
+    {
+     "text": " dinner",
+     "p": 0.05,
+     "next": "tail"
+    }
+   ],
+   "meowed": [
+    {
+     "text": " loudly",
+     "p": 0.4,
+     "next": "tail"
+    },
+    {
+     "text": " and",
+     "p": 0.2,
+     "next": "subject"
+    },
+    {
+     "text": ".",
+     "p": 0.2,
+     "next": "end"
+    },
+    {
+     "text": " again",
+     "p": 0.1,
+     "next": "tail"
+    }
+   ],
+   "time": [
+    {
+     "text": " day",
+     "p": 0.62,
+     "next": "tail"
+    },
+    {
+     "text": " night",
+     "p": 0.25,
+     "next": "tail"
+    },
+    {
+     "text": " afternoon",
+     "p": 0.08,
+     "next": "tail"
+    },
+    {
+     "text": " time",
+     "p": 0.03,
+     "next": "tail"
+    }
+   ],
+   "tail": [
+    {
+     "text": ".",
+     "p": 0.6,
+     "next": "end"
+    },
+    {
+     "text": " and",
+     "p": 0.2,
+     "next": "subject"
+    },
+    {
+     "text": " because",
+     "p": 0.1,
+     "next": "pronoun"
+    }
+   ],
+   "pronoun": [
+    {
+     "text": " it",
+     "p": 0.95,
+     "next": "copula"
+    }
+   ],
+   "copula": [
+    {
+     "text": " was",
+     "p": 0.95,
+     "next": "adjective"
+    }
+   ],
+   "adjective": [
+    {
+     "text": " tired",
+     "p": 0.8,
+     "next": "tail"
+    }
+   ]
+  },
+  "maxUnits": 18
+ },
+ "vars": {
+  "example_prompt": "The cat sat on the",
+  "example_sentence": "The cat sat on the mat",
+  "example_full_sentence": "The cat sat on the mat because it was tired",
+  "example_after_one": "The cat sat on the mat",
+  "example_subject": "cat",
+  "example_subject_phrase": "The cat",
+  "example_verb": "sat",
+  "example_preposition": "on",
+  "example_place": "mat",
+  "example_conjunction": "because",
+  "example_pronoun": "it",
+  "example_copula": "was",
+  "example_adjective": "tired",
+  "example_lens_prompt": "The cat sat on the mat because it was",
+  "example_sampled_token": "mat",
+  "example_prompt_T": 6,
+  "example_prompt_chars": 18,
+  "example_prompt_ids": "[128000, 791, 8415, 7731, 389, 279]",
+  "example_prompt_positions": "0, 1, 2, 3, 4, 5",
+  "example_prompt_shape": "[6, 4096]",
+  "example_prompt_id_shape": "[1, 6]",
+  "example_bpe_word": "kittens",
+  "example_bpe_chars": 7,
+  "example_bpe_bytes": 7,
+  "example_bpe_steps": 5,
+  "example_bpe_final_count": 2,
+  "example_bpe_final": "kit | tens",
+  "example_bpe_first": "kit",
+  "example_mini_prompt_T": 5,
+  "example_mini_max_T": 12,
+  "example_spec_draft_T": 5,
+  "example_spec_verify_T": 6,
+  "example_spec_accepted_T": 3,
+  "example_spec_committed_T": 4,
+  "example_spec_mismatch": "and",
+  "example_spec_replacement": "because",
+  "example_spec_output": "The cat sat on the mat because",
+  "example_packed_T": 8,
+  "example_packed_prefill_T": 6,
+  "example_packed_starts": "[0, 6, 7, 8]",
+  "example_packed_logits": "[5, 6, 7]",
+  "example_word_context_T": 8,
+  "example_word_full_T": 10,
+  "example_attention_T": 9,
+  "example_weight_a": "cat",
+  "example_weight_b": "tax",
+  "example_primary_chips": "<span class=\"chip t\">The</span><span class=\"chip t\"> cat</span><span class=\"chip t\"> sat</span><span class=\"chip t\"> on</span><span class=\"chip t\"> the</span><span class=\"chip t\"> mat</span>",
+  "example_primary_count": 6,
+  "example_secondary_chips": "<span class=\"chip t\">Die</span><span class=\"chip t\"> Kat</span><span class=\"chip t\">ze</span><span class=\"chip t\"> sa</span><span class=\"chip t\">ß</span><span class=\"chip t\"> auf</span><span class=\"chip t\"> der</span><span class=\"chip t\"> Matte</span>",
+  "example_secondary_count": 8
+ },
+ "comparison": {
+  "locale": "de",
+  "snapshot": {
+   "text": "Die Katze saß auf der Matte",
+   "ids": [
+    18674,
+    17816,
+    3059,
+    829,
+    8156,
+    7367,
+    2761,
+    65182
+   ],
+   "pieces": [
+    "Die",
+    " Kat",
+    "ze",
+    " sa",
+    "ß",
+    " auf",
+    " der",
+    " Matte"
+   ],
+   "count": 8
+  }
+ }
+}
