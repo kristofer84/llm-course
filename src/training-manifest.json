@@ -1,0 +1,48 @@
+{
+  "insertions": [
+    {
+      "module": 6,
+      "before": "@sum",
+      "titles": [
+        "Träning: ett synligt viktsteg",
+        "Förträning och SFT: olika data",
+        "Preferenser: RLHF och DPO",
+        "LoRA: frusen bas och låg rang",
+        "QLoRA: vad har vilken precision?"
+      ]
+    }
+  ],
+  "new_modules": [
+    {
+      "id": "quantization",
+      "after_module": "7",
+      "time": 30,
+      "hl": [
+        3
+      ],
+      "engine": true,
+      "titles": [
+        "@open",
+        "Kvantisering",
+        "Skala, nollpunkt och avrundning",
+        "Grupper, utliggare och fel",
+        "Kalibrering utan dataläckage",
+        "Vikter, aktiveringar och mätning",
+        "@sum",
+        "@quiz:quantization"
+      ]
+    }
+  ],
+  "summary_requires": {
+    "mod.quantization.key.1": [
+      "Skala, nollpunkt och avrundning"
+    ],
+    "mod.quantization.key.2": [
+      "Grupper, utliggare och fel",
+      "Kalibrering utan dataläckage"
+    ],
+    "mod.quantization.key.3": [
+      "Vikter, aktiveringar och mätning"
+    ]
+  }
+}
