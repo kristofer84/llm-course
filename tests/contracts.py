@@ -9,7 +9,7 @@ page = (ROOT / "llm-kurs.html").read_text()
 course = json.loads(re.search(r"window.COURSE=(.*?);</script>", page, re.S)[1])
 script = "\n".join(re.findall(r"<script>(.*?)</script>", page, re.S))
 # Execute quiz data and extension registration without running visualisations.
-data = (ROOT / "src/jd.js").read_text()
+data = (ROOT / "src/jd.js").read_text() + "\n" + (ROOT / "src/quiz-groups.js").read_text()
 for name in ("foundations.js", "training-lab.js", "operations-lab.js"):
     path = ROOT / "src" / name
     if path.exists():

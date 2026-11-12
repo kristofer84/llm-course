@@ -17,7 +17,7 @@
  "j3.16": "Next step",
  "j3.17": "point partly in the same direction",
  "j3.18": "point in the opposite direction",
- "j3.19": "are almost perpendicular: b says nothing about a",
+ "j3.19": "are nearly perpendicular: b has almost no component along a",
  "j3.20": "a · b = <b>{{dot}}</b>  (|a| = 1, |b| = {{b}}, angle {{deg}}°). The vectors {{w}}. The thick line is b’s shadow on a.",
  "j3.21": "dashed: the curve to be learned",
  "j3.22": "orange: what the network can express",

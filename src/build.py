@@ -120,14 +120,44 @@ ORDER = [
 QUIZMAP = {'Testa dig själv: tokens': 'm2', 'Testa dig själv: transformerblocket': 'm3',
            'Testa dig själv: logits': 'm4', 'Testa dig själv: inferens': 'm6',
            'Testa dig själv: modellvarianter': 'm7', 'Testa dig själv: vLLM': 'm8'}
+# Stable catalog identities are independent of displayed module numbers.
+for index, module in enumerate(MODS):
+    module['id'] = str(index)
+ORDER[3].append('@quiz:blocks')
+ORDER[11].insert(ORDER[11].index('Slutprov'), '@sum')
+SUMMARY_REQUIRES = json.load(open('summary-requirements.json', encoding='utf-8'))
 # Additions declare first-use insertion points in the original module sequence.
-for manifest in sorted(glob.glob('*-manifest.json')):
-    additions = json.load(open(manifest, encoding='utf-8'))
+ADDITIONS = [json.load(open(path, encoding='utf-8')) for path in sorted(glob.glob('*-manifest.json'))]
+for additions in ADDITIONS:
     for insertion in additions.get('insertions', []):
         target = ORDER[insertion['module']]
         at = target.index(insertion['before'])
         target[at:at] = insertion['titles']
-SUMMARY_REQUIRES = json.load(open('summary-requirements.json', encoding='utf-8'))
+    SUMMARY_REQUIRES.update(additions.get('summary_requires', {}))
+# Keep scheduling/memory and execution/operation manageable in one sequence.
+split_at = ORDER[9].index('Ett steg i model runner')
+execution = ['@open'] + ORDER[9][split_at:]
+ORDER[9] = ORDER[9][:split_at] + ['@sum', '@quiz:scheduling']
+MODS[9]['summary_keys'] = ['mod.9.key.%d' % n for n in (1, 2, 3, 4)]
+MODS[9]['time'] = 35
+ORDER.insert(10, execution)
+MODS.insert(10, dict(id='serving', time=50, hl=[], engine=True,
+                    summary_keys=['mod.serving.key.1', 'mod.9.key.5', 'mod.9.key.6']))
+for additions in ADDITIONS:
+    for module in additions.get('new_modules', []):
+        module = dict(module)
+        titles = module.pop('titles')
+        before, after = module.pop('before_module', None), module.pop('after_module', None)
+        # Explicitly move reused lessons instead of rendering duplicate IDs.
+        moved = {t for t in titles if not t.startswith('@')}
+        for sequence in ORDER:
+            sequence[:] = [t for t in sequence if t not in moved]
+        anchor = str(before if before is not None else after)
+        at = next(i for i, item in enumerate(MODS) if item['id'] == anchor)
+        if after is not None:
+            at += 1
+        MODS.insert(at, module)
+        ORDER.insert(at, titles)
 LEVELS = {}
 for title, section in secs.items():
     explicit = re.search(r'<section[^>]*data-level="([123])"', section)
@@ -165,33 +195,37 @@ def sec_attrs(i, kind, title_key):
 
 
 def opener(i, m):
-    goals = ''.join('<li data-i18n="mod.%d.goal.%d"></li>' % (i, j) for j in range(1, len(numbered('mod.%d.goal' % i)) + 1))
+    ident = m['id']
+    prefix = 'mod.' + ident
+    goals = ''.join('<li data-i18n="%s.goal.%d"></li>' % (prefix, j)
+                    for j in range(1, len(numbered(prefix + '.goal')) + 1))
     vars_ = json.dumps({'m': i, 'n': NMOD, 't': m['time']})
-    return ('<section class="slide" data-level="1" data-mod="%d" data-title="%s" data-i18n-title="title.mod.%d"><div class="si"><div class="opener">'
-            '<div><p class="modnum" data-i18n="build.opener.num" data-i18n-vars=\'%s\'></p>'
-            '<h1 data-i18n="mod.%d.name"></h1><p class="lead" data-i18n="mod.%d.lead"></p></div>'
-            '<div><h3 style="margin-top:0" data-i18n="build.opener.goals"></h3><ul class="goals">%s</ul>%s</div></div></div></section>'
-            % (i, fmt('title.mod.%d' % i), i, vars_, i, i, goals, minimap(i, m)))
+    note = '<p class="note" data-i18n="learning.vllm.reference"></p>' if ident in ('9', 'serving') else ''
+    return ("""<section class="slide" data-level="1" data-mod="%d" data-title="%s" data-i18n-title="title.mod.%s"><div class="si"><div class="opener">
+<div><p class="modnum" data-i18n="build.opener.num" data-i18n-vars='%s'></p>
+<h1 data-i18n="%s.name"></h1><p class="lead" data-i18n="%s.lead"></p>%s</div>
+<div><h3 data-i18n="build.opener.goals"></h3><ul class="goals">%s</ul>%s</div></div></div></section>"""
+            % (i, fmt('title.mod.' + ident), ident, vars_, prefix, prefix, note, goals, minimap(i, m)))
 
 
 def summary(i, m):
+    prefix = 'mod.' + m['id']
     keys = []
-    for j in range(1, len(numbered('mod.%d.key' % i)) + 1):
-        key = 'mod.%d.key.%d' % (i, j)
+    summary_keys = m.get('summary_keys', ['%s.key.%d' % (prefix, j)
+                      for j in range(1, len(numbered(prefix + '.key')) + 1)])
+    for key in summary_keys:
         required = SUMMARY_REQUIRES.get(key)
         if not required or any(t not in LEVELS for t in required):
             raise SystemExit('Missing summary prerequisite metadata: %s' % key)
         depth = max(LEVELS[t] for t in required)
         keys.append("""<li data-detail-level="%d" data-prerequisites='%s' data-i18n="%s"></li>"""
                     % (depth, json.dumps(required, ensure_ascii=False), key))
-    keys = ''.join(keys)
-    return ('<section class="slide" data-level="1" data-mod="%d" data-title="%s" data-i18n-title="title.summary.%d"><div class="si">'
-            '<p class="modnum" data-i18n="build.summary.num" data-i18n-vars=\'%s\'></p>'
-            '<h2 data-i18n="build.summary.title" data-i18n-vars=\'%s\'></h2><ol class="keys">%s</ol>'
-            '<p class="note" data-i18n="build.summary.note"></p></div></section>'
-            % (i, fmt('title.summary.%d' % i), i,
-               json.dumps({'m': i}),
-               json.dumps({'name': '#mod.%d.name' % i}), keys))
+    return ("""<section class="slide" data-level="1" data-mod="%d" data-title="%s" data-i18n-title="title.summary.%s"><div class="si">
+<p class="modnum" data-i18n="build.summary.num" data-i18n-vars='%s'></p>
+<h2 data-i18n="build.summary.title" data-i18n-vars='%s'></h2><ol class="keys">%s</ol>
+<p class="note" data-i18n="build.summary.note"></p></div></section>"""
+            % (i, fmt('title.summary.' + m['id']), m['id'], json.dumps({'m': i}),
+               json.dumps({'name': '#' + prefix + '.name'}), ''.join(keys)))
 
 
 out = []
@@ -219,11 +253,9 @@ for i, lst in enumerate(ORDER):
         elif t == '@sum':
             out.append(summary(i, m))
         elif t.startswith('@quiz:'):
-            out.append('<section class="slide" data-level="1" data-mod="%d" data-title="%s" data-i18n-title="title.quiz.%d">'
-                       '<div class="si"><h2 data-i18n="build.quiz.title" data-i18n-vars=\'%s\'></h2>'
-                       '<div class="quiz" data-quiz="%s"></div></div></section>'
-                       % (i, fmt('title.quiz.%d' % i), i,
-                          json.dumps({'name': '#mod.%d.quizname' % i}), t[6:]))
+            out.append("""<section class="slide" data-level="1" data-mod="%d" data-title="%s" data-i18n-title="title.quiz.%s"><div class="si"><h2 data-i18n="build.quiz.title" data-i18n-vars='%s'></h2><div class="quiz" data-quiz="%s"></div></div></section>"""
+                       % (i, fmt('title.quiz.' + m['id']), m['id'],
+                          json.dumps({'name': '#mod.' + m['id'] + '.quizname'}), t[6:]))
         else:
             sec = secs[t]
             used.add(t)
@@ -246,8 +278,8 @@ for section in out:
         quiz_for_module[int(mod[1])] = quiz[1]
 course = dict(quizForModule=quiz_for_module, slideLevels=LEVELS,
               legacyQuiz=json.load(open('quiz-legacy.json', encoding='utf-8')),
-              mods=['mod.%d.name' % i for i in range(len(MODS))],
-              desc=['mod.%d.desc' % i for i in range(len(MODS))],
+              mods=['mod.' + m['id'] + '.name' for m in MODS],
+              desc=['mod.' + m['id'] + '.desc' for m in MODS],
               time=[m['time'] for m in MODS])
 
 # ---------------------------------------------------------------- assemble
@@ -256,7 +288,7 @@ parts = [open('p1.html', encoding='utf-8').read(), '\n'.join(out), open('p9.html
          '<script>window.I18N_DATA=%s;</script>' % json.dumps(CAT, ensure_ascii=False),
          '<script>\n' + open('vendor/i18next.min.js', encoding='utf-8').read() + '\n</script>',
          open('i18n/engine.js', encoding='utf-8').read()]
-SCRIPTS = ['j0.js', 'jd.js', 'learning.js', 'a11y.js', 'j1b.js', 'j2b.js', 'j3.js',
+SCRIPTS = ['j0.js', 'jd.js', 'quiz-groups.js', 'learning.js', 'a11y.js', 'j1b.js', 'j2b.js', 'j3.js',
            'j4.js', 'j5.js', 'j6.js', 'j7.js', 'j8.js', 'foundations.js',
            'training-lab.js', 'operations-lab.js', 'course-ui.js', 'jz.js']
 for j in SCRIPTS:

@@ -43,5 +43,9 @@
   "mod.9.key.6": ["Tensor parallelism", "Speculative decoding"],
   "mod.10.key.1": ["Riktningar i residual stream"],
   "mod.10.key.2": ["Steering och ablation"],
-  "mod.10.key.3": ["Baka in ablation i vikterna"]
+  "mod.10.key.3": ["Baka in ablation i vikterna"],
+  "mod.serving.key.1": ["Continuous batching"],
+  "mod.11.key.1": ["Vanliga missförstånd"],
+  "mod.11.key.2": ["KV-cache i klartext"],
+  "mod.11.key.3": ["Vanliga missförstånd"]
 }
