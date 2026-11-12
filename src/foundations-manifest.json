@@ -1,0 +1,44 @@
+{
+  "insertions": [
+    {
+      "module": 1,
+      "before": "Vektorer och skalärprodukt",
+      "titles": ["Tal med form och axlar"]
+    },
+    {
+      "module": 1,
+      "before": "Matris gånger vektor",
+      "titles": ["Viktad summa i små steg", "Former som passar ihop"]
+    },
+    {
+      "module": 1,
+      "before": "Softmax",
+      "titles": ["Sannolikhet och poäng"]
+    },
+    {
+      "module": 1,
+      "before": "Vikter och aktiveringar",
+      "titles": ["Vad ändras vid inferens?"]
+    },
+    {
+      "module": 4,
+      "before": "GQA: delade KV heads",
+      "titles": ["Paus: förutsäg attention"]
+    },
+    {
+      "module": 4,
+      "before": "MLP i klartext",
+      "titles": ["Paus: bredd före MLP"]
+    },
+    {
+      "module": 7,
+      "before": "Vad är ett grafikkort?",
+      "titles": ["GPU: många arbetare", "Byte, FLOP och flaskhalsar"]
+    },
+    {
+      "module": 7,
+      "before": "Varför batching räddar decode",
+      "titles": ["Vänta, svara, gruppera"]
+    }
+  ]
+}
