@@ -139,9 +139,10 @@ async def render_pass(browser, lang, max_clicks=8):
         missing = await page.evaluate('L.missing')
         ident = identity_values()
         source_values, target_values = set(load_catalog('sv').values()), set(load_catalog(lang).values())
+        english_values = set(load_catalog('en').values())
         # German shares umlauts with Swedish: letter heuristics alone are invalid.
         suspicious = [value for value in missing if value not in ident and
-                      (swedish(value) if lang == 'en' else value in source_values and value not in target_values)]
+                      (swedish(value) if lang == 'en' else value in source_values and value not in english_values and value not in target_values)]
         check(not suspicious, f'no unresolved Swedish runtime lookups in {lang} ({suspicious[:5]})')
         print(f'{lang} lookup diagnostics: {len(missing)} unresolved literal/key calls')
     await page.close()

@@ -23,7 +23,7 @@
     S('line',{x1:95,y1:36,x2:95,y2:top+nL*(h+2)+6,stroke:'var(--a)','stroke-width':5,style:'opacity:.45'},svg);
     for(let i=0;i<nL;i++){const y=top+i*(h+2);S('rect',{x:30,y,width:62,height:h,rx:2,class:'bw',style:'fill-opacity:.7'},svg);S('rect',{x:98,y,width:62,height:h,rx:2,class:'bw',style:'fill-opacity:.35'},svg);
       if(h>=14){txt(svg,61,y+h/2+4,L.t('attn'),'s','middle').setAttribute('style','font-size:10px');txt(svg,129,y+h/2+4,L.t('MLP'),'s','middle').setAttribute('style','font-size:10px');}}
-    const yb=top+nL*(h+2)+8;rect(svg,30,yb,130,26,'bw',6);txt(svg,95,yb+17,L.t('LM head'),'s','middle');
+    const yb=top+nL*(h+2)+8;rect(svg,30,yb,130,26,'bw',6);txt(svg,95,yb+17,L.t('p3.hela-modellen-i-en-bild.20'),'s','middle');
     txt(svg,170,top+8,L.t('block 1'),'s');if(nL>1)txt(svg,170,top+(nL-1)*(h+2)+h/2+4,L.t('block {{n}}',{n:nL}),'s');
     const P=1.05+nL*0.218;const x0=230;
     const rows=[[L.t('j5.37'),nf(P,2)+' B'],[L.t('j5.38'),'≈ '+nf(P*2,1)+' GB'],[L.t('j5.12'),'≈ '+nf(P*2,1)+' GFLOP'],[L.t('j5.13'),String(nL)]];
@@ -44,8 +44,8 @@
    [L.t('j5.42'),'[5, 4096]','x',L.t('j5.21')],
    [L.t('j5.43'),'[5, 4096]','dots',L.t('j5.44')],
    [L.t('j5.45'),'[5, 4096]','x',L.t('j5.22')],
-   ['Final RMSNorm','[5, 4096]','x',L.t('j5.23')],
-   ['LM head','[5, 128256]','logits',L.t('j5.24')],
+   ['p3.hela-modellen-i-en-bild.19','[5, 4096]','x',L.t('j5.23')],
+   ['p3.hela-modellen-i-en-bild.20','[5, 128256]','logits',L.t('j5.24')],
    [L.t('j5.46'),'[128256]','last',L.t('j5.25')]];
   function draw(){clear(svg);S0.forEach((s,k)=>{const y=12+k*42;const cur=k===i,fut=k>i;const g=S('g',{style:'opacity:'+(fut?0.3:1)},svg);
       txt(g,10,y+18,L.t(s[0]),cur?'b':'s');txt(g,140,y+18,s[1],'m '+(s[2]==='ids'?'tt':'ta'));

@@ -1,34 +1,27 @@
 #!/usr/bin/env python3
-"""Edit the course text without touching HTML or the key structure.
+"""Edit keyed course prose in Swedish and a selected target language.
 
-The catalogs (``src/i18n/sv/*.json``, ``src/i18n/en/*.json``) are keyed, which
-makes them safe but unpleasant to read. This tool renders them as one Markdown
-file per group, in the order the course shows them, with the key on every
-block and Swedish and English side by side — a form that is easy for a person
-to read and cheap for a model to edit.
+Default target is English (--lang en); German uses --lang de. Existing English
+edit files stay in src/i18n/edit/<group>.md and provenance stays in
+.translation-state.json. Other targets use edit/<locale>/<group>.md and
+.translation-state.<locale>.json, so edits/review state never overwrite another
+language. Static lesson order is followed by runtime/quiz/glossary values.
 
-    python3 tools/content.py dump            # -> src/i18n/edit/<group>.md
-    $EDITOR src/i18n/edit/p3.md              # change the text
-    python3 tools/content.py apply           # back into the catalogs
-    (cd src && python3 build.py)             # rebuild
-    python3 tools/check_i18n.py              # verify
+    python3 tools/content.py dump --lang de
+    # edit SV| and DE| lines in src/i18n/edit/de/<group>.md
+    python3 tools/content.py apply --lang de
+    python3 tools/content.py status --all --strict
+    (cd src && python3 build.py)
+    python3 tools/check_i18n.py
 
-Block format (one per translatable element, in document order)::
+Each @@ key block contains one SV| / target-language line per original value
+line. Preserve inline markup, {{placeholders}}, numeric meaning and indentation.
+A block marked @@ key - new inserts a new key (source required, target optional).
+Catalog ownership is preserved even when a key prefix differs from its file.
 
-    @@ p3.rmsnorm.6            <- key; add "- new" to insert a paragraph
-    ## next: p3.attention-1-q-k-och-v   <- context, ignored on apply
-
-    SV| Division med RMS bevarar riktningen ...
-    EN| Division by the RMS preserves the direction ...
-
-Every ``SV|`` line is one line of the value; an empty ``SV|`` is a blank line
-inside a formula or log block. Inline markup (``<b>``, ``<span class="mk">``)
-and ``{{placeholders}}`` must be kept — ``tools/check_i18n.py`` enforces it.
-
-``apply`` also records, in ``src/i18n/.translation-state.json``, the Swedish
-text each English value was translated from. ``status`` lists the keys where
-Swedish has moved on since — the "translation is behind" list that a keyed
-catalog would otherwise keep quiet about.
+apply associates target text with its Swedish-source hash. status --strict
+rejects missing, behind, and unreviewed translations; --all checks every target.
+mark --lang <locale> records an explicitly reviewed source/target bulk edit.
 """
 
 import argparse

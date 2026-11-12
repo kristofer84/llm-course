@@ -118,7 +118,7 @@
   txt(svg,X(-5),Y(0)+16,'−5','s');txt(svg,X(5),Y(0)+16,'5','s','end');
 })();
 (function params(){
-  const svg=$('param-svg');const d=[['Embedding',0.525],['Attention ×32',1.342],['MLP ×32',5.637],['LM head',0.525]];
+  const svg=$('param-svg');const d=[['Embedding',0.525],['Attention ×32',1.342],['MLP ×32',5.637],[L.t('p3.hela-modellen-i-en-bild.20'),0.525]];
   d.forEach(([n,v],i)=>{const y=20+i*50;txt(svg,140,y+22,n,'','end');const w=v/5.637*330;rect(svg,150,y,w,32,'bw',3).setAttribute('style','fill-opacity:'+(i===2?.9:.35));txt(svg,158+w,y+22,nf(v,2)+' B','m');});
   txt(svg,150,222,L.t('j1b.46'),'s');
 })();
@@ -142,8 +142,8 @@
       ['SiLU(gate) ⊙ up','a   →   ['+B+', 14336]',L.t('j1b.55')],
       ['down_proj + residual','out = a @ W_down [14336, 4096]   →   ['+B+', 4096]\nx = x + out',L.t('j1b.56')],
       [L.t('j1b.57'),L.t('j1b.31',{sh:B}),L.t('j1b.58')],
-      ['Final RMSNorm','h   →   ['+B+', 4096]',''],
-      ['LM head',P?'h[:, -1] [1, 4096] @ W_U [4096, 128256]   →   logits [1, 128256]':'h [1, 4096] @ W_U [4096, 128256]   →   logits [1, 128256]',P?L.t('j1b.32'):L.t('j1b.33')],
+      [L.t('p3.hela-modellen-i-en-bild.19'),'h   →   ['+B+', 4096]',''],
+      [L.t('p3.hela-modellen-i-en-bild.20'),P?'h[:, -1] [1, 4096] @ W_U [4096, 128256]   →   logits [1, 128256]':'h [1, 4096] @ W_U [4096, 128256]   →   logits [1, 128256]',P?L.t('j1b.32'):L.t('j1b.33')],
       ['Sampling',L.t('j1b.59'),P?L.t('j1b.34'):L.t('j1b.35')]];}
   function render(){const st=steps();clear(list);st.forEach((s,k)=>{const li=document.createElement('li');li.textContent=(k+1)+'. '+s[0];if(k===i)li.className='cur';else if(k<i)li.className='done';li.dataset.a11yControl='tr-step-'+k;activateControl(li,li.textContent,()=>{i=k;render();},k===i);list.appendChild(li);});
     const s=st[i];det.innerHTML='';const h=document.createElement('h3');h.style.marginTop='0';h.textContent=s[0];const e=document.createElement('div');e.className='eq';e.textContent=s[1];const p=document.createElement('p');p.textContent=s[2];det.append(h,e,p);}

@@ -17,7 +17,7 @@
  "p3.hela-modellen-i-en-bild.16": "x [T, 4096]",
  "p3.hela-modellen-i-en-bild.17": "Token tauschen Informationen aus",
  "p3.hela-modellen-i-en-bild.18": "jedes Token für sich",
- "p3.hela-modellen-i-en-bild.19": "Abschließende RMSNorm",
+ "p3.hela-modellen-i-en-bild.19": "Finale RMSNorm",
  "p3.hela-modellen-i-en-bild.20": "LM-Head",
  "p3.hela-modellen-i-en-bild.21": "logits [T, 128256]",
  "p3.residual-stream.1": "Residual Stream: ein gemeinsamer Arbeitsbereich",

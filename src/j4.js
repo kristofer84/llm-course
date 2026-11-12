@@ -48,7 +48,7 @@
     const g=H('div','heat',null,w);g.style.gridTemplateColumns='repeat(24,1fr)';g.style.gap='1px';const R=rng(seed);
     for(let i=0;i<240;i++){const v=(R()+R()+R()-1.5)/1.5;const c=H('i',null,null,g);c.style.height='10px';c.style.background=v>=0?'var(--w)':'var(--neg)';c.style.opacity=(0.08+Math.min(1,Math.abs(v))*0.9).toFixed(2);}}
   function draw(){const lyr=+$('ck-l').value;$('ck-lv').textContent=String(lyr);
-    let h='<tr><th>'+L.t('j4.55',{n:lyr})+'</th><th>'+L.t('Shape')+'</th><th>'+L.t('j4.51')+'</th></tr>';rows.forEach(r=>{h+='<tr><td class="n">model.layers.<b>'+lyr+'</b>.'+r[0]+'</td><td class="n">'+r[1]+'</td><td class="n">'+L.num(r[2],0)+'</td></tr>';});
+    let h='<tr><th>'+L.t('j4.55',{n:lyr})+'</th><th>'+L.t('n3b.32-lager-i-en-modellfil.4')+'</th><th>'+L.t('j4.51')+'</th></tr>';rows.forEach(r=>{h+='<tr><td class="n">model.layers.<b>'+lyr+'</b>.'+r[0]+'</td><td class="n">'+r[1]+'</td><td class="n">'+L.num(r[2],0)+'</td></tr>';});
     $('ck-tbl').innerHTML=h;const hh=$('ck-heat');clear(hh);heat(hh,L.t('j4.56'),7001);heat(hh,L.t('j4.57',{n:lyr}),7001+lyr*131);}
   $('ck-l').addEventListener('input',draw);draw();
 })();
