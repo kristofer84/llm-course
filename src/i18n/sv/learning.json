@@ -31,5 +31,7 @@
  "mod.6.goal.4": "skilja förträning, SFT, preferensinlärning och lågrangsanpassning",
  "learning.lab.quality": "Kopiera kvalitetsfallen och bedömningsklienten",
  "learning.lab.quality.note": "Spara det första blocket som tasks.json och det andra som lab-quality.py. Det är synliga undervisningsfall, inte ett oberoende avskilt test. Använd samma LAB_MAX_TOKENS och begärda samtidighet som belastningsklienten; antalet samtidiga kvalitetsanrop begränsas av antalet uppgifter. Spara svar och finish reasons, och utvärdera representativa svar under verklig ihållande belastning innan du hävdar samma kvalitet.",
- "learning.lab.download": "Ladda ned hela labbguiden (engelska; ingår offline)"
+ "learning.lab.download": "Ladda ned hela labbguiden (engelska; ingår offline)",
+ "learning.slide.position": "Bild {{position}} av {{total}} på den valda nivån",
+ "learning.slide.excluded": "Den här bilden ligger utanför den valda nivån ({{total}} inkluderade bilder)."
 }

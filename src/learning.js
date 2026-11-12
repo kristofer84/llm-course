@@ -1,4 +1,14 @@
 /* Stable assessment identities and depth-aware consolidation. */
+function navigationProgress(index,levels,modules,maxLevel){
+  let position=0,total=0;const segments=[];
+  levels.forEach((level,i)=>{
+    if(level>maxLevel)return;
+    total++;if(i===index)position=total;
+    const segment=segments[modules[i]]||(segments[modules[i]]={total:0,through:0});
+    segment.total++;if(i<=index)segment.through++;
+  });
+  return{position,total,segments};
+}
 function migrateQuizAnswers(){
   if(store.quizSchema===3)return;
   store.answers=store.answers&&typeof store.answers==='object'?store.answers:{};

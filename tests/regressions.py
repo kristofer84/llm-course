@@ -11,6 +11,38 @@ async def reveal(page, selector):
     await page.wait_for_timeout(40)
 
 
+async def check_filtered_counter(page, depth):
+    deck = await page.evaluate("() => [...document.querySelectorAll('.slide')].map(s=>({level:+s.dataset.level,module:+s.dataset.mod}))")
+    included = [i for i, slide in enumerate(deck) if slide['level'] <= depth]
+    pair = next(((a,b) for a,b in zip(included,included[1:]) if b > a+1), (included[-2],included[-1]))
+
+    async def check_at(index):
+        actual = await page.evaluate("() => ({counter:document.getElementById('cnt').textContent,hash:location.hash,bars:[...document.querySelectorAll('#prog button span')].map(e=>parseFloat(e.style.width))})")
+        ordinal = included.index(index)+1 if index in included else '—'
+        assert actual['counter'] == f'{ordinal} / {len(included)}', (depth, index, actual)
+        assert actual['hash'] == f'#s{index+1}', 'Canonical slide hashes must not be renumbered'
+        for module, width in enumerate(actual['bars']):
+            selected = [i for i in included if deck[i]['module'] == module]
+            expected = 100*sum(i <= index for i in selected)/len(selected) if selected else 0
+            assert abs(width-expected) < .001, (depth, module, width, expected)
+
+    before, after = pair
+    await page.evaluate("i=>{location.hash='#s'+(i+1)}", before)
+    await page.wait_for_function("i=>[...document.querySelectorAll('.slide')].indexOf(document.querySelector('.slide.active'))===i", arg=before)
+    await check_at(before)
+    await page.locator('#nextbtn').click()
+    await check_at(after)
+    await page.locator('#prevbtn').click()
+    await check_at(before)
+    excluded = next((i for i, slide in enumerate(deck) if slide['level'] > depth), None)
+    if excluded is not None:
+        await page.evaluate("i=>{location.hash='#s'+(i+1)}", excluded)
+        await page.wait_for_function("i=>[...document.querySelectorAll('.slide')].indexOf(document.querySelector('.slide.active'))===i", arg=excluded)
+        await check_at(excluded)
+        expected = await page.evaluate("n=>L.t('learning.slide.excluded',{total:n})", len(included))
+        assert await page.locator('#cnt').get_attribute('aria-label') == expected
+
+
 async def run():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
@@ -24,9 +56,11 @@ async def run():
             assert await page.locator("#pathsel button.on").count() == 1
             assert await page.locator("#pathsel button").nth(0).evaluate("e=>e.classList.contains('on')")
             for depth in (1, 2, 3):
+                await reveal(page, '#modgrid')
                 await page.locator("#pathsel button").nth(depth - 1).click()
                 assert not await page.evaluate("depth => [...document.querySelectorAll('.qq')].some(e=>+e.dataset.questionLevel>depth)", depth)
                 assert not await page.evaluate("depth => [...document.querySelectorAll('[data-detail-level]')].some(e=>e.hidden !== (+e.dataset.detailLevel>depth))", depth)
+                await check_filtered_counter(page, depth)
             # Controls formerly covered only by ad-hoc screenshots now have assertions.
             for selector in ("#tl-next", "#am-mlp", "#ly-ckpt", "#tk-1", "#sp-next", "#pn-post", "#lb-next", "#mk-next", "#lm-auto", "#gp-64", "#bn-next"):
                 await reveal(page, selector)

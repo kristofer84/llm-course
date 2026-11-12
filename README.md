@@ -43,7 +43,9 @@ lab guide is embedded as an offline download—no broken relative documentation 
 The interface includes searchable contents and glossary, contextual definition links, expandable
 diagrams, copyable code/formulas, keyboard-operable diagram selections, theme switching, hash
 navigation, and persisted progress. Viewed-slide progress and checkpoint scores are labeled
-separately: visiting a slide does not prove mastery.
+separately: visiting a slide does not prove mastery. The slide counter and module-position bars
+count only slides included at the selected depth, while canonical `#sN` URLs stay unchanged. A
+manually opened slide outside that depth shows `— / total` with an explanatory tooltip.
 
 ## Build
 
