@@ -75,7 +75,7 @@
      "Grouped-Query Attention"
     ]
    },
-   "introduced": "GQA: delade KV heads",
+   "introduced": "Attention 1: Q, K och V",
    "note": "Grouped-query attention: query heads share KV heads; explained on 'GQA: delade KV heads'."
   },
   {
@@ -394,7 +394,7 @@
      "Pretraining"
     ]
    },
-   "introduced": "Förträning och SFT: olika data",
+   "introduced": "Gradienter och minne",
    "note": "Next-token training on a broad text distribution; contrasted with SFT on 'Förträning och SFT: olika data'."
   },
   {
@@ -414,7 +414,7 @@
      "Supervised Fine-Tuning"
     ]
    },
-   "introduced": "Förträning och SFT: olika data",
+   "introduced": "Från basmodell till assistent",
    "note": "Supervised fine-tuning on demonstrations; same next-token loss, usually masked to the answer, detailed on 'Förträning och SFT: olika data'."
   },
   {
@@ -434,7 +434,7 @@
      "Präferenz-Training"
     ]
    },
-   "introduced": "Preferenser: RLHF och DPO",
+   "introduced": "Från basmodell till assistent",
    "note": "Learning from comparisons rather than a gold answer; module goal preview, methods on 'Preferenser: RLHF och DPO'."
   },
   {
@@ -757,7 +757,7 @@
      "Durchsatz"
     ]
    },
-   "introduced": "Varför batching räddar decode",
+   "introduced": "Vänta, svara, gruppera",
    "note": "Results per second across users; explained on 'Vänta, svara, gruppera' and 'Latensmått'."
   },
   {

@@ -40,7 +40,7 @@
  "n1.vikter-och-aktiveringar.3": "<b>Gewichte</b> sind die gelernten Zahlen des Modells. Sie liegen fest im GPU-Speicher und sind für jede Frage gleich. Sie sind das Programm.",
  "n1.vikter-och-aktiveringar.4": "<b>Aktivierungen</b> sind die Zwischenwerte, die berechnet werden, während ein Token das Modell durchläuft. Sie sind der Zustand während der Programmausführung.",
  "n1.vikter-och-aktiveringar.5": "In einem dichten Modell werden <b>alle Gewichtsmatrizen</b> für jedes Token vollständig genutzt. Die Ausnahme ist das Embedding: Hier wird stattdessen eine Zeile pro Token nachgeschlagen, wie Modul 2 zeigt. Du kannst also nicht sehen, „welche Gewichte durch eine Frage aktiviert wurden“. Was eine Frage von einer anderen unterscheidet, sind die Aktivierungen. Diese untersuchst du, wenn du verstehen möchtest, was das Modell tut.",
- "n1.vikter-och-aktiveringar.6": "In einem MoE-Modell wählt ein Router (eine kleine Gewichtsmatrix) pro Token einige wenige Experten aus. Dort kannst du tatsächlich sehen, welche Gewichtsblöcke genutzt wurden.",
+ "n1.vikter-och-aktiveringar.6": "In einem MoE-Modell wählt ein Router einige Experten pro Token. Dort kann man tatsächlich sehen, welche Gewichtsblöcke verwendet wurden.",
  "n1.vikter-och-aktiveringar.7": "Wechsle in der Demonstration das Token und den Modelltyp.",
  "n1.vikter-och-aktiveringar.8": "Dicht",
  "n1.vikter-och-aktiveringar.9": "MoE",

@@ -754,7 +754,7 @@
      "Chat-Templates"
     ]
    },
-   "introduced": "Introduktion: Text → tokens",
+   "introduced": "Chat template och specialtokens",
    "note": "previewed in the module overview: a rule that turns messages and roles into one string; details later"
   },
   {

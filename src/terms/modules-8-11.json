@@ -351,10 +351,9 @@
    "spellings": {
     "sv": [
      "aktiva parametrar",
-     "aktiva parametrarna",
+     "aktiva parametern",
      "aktiv parameter",
-     "totala parametrar",
-     "totala parametrarna"
+     "aktiva"
     ],
     "en": [
      "active parameters",
@@ -365,7 +364,7 @@
      "Gesamtparameter"
     ]
    },
-   "introduced": "Introduktion: Modellvarianter",
+   "introduced": "Tät modell eller MoE",
    "note": "Parameters used per token versus parameters stored; the totals/active table is on 'Tät modell eller MoE'."
   },
   {
@@ -584,7 +583,7 @@
      "HTTP-Anfrage"
     ]
    },
-   "introduced": "Introduktion: vLLM-minne och schemaläggning",
+   "introduced": "HTTP, JSON och streaming",
    "note": "Request/response protocol between client and server; defined on 'HTTP, JSON och streaming'."
   },
   {
@@ -600,7 +599,7 @@
      "PagedAttention"
     ]
    },
-   "introduced": "Introduktion: vLLM-minne och schemaläggning",
+   "introduced": "vLLM i klartext",
    "note": "KV cache in fixed blocks with a block table; mechanism on 'PagedAttention'."
   },
   {
@@ -618,7 +617,7 @@
      "Continuous Batching"
     ]
    },
-   "introduced": "Introduktion: vLLM-minne och schemaläggning",
+   "introduced": "vLLM i klartext",
    "note": "Rebuilding the batch every step so a finished slot is refilled immediately; lesson on 'Continuous batching'."
   },
   {
@@ -639,7 +638,7 @@
      "disaggregiert"
     ]
    },
-   "introduced": "Introduktion: vLLM-minne och schemaläggning",
+   "introduced": "Disaggregerad prefill och decode",
    "note": "Separate prefill and decode pools with KV moved between them; trade-offs on 'Disaggregerad prefill och decode'."
   },
   {
@@ -848,7 +847,7 @@
      "Block Table"
     ]
    },
-   "introduced": "PagedAttention",
+   "introduced": "vLLM i klartext",
    "note": "Per-sequence mapping from logical to physical KV blocks, like virtual memory."
   },
   {
@@ -1251,27 +1250,6 @@
    "note": "Slow-request percentiles such as p95/p99, not the mean; nearest-rank construction on the same slide."
   },
   {
-   "id": "tolkning",
-   "spellings": {
-    "sv": [
-     "tolkning",
-     "tolkningen",
-     "tolkningsbarhet",
-     "interpretability"
-    ],
-    "en": [
-     "interpretation",
-     "interpretability"
-    ],
-    "de": [
-     "Interpretation",
-     "Interpretierbarkeit"
-    ]
-   },
-   "introduced": "Introduktion: Tolkning",
-   "note": "Finding a behaviour inside the model and changing it; direction lesson follows."
-  },
-  {
    "id": "riktning-i-residual-stream",
    "spellings": {
     "sv": [
@@ -1289,7 +1267,7 @@
      "Residual-Stream-Richtung"
     ]
    },
-   "introduced": "Introduktion: Tolkning",
+   "introduced": "Riktningar i residual stream",
    "note": "Concept represented as a direction, found as the difference between two group means; mechanism on 'Riktningar i residual stream'."
   },
   {
@@ -1307,7 +1285,7 @@
      "Steuerung"
     ]
    },
-   "introduced": "Introduktion: Tolkning",
+   "introduced": "Steering och ablation",
    "note": "Adding a scaled direction during the forward pass; mechanics on 'Steering och ablation'."
   },
   {
@@ -1326,7 +1304,7 @@
      "Ablation"
     ]
    },
-   "introduced": "Introduktion: Tolkning",
+   "introduced": "Steering och ablation",
    "note": "Removing the component along a direction; hook versus baked-in projection on 'Steering och ablation' and 'Baka in ablation i vikterna'."
   },
   {
