@@ -30,7 +30,7 @@
  "p2.referensmodellen-och.10": "im Schritt verarbeitete Token",
  "p2.referensmodellen-och.11": "variiert",
  "p2.referensmodellen-och.12": "d",
- "p2.referensmodellen-och.13": "verborgene Dimension (d_model), die Breite des Residual Stream",
+ "p2.referensmodellen-och.13": "verborgene Dimension (d_model), die Breite des Residual Streams",
  "p2.referensmodellen-och.14": "L",
  "p2.referensmodellen-och.15": "Anzahl der Schichten (num_hidden_layers)",
  "p2.referensmodellen-och.16": "n_h",

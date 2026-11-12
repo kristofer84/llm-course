@@ -145,7 +145,7 @@
  "p3.testa-dig-sjalv.8": "Was ist der Unterschied zwischen n_h und n_kv, und worauf wirkt er sich aus?",
  "p3.testa-dig-sjalv.9": "n_h ist die Anzahl der Query-Heads (32), n_kv die Anzahl der KV-Heads (8). Das Verhältnis 4 bestimmt, wie viele Query-Heads sich dasselbe K und V teilen und wie viel kleiner der KV-Cache gegenüber MHA wird.",
  "p3.hela-modellen-i-en-bild.arialabel": "Aufbau des Modells: Embedding, 32 Blöcke mit Attention und MLP, die zum Residual Stream addieren, eine abschließende Norm und der LM-Head",
- "p3.residual-stream.arialabel": "Acht Dimensionen des Residual Stream, die sich beim Addieren von Beiträgen ändern",
+ "p3.residual-stream.arialabel": "Acht Dimensionen des Residual Streams, die sich beim Addieren von Beiträgen ändern",
  "p3.rmsnorm.arialabel": "Ein Vektor vor und nach RMSNorm",
  "p3.attention-1-q-k-och-v.arialabel": "h mal W_qkv ergibt qkv, das in Q, K und V aufgeteilt wird",
  "p3.attention-2-dela-upp-i-heads.arialabel": "Q teilt sich in 32 Heads mit je 128 Dimensionen auf, K und V in 8 Heads mit je 128 Dimensionen",
