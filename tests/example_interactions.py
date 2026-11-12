@@ -2,7 +2,7 @@
 import asyncio
 import json
 import re
-from playwright.async_api import async_playwright
+from playwright.async_api import async_playwright, expect
 from _common import HTML, LOCALES, prepare, shot
 from regressions import reveal
 
@@ -134,7 +134,7 @@ async def run():
             await page.locator('.slide.active .viz-actions button').first.click()
             assert await page.locator('dialog[open] #kv-svg').count() == 1
             await page.keyboard.press('Escape')
-            assert await page.locator('.slide.active .example-scroll #kv-svg').count() == 1
+            await expect(page.locator('.slide.active .example-scroll #kv-svg')).to_have_count(1)
             await page.screenshot(path=shot(locale + '_localized-cache.png'))
             for selector, name in [('#att-svg','attention'),('#pv-svg','values'),('#ex-stages','walkthrough')]:
                 await reveal(page, selector)

@@ -37,9 +37,10 @@ prompt. Prompt-linked T, indices, targets, work totals and layouts must come fro
 Snapshot artifact: Meta-Llama-3-8B tokenizer.json, 9,085,698 bytes.
 
 - Official revision: `8cde5ca8380496c9a6cc7ef3a8b46a0372a1d920`.
-- Official Hugging Face tree API reports Git blob `b197f72effb9d5ed16ee0f5663e11e4cfac2ba62`.
-- Public mirror: `NousResearch/Meta-Llama-3-8B`, revision
-  `315b20096dc791d381d514deb5f8bd9c8d6d3061`.
+- [Official Hugging Face tree API](https://huggingface.co/api/models/meta-llama/Meta-Llama-3-8B/tree/8cde5ca8380496c9a6cc7ef3a8b46a0372a1d920)
+  reports Git blob `b197f72effb9d5ed16ee0f5663e11e4cfac2ba62`.
+- [Pinned public mirror](https://huggingface.co/NousResearch/Meta-Llama-3-8B/resolve/315b20096dc791d381d514deb5f8bd9c8d6d3061/tokenizer.json):
+  `NousResearch/Meta-Llama-3-8B`, revision `315b20096dc791d381d514deb5f8bd9c8d6d3061`.
 - Downloaded mirror bytes match that official Git blob exactly; SHA-256
   `e134af98b985517b4f068e3755ae90d4e9cd2d45d328325dc503f1c6b2d06cc7`.
 - Reproduced with `tokenizers==0.22.2`; vocabulary 128256, BOS ID 128000.

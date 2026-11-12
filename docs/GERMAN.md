@@ -5,17 +5,22 @@
 Add a complete German catalog and support it throughout the existing single-file course. Keep the
 same lesson sequence and stable translation keys. The user selected informal **du**, not formal Sie.
 Repository documentation/comments remain English; course explanations and interface labels are
-localized. Swedish sample tokens and executable code remain data, not translation targets.
+localized. Teaching example data is now locale-native, as specified in
+[`LOCALIZED-EXAMPLES.md`](LOCALIZED-EXAMPLES.md). Executable code identifiers remain unchanged.
 
 ## Translation rules
 
 - Translate values only; do not rename, add, or remove source keys.
 - Preserve inline tags, attributes, their order, `{{placeholders}}`, code identifiers, shapes, units,
-  formulas, and numeric meaning. Preserve every existing newline in a value; code/formula indentation
+  formulas, and numeric meaning. Locale-dependent example counts use `{{example_*}}` variables;
+  model architectural dimensions stay invariant. Preserve every newline; code/formula indentation
   is layout, not expendable whitespace.
 - Use the reviewed English catalog as the translation basis; consult Swedish for ambiguity.
-- Keep sample strings such as `Katten`, `satt`, `på`, `mattan`, `den`, and `trött` unchanged when they
-  are diagram/model data. The shared identity examples are listed in `src/i18n/en/data.json`.
+- Use German teaching examples from `src/examples/de.json`: “Die Katze saß auf der Matte” and
+  “denn sie war müde”. Include articles and punctuation in the scenario's position accounting.
+  German `denn` is coordinating, not subordinating. Real tokenizer IDs, word-level toy positions,
+  cache boundaries and semantic pronoun roles must be revalidated together; do not relabel Swedish
+  chips one-for-one. There is no Swedish-example identity allowlist anymore.
 - Use natural standard German and concise imperative instructions: “Ändere …”, “Probiere …”.
 - Decimal commas are appropriate in German prose/runtime numbers. Do not localize version numbers,
   source-code literals, or formula/code examples. English billion means German **Milliarde**;
