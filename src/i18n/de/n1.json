@@ -56,5 +56,8 @@
  "n1.vektorer-och-skalarprodukt.14": "Länge von b",
  "n1.varfor-icke-linjaritet.15": "Neuronen",
  "n1.softmax.16": "Zu allen addieren",
- "n1.softmax.17": "Alle skalieren"
+ "n1.softmax.17": "Alle skalieren",
+ "n1.vikter-och-aktiveringar.12": "<b>Wo sitzt der Router?</b> Nur in MoE-Modellen. Dort ersetzt eine Gruppe von Experten-MLPs plus ein kleiner Router das MLP des Blocks. Der Router ist eine eigene Gewichtsmatrix vor den Experten und liest den Vektor jedes Tokens: <span class=\"mk\">W_router [d, E]</span> liefert eine Punktzahl pro Experte.",
+ "n1.vikter-och-aktiveringar.13": "<b>So funktioniert er:</b> Für jedes Token bleiben die k höchsten Punktzahlen (Top-k, zum Beispiel 2 von 8). Eine Softmax über genau diese liefert Gewichte, nur diese Experten laufen, und ihre Ausgaben werden gewichtet addiert. Der Router ist klein – einige Zehntausend Zahlen pro Schicht – gegenüber den Hunderten Millionen der Experten, und er wird mit dem restlichen Modell trainiert.",
+ "n1.vikter-och-aktiveringar.14": "Das Llama-3-8B des Kurses ist dicht und hat keinen Router; Mixtral 8×7B ist ein MoE-Beispiel mit Router."
 }

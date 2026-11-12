@@ -99,7 +99,7 @@ MODS = [
 ORDER = [
     ['Från prompt till token', 'Vad är en språkmodell?', 'Kursens karta', 'Ett exempel hela vägen', 'Referensmodellen och notation'],
     ['@open', 'Vektorer och skalärprodukt', 'Matris gånger vektor', 'Varför icke-linjäritet?', 'Softmax', 'Vikter och aktiveringar', '@sum', '@quiz:m1'],
-    ['@open', 'Varför tokens?', 'Tokenisering i praktiken', 'Chat template och specialtokens', 'Embedding: från id till vektor', '@sum', 'Testa dig själv: tokens'],
+    ['@open', 'Varför tokens?', 'Tokenisering i praktiken', 'Embedding: från id till vektor', 'Chat template och specialtokens', '@sum', 'Testa dig själv: tokens'],
     ['@open', 'Uppgiften: från vektorer till nästa token', 'Transformer och decoder-only', 'Ett block, staplat 32 gånger',
      'Residual stream', 'Shapen ändras aldrig', 'Normalisering: varför och var', 'Hela modellen i en bild',
      'Vad ett lager innehåller', 'Så blir det 8 miljarder', 'Blocket som ett löpande band', 'Ett lager inifrån',

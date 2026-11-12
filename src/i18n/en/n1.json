@@ -56,5 +56,8 @@
  "n1.vektorer-och-skalarprodukt.14": "length of b",
  "n1.varfor-icke-linjaritet.15": "Neurons",
  "n1.softmax.16": "Add to all",
- "n1.softmax.17": "Scale all"
+ "n1.softmax.17": "Scale all",
+ "n1.vikter-och-aktiveringar.12": "<b>Where does the router live?</b> Only in MoE models. There, the block’s MLP is replaced by several expert MLPs plus a small router. The router is its own weight matrix, placed before the experts, that reads each token’s vector: <span class=\"mk\">W_router [d, E]</span> gives one score per expert.",
+ "n1.vikter-och-aktiveringar.13": "<b>How it works:</b> for each token, keep the k highest scores (top-k, for example 2 of 8). A softmax over just those gives weights, only those experts run, and their outputs are added with those weights. The router is small—tens of thousands of numbers per layer—compared with the experts’ hundreds of millions, and it is trained together with the rest of the model.",
+ "n1.vikter-och-aktiveringar.14": "The course’s Llama-3-8B is dense and has no router; Mixtral 8×7B is an MoE example that does."
 }

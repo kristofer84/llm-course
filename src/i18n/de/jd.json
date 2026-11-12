@@ -380,7 +380,7 @@
  "jd.gloss.10.term": "Kausale Maske",
  "jd.gloss.10.def": "Eine Regel in der Attention, durch die Position i nur die Positionen 0..i sieht.",
  "jd.gloss.11.term": "Chat-Vorlage",
- "jd.gloss.11.def": "Eine Vorlage, die eine Nachrichtenliste in eine einzige Zeichenkette mit speziellen Token umwandelt.",
+ "jd.gloss.11.def": "Eine Vorlage (meist in der Vorlagensprache Jinja), die eine Nachrichtenliste in eine einzige Zeichenkette mit speziellen Tokens umwandelt.",
  "jd.gloss.12.term": "Prefill in Abschnitten",
  "jd.gloss.12.def": "Ein langer Prompt wird auf mehrere Schritte aufgeteilt, damit er andere Anfragen nicht blockiert.",
  "jd.gloss.13.term": "Rechenlimitiert",
@@ -500,5 +500,7 @@
  "jd.gloss.70.term": "Gewicht",
  "jd.gloss.70.def": "Eine gelernte Zahl im Modell. Nach dem Training fest und für jedes Token verwendet.",
  "jd.gloss.71.term": "Vokabular (V)",
- "jd.gloss.71.def": "Die Menge aller Token. 128.256 in Llama 3."
+ "jd.gloss.71.def": "Die Menge aller Token. 128.256 in Llama 3.",
+ "jd.gloss.72.term": "Jinja",
+ "jd.gloss.72.def": "Vorlagensprache für die Chatvorlage eines Modells; die Vorlage steht in tokenizer_config.json."
 }
