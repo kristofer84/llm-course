@@ -28,5 +28,8 @@
  "mod.11.key.3": "A useful system needs both quality checks and workload measurements; seeing a slide is not evidence of mastering it.",
  "mod.4.key.6": "Attention mixes information from available token positions using input-dependent weights.",
  "mod.4.key.7": "The MLP transforms each token separately; its output must fit the residual stream before addition.",
- "mod.6.goal.4": "distinguish pretraining, SFT, preference learning and low-rank adaptation"
+ "mod.6.goal.4": "distinguish pretraining, SFT, preference learning and low-rank adaptation",
+ "learning.lab.quality": "Copy the quality fixtures and scoring client",
+ "learning.lab.quality.note": "Save the first block as tasks.json and the second as lab-quality.py. These are visible teaching fixtures, not an independent held-out test. Use the same LAB_MAX_TOKENS and requested concurrency as the load client; the maximum simultaneous quality requests is limited by the number of tasks. Preserve answers and finish reasons, and evaluate representative responses under actual sustained load before claiming equal quality.",
+ "learning.lab.download": "Download the full lab guide (English; included offline)"
 }

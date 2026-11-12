@@ -5,6 +5,7 @@ import re
 import sys
 import unicodedata
 import hashlib
+import base64
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "tools"))
 import i18n_dom as D  # noqa: E402
@@ -321,10 +322,15 @@ for j in SCRIPTS:
     elif j not in ('a11y.js', 'foundations.js', 'training-lab.js', 'operations-lab.js'):
         raise SystemExit('Missing runtime: %s' % j)
 full = '\n'.join(parts)
+GUIDES = ['INFERENCE-LAB.md']
+for guide in GUIDES:
+    payload = base64.b64encode(open('../docs/' + guide, 'rb').read()).decode('ascii')
+    full = full.replace('href="#" data-guide="%s"' % guide,
+                        'href="data:text/markdown;base64,%s" data-guide="%s"' % (payload, guide))
 # A content fingerprint is reproducible and avoids a self-referential Git SHA
 # in a committed generated artifact. It is useful when diagnosing stale caches.
 inputs = sorted(set(SOURCE_FILES + [j for j in SCRIPTS if os.path.exists(j)] +
-                    glob.glob('*-manifest.json') + glob.glob('i18n/*/*.json') +
+                    glob.glob('*-manifest.json') + glob.glob('i18n/*/*.json') + ['../docs/' + guide for guide in GUIDES] +
                     ['build.py', 'leads.py', 'p1.html', 'p9.html', 'i18n/engine.js',
                      'vendor/i18next.min.js', 'summary-requirements.json', 'exercise-requirements.json', 'quiz-legacy.json']))
 fingerprint = hashlib.sha256()

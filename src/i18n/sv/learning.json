@@ -28,5 +28,8 @@
  "mod.11.key.3": "Ett användbart system behöver både kvalitetskontroller och arbetslastmätningar; att ha sett en bild visar inte att man behärskar den.",
  "mod.4.key.6": "Attention blandar information från tillgängliga tokenpositioner med vikter som beror på indata.",
  "mod.4.key.7": "MLP:n omvandlar varje token separat; utdata måste passa residual stream före addition.",
- "mod.6.goal.4": "skilja förträning, SFT, preferensinlärning och lågrangsanpassning"
+ "mod.6.goal.4": "skilja förträning, SFT, preferensinlärning och lågrangsanpassning",
+ "learning.lab.quality": "Kopiera kvalitetsfallen och bedömningsklienten",
+ "learning.lab.quality.note": "Spara det första blocket som tasks.json och det andra som lab-quality.py. Det är synliga undervisningsfall, inte ett oberoende avskilt test. Använd samma LAB_MAX_TOKENS och begärda samtidighet som belastningsklienten; antalet samtidiga kvalitetsanrop begränsas av antalet uppgifter. Spara svar och finish reasons, och utvärdera representativa svar under verklig ihållande belastning innan du hävdar samma kvalitet.",
+ "learning.lab.download": "Ladda ned hela labbguiden (engelska; ingår offline)"
 }

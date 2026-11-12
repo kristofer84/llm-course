@@ -76,11 +76,12 @@ async def run():
             await first_option.click()
             await page.evaluate("""() => { const s=JSON.parse(localStorage.getItem('llm-kurs-v2'));
               s.last='Vektorer och skalärprodukt'; localStorage.setItem('llm-kurs-v2',JSON.stringify(s)); }""")
-            await page.reload(wait_until='domcontentloaded')
+            await page.goto(HTML.as_uri() + f'?lang={lang}', wait_until='domcontentloaded')
             await reveal(page, '#modgrid')
             assert await page.locator('#pathsel button').nth(2).evaluate("e=>e.classList.contains('on')")
             expected = await page.locator('.slide[data-title="Vektorer och skalärprodukt"] h2').inner_text()
-            assert await page.locator('#resume-t').inner_text() == expected
+            actual_resume = await page.locator('#resume-t').inner_text()
+            assert actual_resume == expected, (lang, actual_resume, expected)
             assert await page.locator('.quiz .opt[data-option="' + chosen + '"]').first.is_disabled()
             # Exercise every newly added simulation at control boundaries, not just its opener.
             for prefix in ("fd-", "ql-", "trn-", "op-"):

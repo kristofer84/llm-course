@@ -148,4 +148,55 @@ python lab-load.py 8 &gt; run-c8.json</code></pre><p class="note" data-i18n="op.
 <section class="slide" data-title="Labben: jämför och dokumentera" data-level="1"><div class="si">
 <h2 data-i18n="op.repeat.title"></h2>
 <p data-i18n="op.repeat.lead"></p><div class="scroll-x"><table class="t"><thead><tr><th data-i18n="op.repeat.table.1"></th><th data-i18n="op.repeat.table.2"></th></tr></thead><tbody><tr><td data-i18n="op.repeat.table.3"></td><td data-i18n="op.repeat.table.4"></td></tr><tr><td data-i18n="op.repeat.table.5"></td><td data-i18n="op.repeat.table.6"></td></tr><tr><td data-i18n="op.repeat.table.7"></td><td data-i18n="op.repeat.table.8"></td></tr><tr><td data-i18n="op.repeat.table.9"></td><td data-i18n="op.repeat.table.10"></td></tr></tbody></table></div><p data-i18n="op.repeat.deliver"></p><p class="note" data-i18n="op.repeat.scope"></p>
+<details class="lab-guide"><summary data-i18n="learning.lab.quality"></summary>
+<p data-i18n="learning.lab.quality.note"></p>
+<pre class="code"><code>[
+  {"id":"sum","prompt":"Reply with only the integer: 2 + 3 = ?","kind":"exact","expected":"5"},
+  {"id":"extract","prompt":"From 'total=17;currency=SEK', return only the currency code.","kind":"exact","expected":"SEK"},
+  {"id":"json","prompt":"Return only a JSON object with status equal to ok and count equal to the integer 2.","kind":"json","expected":{"status":"ok","count":2}},
+  {"id":"grounded","prompt":"Evidence: Ada visited Oslo on Tuesday. Which city did Ada visit? Return only the city.","kind":"exact","expected":"Oslo"},
+  {"id":"missing","prompt":"Evidence: Ada visited Oslo. What is Ada's age? If missing, return only UNKNOWN.","kind":"exact","expected":"UNKNOWN"},
+  {"id":"swedish","prompt":"Svara bara med talet: tre plus fyra.","kind":"exact","expected":"7"}
+]</code></pre>
+<pre class="code"><code>import concurrent.futures as cf, json, os, sys
+from urllib.request import Request, urlopen
+
+with open("tasks.json", encoding="utf-8") as f:
+    tasks = json.load(f)
+C = int(sys.argv[1]) if len(sys.argv) &gt; 1 else 1
+MAX_TOKENS = int(os.environ.get("LAB_MAX_TOKENS", "64"))
+assert C &gt; 0 and MAX_TOKENS &gt; 0
+def grade(task):
+    payload = json.dumps({
+        "model": "Qwen/Qwen2.5-0.5B-Instruct",
+        "messages": [{"role": "user", "content": task["prompt"]}],
+        "temperature": 0, "max_tokens": MAX_TOKENS, "stream": False
+    }).encode()
+    try:
+        req = Request("http://127.0.0.1:8000/v1/chat/completions", payload,
+                      {"Content-Type": "application/json"})
+        with urlopen(req, timeout=60) as r:
+            data = json.load(r)
+        choice = data["choices"][0]
+        answer = choice["message"]["content"]
+        try:
+            value = json.loads(answer) if task["kind"] == "json" else answer.strip()
+            passed = value == task["expected"]
+            if task["kind"] == "json":
+                passed = passed and isinstance(value, dict) and type(value.get("count")) is int
+        except (ValueError, TypeError):
+            passed = False
+        return {"id": task["id"], "passed": passed, "answer": answer,
+                "finish_reason": choice["finish_reason"], "usage": data["usage"]}
+    except Exception as e:
+        return {"id": task["id"], "passed": False, "error": type(e).__name__}
+with cf.ThreadPoolExecutor(max_workers=C) as pool:
+    records = list(pool.map(grade, tasks))
+print(json.dumps({"requested_concurrency": C, "max_inflight": min(C, len(tasks)),
+                  "max_tokens": MAX_TOKENS, "correct": sum(r["passed"] for r in records),
+                  "total": len(tasks), "results": records}, ensure_ascii=False, indent=2))</code></pre>
+<pre class="code"><code>export LAB_MAX_TOKENS=64
+python lab-quality.py 4 &gt; quality-c4.json</code></pre>
+</details>
+<p><a href="#" data-guide="INFERENCE-LAB.md" download="INFERENCE-LAB.md" data-i18n="learning.lab.download"></a></p>
 </div></section>

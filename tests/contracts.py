@@ -109,4 +109,8 @@ slide_client = re.search(r'<pre class="code"><code>(import concurrent\.futures.*
 assert html.unescape(slide_client).strip() == load_client.strip()
 assert 'finish_reason' in load_client and 'LAB_MAX_TOKENS' in load_client
 assert all('LAB_MAX_TOKENS' in client for client in clients)
+assert clients[1].strip() in html.unescape((ROOT / 'src/operations-lab.html').read_text())
+import base64
+embedded = re.search(r'href="data:text/markdown;base64,([A-Za-z0-9+/=]+)" data-guide="INFERENCE-LAB.md"', page)
+assert embedded and base64.b64decode(embedded[1]).decode() == lab, 'Offline lab guide differs from documentation'
 print("OK: bilingual line structure, detail prerequisites, provenance, capstone clients")

@@ -37,6 +37,8 @@ See [technical references](docs/REFERENCES.md),
 Download and open it locally: explanations and simulations require no network or GPU. Optional
 web fonts fall back to local fonts. External references, package/model downloads, and the real-server
 exercise require network access and suitable hardware; they are not prerequisites for the course.
+The quality fixtures/scoring client are included in an expandable lesson, and the complete English
+lab guide is embedded as an offline download—no broken relative documentation link is required.
 
 The interface includes searchable contents and glossary, contextual definition links, expandable
 diagrams, copyable code/formulas, keyboard-operable diagram selections, theme switching, hash
@@ -93,7 +95,8 @@ independent of displayed module numbers. New source slides declare `data-level="
 slides can use the classification in `src/leads.py`.
 
 Every question has a depth and explicit lesson prerequisites. Summary prerequisites live in
-`src/summary-requirements.json` or an addition manifest. Tests reject references to missing,
+`src/summary-requirements.json` or an addition manifest; legacy reveal exercises/FAQ entries use
+`src/exercise-requirements.json`. Tests reject references to missing,
 higher-depth, or later lessons. Assessments persist **question key → option key**, not screen
 positions; the legacy migration preserves existing answers when banks move. The substantially
 changed old training question is deliberately reset. Visible answer slots are balanced per bank
